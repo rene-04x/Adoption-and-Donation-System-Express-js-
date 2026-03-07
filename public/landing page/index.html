@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAWSsion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and basic styles */
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    a {text-decoration: none;}
+    body {
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    /* Navigation Settings */
+    nav {
+      position: fixed; /* always at top */
+      top: 0;
+      width: 100%;
+      height: 70px;
+      background: #fff;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    /* Logo on the left */
+    nav .logo {
+      height: 50px;
+      margin-right: 20px;
+    }
+
+    nav.name {
+      height: 30px;
+      margin-right: 20px;
+    }
+
+    /* Center menu links */
+    nav .menu-container {
+      flex: 1; /* take remaining space */
+      display: flex;
+      justify-content: center;
+      margin-left: -90px;
+    }
+
+    nav .account {
+      display: flex;
+      align-items: center;
+      gap: 8px; /* space between icon and button */
+    }
+
+    nav .account img.account-icon {
+      width: 24px;   /* adjust size as needed */
+      height: 24px;
+      background: #396BC9; /* your vector background */
+      border-radius: 50%;   /* make it circular if desired */
+    }
+
+    /* Account button on the right */
+    nav .account button {
+      background-color: hsl(219, 100%, 74%,29%);
+      color: #02407D;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    nav .account button:hover {
+      background-color: #7CA9FF;
+      color: #FAFAFA;
+    }
+
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav li {
+      margin: 0 15px;
+    }
+
+    nav li a {
+      color: #757575;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav li a:hover {
+      color: #000;
+    }
+
+    /* Sections */
+    section {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 70px; /* leave space for fixed nav */
+    }
+
+    section p {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    /* Sections Background Colors */
+    #home { background: #43b29d; }
+    #donate { background: #efc94d; }
+    #about { background: #e1793d; }
+    #how { background: #8e44ad; }
+
+    /* Responsive */
+    @media only screen and (max-width: 520px) {
+      nav li { margin: 0 8px; }
+      nav li a { font-size: 14px; }
+      section p { font-size: 18px; }
+      nav .logo { height: 40px; }
+      nav .account button {
+        padding: 6px 12px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <!-- Logo -->
+    <img src="../../images/logo.png" alt="PAWSsion Logo" class="logo">
+    <img src="../../images/PAWSsion.png" alt="PAWSsion" class="name">
+
+    <!-- Centered menu links -->
+    <div class="menu-container">
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#donate">Donate</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#how">How it Works</a></li>
+      </ul>
+    </div>
+
+      <!-- Account button on the right -->
+  <div class="account">
+    <button>Account</button>
+    <img src="../../images/account-icon.png" alt="Account Icon" class="account-icon">
+  </div>
+  </nav>
+
+  <!-- Sections -->
+  <section id="home">
+    <p>Welcome to Home Screen</p>
+  </section>
+
+  <section id="donate">
+    <p>Welcome to Donate Screen</p>
+  </section>
+
+  <section id="about">
+    <p>Welcome to About Us Screen</p>
+  </section>
+
+  <section id="how">
+    <p>Welcome to How it Works Screen</p>
+  </section>
+</body>
+</html>
