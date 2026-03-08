@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAWSsion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and basic styles */
+    * {margin: 0; padding: 0; box-sizing: border-box;}
+    a {text-decoration: none;}
+    body {
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    /* Navigation Settings */
+    nav {
+      position: fixed; /* always at top */
+      top: 0;
+      width: 100%;
+      height: 70px;
+      background: #fff;
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+    }
+
+    /* Logo on the left */
+    nav .logo {
+      height: 50px;
+      margin-right: 20px;
+    }
+
+    nav.name {
+      height: 30px;
+      margin-right: 20px;
+    }
+
+    /* Center menu links */
+    nav .menu-container {
+      flex: 1; /* take remaining space */
+      display: flex;
+      justify-content: center;
+      margin-left: -50px;
+    }
+
+    nav .account {
+      display: flex;
+      align-items: center;
+      gap: 0px;
+      background-color: hsl(219, 100%, 74%,29%);
+      padding: 5px 8px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    nav .account img.account-icon {
+      width: 35px;
+      height: 35px;
+    }
+    /* Account button on the right */
+    nav .account a {
+      color: #02407D;
+      padding: 8px 8px;
+      font-weight: 600;
+      font-size: 20px;
+    }
+
+    nav .account:hover {
+      background-color: #7CA9FF;
+      border:  1px solid #0707B8;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    nav .account {
+      transition: all 0.3s ease;
+    }
+
+    /* change text color */
+    nav .account:hover a {
+      color: #fff;
+    }
+
+    /* change icon */
+    nav .account:hover img.account-icon {
+      content: url("../../images/account_icon_hover.png");
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav li {
+      margin: 0 15px;
+    }
+
+    nav li a {
+      color: #02407D;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav li a.active,
+    nav li a:hover {
+      color: #02407D;
+      text-decoration: 2px underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+
+    /* Sections */
+    section {
+      min-height: 100vh;  
+      padding-top: 5%;
+    }
+
+    section h1 {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800; /* extra bold */
+      font-size: 50px;
+      color: #000000;
+      padding-bottom: 10px;
+      margin-top: 5%;
+    }
+
+    section p {
+      margin: 0;
+      font-size: 20px;
+      color: #000000;
+    }
+
+   </style>
+</head>
+<body>
+  <nav>
+    <!-- Logo -->
+    <img src="../../images/logo.png" alt="PAWSsion Logo" class="logo">
+    <img src="../../images/PAWSsion.png" alt="PAWSsion" class="name">
+
+    <!-- Centered menu links -->
+    <div class="menu-container">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/donate" class="active">Donate</a></li>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#how">How it Works</a></li>
+      </ul>
+    </div>
+
+      <!-- Account button on the right -->
+      <div class="account">
+        <a class="account-btn">Account</a>
+        <img src="../../images/account_icon.png" class="account-icon">
+      </div>
+  </nav>
+
+  <!-- Sections --> 
+  <section id="donate">
+    
+  </section>
+
+  <section id="companion">
+   
+  </section>
+
+  <section id="footer">
+  
+  </section>
+  <div class="main_footer">
+    <img src="../../images/footer_rect.png" alt="Footer Background">
+    
+    <h1>Ready to Make a Difference?</h1>
+    <p>Join our community and help give these animals a second chance at happiness</p>
+    <div class="footer_buttons">
+      <a>Start Adopting</a>
+      <a>Make a Donation</a>
+    </div>
+    <div class="footer_text">
+      &copy; 2025 PAWSsion. All rights reserved.
+  </div>
+</body>
+</html>

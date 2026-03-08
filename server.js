@@ -6,7 +6,11 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/public/landing page/index.html');
+    res.sendFile(__dirname + '/public/landing_page/index.html');
+});
+
+app.get('/donate', (req, res) => {
+    res.sendFile(__dirname + '/public/landing_page/donate.html');
 });
 
 app.listen(3000, () => {
