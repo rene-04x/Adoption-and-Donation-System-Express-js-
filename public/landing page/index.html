@@ -126,7 +126,7 @@
       flex-direction: column; 
       justify-content: center;
       padding-top: 10%;
-      
+
     }
 
     section h1 {
@@ -136,6 +136,7 @@
       font-size: 50px;
       color: #000000;
       padding-bottom: 10px;
+      margin-top: 5%;
     }
 
     section p {
@@ -214,6 +215,7 @@
     #home { 
       background: #FFFFFF; 
       background-image: 
+      /*left side paws*/
     url('../../images/Paws.png'),
     url('../../images/Paws.png'),
     url('../../images/Paws.png'),
@@ -223,11 +225,44 @@
     url('../../images/Paws.png'),
     url('../../images/Paws.png'),
     url('../../images/Paws.png'),
-    url('../../images/Paws.png');
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+
+    /*right side paws*/
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'),
+    url('../../images/Paws.png'); 
+
     background-repeat: no-repeat, no-repeat, no-repeat;
-    background-position: 100px 200px, 100px 250px, 400px 400px, 190px 290px, 250px 300px, 200px 360px, 200px 450px, 80px 590px, 70px 550px, 120px 510px; /* x y coordinates */
-    background-size: 30px 30px, 20px 20px, 60px 60px, 30px 30px, 20px 20px, 30px 30px, 40px 40px,  30px 30px, 20px 20px,  30px 30px; /* sizes ng bawat paw */
-  
+    background-position: 
+    /*left side paws*/
+    100px 200px, 100px 250px, 400px 400px, 190px 290px, 250px 300px, 200px 360px, 200px 450px, 80px 590px, 70px 650px, 120px 690px, 500px 500px, 400px 500px, 360px 340px, 310px 390px, /* x y coordinates */
+    /*right side paws*/
+    900px 450px, 800px 590px, 850px 650px, 890px 690px, 1150px 500px, 1200px 160px, 1200px 200px, 1300px 390px, 900px 400px, 800px 500px, 1100px 700px, 1200px 750px, 1150px 600px, 1200px 300px, 1260px 250px, 1300px 290px, 1100px 250px, 1000px 300px; 
+    background-size: 
+    /*left side paws*/
+    30px 30px, 20px 20px, 60px 60px, 30px 30px, 20px 20px, 30px 30px, 40px 40px,  30px 30px, 20px 20px,  30px 30px, 60px 60px, 30px 30px, 20px 20px, 30px 30px, /* sizes ng bawat paw */
+     /*right side paws*/
+    20px 20px, 30px 30px, 40px 40px, 30px 30px, 60px 60px, 30px 30px, 20px 20px, 30px 30px, 20px 20px, 30px 30px, 40px 40px, 30px 30px, 20px 20px, 30px 30px, 20px 20px, 30px 30px, 20px 20px, 20px 20px;
+
     width: 100%;
     min-height: 100vh;          /* full viewport height minimum */
     padding: 5% 2%;             /* responsive padding */
@@ -245,7 +280,90 @@
       margin-top: 20px;
     }
 
-    #donate { background: #efc94d; }
+    /* Box styled like a button, not clickable */
+    .box {
+      display: inline-block;
+      background-color: #FFFFFF;
+      padding: 12px 40px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: absolute;
+      left: 5%;
+      top: 50%;
+      pointer-events: none;
+      text-align: left;   /* all text inside will be left-aligned */
+      font-family: 'Inter', sans-serif; 
+    }
+
+    .box2 {
+      display: inline-block;
+      background-color: #FFFFFF;
+      padding: 12px 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: absolute;
+      left: 12%;
+      top: 75%;
+      pointer-events: none;
+      text-align: left;   /* all text inside will be left-aligned */
+      font-family: 'Inter', sans-serif;
+    }
+
+    .box2 .stars {
+        display: flex;
+        gap: 10px; /* space between stars */
+        margin-bottom: 8px; /* space from text */
+        margin-left: 55px;
+    }
+
+    .box2 .star {
+      width: 20px;
+      height: 20px;
+    }
+
+    .box3 {
+      display: inline-block;
+      background-color: #FFFFFF;
+      padding: 18px 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: absolute;
+      left: 75%;
+      top: 45%;
+      pointer-events: none;
+      text-align: left;   /* all text inside will be left-aligned */
+      font-family: 'Inter', sans-serif;
+      color: #000000;
+    }
+
+    .box3 .safe-content {
+      display: flex;
+      align-items: center;   /* vertical alignment */
+      gap: 12px;             /* space between logo and text */
+    }
+
+    .box4 {
+      display: inline-block;
+      background-color: #FFFFFF;
+      padding: 18px 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      position: absolute;
+      left: 63%;
+      top: 65%;
+      pointer-events: none;
+      text-align: left;   /* all text inside will be left-aligned */
+      font-family: 'Inter', sans-serif;
+      color: #000000;
+    }
+
+    .box4 .safe-content {
+      display: flex;
+      align-items: center;   /* vertical alignment */
+      gap: 12px;             /* space between logo and text */
+    }
+
+    #home { background: #FFFFFF; }
     #about { background: #e1793d; }
     #how { background: #8e44ad; }
 
@@ -303,9 +421,52 @@
     <div>
       <img src="../../images/home_dog.png" class="home_dog">
     </div>
+
+    <div class="box">
+      <p>
+        <span style="font-weight: 600;  font-size: 25px;">10+ <br> Pets Adopted</span> 
+        <br><span style="font-size: 12px;">Found loving homes</span>
+      </p>
+    </div>
+
+    <div class="box2">
+      <div class="stars">
+        <img src="../../images/home_star.png" class="star">
+        <img src="../../images/home_star.png" class="star">
+        <img src="../../images/home_star.png" class="star">
+        <img src="../../images/home_star.png" class="star">
+        <img src="../../images/home_star.png" class="star">
+      </div>
+      <p>
+        <span style="font-weight: 600; font-size: 20px;">Love by Students and Staff</span> <br>
+        <span style="font-size: 12px;">“Adopting here was easy and safe”</span>
+      </p>
+    </div>
+
+    <div class="box3">
+      <div class="safe-content">
+        <img src="../../images/safe_logo.png" class="safe_logo">
+        <div class="safe-text">
+          <span style="font-weight: 600; font-size: 20px;">Safe Adoption</span> <br>
+        </div>
+      </div>
+      <span style="font-size: 12px; padding-left: 25px;">Our Adoption is safe, easy, and</span> <br>
+      <span  style="font-size: 12px; padding-left: 25px;">supportive</span>
+    </div>
+
+    <div class="box4">
+      <div class="safe-content">
+        <img src="../../images/safe_logo.png" class="safe_logo">
+        <div class="safe-text">
+          <span style="font-weight: 600; font-size: 20px;">Verified Pets</span> <br>
+        </div>
+      </div>
+      <span style="font-size: 12px; padding-left: 25px;">Healthy, vaccinated and ready</span> <br>
+      <span  style="font-size: 12px; padding-left: 25px;">for a loving Family</span>
+    </div>
   </section>
 
-  <section id="donate">
+  <section id="home">
     <p>Welcome to Donate Screen</p>
   </section>
 
