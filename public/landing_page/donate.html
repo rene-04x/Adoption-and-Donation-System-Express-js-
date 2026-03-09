@@ -349,6 +349,86 @@
       height: 30px;
     }
 
+    .happenings h1 {
+      font-size: 40px;
+      font-weight: 900;
+      color: #000000;
+      margin: 0;
+      line-height: 1.1;
+      text-align: left;
+      padding-left: 5%;
+    }
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      max-width: 1200px; /* Adjust base sa design mo */
+      margin: auto;
+      overflow: hidden; /* Itatago nito yung images na lampas sa view */
+    }
+
+    /* Update mo itong part na ito sa CSS mo */
+    .carousel-slide {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      gap: 20px;
+      padding: 20px 0;
+    }
+
+    .carousel-slide img {
+      /* Sa Desktop, 3 images ang kita. Sa Mobile, 1 image lang. */
+      flex: 0 0 calc(33.333% - 14px); 
+      width: 100%;
+      border-radius: 15px;
+      object-fit: cover;
+      height: 300px;
+    }
+
+    @media (max-width: 768px) {
+      .carousel-slide img {
+        flex: 0 0 100%; /* Isang image lang sa screen pag mobile */
+      }
+    }
+
+    /* Navigation Buttons (Blue Circles) */
+    .prev-btn, .next-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: #2563eb; /* Blue color */
+      color: white;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 20px;
+    }
+
+    .prev-btn { left: 10px; }
+    .next-btn { right: 10px; }
+
+    /* Dots Indicators */
+    .dots-container {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .dot {
+      height: 12px;
+      width: 12px;
+      margin: 0 5px;
+      background-color: #bbb;
+      border-radius: 50%;
+      display: inline-block;
+      border: 1px solid #777;
+    }
+
+    .dot.active {
+      background-color: #000; /* Solid black katulad sa screenshot */
+    }
+
      /* Responsive for Mobile */
      @media (max-width: 900px) {
       #inkind {
@@ -364,13 +444,160 @@
         padding: 30px 20px; /* Mas maliit na padding sa mobile */
       }
     }
-
-     /* Footer Section */
-     #footer {
-      min-height: 50vh;
-      background-color: #FFFFFF;
+    
+    #footer {
+      min-height: 80vh; /* Tinaasan natin para may space talaga sa baba */
+      width: 100%;
+      margin-top: -70px;
+      background-image: url('../images/footer_bg.png'), url('../images/footer_bg.png');
+      background-position: left 25%, right 13%;
+      background-size: 53% auto, 53% auto;
+      background-repeat: no-repeat, no-repeat;
+      
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 50px 0; /* Pantay na padding */
+      position: relative;
+      overflow: hidden;
     }
 
+        /* Base style para sa lahat ng scattered logos */
+    #footer img.ccs, 
+    #footer img.cspc, 
+    #footer img.honeygold, 
+    #footer img.pbc {
+      position: absolute;
+      transition: transform 0.3s ease;
+      z-index: 1; 
+    }
+
+    #footer img.ccs {
+      top: 10%;
+      left: 18%;
+      
+    }
+
+    #footer img.cspc {
+      top: 30%;
+      left: 33%;
+    }
+
+    #footer img.honeygold {
+      top: 20%;
+      right: 19%;
+    }
+
+    #footer img.pbc {
+      bottom: 15%;
+      right: 42%;
+      top: 5px;
+    }
+
+    #footer .info {
+      display: flex;
+      justify-content: flex-start; 
+      align-items: center;
+      gap: 30px;
+      padding-left: 0; 
+      width: 100%; 
+      margin-left: -6%;
+    }
+
+    #footer .info img {
+      transition: transform 0.3s ease;
+    }
+
+    #footer .info img.fb,
+    #footer .info img.twitter,
+    #footer .info img.tiktok,
+    #footer .info img.insta,
+    #footer .info img.mess {
+      background-color: #02407D;
+      border-radius: 50px;
+      padding: 10px;
+      width: 40px;
+      height: 40px; /* Force square ratio para perfect circle ang border-radius */
+      object-fit: contain;
+      margin-right: 20px;
+    }
+
+    /* Hover effect para mas maganda */
+    #footer .info img:hover {
+      transform: translateY(-5px);
+      background-color: #0707B8;
+    }
+
+    @media (max-width: 768px) {
+      #footer img.ccs, #footer img.cspc, #footer img.honeygold, #footer img.pbc{
+        width: 60px; /* Mas maliit sa mobile */
+        opacity: 0.5;
+        /* Pwede mong baguhin ang positions dito para hindi takpan ang text */
+      }
+    }
+
+    .footer-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+      padding: 0 8%;
+      margin-top: auto; /* PINAKA-IMPORTANTE: Itutulak nito ang row sa bottom */
+      margin-bottom: 20px;
+    }
+
+    #footer h1 {
+      color: #02407D;
+      font-size: 50px; /* Mas malaki para mas pansin */
+      font-weight: 900;
+      margin: 0;
+      line-height: 1;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 50px;
+    }
+
+    .footer-links p {
+      color: #333;
+      font-weight: 800;
+      font-size: 22px;
+      margin: 0 !important;
+    }
+
+    /* Social icons sa ilalim ng H1 */
+    #footer .info {
+      display: flex;
+      justify-content: flex-start; 
+      align-items: center;
+      gap: 15px;
+      width: 100%;
+      padding: 0 8% 40px 8%; /* Pantay na padding sa h1 */
+    }
+
+
+
+    #footer p {
+      color: #333;
+      max-width: 600px;
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+
+    .footer_buttons a {
+      padding: 15px 30px;
+      border-radius: 50px;
+      border: 2px solid #02407D; /* Blue border para makita sa puti */
+      color: #02407D;
+      font-weight: 700;
+      transition: 0.3s;
+    }
+
+    .footer_buttons a:hover {
+      background: #02407D;
+      color: #fff;
+    }
    </style>
 </head>
 <body>
@@ -443,20 +670,146 @@
    <a>Make a Donation</a>
   </section>
 
-  <section id="footer">
-  
-  </section>
-  <div class="main_footer">
-    <img src="../../images/footer_rect.png" alt="Footer Background">
+  <section class="happenings">
+    <h1>PAWSsion Happenings</h1>
+
+    <div class="carousel-container">
+      <button class="prev-btn">&#10094;</button>
+      <button class="next-btn">&#10095;</button>
     
-    <h1>Ready to Make a Difference?</h1>
-    <p>Join our community and help give these animals a second chance at happiness</p>
-    <div class="footer_buttons">
-      <a>Start Adopting</a>
-      <a>Make a Donation</a>
+      <div class="carousel-slide">
+        <img src="../../images/happenings1.png" alt="PH 1">
+        <img src="../../images/happenings2.png" alt="PH 2">
+        <img src="../../images/happenings3.png" alt="PH 3">
+        <img src="../../images/happenings4.png" alt="PH 4">
+        <img src="../../images/happenings5.png" alt="PH 5">
+        <img src="../../images/happenings1.png" alt="PH 1">
+        <img src="../../images/happenings2.png" alt="PH 2">
+        <img src="../../images/happenings3.png" alt="PH 3">
+        <img src="../../images/happenings4.png" alt="PH 4">
+        <img src="../../images/happenings5.png" alt="PH 5">
+      </div>
+    
+      <div class="dots-container">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
     </div>
-    <div class="footer_text">
-      &copy; 2025 PAWSsion. All rights reserved.
-  </div>
+  </section>
+
+  <section id="footer">
+    <img src="../images/CCS_logo.png" class="ccs">
+    <img src="../images/CSPC_logo.png" class="cspc">
+    <img src="../images/honeygold_logo.png" class="honeygold">
+    <img src="../images/PBC_logo.png" class="pbc">
+ 
+    <div class="footer-top-row">
+       <h1 id="PAWSsion">PAWSsion</h1>
+       
+       <div class="footer-links">
+          <p>Quick Links</p>
+          <p>Legal</p>
+       </div>
+    </div>
+ 
+    <div class="info">
+       <a href=""> <img src="../images/fb.png" class="fb"></a>
+       <a href=""><img src="../images/twitter.png" class="twitter"></a>
+       <a href=""><img src="../images/tiktok.png" class="tiktok"></a>
+       <a href=""><img src="../images/instagram.png" class="insta"></a>
+       <a href=""><img src="../images/messenger.png" class="mess"></a>
+    </div>
+ </section>
+  <img src="../images/footer_logo.png" class="logo">
 </body>
 </html>
+
+<script>
+  const slide = document.querySelector('.carousel-slide');
+  const nextBtn = document.querySelector('.next-btn');
+  const prevBtn = document.querySelector('.prev-btn');
+  const dots = document.querySelectorAll('.dot');
+
+  let counter = 0;
+
+  function updateCarousel() {
+    const images = document.querySelectorAll('.carousel-slide img');
+    const totalImages = images.length;
+    
+    // Alamin kung ilang images ang kasya sa screen (Desktop = 3, Mobile = 1)
+    const visibleCards = window.innerWidth > 768 ? 3 : 1;
+    const maxIndex = totalImages - visibleCards;
+
+    // Siguraduhin na hindi lalampas ang counter sa dulo
+    if (counter > maxIndex) counter = maxIndex;
+    if (counter < 0) counter = 0;
+
+    // Movement calculation
+    const itemWidth = images[0].clientWidth + 20; // image width + gap
+    slide.style.transform = `translateX(${-itemWidth * counter}px)`;
+
+    // --- DOTS LOGIC (Fixed to 4 dots) ---
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    if (counter === 0) {
+      // 1st Dot - Kapag nasa pinaka-umpisa
+      dots[0].classList.add('active');
+    } else if (counter >= maxIndex) {
+      // 4th Dot - Kapag nasa pinaka-dulo na
+      dots[3].classList.add('active');
+    } else {
+      // 2nd at 3rd Dots - Depende sa progress ng scroll sa gitna
+      const progress = counter / maxIndex;
+      if (progress < 0.5) {
+        dots[1].classList.add('active');
+      } else {
+        dots[2].classList.add('active');
+      }
+    }
+  }
+
+  nextBtn.addEventListener('click', () => {
+    const images = document.querySelectorAll('.carousel-slide img');
+    const visibleCards = window.innerWidth > 768 ? 3 : 1;
+    const maxIndex = images.length - visibleCards;
+
+    if (counter < maxIndex) {
+      counter++;
+    } else {
+      counter = 0; // Optional: Balik sa start pag dulo na
+    }
+    updateCarousel();
+  });
+
+  prevBtn.addEventListener('click', () => {
+    const images = document.querySelectorAll('.carousel-slide img');
+    const visibleCards = window.innerWidth > 768 ? 3 : 1;
+    const maxIndex = images.length - visibleCards;
+
+    if (counter > 0) {
+      counter--;
+    } else {
+      counter = maxIndex; // Optional: Punta sa dulo pag nasa start
+    }
+    updateCarousel();
+  });
+
+  // Gawing clickable ang dots para tumalon sa specific sections
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      const images = document.querySelectorAll('.carousel-slide img');
+      const visibleCards = window.innerWidth > 768 ? 3 : 1;
+      const maxIndex = images.length - visibleCards;
+      
+      // I-calculate ang talon base sa dot index (0, 1, 2, 3)
+      counter = Math.round((maxIndex / 3) * index);
+      updateCarousel();
+    });
+  });
+
+  window.addEventListener('resize', updateCarousel);
+  // Initial call para ma-set ang sizes
+  setTimeout(updateCarousel, 100); 
+</script>
