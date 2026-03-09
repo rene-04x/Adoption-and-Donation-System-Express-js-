@@ -541,69 +541,64 @@
     }
 
     .main_footer {
-      width: 100%;
-      position: relative; /* Basehan ng mga absolute elements sa loob */
-      line-height: 0;
-      margin-top: 50px;
-    }
+  width: 100%;
+  position: relative;
+  background-color: #02407D; /* Blue background para hindi puti kapag nag-stretch */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 20px; /* Space sa taas at baba */
+  overflow: hidden;
+}
 
-    .main_footer img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
+.main_footer img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Pinaka-importante para hindi mag-distort ang image */
+  z-index: 1;
+}
 
-    /* Ang H1 na nasa TAAS na part ng image */
-    .main_footer h1 {
-      position: absolute;
-      top: 30%;          /* I-adjust ito (e.g., 10% or 20%) depende sa "uka" ng image mo */
-      left: 50%;
-      transform: translateX(-50%);
-      
-      width: 100%;
-      text-align: center;
-      color: #FFFFFF;    /* Puti para sa blue background */
-      font-size: 40px;   /* Lakihan ang size para sa H1 */
-      font-weight: 800;
-      z-index: 10;       /* Para sigurado na nasa ibabaw ng image */
-    }
+.main_footer h1, 
+.main_footer p, 
+.main_footer .footer_buttons, 
+.main_footer .footer_text {
+  position: relative; /* Alisin ang absolute para maging stack sila */
+  z-index: 2; /* Para nasa ibabaw ng image */
+  max-width: 800px;
+  margin: 0 auto;
+}
 
-    /* Ang copyright text na nasa BABA pa rin */
-    .main_footer .footer_text {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: #FFFFFF;
-      font-size: 14px;
-      width: 100%;
-      text-align: center;
-    }
+.main_footer h1 {
+  font-size: 40px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
 
-    .main_footer p {
-      position: absolute;
-      top: 50%;          /* I-adjust ito (e.g., 10% or 20%) depende sa "uka" ng image mo */
-      left: 50%;
-      transform: translateX(-50%);
-      
-      width: 100%;
-      text-align: center;
-      color: #FFFFFF;    /* Puti para sa blue background */
-      font-size: 20px;   /* Lakihan ang size para sa H1 */
-      z-index: 10;  
-    }
+.main_footer p {
+  font-size: 20px;
+  color: #fff;
+  margin-bottom: 40px;
+  line-height: 1.6; /* Nagdagdag ng space sa pagitan ng lines */
+}
 
-    /* Container para sa dalawang buttons sa footer */
-    .footer_buttons {
-      position: absolute;
-      top: 62%; /* Nilagay sa ilalim ng <p> tag */
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 20px; /* Space sa pagitan ng dalawang buttons */
-      z-index: 10;
-    }
+.main_footer .footer_buttons {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 60px;
+}
 
+.main_footer .footer_text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: auto;
+  margin-bottom: -40px;
+}
     .footer_buttons a {
       padding: 30px 30px;
       border-radius: 20px;
@@ -646,32 +641,162 @@
     }
   
 
-    /* Responsive */
-    @media only screen and (max-width: 520px) {
-      nav li { margin: 0 8px; }
-      nav li a { font-size: 14px; }
-      section p { font-size: 18px; }
-      nav .logo { height: 40px; }
-      nav .account button {
-        padding: 6px 12px;
-        font-size: 14px;
-      }
+/* Responsive for Mobile Devices (520px and below) */
+@media only screen and (max-width: 520px) {
+  
+  /* 1. Navigation Fixes */
+  nav {
+    height: auto;
+    padding: 15px 10px;
+    flex-direction: column;
+    gap: 15px;
+    position: relative; /* Para hindi matakpan ang content sa top */
+  }
+  
+  nav .menu-container {
+    margin-left: 0;
+    width: 100%;
+  }
 
-      .footer_buttons {
-        flex-direction: column; /* Pag-stack-in ang buttons sa mobile */
-        top: 55%;
-        gap: 10px;
-      }
-      .main_footer h1 {
-        font-size: 24px;
-        top: 15%;
-      }
-      .main_footer p {
-        font-size: 14px;
-        top: 35%;
-        padding: 0 20px;
-      }
-    }
+  nav ul {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  nav li {
+    margin: 0 5px;
+  }
+
+  nav li a {
+    font-size: 13px;
+  }
+
+  nav .account {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* 2. Home Section Adjustments */
+  #home {
+    padding-top: 50px;
+    background-image: none !important; /* Tanggalin ang maraming paws background sa mobile */
+    height: auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: visible;
+  }
+
+  section h1 {
+    font-size: 30px !important;
+    margin-top: 10px;
+    line-height: 1.2;
+  }
+
+  section p {
+    font-size: 16px !important;
+    padding: 0 15px;
+  }
+
+  section p br {
+    display: none; /* Huwag i-break ang lines sa maliit na screen */
+  }
+
+  /* 3. Floating Boxes: Transform from Absolute to Normal Stack */
+  .box, .box2, .box3, .box4 {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    margin: 10px auto;
+    width: 90%;
+    transform: none !important; /* Alisin ang anumang dating transform */
+    pointer-events: auto;
+    text-align: center;
+    display: block;
+  }
+
+  .box2 .stars {
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .box3 .safe-content, .box4 .safe-content {
+    justify-content: center;
+  }
+
+  .box3 span, .box4 span {
+    padding-left: 0 !important;
+  }
+
+  .home_dog {
+    max-height: 35vh;
+    margin: 20px 0;
+    order: -1; /* Ilipat ang aso sa taas ng boxes kung gusto mo */
+  }
+
+  /* 4. Action Buttons */
+  .adopt, .donate {
+    display: flex;
+    width: 90%;
+    justify-content: center;
+    margin: 10px auto;
+    font-size: 16px;
+    gap: 15px;
+  }
+
+  /* 5. Companion / Stats Section */
+  #companion {
+    padding-top: 80px;
+    gap: 30px;
+  }
+
+  .stats-container {
+    gap: 20px;
+  }
+
+  #companion .header {
+    position: relative;
+    margin: 20px 0;
+    left: auto;
+    margin-left: 0;
+    width: 90%;
+    text-align: center;
+  }
+
+  .dog_img {
+    grid-template-columns: repeat(2, 1fr) !important; /* 2 columns para sa mobile images */
+    margin-top: 10px;
+    padding: 0 15px;
+  }
+
+  .main_footer {
+    padding: 60px 20px; /* Mas maliit na padding sa mobile */
+  }
+
+  .main_footer h1 {
+    font-size: 28px !important;
+    margin-bottom: 15px;
+  }
+
+  .main_footer p {
+    font-size: 16px !important;
+    margin-bottom: 30px;
+    line-height: 1.5;
+  }
+
+  .footer_buttons {
+    flex-direction: column !important; /* Stack buttons sa mobile */
+    width: 100%;
+    gap: 15px;
+  }
+
+  .footer_buttons a {
+    width: 100%;
+    padding: 15px !important;
+    font-size: 16px !important;
+  }
+}
   </style>
 </head>
 <body>
@@ -835,7 +960,6 @@
     </div>
   </section>
   <div class="main_footer">
-    <img src="../../images/footer_rect.png" alt="Footer Background">
     
     <h1>Ready to Make a Difference?</h1>
     <p>Join our community and help give these animals a second chance at happiness</p>
