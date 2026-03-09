@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWSsion Sign Up</title>
+    <link rel="stylesheet" href="/css/style1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-side">
+            <div class="header-pill">SIGN UP</div>
+            
+            <p class="description">
+                Join our community to adopt pets or support rescued cats and dogs. 
+                Create an account to track your adoption requests and donation history.
+            </p>
+            
+            <hr class="divider">
+
+            <div class="signup-card">
+                <form method="post" action="/register">
+                    <div class="input-group">
+                        <label>Username</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-paw"></i>
+                            <input type="text" name="username" placeholder="Enter your Username" required>
+                            <span class="required-star">*</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" name="email" placeholder="Enter your Email" required>
+                            <span class="required-star">*</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="password" placeholder="Enter your Password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                            <span class="required-star">*</span>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Confirm Password</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" name="confirm_password" placeholder="Enter your Password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                            <span class="required-star">*</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="signup-btn">Sign Up</button>
+                </form>
+
+                <div class="footer-links">
+                    <i class="fas fa-paw"></i> 
+                    <a href="/login" class="already-link">Already have an Account?</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="branding-side">
+              <a href="/login" class="close-btn">X </a>
+            <h1 class="welcome-text">Welcome to PAWSsion!</h1>
+            
+            <img src="../images/logo.png" alt="PAWSsion Logo" class="main-logo-img">
+            
+            <div class="bottom-info">
+                <p>© 2026 PAWSsion System</p>
+                <div class="policy-links">
+                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </div>    
+</body>
+</html>

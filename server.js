@@ -11,15 +11,19 @@ app.get('/', (req, res) => {
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/login/user-login.html');
 });
-
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    if (username === 'admin' && password === 'admin') {
-        res.redirect('/');
-    } else {
-        res.redirect('/login');
-    }
+app.get('/user-signup', (req, res) => {
+    res.sendFile(__dirname + '/public/login/user-signup.html');
 });
+app.get('/org-register', (req, res) => {
+    res.sendFile(__dirname + '/public/login/org-register.html');
+});
+app.get('/form2', (req, res) => {
+    res.sendFile(__dirname + '/public/login/form2.html');
+});
+app.get('/form3', (req, res) => {
+    res.sendFile(__dirname + '/public/login/form3.html');
+});
+
 
 app.listen(3000, () => {
     console.log('Server is running at http://localhost:3000');

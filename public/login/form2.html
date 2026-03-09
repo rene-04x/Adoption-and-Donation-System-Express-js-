@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWSsion - Register Organization</title>
+    <link rel="stylesheet" href="/css/org-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-side">
+            <div class="header-pill">SIGN UP</div>
+            
+            <p class="description">
+                Join our community to support rescued cats and dogs. Create an organization account to manage your rescued animals, track adoption requests, and coordinate donations to help give animals a loving home.
+            </p>
+            
+            <div class="org-verification-notice">
+                <strong>Organization Verification:</strong> Details below will be reviewed manually by our Admin before account activation.
+            </div>
+
+            <div class="form-content-wrapper">
+                <h3 class="step-title">Step 2: Organization Information</h3>
+
+                <div class="signup-card">
+                    <form method="post" action="/register-details">
+                        <div class="input-group">
+                            <label>Name</label>
+                            <div class="input-wrapper">
+                                <input type="text" name="org_name" placeholder="e.g., Hope for Paws Philippines" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Organization Type</label>
+                            <div class="input-wrapper">
+                                <input type="text" name="org_type" placeholder="e.g., Private Shelter" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Description</label>
+                            <div class="input-wrapper" style="height: auto; align-items: flex-start;">
+                                <textarea name="description" placeholder="Briefly describe your mission and how many animals you care..." rows="4" style="width: 100%; border: none; outline: none; background: transparent; font-family: 'Poppins', sans-serif; resize: none;"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="footer-links">
+                            <a href="/org-register" class="back-link"><i class="fas fa-arrow-left"></i>Back</a>
+                            <a href="/form3" class="next-link">Next <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="branding-side">
+            <a href="/login" class="close-btn">X</a>
+            <h1 class="welcome-text">Welcome to PAWSsion!</h1>
+            <img src="../images/logo.png" alt="PAWSsion Logo" class="main-logo-img">
+            <div class="bottom-info">
+                <p>© 2026 PAWSsion System</p>
+                <div class="policy-links">
+                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </div>    
+</body>
+</html>

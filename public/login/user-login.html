@@ -4,31 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PAWSsion Login</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
+        
         <div class="branding-side">
-            <img src="../images/logo.png" alt="PAWSsion Logo" class="main-logo-img">
+            <a href="/" class="close-btn">X</a>
+            <div class="paw-print" style="top: 10%; left: 10%;"></div>
+            <div class="paw-print" style="top: 20%; left: 80%;"></div>
+            <div class="paw-print" style="top: 50%; left: 30%;"></div>
+            <div class="paw-print" style="top: 70%; left: 70%;"></div>
+            <div class="paw-print" style="top: 85%; left: 20%;"></div>
+            <h1 class="welcome-text">Welcome to PAWSsion!</h1>
+            <a href="/">
+                <img src="../images/logo.png" alt="PAWSsion Logo" class="main-logo-img">
+            </a>
+            <div class="bottom-info">
+                <p>© 2026 PAWSsion System</p>
+                <div class="policy-links">
+                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                </div>
+            </div>
         </div>
 
         <div class="form-side">
             <div class="header-pill">SIGN IN</div>
             
             <p class="description">
-                Sign in to view available pets, manage your adoption requests, and track your donations. Together, we can make a difference in the lives of rescued animals.
+                Sign in to view available pets, manage your adoption requests, and track your donations. Together, we can make a difference.
             </p>
             
             <hr class="divider">
 
-            <div class="login-card">
+            <div class="signin-card">
                 <form method="post" action="/login">
                     <div class="input-group">
                         <label>Username</label>
                         <div class="input-wrapper">
                             <i class="fas fa-paw"></i>
-                            <input type="text" name="username" placeholder="Enter your Username">
+                            <input type="text" name="username" placeholder="Enter your Username" required>
                         </div>
                     </div>
 
@@ -36,28 +52,22 @@
                         <label>Password</label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
-                            <input type="password" name="password" placeholder="Enter your Password">
+                            <input type="password" name="password" placeholder="Enter your Password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
                         </div>
                     </div>
 
-                    <button type="submit" class="login-btn">Login</button>
+                    <button type="submit" class="signup-btn">Login</button>
                 </form>
 
-        <div class="footer-links">
-            <span class="forget-acc"><i class="fas fa-paw"></i> Not registered yet?</span>
-            <a href="#" class="register-link">Create an Account as User</a>
-            <div class="or-text">OR</div>
-            <a href="#" class="register-link">Register your Organization</a>
+                <div class="footer-links">
+                    <span class="forget-acc"><i class="fas fa-paw"></i> Not registered yet?</span>
+                    <a href="/user-signup" class="register-link">Create an Account as User</a>
+                    <div class="or-text">OR</div>
+                    <a href="/org-register" class="register-link">Register your Organization</a>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <footer class="site-footer">
-        <p>© 2026 PAWSsion System</p>
-        <div class="policy-links">
-            <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
-        </div>
-    </footer>
-    </div>
-    
+    </div>    
 </body>
 </html>

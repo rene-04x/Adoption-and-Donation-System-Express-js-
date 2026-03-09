@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+/* --- GLOBAL STYLES --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: white;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* --- FORM SIDE --- */
+.form-side {
+    width: 50%;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    z-index: 2;
+    border-top-right-radius: 150px;
+    border-right: 1px solid rgba(158, 197, 255, 0.3);
+}
+
+.form-content-wrapper {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.signup-card {
+    padding: 20px;
+    border-radius: 40px;
+    width: 400px;
+}
+
+.header-pill {
+    background: linear-gradient(90deg, #2d50c8, #9bb3ff);
+    color: white;
+    padding: 14px 100px;
+    border-radius: 40px;
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 15px rgba(45, 80, 200, 0.2);
+}
+
+.description {
+    text-align: center;
+    width: 75%;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.divider {
+    width: 60%;
+    border: none;
+    border-top: 4px solid #e5e7eb;
+    margin: 10px 0 25px 0;
+    border-radius: 10px;
+    opacity: 0.7;
+}
+
+/* --- INPUT STYLES --- */
+.input-group {
+    margin-bottom: 5px;
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    display: block;
+    color: #333;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px 15px;
+    background: #fafafa;
+    position: relative;
+    width: 100%;
+}
+
+.input-wrapper i {
+    color: #4a6cf7;
+    width: 20px;
+    margin-right: 12px;
+    text-align: center;
+}
+
+.input-wrapper input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 13px;
+    background: transparent;
+}
+
+.toggle-password {
+    cursor: pointer;
+    color: #999 !important;
+    font-size: 14px;
+    margin-right: 25px;
+}
+
+.required-star {
+    position: absolute;
+    right: 15px;
+    color: red;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* --- BUTTONS & LINKS --- */
+.signup-btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #2d50c8, #9bb3ff);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+}
+
+.signup-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* --- BRANDING SIDE --- */
+.branding-side {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(180deg, #e0eafc 0%, #a8c1f7 100%);
+    background-image: 
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/rotate_paw.png'),
+        url('../../images/rotate_paw.png'),
+        url('../../images/rotate_paw.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png'),
+        url('../../images/Paws.png');
+    background-repeat: no-repeat;
+    background-position: 
+        100px 200px, 100px 250px, 400px 400px, 190px 290px, 250px 300px, 200px 360px, 200px 450px, 
+        80px 590px, 70px 650px, 120px 690px, 500px 500px, 400px 500px, 360px 340px, 310px 390px,
+        900px 450px, 800px 590px, 850px 650px, 890px 690px, 1150px 500px, 1200px 160px, 1200px 200px, 
+        1300px 390px, 900px 400px, 800px 500px, 1100px 700px, 1200px 750px, 1150px 600px, 1200px 300px, 
+        1260px 250px, 1300px 290px, 1100px 250px, 1000px 300px;
+    background-size: 
+        30px 30px, 20px 20px, 60px 60px, 30px 30px, 20px 20px, 30px 30px, 40px 40px,
+        30px 30px, 20px 20px, 30px 30px, 60px 60px, 30px 30px, 20px 20px, 30px 30px,
+        20px 20px, 30px 30px, 40px 40px, 30px 30px, 60px 60px, 30px 30px, 20px 20px, 
+        30px 30px, 20px 20px, 30px 30px, 40px 40px, 30px 30px, 20px 20px, 30px 30px, 
+        20px 20px, 30px 30px, 20px 20px, 20px 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    font-size: 24px;
+    color: #2d50c8;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #1e3a8a;
+}
+
+.branding-side h1 {
+    color: #2d50c8;
+    font-size: 32px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.main-logo-img {
+    width: 280px;
+    height: auto;
+    filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.08));
+}
+
+/* --- FOOTER LINKS --- */
+.footer-links {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.next-link {
+    color: #2d50c8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.next-link:hover {
+    color: #1e3a8a;
+}
+
+.back-link {
+    color: #2d50c8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #1e3a8a;
+}
+
+/* --- FOOTER --- */
+.bottom-info {
+    margin-top: 30px;
+    text-align: center;
+    color: #64748b;
+}
+
+.bottom-info p {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.policy-links a {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.policy-links a:hover {
+    color: #2d50c8;
+}
+
+/* --- VERIFICATION NOTICE --- */
+.org-verification-notice {
+    width: 80%;
+    background: #fff3e0;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ffe0b2;
+    font-size: 11px;
+    color: #a0522d;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* --- STEP TITLE --- */
+.step-title {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: left;
+    width: 80%;
+}

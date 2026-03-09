@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWSsion - Register Organization</title>
+    <link rel="stylesheet" href="/css/org-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-side">
+            <div class="header-pill">SIGN UP</div>
+            
+            <p class="description">
+                Join our community to support rescued cats and dogs. Create an organization account to manage your rescued animals, track adoption requests, and coordinate donations to help give animals a loving home.
+            </p>
+            
+            <div class="org-verification-notice">
+                <strong>Organization Verification:</strong> Details below will be reviewed manually by our Admin before account activation.
+            </div>
+
+            <div class="form-content-wrapper">
+                <h3 class="step-title">Step 3: Verification</h3>
+
+                <div class="signup-card">
+                    <form method="post" action="/register-verification">
+                        <div class="input-group">
+                            <label>Address/Location</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <input type="text" name="address" placeholder="City, Location" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Proof of Legitimacy</label>
+                            <div class="input-wrapper file-input-wrapper">
+                                <input type="file" name="proof_file" accept=".pdf,.jpg,.png" required title="Upload proof document" class="file-input">
+                            </div>
+                            <small class="file-help-text">PDF, JPG, or PNG only.</small>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Social Media Link (Optional)</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-link"></i>
+                                <input type="url" name="social_link" placeholder="http://facebook.org">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="signup-btn">Submit for Verification</button>
+                    </form>
+                     <div class="footer-links">
+                    
+                    <a href="/form2" class="back-link"><i class="fas fa-arrow-left"></i>Back </i></a>
+
+                </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="branding-side">
+            <a href="/login" class="close-btn">X</a>
+            <h1 class="welcome-text">Welcome to PAWSsion!</h1>
+            <img src="../images/logo.png" alt="PAWSsion Logo" class="main-logo-img">
+            <div class="bottom-info">
+                <p>© 2026 PAWSsion System</p>
+                <div class="policy-links">
+                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
