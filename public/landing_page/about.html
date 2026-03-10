@@ -160,7 +160,7 @@
     /* Sections */
     section {
       min-height: 100vh;  
-      padding-top: 5%;
+      height: auto;
     }
 
     #about {
@@ -279,6 +279,121 @@
         font-family: 'Inter', sans-serif;
         font-weight: 800;
         margin-top: 10px;
+    }
+
+    #officers .team_header h3 {
+        font-size: 40px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;   
+    }
+
+    #officers .team_header h3 .txt1{
+        /* 1. Ilagay ang kulay na gusto mo */
+        background: linear-gradient(to right, #000000, #608FCD, #7180A6);
+
+        /* 2. I-clip ang background sa hugis ng letters */
+        -webkit-background-clip: text;
+        background-clip: text;
+
+        /* 3. Gawing transparent ang mismong font color para lumitaw yung gradient */
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    #officers .team_header h3 .txt2{
+        background: linear-gradient(to right, #7180A6, #C5880E, #f0a612);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
+    }
+
+    /* Layout Wrapper */
+    #officers .officers-layout {
+        display: flex;
+        align-items: flex-start; /* Pantay sa itaas */
+        justify-content: space-between; /* President sa kaliwa, Officers sa kanan */
+        padding: 0 5%;
+        gap: 115px;
+    }
+
+    #officers .pres {
+        background: linear-gradient(to bottom, #6383F0, #72A0FB, #6887FB);
+        border-radius: 20px;
+        box-sizing: border-box;
+        width:  380px;
+        height: 350px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+        margin-top: 15%;
+        margin-left: 0;
+        flex-shrink: 0;
+        line-height: 1.4;
+    }
+
+    #officers .pres img {
+        margin-top: -67px;
+        margin-left: -10px;
+    }
+
+    #officers .pres h1 {
+        color: #FAD000;
+        font-size: 30px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
+    }
+
+    #officers .pres p {
+        color: #02407D;
+        font-size: 20px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 800;
+    }
+
+    #officers .team_officers {
+        display: flex;
+        flex-wrap: wrap; 
+        justify-content: flex-start; /* Itulak ang mga maliliit na box sa pinaka-kanan */
+        gap: 30px;
+        padding: 0; /* Alisin ang padding para dumikit sa dulo */
+        flex: 1;
+        margin-top: 5%;
+        margin-right: 0;
+    }
+
+    #officers .team_officers .officer1,
+    #officers .team_officers .officer2,
+    #officers .team_officers .officer3,
+    #officers .team_officers .officer4,
+    #officers .team_officers .officer5 {
+        background: linear-gradient(to bottom, #6383F0, #72A0FB, #6887FB);
+        border-radius: 20px;
+        box-sizing: border-box;
+        width: 220px;  /* Ni-resize ko para mas kumasya sa kanan */
+        height: 233px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+        margin-bottom: 10%;
+    }
+
+    #officers .team_officers .officer1 img,
+    #officers .team_officers .officer2 img,
+    #officers .team_officers .officer3 img,
+    #officers .team_officers .officer4 img,
+    #officers .team_officers .officer5 img {
+        margin-top: -40px;
+    }
+
+    #officers .team_officers .officer1 h1,
+    #officers .team_officers .officer2 h1,
+    #officers .team_officers .officer3 h1,
+    #officers .team_officers .officer4 h1,
+    #officers .team_officers .officer5 h1 {
+        color: rgb(255, 255, 255);
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        font-size: 12px;
+        margin-left: 11px;
+        margin-top: -102%;
+    
     }
 
     #footer {
@@ -598,7 +713,7 @@
         }
     }
 
-        @media (max-width: 480px) {
+    @media (max-width: 480px) {
         .footer-columns {
             flex-direction: column; /* I-stack na rin ang links pag sobrang liit ng screen */
             gap: 20px;
@@ -708,8 +823,50 @@
     </div>
   </section>
 
-  <section class="happenings">
+  <section id="officers">
+    <div class="team_header">
+        <h3>
+            <span class="txt1">Leadership</span> 
+            <span class="txt2">Team</span>
+        </h3>
+    </div>
+    <div class="officers-layout">
+        <div class="pres">
+            <img src="../images/pres.png" class="pres_img">
+            <h1>Althea Marie S. Vasquez</h1>
+            <p>President</p>
+        </div>
+        <div class="team_officers">
+            <div class="officer1">
+                <img src="../images/officer.png" class="officer1_img">
+                <h1>VP-INTERNAL</h1>
+            </div>
+            <div class="officer2">
+                <img src="../images/officer.png" class="officer2_img">
+                <h1>VP-EXTERNAL</h1>
+            </div>
+            <div class="officer3">
+                <img src="../images/officer.png" class="officer3_img">
+               <h1>SECRETARY</h1>
+            </div>
+            <div class="officer4">
+                <img src="../images/officer.png" class="officer4_img">
+                <h1>TREASURER</h1>
+            </div>
+            <div class="officer5">
+                <img src="../images/officer.png" class="officer5_img">
+                <h1>AUDITOR</h1> 
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <section>
     
+  </section>
+
+  <section>
+
   </section>
 
   <section id="footer">
