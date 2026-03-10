@@ -12,6 +12,11 @@ app.get('/', (req, res) => {
 app.get('/donate', (req, res) => {
     res.sendFile(__dirname + '/public/landing_page/donate.html');
 });
+
+app.get('/about', (req, res) => {
+    res.sendFile(__dirname + '/public/landing_page/about.html');
+});
+
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/login/user-login.html');
 });
