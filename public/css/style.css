@@ -16,106 +16,93 @@ body {
 .container {
     display: flex;
     height: 100vh;
-}
-
-.branding-side {
+    
+}.branding-side {
     width: 50%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: relative; 
     overflow: hidden;
-    background: radial-gradient(circle at 70% 30%, #e0eafc 0%, #d1defc 50%, #a8c1f7 100%);
-    background-attachment: fixed;
+    background: linear-gradient(90deg, #7E91ED 0%, #ECF1FA 45%, #FFFFFF 90%, #FFFFFF 100%);
+}.branding-side::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    
     background-image: 
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
+        url('../../images/Paws.png'), 
         url('../../images/rotate_paw.png'),
-        url('../../images/rotate_paw.png'),
-        url('../../images/rotate_paw.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
-        url('../../images/Paws.png'),
         url('../../images/Paws.png');
+    
     background-repeat: no-repeat;
+    filter: brightness(0) invert(1); 
+    opacity: 0.8; 
+
     background-position: 
-        100px 200px, 100px 250px, 400px 400px, 190px 290px, 250px 300px, 200px 360px, 200px 450px, 
-        80px 590px, 70px 650px, 120px 690px, 500px 500px, 400px 500px, 360px 340px, 310px 390px,
-        900px 450px, 800px 590px, 850px 650px, 890px 690px, 1150px 500px, 1200px 160px, 1200px 200px, 
-        1300px 390px, 900px 400px, 800px 500px, 1100px 700px, 1200px 750px, 1150px 600px, 1200px 300px, 
-        1260px 250px, 1300px 290px, 1100px 250px, 1000px 300px;
-    background-size: 
-        30px 30px, 20px 20px, 60px 60px, 30px 30px, 20px 20px, 30px 30px, 40px 40px,
-        30px 30px, 20px 20px, 30px 30px, 60px 60px, 30px 30px, 20px 20px, 30px 30px,
-        20px 20px, 30px 30px, 40px 40px, 30px 30px, 60px 60px, 30px 30px, 20px 20px, 
-        30px 30px, 20px 20px, 30px 30px, 40px 40px, 30px 30px, 20px 20px, 30px 30px, 
-        20px 20px, 30px 30px, 20px 20px, 20px 20px;
+        10% 20%,  
+        25% 50%,  
+        12% 85%;  
+        
+    background-size: 40px 40px, 35px 35px, 45px 45px;
+    z-index: 1;
 }
+
 
 .branding-side::after {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    pointer-events: none;
+    top: 0; left: 0; right: 0; bottom: 0;
+
+    background-image: 
+        url('../../images/Paws.png'), 
+        url('../../images/rotate_paw.png'),
+        url('../../images/Paws.png');
+
+    background-repeat: no-repeat;
+    opacity: 0.6;
+
+    background-position: 
+        80% 15%,  
+        65% 45%,  
+        85% 80%;  
+
+    background-size: 45px 45px, 30px 30px, 50px 50px;
+    z-index: 1;
+}
+.branding-side > * {
+    position: relative;
+    z-index: 2;
 }
 
 .branding-side .welcome-text {
-    color: #2d50c8;
-    font-size: 32px;
-    margin-bottom: 30px;
-    font-weight: 600;
-    position: relative;
-    z-index: 1;
+    color: #5C7BD9; 
+    letter-spacing: -0.5px;
+    text-shadow: 0px 4px 10px rgba(255, 255, 255, 0.5);
 }
-
 .main-logo-img {
     width: 280px;
     height: auto;
     position: relative;
     z-index: 1;
+    filter: drop-shadow(0px 10px 20px rgba(126, 145, 237, 0.3));
 }
-
 .form-side {
     width: 50%;
-    background: white;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 40px;
-    z-index: 2;
-    border-top-left-radius: 150px;
-    border-left: 1px solid rgba(158, 197, 255, 0.3);
+    border-top-left-radius: 180px;
+    box-shadow: 
+        -10px 0 30px rgba(74, 108, 247, 0.12),  
+        -30px 0 60px rgba(74, 108, 247, 0.08); 
+    border-left: 1px solid rgba(74, 108, 247, 0.1);
+    z-index: 2; 
 }
-
 .close-btn {
     position: absolute;
     top: 20px;
