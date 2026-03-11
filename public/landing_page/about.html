@@ -393,7 +393,126 @@
         font-size: 12px;
         margin-left: 11px;
         margin-top: -102%;
-    
+    }
+
+    #devs h3 {
+        color: #02407D;
+        font-size: 30px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 900;
+        margin: 0 auto;
+        margin-top: 50px;
+        white-space: nowrap;
+    }
+
+    #devs .devs_info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 50px;
+    }
+
+    #devs .devs_info .dev1,
+    #devs .devs_info .dev2,
+    #devs .devs_info .dev4,
+    #devs .devs_info .dev5 {
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-sizing: border-box;
+        width:  240px;
+        height: 430px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+        margin-top: 50px;
+    }
+
+    #devs .devs_info .dev3 {
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-sizing: border-box;
+        width:  240px;
+        height: 480px;
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+    }
+
+    #devs .devs_info .dev1 img,
+    #devs .devs_info .dev2 img,
+    #devs .devs_info .dev3 img,
+    #devs .devs_info .dev4 img,
+    #devs .devs_info .dev5 img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-top: 30px;
+        border: 1px solid #D9D9D9;
+    }
+
+    #devs .devs_info .dev1 h1,
+    #devs .devs_info .dev2 h1,
+    #devs .devs_info .dev3 h1,
+    #devs .devs_info .dev4 h1,
+    #devs .devs_info .dev5 h1 {
+        color: #02407D;
+        font-size: 15px;
+        font-weight: 800;
+        margin-top: 10px;
+    } 
+
+    #devs .devs_info .dev1 p,
+    #devs .devs_info .dev2 p,
+    #devs .devs_info .dev3 p,
+    #devs .devs_info .dev4 p,
+    #devs .devs_info .dev5 p {
+        text-align: center;
+        color: #000;
+        font-size: 14px;
+        padding-top: 20px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    #devs .devs_info .dev1 .desc,
+    #devs .devs_info .dev2 .desc,
+    #devs .devs_info .dev3 .desc,
+    #devs .devs_info .dev4 .desc,
+    #devs .devs_info .dev5 .desc {
+        display: flex;
+        padding-top: 20px;
+        padding-left: 5px;
+        padding-right: 5px;
+        font-size: 12px;
+    }
+
+    .blur-line {
+        width: 150px;
+        height: 4px;
+        background: #a2c5e9;
+        margin: 50px auto;
+        filter: blur(2px);
+    }
+
+    #devs .devs_info .dev1 .contact,
+    #devs .devs_info .dev2 .contact,
+    #devs .devs_info .dev3 .contact,
+    #devs .devs_info .dev4 .contact,
+    #devs .devs_info .dev5 .contact   {
+        display: flex;
+        flex-direction: row;
+        display: flexbox;
+        gap: 20px;
+        margin-top: -60px;
+        margin-left: 60px;
+    }
+
+    #devs .devs_info .dev1 .contact img,
+    #devs .devs_info .dev2 .contact img,
+    #devs .devs_info .dev3 .contact img,
+    #devs .devs_info .dev4 .contact img,
+    #devs .devs_info .dev5 .contact img {
+        border-radius: 0%;
+        width: 25px;
+        height: auto;
     }
 
     #footer {
@@ -861,8 +980,80 @@
     </div>
   </section>
 
-  <section>
-    
+  <section id="devs">
+    <h3>PAWSsion Developers</h3>
+    <div class="devs_info">
+        <div class="dev1">
+            <img src="../images/miguela.png">
+            <h1>Miguela Antonette Baluca</h1>
+            <p>
+                UI Designer and Documentation Writer
+                <span class="desc">Designs the visual layout of the website and prepares clear and organized project documents.</span>
+            </p>
+            <div class="blur-line"></div>
+            <div class="contact">
+                <a href=""><img src="../images/blue_mail.png"></a>
+                <a href=""><img style="border-radius: 50%;" src="../images/blue_github.png"></a>
+                <a href=""><img src="../images/linkin.png"></a>
+            </div>
+        </div>
+        <div class="dev2">
+            <img src="../images/carla.png">
+            <h1>Carla Cezar</h1>
+            <p>
+                QA Tester and  Documentation Writer
+                <span class="desc">Tests the system for bugs and quality issues while assisting in writing technical documentation.</span>
+            </p>
+            <div class="blur-line"></div>
+            <div class="contact">
+                <a href=""><img src="../images/blue_mail.png"></a>
+                <a href=""><img style="border-radius: 50%;" src="../images/blue_github.png"></a>
+                <a href=""><img src="../images/linkin.png"></a>
+            </div>
+        </div>
+        <div class="dev3">
+            <img src="../images/irene.png">
+            <h1>Irene Espeleta</h1>
+            <p>
+                Project Head and Database Designer
+                <span class="desc">Leads the team and manages the structure, security, and organization of the system database.</span>
+            </p>
+            <div class="blur-line"></div>
+            <div class="contact">
+                <a href=""><img src="../images/blue_mail.png"></a>
+                <a href=""><img style="border-radius: 50%;" src="../images/blue_github.png"></a>
+                <a href=""><img src="../images/linkin.png"></a>
+            </div>
+        </div>
+        <div class="dev4">
+            <img src="../images/jhy.png">
+            <h1>Jhyzzeel Dianela</h1>
+            <p>
+                Software Engineer and Programmer
+                <span class="desc">Develops and codes the system’s main features and ensures smooth functionality.</span>
+            </p>
+            <div class="blur-line"></div>
+            <div class="contact">
+                <a href=""><img src="../images/blue_mail.png"></a>
+                <a href=""><img style="border-radius: 50%;" src="../images/blue_github.png"></a>
+                <a href=""><img src="../images/linkin.png"></a>
+            </div>
+        </div>
+        <div class="dev5">
+            <img src="../images/mayie.png">
+            <h1>Mariel Hernandez </h1>
+            <p>
+                Software Engineer / Programmer
+                <span class="desc">Implements system functions, fixes technical issues, and supports overall development.</span>
+            </p>
+            <div style="margin-top: 70px;" class="blur-line"></div>
+            <div class="contact">
+                <a href=""><img src="../images/blue_mail.png"></a>
+                <a href=""><img style="border-radius: 50%;" src="../images/blue_github.png"></a>
+                <a href=""><img src="../images/linkin.png"></a>
+            </div>
+        </div>
+    </div>
   </section>
 
   <section>
