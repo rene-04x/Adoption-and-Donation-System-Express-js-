@@ -17,6 +17,10 @@ app.get('/about', (req, res) => {
     res.sendFile(__dirname + '/public/landing_page/about.html');
 });
 
+app.get('/how', (req, res) => {
+    res.sendFile(__dirname + '/public/landing_page/howItWorks.html');
+});
+
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/login/user-login.html');
 });

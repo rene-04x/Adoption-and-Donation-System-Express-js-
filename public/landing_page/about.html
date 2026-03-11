@@ -698,7 +698,121 @@
       padding-bottom: 10%;
     }
 
+    /* Responsive for Tablets and Smaller Screens */
+@media only screen and (max-width: 1024px) {
+    #about .pawssion_about {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
 
+    #about .pawssion_about p {
+        margin-left: 0;
+        text-align: center;
+        padding: 0 20px;
+    }
+
+    #officers .officers-layout {
+        flex-direction: column;
+        align-items: center;
+        gap: 50px;
+    }
+
+    #officers .pres {
+        margin-left: 0;
+        margin-top: 50px;
+    }
+
+    #mission_contain #box_container {
+        grid-template-columns: 1fr; /* Gawing isang column na lang ang mission boxes */
+        justify-items: center;
+        margin-left: 0;
+    }
+}
+
+/* Responsive for Mobile Devices */
+@media only screen and (max-width: 600px) {
+    /* About Section */
+    #about h3 {
+        white-space: normal;
+        font-size: 24px;
+        padding-top: 100px;
+    }
+
+    /* Founders Section */
+    #founders .header h3 {
+        font-size: 30px;
+    }
+
+    #founders .PBC_founders {
+        flex-direction: column;
+    }
+
+    #founders .PBC_founders .founder1,
+    #founders .PBC_founders .founder2 {
+        width: 90%; /* Fit sa screen */
+        height: auto;
+        padding-bottom: 20px;
+    }
+
+    #founders .PBC_founders .founder1 .founder1_info,
+    #founders .PBC_founders .founder2 .founder2_info {
+        width: 90%;
+    }
+
+    /* Officers Section */
+    #officers .pres {
+        width: 90%;
+        height: auto;
+        padding-bottom: 20px;
+    }
+
+    #officers .team_officers {
+        justify-content: center;
+    }
+
+    #officers .team_officers .officer1,
+    #officers .team_officers .officer2,
+    #officers .team_officers .officer3,
+    #officers .team_officers .officer4,
+    #officers .team_officers .officer5 {
+        width: 160px; /* Mas maliit na boxes para mag-fit dalawa sa isang row */
+    }
+
+    /* Developers Section */
+    #devs .devs_info {
+        flex-direction: column;
+    }
+
+    #devs .devs_info .dev1, #devs .devs_info .dev2, 
+    #devs .devs_info .dev3, #devs .devs_info .dev4, #devs .devs_info .dev5 {
+        width: 90%;
+        height: auto;
+        padding-bottom: 30px;
+    }
+
+    /* Mission Section */
+    #mission_contain #box_container .mission1,
+    #mission_contain #box_container .mission2,
+    #mission_contain #box_container .mission3 {
+        width: 90%;
+        height: auto;
+        margin-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    #mission_contain #box_container .mission1 img,
+    #mission_contain #box_container .mission2 img,
+    #mission_contain #box_container .mission3 img {
+        width: 90%;
+        height: auto;
+    }
+
+    /* Values Section */
+    #values .val_cont1, #values .val_cont2 {
+        flex-direction: column;
+    }
+}
 
     #footer {
       min-height: 100vh; /* Tinaasan natin para may space talaga sa baba */
@@ -1078,7 +1192,7 @@
         <li><a href="/">Home</a></li>
         <li><a href="/donate">Donate</a></li>
         <li><a href="/about" class="active">About Us</a></li>
-        <li><a href="#how">How it Works</a></li>
+        <li><a href="/how">How it Works</a></li>
       </ul>
     </div>
 
