@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAWSsion - Adoption Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+/* Page-Specific Styles (Pet Grid & Filters Only) */
+* { margin:0; padding:0; box-sizing:border-box; }
+a { text-decoration:none; transition:0.3s ease; }
+
+body{
+  background:#F8FAFC;
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  color:#333;
+  overflow-x:hidden;
+}
+
+/* Logic for Content Shifting */
+#hubSection{
+  margin-left:320px;
+  padding:110px 4% 40px;
+  transition:all 0.4s ease;
+}
+
+body.sidebar-closed #hubSection{
+  margin-left:0;
+}
+
+.hub-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:30px;
+}
+
+.hub-header h1{
+  font-size:28px;
+  color:var(--primary-blue, #02407D);
+  font-weight:800;
+}
+
+/* FILTER BAR */
+.filter-bar{
+  display:flex;
+  gap:15px;
+  margin-bottom:30px;
+  align-items:center;
+}
+
+.search-box {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-box i {
+  position: absolute;
+  left: 18px;
+  color: #94a3b8; 
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 12px 20px 12px 45px;
+  border-radius: 50px;
+  border: 1px solid #e2e8f0;
+  outline: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.search-box input:focus {
+  border-color: var(--primary-blue, #02407D);
+  box-shadow: 0 0 0 3px rgba(2, 64, 125, 0.1);
+}
+
+.filter-btn{
+  padding:10px 20px;
+  border-radius:50px;
+  border:1px solid #e2e8f0;
+  background:white;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:14px;
+}
+/* FILTER BAR */
+.filter-bar{
+  display:flex;
+  gap:15px;
+  margin-bottom:30px;
+  align-items:center;
+  position: relative; /* Added to establish stacking context */
+  z-index: 100;       /* Ensures the bar stays above the grid */
+}
+
+/* DROPDOWN */
+.dropdown{
+  position:relative;
+  display:inline-block;
+}
+
+.dropdown-content{
+  display:none;
+  position:absolute;
+  right:0;
+  background:white;
+  min-width:180px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.15); /* Increased shadow for depth */
+  border-radius:12px;
+  margin-top:5px;
+  padding:8px 0;
+  border:1px solid #e2e8f0;
+  z-index: 1000;      /* HIGH Z-INDEX: Ensures it floats in front of pet cards */
+}
+
+.dropdown-content a{
+  color:#333;
+  padding:10px 16px;
+  display:block;
+  font-size:14px;
+}
+
+.dropdown-content a:hover{
+  background:#f1f5f9;
+  color: #02407D;
+}
+
+
+/* PET GRID */
+.adoption-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:25px;
+}
+
+.pet-card{
+  background:white;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,0.03);
+  transition:0.3s;
+  position:relative;
+  border:1px solid #f1f5f9;
+}
+
+.pet-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+}
+
+.pet-image-wrap{
+  height:240px;
+  width:100%;
+  position:relative;
+}
+
+.pet-image-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.status-badge{
+  position:absolute;
+  top:15px;
+  right:15px;
+  background:rgba(255, 255, 255, 0.9);
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+  color:#22c55e;
+}
+
+.match-badge{
+  position:absolute;
+  top:15px;
+  left:15px;
+  background:rgba(2, 64, 125, 0.7);
+  color:white;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:11px;
+}
+
+.pet-info{
+  padding:20px;
+  position:absolute;
+  bottom:0;
+  width:100%;
+  background:linear-gradient(transparent,rgba(0,0,0,0.8));
+  color:white;
+}
+
+.pet-info h3{
+  font-size:20px;
+  margin-bottom:4px;
+}
+
+.pet-info p{
+  font-size:13px;
+  opacity:0.9;
+}
+
+/* DROPDOWN */
+.dropdown{
+  position:relative;
+  display:inline-block;
+}
+
+.dropdown-content{
+  display:none;
+  position:absolute;
+  right:0;
+  background:white;
+  min-width:180px;
+  box-shadow:0 8px 16px rgba(0,0,0,0.1);
+  border-radius:12px;
+  margin-top:5px;
+  padding:8px 0;
+  border:1px solid #e2e8f0;
+}
+
+.dropdown-content a{
+  color:#333;
+  padding:10px 16px;
+  display:block;
+  font-size:14px;
+}
+
+.dropdown-content a:hover{
+  background:#f1f5f9;
+  color:var(--primary-blue, #02407D);
+}
+
+.show{display:block;}
+</style>
+</head>
+
+<body>
+
+<div id="sidebar-placeholder"></div>
+
+<main id="hubSection">
+  <div class="hub-header">
+    <h1>Available Pets</h1>
+  </div>
+
+  <div class="filter-bar">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" placeholder="Search by name, breed...">
+    </div>
+
+    <div class="dropdown">
+      <button class="filter-btn" onclick="toggleDropdown('filterMenu')">
+        <i class="fa-solid fa-filter"></i> Filter By ⌵
+      </button>
+      <div id="filterMenu" class="dropdown-content">
+        <a href="#">All</a>
+        <a href="#">Dogs</a>
+        <a href="#">Cats</a>
+        <a href="#">Female</a>
+        <a href="#">Male</a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <button class="filter-btn" onclick="toggleDropdown('sortMenu')">
+        <i class="fa-solid fa-sort"></i> Sort By ⌵
+      </button>
+      <div id="sortMenu" class="dropdown-content">
+        <a href="#">All</a>
+        <a href="#">Name: A-Z</a>
+        <a href="#">Age: Youngest - Oldest</a>
+        <a href="#">Date Added: Newest - Oldest</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="adoption-grid">
+    <div class="pet-card">
+      <div class="pet-image-wrap">
+        <span class="match-badge">98% Match</span>
+        <span class="status-badge">Available</span>
+        <img src="../images/dog1.png">
+        <div class="pet-info">
+          <h3>Adobo</h3>
+          <p>Brown and White, extremely kind and loyal.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pet-card">
+      <div class="pet-image-wrap">
+        <span class="match-badge">95% Match</span>
+        <span class="status-badge">Available</span>
+        <img src="../images/dog2.png">
+        <div class="pet-info">
+          <h3>Luna</h3>
+          <p>Playful and energetic puppy looking for a home.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="pet-card">
+      <div class="pet-image-wrap">
+        <span class="match-badge">92% Match</span>
+        <span class="status-badge">Available</span>
+        <img src="../images/dog3.png">
+        <div class="pet-info">
+          <h3>Cooper</h3>
+          <p>Friendly Golden Retriever mix, loves long walks.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pet-card">
+      <div class="pet-image-wrap">
+        <span class="match-badge">89% Match</span>
+        <span class="status-badge">Available</span>
+        <img src="../images/dog4.png">
+        <div class="pet-info">
+          <h3>Bella</h3>
+          <p>A gentle soul who loves belly rubs and quiet naps.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pet-card">
+      <div class="pet-image-wrap">
+        <span class="match-badge">87% Match</span>
+        <span class="status-badge">Available</span>
+        <img src="../images/dog1.png">
+        <div class="pet-info">
+          <h3>Milo</h3>
+          <p>Active and smart, perfect for an adventurous owner.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="pet-card">
+      <div class="pet-image-wrap">
+        <span class="match-badge">85% Match</span>
+        <span class="status-badge">Available</span>
+        <img src="../images/dog2.png">
+        <div class="pet-info">
+          <h3>Daisy</h3>
+          <p>Sweet-natured and very social with other pets.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+// Toggle Dropdowns
+function toggleDropdown(id){
+  document.getElementById("filterMenu").classList.remove("show");
+  document.getElementById("sortMenu").classList.remove("show");
+  document.getElementById(id).classList.toggle("show");
+}
+
+window.onclick = function(event){
+  if(!event.target.matches('.filter-btn') && !event.target.closest('.filter-btn')){
+    document.querySelectorAll(".dropdown-content").forEach(menu=>{
+      menu.classList.remove("show");
+    });
+  }
+}
+
+// LOAD EXTERNAL SIDEBAR
+fetch('sidebar.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
+    
+    const adoptionBtn = document.getElementById('adoptionBtn');
+    if(adoptionBtn) {
+      adoptionBtn.classList.add('active-item');
+      adoptionBtn.addEventListener('click', () => {
+        window.location.href = 'home.html';
+      });
+    }
+
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    
+    if(menuToggle && sidebar) {
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('closed');
+        document.body.classList.toggle('sidebar-closed'); 
+      });
+    }
+
+    const dashBtn = document.getElementById('dashboardBtn');
+    if(dashBtn) {
+      dashBtn.addEventListener('click', () => {
+        window.location.href = 'dashboard.html';
+      });
+    }
+  });
+</script>
+
+</body>
+</html>

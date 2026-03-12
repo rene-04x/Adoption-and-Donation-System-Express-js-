@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAWSsion - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Smooth Scroll & Reset */
+    html { scroll-behavior: smooth; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    a { text-decoration: none; transition: 0.3s ease; }
+
+    body {
+      background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), 
+                  url('../images/PAWSsion 2027.png') no-repeat center center fixed; 
+      background-size: cover;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh; color: #333; overflow-x: hidden;
+    }
+
+    #dashboardSection {
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      width: calc(100% - 320px); margin-left: 320px;
+      padding: 120px 5% 60px;
+    }
+
+    /* Logic for when sidebar is closed */
+    body.sidebar-closed #dashboardSection { margin-left: 0; width: 100%; }
+
+    .main-content-dashboard {
+      display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 20px;
+      max-width: 100%; margin: 0; animation: fadeIn 0.8s ease-out;
+    }
+
+    .card { background: #fff; border-radius: 15px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    .card h2 { font-size: 18px; margin-bottom: 20px; color: #1e293b; }
+    .app-status-box { display: flex; gap: 15px; align-items: center; }
+    .app-status-box img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
+    .progress-container { width: 100%; height: 8px; background: #f1f5f9; border-radius: 10px; overflow: hidden; }
+    .progress-bar { height: 100%; background: #22c55e; width: 40%; }
+    
+    .matches-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+    .match-card { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 3/4; }
+    .match-card img { width: 100%; height: 100%; object-fit: cover; }
+    .match-overlay { position: absolute; bottom: 0; width: 100%; padding: 10px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); color: #fff; }
+    .match-overlay h5 { font-size: 14px; }
+    
+    .impact-item { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #475569; list-style: none; }
+    .pie-placeholder { width: 120px; height: 120px; border-radius: 50%; background: conic-gradient(#38bdf8 0% 60%, #d97706 60% 85%, #facc15 85% 100%); margin: 10px auto; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 1100px) { 
+        .main-content-dashboard { grid-template-columns: 1fr; }
+        #dashboardSection { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sidebar-placeholder"></div>
+  <div class="overlay" id="overlay"></div>
+
+  <main id="dashboardSection" class="main-content-dashboard">
+    <section class="left-col">
+      <div class="card">
+        <h2>Current Application</h2>
+        <div class="app-status-box">
+          <img src="../images/dog1.png" alt="Chade">
+          <div class="status-info">
+            <h4>Chade</h4>
+            <p>Status: Form Submitted</p>
+            <div class="progress-container"><div class="progress-bar"></div></div>
+          </div>
+        </div>
+      </div>  
+
+      <div class="card">
+        <h2>Top Matches for You</h2>
+        <div class="matches-grid">
+          <div class="match-card">
+            <img src="../images/dog4.png" alt="Pet">
+            <div class="match-overlay"><h5>Buldog</h5><span class="match-percent">98% Match</span></div>
+          </div>
+          <div class="match-card">
+            <img src="../images/dog2.png" alt="Pet">
+            <div class="match-overlay"><h5>Browny</h5><span class="match-percent">88% Match</span></div>
+          </div>
+          <div class="match-card">
+            <img src="../images/dog3.png" alt="Pet">
+            <div class="match-overlay"><h5>Chim</h5><span class="match-percent">81% Match</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="right-col">
+      <div class="card">
+        <h2>Your Impact</h2>
+        <ul>
+          <li class="impact-item">₱ 50 for Foods</li>
+          <li class="impact-item">1 bag for Dog Food</li>
+          <li class="impact-item">1 Dog Toy</li>
+        </ul>
+        <p style="margin-top:15px; font-weight:bold; font-size: 14px;">Total Donated: ₱ 50</p>
+      </div>
+
+      <div class="card">
+        <h2>Breakdown</h2>
+        <div class="pie-placeholder"></div>
+        <div style="font-size: 11px; margin-top: 10px; display: flex; justify-content: space-around;">
+          <span>🔵 Med</span><span>🟠 Food</span><span>🟡 Shelter</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    fetch('sidebar.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('sidebar-placeholder').innerHTML = data;
+
+        // 1. Identify current page
+        const path = window.location.pathname;
+        const page = path.split("/").pop();
+
+        // --- DASHBOARD BUTTON LOGIC ---
+        const dashBtn = document.getElementById('dashboardBtn');
+        if (dashBtn) {
+            if (page === 'dashboard.html' || page === '') {
+                dashBtn.classList.add('active-item');
+                // Already active: click to go home
+                dashBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            } else {
+                // Not active: click to go to dashboard
+                dashBtn.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
+            }
+        }
+
+        // --- DONATION BUTTON LOGIC ---
+        const donationBtn = document.getElementById('donationBtn');
+        if (donationBtn) {
+            if (page === 'donations.html') {
+                donationBtn.classList.add('active-item');
+                // Already active: click to go home
+                donationBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            } else {
+                // Not active: click to go to donations
+                donationBtn.addEventListener('click', () => { window.location.href = 'donations.html'; });
+            }
+        }
+
+        // --- ADOPTION BUTTON LOGIC ---
+        const adoptionBtn = document.getElementById('adoptionBtn');
+        if (adoptionBtn) {
+            if (page === 'adoption_hub.html') {
+                adoptionBtn.classList.add('active-item');
+                // Already active: click to go home
+                adoptionBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            } else {
+                // Not active: click to go to adoption hub
+                adoptionBtn.addEventListener('click', () => { window.location.href = 'adoption_hub.html'; });
+            }
+        }
+
+        // 2. Sidebar Toggle Logic
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('closed');
+                document.body.classList.toggle('sidebar-closed');
+            });
+        }
+    })
+    .catch(err => console.error('Error loading sidebar:', err));
+</script>
+</body>
+</html>

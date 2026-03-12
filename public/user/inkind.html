@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAWSsion - Donations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-blue: #0A84FF;
+      --deep-navy: #021B33;
+      --glass-bg: rgba(255, 255, 255, 0.9);
+      --text-main: #1d1d1f;
+      --text-muted: #6e6e73;
+      --border-color: rgba(0, 0, 0, 0.08);
+      --warning-gold: #fffbeb;
+      --warning-text: #b45309;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    #donationSection {
+      margin-left: 320px;
+      padding: 100px 5% 60px;
+      transition: all 0.4s ease;
+    }
+
+    body.sidebar-closed #donationSection { margin-left: 0; }
+
+    /* HEADER & TABS */
+    .donation-header { text-align: center; margin-bottom: 40px; }
+    .donation-header h1 { font-size: 32px; color: var(--deep-navy); font-weight: 800; }
+
+    .tab-container {
+      display: flex;
+      background: var(--deep-navy);
+      width: fit-content;
+      margin: 0 auto 40px;
+      border-radius: 50px;
+      padding: 6px;
+    }
+
+    .tab-btn {
+      padding: 12px 30px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 15px;
+      transition: 0.3s;
+      color: white;
+      background: transparent;
+    }
+
+    .tab-btn.active { background: white; color: var(--deep-navy); }
+
+    /* GRID & CARDS */
+    .donation-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      background: white;
+      border-radius: 32px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+      overflow: hidden;
+    }
+
+    .form-side { padding: 40px; }
+    
+    /* CONTENT VISIBILITY */
+    .content-pane { display: none; }
+    .content-pane.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .section-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; color: var(--deep-navy); }
+
+    /* IN-KIND SPECIFIC STYLES */
+    .item-list { list-style: none; margin: 20px 0; }
+    .item-list li { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-weight: 500; }
+    .item-list i { color: #f59e0b; width: 20px; text-align: center; }
+
+    .tip-box {
+      background: var(--warning-gold);
+      border-left: 4px solid #f59e0b;
+      padding: 15px;
+      border-radius: 12px;
+      display: flex;
+      gap: 12px;
+      color: var(--warning-text);
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 25px;
+    }
+
+    /* RIGHT SIDEBAR (LOCATION INFO) */
+    .info-pane {
+      background: #FDFDFD;
+      padding: 40px;
+      border-left: 1px solid #eee;
+    }
+
+    .college-img {
+      width: 100%;
+      border-radius: 16px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .contact-info { margin-top: 25px; }
+    .contact-item { display: flex; gap: 15px; margin-bottom: 15px; font-size: 14px; color: var(--text-muted); }
+    .contact-item i { color: var(--primary-blue); font-size: 18px; width: 20px; }
+
+    /* COMMON COMPONENTS */
+    .custom-input {
+      width: 100%; padding: 14px; border: 1.5px solid #e2e8f0; border-radius: 12px; outline: none; margin-top: 8px;
+    }
+    .submit-btn {
+      width: 100%; background: var(--primary-blue); color: white; padding: 16px; border: none;
+      border-radius: 14px; font-weight: 800; cursor: pointer; margin-top: 20px; transition: 0.3s;
+    }
+    .submit-btn:hover { background: #0070da; transform: translateY(-2px); }
+
+    @media (max-width: 1000px) {
+      .donation-grid { grid-template-columns: 1fr; }
+      #donationSection { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="sidebar-placeholder"></div>
+
+<main id="donationSection">
+  <header class="donation-header">
+    <h1>Your Donation Makes a Difference</h1>
+    <p>Help us continue our mission to care for and rehome animals in need</p>
+  </header>
+
+  <div class="tab-container">
+    <button class="tab-btn active" onclick="switchTab('cash')">Cash Donation</button>
+    <button class="tab-btn" onclick="switchTab('inkind')">In-Kind Donation</button>
+  </div>
+
+  <div class="donation-grid">
+    <div class="form-side">
+      
+      <div id="cashPane" class="content-pane active">
+        <h2 class="section-title">Cash Donation</h2>
+        <p class="sub-text" style="color: var(--text-muted); margin-bottom: 25px;">Monetary contributions help provide food and medical care.</p>
+        
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label style="font-weight:700;">Select Amount</label>
+          <div style="display:flex; gap:10px; margin-top:10px;">
+            <div class="custom-input" style="width:auto; cursor:pointer;">₱ 50</div>
+            <div class="custom-input" style="width:auto; cursor:pointer;">₱ 100</div>
+            <div class="custom-input" style="width:auto; cursor:pointer; background: var(--primary-blue); color:white;">₱ 500</div>
+          </div>
+        </div>
+        
+        <label style="font-weight:700;">Full Name</label>
+        <input type="text" class="custom-input" placeholder="Your Name">
+        
+        <label style="font-weight:700; display:block; margin-top:15px;">GCash Reference Number</label>
+        <input type="text" class="custom-input" placeholder="13-digit number">
+        
+        <button class="submit-btn">SUBMIT CASH DONATION</button>
+      </div>
+
+      <div id="inkindPane" class="content-pane">
+        <h2 class="section-title">In-Kind Donation</h2>
+        <p style="color: var(--text-muted); font-size: 14px;">Donate pet food, supplies, or other materials to help our animals.</p>
+        
+        <ul class="item-list">
+          <li><i class="fa-solid fa-bone"></i> <strong>Pet Foods:</strong> Dry and wet foods for cats & dogs</li>
+          <li><i class="fa-solid fa-cookie-bite"></i> <strong>Treats:</strong> Biscuits and snacks</li>
+          <li><i class="fa-solid fa-dog"></i> <strong>Pet Supplies:</strong> Toys, collars, and leashes</li>
+          <li><i class="fa-solid fa-soap"></i> <strong>Cleaning Supplies:</strong> Disinfectants and soap</li>
+        </ul>
+
+        <div class="tip-box">
+          <i class="fa-solid fa-circle-info" style="font-size: 18px;"></i>
+          <p><strong>Tip:</strong> Please ensure donated items are new or gently used and in good condition. Expired or damaged items cannot be accepted.</p>
+        </div>
+
+        <h3 style="font-size: 18px; margin-bottom: 10px;">Drop-Off Information</h3>
+        <label style="font-weight:700;">Item Description</label>
+        <input type="text" class="custom-input" placeholder="e.g. 5kg Dog Food, 2 Collars">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+          <div>
+            <label style="font-weight:700;">Full Name*</label>
+            <input type="text" class="custom-input">
+          </div>
+          <div>
+            <label style="font-weight:700;">Email Address*</label>
+            <input type="email" class="custom-input">
+          </div>
+        </div>
+        
+        <button class="submit-btn">NOTIFY DROP-OFF</button>
+      </div>
+
+    </div>
+
+    <div class="info-pane">
+      <img src="https://images.unsplash.com/photo-1541339907198-e08756ebafe3?q=80&w=500" class="college-img" alt="CSPC">
+      <h3 style="color: var(--deep-navy); font-weight: 800;">Camarines Sur Polytechnic Colleges</h3>
+      
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fa-solid fa-location-dot"></i>
+          <span>4434, National Rd, Nabua, Camarines Sur</span>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-clock"></i>
+          <span>Mon - Sat, 09:00 AM to 03:00 PM</span>
+        </div>
+        <div class="contact-item">
+          <i class="fa-brands fa-facebook"></i>
+          <span>facebook.com/pawssion</span>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-phone"></i>
+          <span>09999999999</span>
+        </div>
+        <div class="contact-item">
+          <i class="fa-solid fa-envelope"></i>
+          <span>pawssion@gmail.com</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+// TAB SWITCHING LOGIC
+function switchTab(type) {
+  // Remove active classes
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.content-pane').forEach(pane => pane.classList.remove('active'));
+
+  // Add active classes based on click
+  if(type === 'cash') {
+    document.querySelector('.tab-btn:nth-child(1)').classList.add('active');
+    document.getElementById('cashPane').classList.add('active');
+  } else {
+    document.querySelector('.tab-btn:nth-child(2)').classList.add('active');
+    document.getElementById('inkindPane').classList.add('active');
+  }
+}
+
+// Sidebar Loader
+fetch('sidebar.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if(menuToggle) {
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('closed');
+        document.body.classList.toggle('sidebar-closed'); 
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
