@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAWSsion - Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/application.css">
+</head>
+<body>
+
+  <div id="sidebar-placeholder"></div>
+  <div class="overlay" id="overlay"></div>
+    <main id="dashboardSection" class="main-content-dashboard">
+    <div class="application-container">
+      
+      <div class="progress-wrapper">
+    <div class="pet-profile">
+        <img src="https://placedog.net/300/300" alt="Pet Image" class="pet-image">
+        <h2 style="margin-top: 10px; font-size: 20px;">Chada</h2>
+        <p style="font-size: 12px; color: #64748b;">Date Applied: Feb 22, 2026</p>
+        <span id="statusPill" class="status-pill" style="background: #fef3c7; color: #92400e;">Pending</span>
+    </div>
+
+    <div class="steps-container">
+        <div class="progress-text">
+            <span>Application Progress</span>
+            <span id="stepCounter">0 of 4 steps</span>
+        </div>
+        <div class="progress-track">
+            <div id="progressFill" class="progress-fill" style="width: 0%; background: #cbd5e1;"></div>
+        </div>
+        
+        <div class="step-item"><i id="step1Icon" class="fa-regular fa-circle pending"></i> Form Submitted</div>
+        <div class="step-item"><i class="fa-regular fa-circle pending"></i> Meet-and-Greet / Interview</div>
+        <div class="step-item"><i class="fa-regular fa-circle pending"></i> Final Approval & Contract</div>
+        <div class="step-item" style="opacity: 0.6;"><i class="fa-regular fa-circle pending"></i> Welcome Home!</div>
+    </div>
+    </div>
+    <div id="successAlert" style="display: none; background: #3b82f6; color: white; padding: 18px; border-radius: 10px; margin-bottom: 30px; font-size: 14px;">
+        <i class="fa-solid fa-party-horn" style="margin-right: 8px;"></i>
+        <strong>Congratulations!</strong> Your adoption application has been submitted successfully!
+    </div>
+    <div id="displaySummary" style="display:none; margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
+        <h3 style="color: #0d4b8c; font-size: 16px; margin-bottom: 10px;">Submitted Details:</h3>
+        <div id="summaryContent" style="font-size: 13px;"></div>
+        
+        <button type="button" id="editBtn" class="btn-navy" style="margin-top: 15px; background: #64748b;">
+            <i class="fa-solid fa-pen-to-square"></i> Edit Application
+        </button>
+    </div>
+        <div class="application-container" id="formContainer">
+        <h2 style="color: #0d4b8c; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Adoption Application Form</h2>
+
+    <form id="adoptionForm">
+        <div class="info-section-title">Personal Information</div>
+        <div class="info-grid">
+            <div class="form-group">
+                <label class="info-label">Last Name*</label>
+                <input type="text" class="form-input" placeholder="Enter last name">
+            </div>
+            <div class="form-group">
+                <label class="info-label">Given Name*</label>
+                <input type="text" class="form-input" placeholder="Enter given name">
+            </div>
+            <div class="form-group">
+                <label class="info-label">Middle Name*</label>
+                <input type="text" class="form-input" placeholder="Enter middle name">
+            </div>
+            <div class="form-group">
+                <label class="info-label">Birthdate*</label>
+                <input type="date" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="info-label">Email*</label>
+                <input type="email" class="form-input" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label class="info-label">Phone Number*</label>
+                <input type="tel" class="form-input" placeholder="09XXXXXXXXX">
+            </div>
+        </div>
+        
+        <div class="form-group" style="margin-top: 15px;">
+            <label class="info-label">Facebook Link And Full Name*</label>
+            <input type="text" class="form-input" style="width: 100%;" placeholder="https://facebook.com/yourprofile">
+        </div>
+
+        <div class="admin-card" style="margin-top: 20px; padding: 20px;">
+            <label class="info-label" style="margin-bottom: 10px;">Best Way to Contact You:*</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
+                <label><input type="radio" name="contact"> Email</label>
+                <label><input type="radio" name="contact"> Phone Number</label>
+                <label><input type="radio" name="contact"> Facebook</label>
+                <label><input type="radio" name="contact"> Messenger</label>
+                <label><input type="radio" name="contact"> Telegram</label>
+                <label><input type="radio" name="contact"> Others</label>
+            </div>
+        </div>
+
+        <div class="info-section-title">Background Information</div>
+        <div class="form-group">
+            <label class="info-label">Employment Status</label>
+            <select class="form-input" style="width: 100%; background: white;">
+                <option>Select Status</option>
+                <option>Employed</option>
+                <option>Self-Employed</option>
+                <option>Unemployed</option>
+                <option>Student</option>
+            </select>
+        </div>
+
+        <div class="info-section-title">Application Details</div>
+        <div style="font-size: 14px; margin-bottom: 15px;">
+            <p class="info-label">Has Pet Experience?</p>
+            <label style="margin-right: 20px;"><input type="radio" name="exp"> Yes</label>
+            <label><input type="radio" name="exp"> No</label>
+        </div>
+
+        <div class="form-group">
+            <label class="info-label">Living Type* (Required)</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px;">
+                <label><input type="checkbox"> House (Owned)</label>
+                <label><input type="checkbox"> House (Rented)</label>
+                <label><input type="checkbox"> Apartment</label>
+                <label><input type="checkbox"> Condominium</label>
+                <label><input type="checkbox"> Dormitory</label>
+            </div>
+        </div>
+
+        <div class="info-grid" style="margin-top: 15px;">
+            <div class="form-group">
+                <label class="info-label">Do you have a fenced yard?</label>
+                <label style="font-size: 14px;"><input type="radio" name="fence"> Yes</label>
+                <label style="font-size: 14px; margin-left: 10px;"><input type="radio" name="fence"> No</label>
+            </div>
+            <div class="form-group">
+                <label class="info-label">Are pets allowed in your residence?</label>
+                <label style="font-size: 14px;"><input type="radio" name="allowed"> Yes</label>
+                <label style="font-size: 14px; margin-left: 10px;"><input type="radio" name="allowed"> No</label>
+            </div>
+        </div>
+
+        <div class="form-group" style="margin-top: 15px;">
+            <label class="info-label">Reason For Adoption</label>
+            <textarea class="form-input" style="width: 100%; height: 80px; padding: 10px;" placeholder="Tell us why you want to adopt..."></textarea>
+        </div>
+
+      <div class="info-section-title">Upload the following Requirements (Proof)</div>
+        <div class="upload-grid" style="display: flex; flex-direction: column; gap: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px; border-radius: 8px;">
+                <div>
+                    <span style="font-size: 14px; display: block;">Valid ID</span>
+                    <small id="fileName-id" style="color: #64748b; font-size: 11px;">No file chosen</small>
+                </div>
+                <input type="file" id="validID" hidden onchange="updateFileName(this, 'fileName-id')">
+                <label for="validID" class="btn-navy" style="font-size: 12px; padding: 8px 15px;">Upload Image</label>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px; border-radius: 8px;">
+                <div>
+                    <span style="font-size: 14px; display: block;">Proof of Address</span>
+                    <small id="fileName-address" style="color: #64748b; font-size: 11px;">No file chosen</small>
+                </div>
+                <input type="file" id="proofAddress" hidden onchange="updateFileName(this, 'fileName-address')">
+                <label for="proofAddress" class="btn-navy" style="font-size: 12px; padding: 8px 15px;">Upload Image</label>
+            </div>
+        </div>
+
+        <div class="admin-btns" style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
+    <button type="submit" class="btn-navy" style="background: #64748b;">Submit</button>
+   <button type="button" id="cancelBtn" class="btn-navy" style="background: #cbd5e1; color: #333; display: none;">Cancel</button>
+</div>
+    </form> 
+</div>
+
+  <script>
+    fetch('sidebar.html')
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('sidebar-placeholder').innerHTML = data;
+
+        const path = window.location.pathname;
+        const page = path.split("/").pop();
+
+        const dashBtn = document.getElementById('dashboardBtn');
+        if (dashBtn) {
+            if (page === 'dashboard.html' || page === '') {
+                dashBtn.classList.add('active-item');
+                dashBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            } else {
+                dashBtn.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
+            }
+        }
+        const donationBtn = document.getElementById('donationBtn');
+        if (donationBtn) {
+            if (page === 'donations.html') {
+                donationBtn.classList.add('active-item');
+            } else {
+                donationBtn.addEventListener('click', () => { 
+                    window.location.href = 'donations.html'; 
+                });
+            }
+        }
+
+        const applicationBtn = document.getElementById('applicationBtn');
+        if (applicationBtn) {
+            if (page === 'application.html') {
+                applicationBtn.classList.add('active-item');
+            } else {
+                applicationBtn.addEventListener('click', () => { 
+                    window.location.href = 'application.html'; 
+                });
+            }
+        }
+                const adoptionBtn = document.getElementById('adoptionBtn');
+        if (adoptionBtn) {
+            if (page === 'adoption_hub.html') {
+                adoptionBtn.classList.add('active-item');
+                adoptionBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            } else {
+                adoptionBtn.addEventListener('click', () => { window.location.href = 'adoption_hub.html'; });
+            }
+        }
+
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('closed');
+                document.body.classList.toggle('sidebar-closed');
+            });
+        }
+    })
+    .catch(err => console.error('Error loading sidebar:', err));
+
+    const showMessage = (text, type) => {
+      const msgEl = document.getElementById('formMessage');
+      if (!msgEl) return;
+      msgEl.textContent = text;
+      msgEl.className = 'form-message ' + type;
+    };
+
+    const validateForm = (form) => {
+      const requiredFields = [...form.querySelectorAll('[required]')];
+      for (const field of requiredFields) {
+        if (!field.value.trim()) {
+          field.focus();
+          return false;
+        }
+      }
+      return true;
+    };document.addEventListener('DOMContentLoaded', function() {
+  
+
+    const adoptionForm = document.getElementById('adoptionForm');
+    const formContainer = document.getElementById('formContainer'); 
+    const summaryDiv = document.getElementById('displaySummary');
+    const successAlert = document.getElementById('successAlert');
+
+    if (adoptionForm) {
+        adoptionForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+       
+    if (successAlert) {
+        successAlert.style.display = 'block';
+    
+        setTimeout(() => {
+            successAlert.style.display = 'none';
+        }, 5000); 
+    
+    }
+
+            const step1Icon = document.getElementById('step1Icon');
+            if (step1Icon) {
+                step1Icon.className = "fa-solid fa-circle-check completed";
+                step1Icon.style.color = "#22c55e";
+            }
+
+            
+            const progressFill = document.getElementById('progressFill');
+            if (progressFill) {
+                progressFill.style.width = "25%";
+                progressFill.style.background = "#22c55e";
+            }
+            document.getElementById('stepCounter').textContent = "1 of 4 steps";
+
+        
+            const statusPill = document.getElementById('statusPill');
+            if (statusPill) {
+                statusPill.textContent = "Pending";
+                statusPill.style.background = "#fef3c7"; 
+                statusPill.style.color = "#92400e";
+            }
+
+            const summaryContent = document.getElementById('summaryContent');
+
+            const lName = document.querySelector('input[placeholder="Enter last name"]').value;
+            const gName = document.querySelector('input[placeholder="Enter given name"]').value;
+            const mName = document.querySelector('input[placeholder="Enter middle name"]').value;
+            const bday = document.querySelector('input[type="date"]').value;
+            const email = document.querySelector('input[type="email"]').value;
+            const phone = document.querySelector('input[type="tel"]').value;
+            const fb = document.querySelector('input[placeholder="https://facebook.com/yourprofile"]').value;
+            const status = document.querySelector('select').value;
+            const reason = document.querySelector('textarea').value;
+
+            if (summaryContent) {
+                summaryContent.innerHTML = `
+                    <div style="display: flex; flex-direction: column; gap: 12px; color: #334155;">
+                        <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 5px;">
+                            <h3 style="color: #0d4b8c; font-size: 18px;">Application Summary</h3>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <p><strong>Full Name:</strong><br>${gName} ${mName} ${lName}</p>
+                            <p><strong>Birthdate:</strong><br>${bday}</p>
+                            <p><strong>Email:</strong><br>${email}</p>
+                            <p><strong>Phone:</strong><br>${phone}</p>
+                        </div>
+                        
+                        <p><strong>Facebook Profile:</strong><br><a href="${fb}" target="_blank" style="color: #0d4b8c;">${fb}</a></p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                            <p><strong>Employment Status:</strong><br>${status}</p>
+                            <p><strong>Application Status:</strong><br><span style="color: #92400e; font-weight: bold; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">Pending Review</span></p>
+                        </div>
+                        
+                        <p><strong>Reason for Adoption:</strong><br><span style="font-style: italic; color: #64748b;">"${reason}"</span></p>
+                    </div>
+                `;
+
+                summaryDiv.style.display = 'block';
+                if (formContainer) formContainer.style.display = 'none'; 
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+        
+        document.getElementById('editBtn')?.addEventListener('click', function() {
+            formContainer.style.display = 'block';
+            summaryDiv.style.display = 'none';
+            successAlert.style.display = 'none';
+
+            const cancelBtn = document.getElementById('cancelBtn');
+            if (cancelBtn) cancelBtn.style.display = 'inline-block'; 
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+
+        const cancelBtn = document.getElementById('cancelBtn');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', function() {
+                summaryDiv.style.display = 'block';
+                formContainer.style.display = 'none';
+                
+            
+                cancelBtn.style.display = 'none';
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+            });
+
+        function updateFileName(input, targetId) {
+            const fileName = input.files[0] ? input.files[0].name : "No file chosen";
+            const target = document.getElementById(targetId);
+            if (target) {
+                target.textContent = fileName;
+                target.style.color = "#0d4b8c";
+                target.style.fontWeight = "bold";
+            }
+        }
+
+</script>
+</body>
+</html>
