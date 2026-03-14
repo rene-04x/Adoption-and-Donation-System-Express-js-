@@ -377,7 +377,7 @@ body.sidebar-closed #hubSection{
 </main>
 
 <script>
-// Toggle Dropdowns
+
 function toggleDropdown(id){
   document.getElementById("filterMenu").classList.remove("show");
   document.getElementById("sortMenu").classList.remove("show");
@@ -386,43 +386,65 @@ function toggleDropdown(id){
 
 window.onclick = function(event){
   if(!event.target.matches('.filter-btn') && !event.target.closest('.filter-btn')){
-    document.querySelectorAll(".dropdown-content").forEach(menu=>{
-      menu.classList.remove("show");
-    });
+    document.querySelectorAll(".dropdown-content").forEach(menu => menu.classList.remove("show"));
   }
 }
 
-// LOAD EXTERNAL SIDEBAR
-fetch('sidebar.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('sidebar-placeholder').innerHTML = data;
-    
-    const adoptionBtn = document.getElementById('adoptionBtn');
-    if(adoptionBtn) {
-      adoptionBtn.classList.add('active-item');
-      adoptionBtn.addEventListener('click', () => {
-        window.location.href = 'home.html';
-      });
-    }
+// LOAD SIDEBAR
+fetch('/sidebar')
+.then(res => res.text())
+.then(data => {
 
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
-    
-    if(menuToggle && sidebar) {
-      menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('closed');
-        document.body.classList.toggle('sidebar-closed'); 
-      });
-    }
+  document.getElementById('sidebar-placeholder').innerHTML = data;
 
-    const dashBtn = document.getElementById('dashboardBtn');
-    if(dashBtn) {
-      dashBtn.addEventListener('click', () => {
-        window.location.href = 'dashboard.html';
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
+
+  if(menuToggle && sidebar){
+      menuToggle.addEventListener('click',()=>{
+          sidebar.classList.toggle('closed');
+          document.body.classList.toggle('sidebar-closed');
       });
-    }
-  });
+  }
+
+  const currentPath = window.location.pathname;
+
+  const dashBtn = document.getElementById('dashboardBtn');
+  const adoptionBtn = document.getElementById('adoptionBtn');
+  const donationBtn = document.getElementById('donationBtn');
+
+  // DASHBOARD
+  if(dashBtn){
+      if(currentPath === '/dashboard'){
+          dashBtn.classList.add('active-item');
+          dashBtn.onclick = () => window.location.href='/home';
+      } else {
+          dashBtn.onclick = () => window.location.href='/dashboard';
+      }
+  }
+
+  // ADOPTION HUB
+  if(adoptionBtn){
+      if(currentPath === '/adoption_hub'){
+          adoptionBtn.classList.add('active-item');
+          adoptionBtn.onclick = () => window.location.href='/home';
+      } else {
+          adoptionBtn.onclick = () => window.location.href='/adoption_hub';
+      }
+  }
+
+  // DONATIONS
+  if(donationBtn){
+      if(currentPath === '/donations'){
+          donationBtn.classList.add('active-item');
+          donationBtn.onclick = () => window.location.href='/home';
+      } else {
+          donationBtn.onclick = () => window.location.href='/donations';
+      }
+  }
+
+});
+
 </script>
 
 </body>
