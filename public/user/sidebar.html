@@ -64,22 +64,24 @@
 
 <div class="sidebar" id="sidebar">
     <p class="sidebar-label">Menu</p>
-    <div class="nav-item" id="dashboardBtn" onclick="location.href='dashboard.html'">
+    <div class="nav-item" onclick="location.href='/user/dashboard.html'">
         <span class="icon">⊞</span> Dashboard
     </div>
     <ul>
         <li>
-            <div class="nav-item" id="adoptionBtn" onclick="location.href='adoption_hub.html'">
+            <div class="nav-item" id="adoptionBtn" onclick="location.href='/user/adoption_hub.html'">
                 <i class="fa-solid fa-paw"></i> Adoption Hub
             </div>
         </li>
         <li><div class="nav-item"><span class="icon">⬡</span> Pet Matchmaker</div></li>
-        <li><div class="nav-item"><span class="icon">📋</span> My Application</div></li>
+        <li><div class="nav-item" id="applicationBtn" onclick="location.href='/user/application.html'">
+            <span class="icon">📋</span> My Application
+        </div></li>
     </ul>
     <p class="sidebar-label">Community & Support</p>
     <ul>
        <li>
-          <div class="nav-item" id="donationBtn" onclick="location.href='donations.html'">
+          <div class="nav-item" id="donationBtn" onclick="location.href='/user/donations.html'">
               <span class="icon"><i class="fa-solid fa-money-bill"></i></span> My Donations
           </div>
       </li>
