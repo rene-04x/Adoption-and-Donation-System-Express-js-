@@ -117,39 +117,34 @@
     </section>
   </main>
 
-  <script>
-    fetch('sidebar.html')
+<script>
+    // FIXED: Fetch using the clean Express route defined in server.js
+    fetch('/sidebar') 
     .then(response => response.text())
     .then(data => {
         document.getElementById('sidebar-placeholder').innerHTML = data;
 
-        // 1. Identify current page
-        const path = window.location.pathname;
-        const page = path.split("/").pop();
+        const currentPath = window.location.pathname;
 
         // --- DASHBOARD BUTTON LOGIC ---
         const dashBtn = document.getElementById('dashboardBtn');
         if (dashBtn) {
-            if (page === 'dashboard.html' || page === '') {
+            if (currentPath === '/dashboard') {
                 dashBtn.classList.add('active-item');
-                // Already active: click to go home
-                dashBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+                dashBtn.onclick = () => { window.location.href = '/home'; };
             } else {
-                // Not active: click to go to dashboard
-                dashBtn.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
+                dashBtn.onclick = () => { window.location.href = '/dashboard'; };
             }
         }
 
         // --- DONATION BUTTON LOGIC ---
         const donationBtn = document.getElementById('donationBtn');
         if (donationBtn) {
-            if (page === 'donations.html') {
+            if (currentPath === '/donations') {
                 donationBtn.classList.add('active-item');
-                // Already active: click to go home
-                donationBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+                donationBtn.onclick = () => { window.location.href = '/home'; };
             } else {
-                // Not active: click to go to donations
-                donationBtn.addEventListener('click', () => { window.location.href = 'donations.html'; });
+                donationBtn.onclick = () => { window.location.href = '/donations'; };
             }
         }
         // --- APPLICATION BUTTON LOGIC ---
@@ -167,14 +162,19 @@
         // --- ADOPTION BUTTON LOGIC ---
         const adoptionBtn = document.getElementById('adoptionBtn');
         if (adoptionBtn) {
-            if (page === 'adoption_hub.html') {
+            if (currentPath === '/adoption_hub') {
                 adoptionBtn.classList.add('active-item');
-                // Already active: click to go home
-                adoptionBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+                adoptionBtn.onclick = () => { window.location.href = '/home'; };
             } else {
-                // Not active: click to go to adoption hub
-                adoptionBtn.addEventListener('click', () => { window.location.href = 'adoption_hub.html'; });
+                adoptionBtn.onclick = () => { window.location.href = '/adoption_hub'; };
             }
+        }
+
+        // --- PROFILE/ACCOUNT BUTTON LOGIC ---
+        // Ensure this points to the clean /profile route
+        const accountBtn = document.querySelector('.account');
+        if(accountBtn) {
+            accountBtn.onclick = () => { window.location.href = '/profile'; };
         }
 
         // 2. Sidebar Toggle Logic

@@ -271,104 +271,86 @@
 </main>
 
 <script>
-// TAB TOGGLE LOGIC - Using Optional Chaining to prevent yellow warnings
+// TAB TOGGLE LOGIC
 const cashTab = document.getElementById('cashTab');
 const inkindTab = document.getElementById('inkindTab');
 const cashView = document.querySelector('.cash-view');
 const inkindView = document.querySelector('.inkind-view');
 const qrView = document.getElementById('qrView');
 const locationView = document.getElementById('locationView');
-const referenceLabel = document.getElementById('referenceLabel');
-const referenceInput = document.getElementById('referenceInput');
 
 inkindTab?.addEventListener('click', () => {
-    inkindTab.classList.add('active');
-    cashTab?.classList.remove('active');
-    
-    if(inkindView) inkindView.style.display = 'block';
-    if(cashView) cashView.style.display = 'none';
-    if(locationView) locationView.style.display = 'block';
-    if(qrView) qrView.style.display = 'none';
-    
-    if(referenceLabel) referenceLabel.innerHTML = 'Email Address<span style="color:#ef4444;">*</span>';
-    if(referenceInput) referenceInput.placeholder = 'example@gmail.com';
+    inkindTab.classList.add('active'); 
+    cashTab.classList.remove('active');
+    inkindView.style.display = 'block'; 
+    cashView.style.display = 'none';
+    locationView.style.display = 'block'; 
+    qrView.style.display = 'none';
 });
 
 cashTab?.addEventListener('click', () => {
-    cashTab.classList.add('active');
-    inkindTab?.classList.remove('active');
-    
-    if(cashView) cashView.style.display = 'block';
-    if(inkindView) inkindView.style.display = 'none';
-    if(qrView) qrView.style.display = 'block';
-    if(locationView) locationView.style.display = 'none';
-    
-    if(referenceLabel) referenceLabel.innerHTML = 'Reference Number<span style="color:#ef4444;">*</span>';
-    if(referenceInput) referenceInput.placeholder = '';
+    cashTab.classList.add('active'); 
+    inkindTab.classList.remove('active');
+    cashView.style.display = 'block'; 
+    inkindView.style.display = 'none';
+    qrView.style.display = 'block'; 
+    locationView.style.display = 'none';
 });
 
-// LOAD SIDEBAR & APPLY REDIRECT LOGIC
-fetch('sidebar.html')
+
+// LOAD SIDEBAR
+fetch('/sidebar')
 .then(res => res.text())
 .then(data => {
-    const placeholder = document.getElementById('sidebar-placeholder');
-    if(placeholder) placeholder.innerHTML = data;
 
-    const path = window.location.pathname;
-    const page = path.split("/").pop();
+    document.getElementById('sidebar-placeholder').innerHTML = data;
 
-    // 1. DASHBOARD BUTTON LOGIC
+    const currentPath = window.location.pathname;
+
+    // DASHBOARD
     const dashBtn = document.getElementById('dashboardBtn');
     if (dashBtn) {
-        if (page === 'dashboard.html' || page === '') {
+        if (currentPath === '/dashboard') {
             dashBtn.classList.add('active-item');
-            dashBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            dashBtn.onclick = () => window.location.href = '/home';
         } else {
-            dashBtn.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
+            dashBtn.onclick = () => window.location.href = '/dashboard';
         }
     }
 
-    // 2. ADOPTION BUTTON LOGIC
+    // ADOPTION
     const adoptionBtn = document.getElementById('adoptionBtn');
     if (adoptionBtn) {
-        if (page === 'adoption_hub.html') {
+        if (currentPath === '/adoption_hub') {
             adoptionBtn.classList.add('active-item');
-            adoptionBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            adoptionBtn.onclick = () => window.location.href = '/home';
         } else {
-            adoptionBtn.addEventListener('click', () => { window.location.href = 'adoption_hub.html'; });
+            adoptionBtn.onclick = () => window.location.href = '/adoption_hub';
         }
     }
 
-    // 3. DONATION BUTTON LOGIC
+    // DONATIONS
     const donationBtn = document.getElementById('donationBtn');
     if (donationBtn) {
-        if (page === 'donations.html') {
+        if (currentPath === '/donations') {
             donationBtn.classList.add('active-item');
-            donationBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            donationBtn.onclick = () => window.location.href = '/home';
         } else {
-            donationBtn.addEventListener('click', () => { window.location.href = 'donations.html'; });
+            donationBtn.onclick = () => window.location.href = '/donations';
         }
     }
 
-    // Sidebar Toggle Logic
+    // SIDEBAR COLLAPSE / TOGGLE
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
-    
+
     if (menuToggle && sidebar) {
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('closed');
-            document.body.classList.toggle('sidebar-closed'); 
+            document.body.classList.toggle('sidebar-closed');
         });
     }
-})
-.catch(err => console.error('Error loading sidebar:', err));
 
-// Chip Interaction
-document.querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', function() {
-        document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        this.classList.add('active');
-    });
 });
 </script>
 
