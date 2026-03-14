@@ -92,7 +92,7 @@
         <div class="user-profile">
             <img src="../images/imongavatar.png" alt="Profile">
             <div>
-                <h1>Hi, Jhyzzeel!</h1>
+                <h1>Hi, {{username}}</h1>
                 <p>Ready to find your new best friend? 🐾</p>
             </div>
         </div>
@@ -109,7 +109,7 @@
 
   <script>
     // Load the external sidebar
-    fetch('sidebar.html')
+    fetch('/user/sidebar.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById('sidebar-placeholder').innerHTML = data;
@@ -139,12 +139,12 @@
 
         // Redirect logic for Dashboard button
         dashBtn.addEventListener('click', () => {
-            window.location.href = 'dashboard.html';
+            window.location.href = '/user/dashboard.html';
         });
 
         // Redirect logic for Adoption Hub button
         adoptionBtn.addEventListener('click', () => {
-            window.location.href = 'adoption_hub.html';
+            window.location.href = '/user/adoption_hub.html';
         });
       });
   </script>

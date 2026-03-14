@@ -152,7 +152,18 @@
                 donationBtn.addEventListener('click', () => { window.location.href = 'donations.html'; });
             }
         }
-
+        // --- APPLICATION BUTTON LOGIC ---
+        const applicationBtn = document.getElementById('applicationBtn');
+        if (applicationBtn) {
+            if (page === 'application.html') {
+                applicationBtn.classList.add('active-item');
+                // Already active: click to go home
+                applicationBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
+            } else {
+                // Not active: click to go to application page
+                applicationBtn.addEventListener('click', () => { window.location.href = 'application.html'; });
+            }
+        }
         // --- ADOPTION BUTTON LOGIC ---
         const adoptionBtn = document.getElementById('adoptionBtn');
         if (adoptionBtn) {
