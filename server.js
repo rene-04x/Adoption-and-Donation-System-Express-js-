@@ -47,6 +47,23 @@ app.get('/how', (req, res) => {
 });
 
 
+app.get('/policy', (req, res) => {
+    res.sendFile(__dirname + '/public/legal/policy.html');
+});
+
+app.get('/terms', (req, res) => {
+    res.sendFile(__dirname + '/public/legal/terms.html');
+});
+
+app.get('/contact', (req, res) => {
+    res.sendFile(__dirname + '/public/legal/contact.html');
+});
+
+app.get('/faqs', (req, res) => {
+    res.sendFile(__dirname + '/public/legal/faqs.html');
+});
+
+
 
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/login/user-login.html');
@@ -113,3 +130,5 @@ app.get('/form3', (req, res) => {
 app.listen(3000, () => {
     console.log('Server is running at http://localhost:3000');
 });
+
+
