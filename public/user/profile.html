@@ -186,8 +186,54 @@ body.sidebar-closed .profile-container{
     object-fit:cover;
     border:5px solid #fff;
     box-shadow:var(--soft-shadow);
+}/* Help Styles - Steady at Static */
+.help-wrapper {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 5000;
 }
 
+.help-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-blue);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(2, 64, 125, 0.3);
+    font-size: 20px;
+}
+
+.help-dropdown {
+    display: none; /* Default state */
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    background: white;
+    width: 180px;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    border: 1px solid #eee;
+    z-index: 9999;
+}
+
+.help-dropdown p {
+    padding: 8px 0;
+    cursor: pointer;
+    color: #444;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.help-dropdown p:hover {
+    color: var(--primary-blue);
+    font-weight: 600;
+}
 .change-pic-btn{
     margin-top:18px;
     background:linear-gradient(135deg,#f6f9ff,#edf3ff);
@@ -238,6 +284,28 @@ body.sidebar-closed .profile-container{
 .label{
     font-weight:500;
     color:#555;
+}
+/* SIDEBAR UPDATED */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    background: #ffffff;
+    padding: 100px 20px 40px;
+    box-shadow: var(--card-shadow);
+    transition: 0.4s;
+    z-index: 2000;
+    
+    /* NEW: Setup for flex layout */
+    display: flex;
+    flex-direction: column;
+}
+
+/* This pushes everything after this element to the bottom */
+.sidebar-spacer {
+    flex-grow: 1;
 }
 
 .value{
@@ -311,34 +379,45 @@ body.sidebar-closed .profile-container{
         <a href="/profile">Profile</a>
     </div>
 </nav>
-
 <div class="sidebar" id="sidebar">
-    <p class="sidebar-label">Menu</p>
-    <div class="nav-item" id="dashboardBtn" onclick="location.href='/dashboard'">
-        <span class="icon">⊞</span> Dashboard
+    <div>
+        <p class="sidebar-label">Menu</p>
+        <div class="nav-item" id="dashboardBtn">
+            <span class="icon">⊞</span> Dashboard
+        </div>
+        <ul>
+            <li>
+                <div class="nav-item" id="adoptionBtn">
+                    <i class="fa-solid fa-paw"></i> Adoption Hub
+                </div>
+            </li>
+            <li>
+                <div class="nav-item" id="applicationBtn">
+                    <i class="fa-solid fa-chalkboard-user"></i> My Application
+                </div>
+            </li>
+        </ul>
+        <p class="sidebar-label">Community & Support</p>
+        <ul>
+           <li>
+              <div class="nav-item" id="donationBtn">
+                  <i class="fa-solid fa-money-bill"></i> My Donations
+              </div>
+           </li>
+        </ul>
     </div>
-    <ul>
-        <li>
-            <div class="nav-item" id="adoptionBtn" onclick="location.href='/adoption_hub'">
-                <i class="fa-solid fa-paw"></i> Adoption Hub
-            </div>
-        </li>
-        <li>
-            <div class="nav-item" id="applicationBtn" onclick="location.href='/home'">
-                <span class="icon"><i class="fa-solid fa-chalkboard-user"></i></span> 
-                My Application
-            </div>
-        </li>
-    </ul>
-    <p class="sidebar-label">Community & Support</p>
+
+    <div class="sidebar-spacer"></div>
+
     <ul>
        <li>
-          <div class="nav-item" id="donationBtn" onclick="location.href='/donations'">
-              <span class="icon"><i class="fa-solid fa-money-bill"></i></span> My Donations
+          <div class="nav-item" id="logoutBtn">
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
           </div>
-      </li>
+       </li>
     </ul>
 </div>
+
 
 <main class="profile-container">
     <div class="profile-card">
@@ -376,64 +455,105 @@ body.sidebar-closed .profile-container{
 <div id="successToast" class="toast">
     <i class="fa-solid fa-circle-check"></i> Profile picture updated successfully
 </div>
-</body>
-<script>
-    // Sidebar Logic
+<div class="help-wrapper">
+    <div id="helpMenu" class="help-dropdown">
+        <p>Help Center</p>
+        <p>Submit Feedback</p>
+        <p>Contact Support</p>
+        <p>Legal Summary</p>
+    </div>
+    <div id="helpToggle" class="help-icon">
+        <i class="fa-solid fa-question"></i>
+    </div>
+</div>
+</body><script>
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Sidebar Toggle Logic
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
     const body = document.body;
 
-    menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('closed');
-        body.classList.toggle('sidebar-closed');
-    });
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            body.classList.toggle('sidebar-closed');
+        });
 
-    // Close on mobile by default
-    if (window.innerWidth < 900) {
-        sidebar.classList.add('closed');
-        body.classList.add('sidebar-closed');
+        if (window.innerWidth < 900) {
+            sidebar.classList.add('closed');
+            body.classList.add('sidebar-closed');
+        }
     }
 
-    // Highlighting current page in sidebar
-    document.addEventListener('DOMContentLoaded', () => {
-        // Since we are on /profile, we can highlight a specific item if needed.
-        // Or leave it as is.
-    });
-    // Profile picture change
-    const imageUpload = document.getElementById("imageUpload");
-const profileImage = document.getElementById("profileImage");
-const toast = document.getElementById("successToast");
-
-// load saved image
-const savedImage = localStorage.getItem("profileImage");
-if(savedImage){
-    profileImage.src = savedImage;
-}
-
-imageUpload.addEventListener("change", function(){
-    const file = this.files[0];
-
-    if(file){
-        const reader = new FileReader();
-
-        reader.onload = function(e){
-            profileImage.src = e.target.result;
-
-            // save locally
-            localStorage.setItem("profileImage", e.target.result);
-
-            // show success notification
-            toast.classList.add("show");
-
-            setTimeout(()=>{
-                toast.classList.remove("show");
-            },3000);
+    // 2. Navigation Helper (Dito papasok ang Logout logic)
+    const setupNav = (btnId, targetPath) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            btn.onclick = () => {
+                if (btnId === 'logoutBtn') {
+                    // Logic para sa logout
+                    window.location.href = '/login?msg=logged_out';
+                } else {
+                    // Logic para sa regular pages
+                    window.location.href = targetPath;
+                }
+            };
         }
+    };
 
-        reader.readAsDataURL(file);
+    // I-setup ang buttons (Siguraduhing ang ID sa HTML ay tumutugma dito)
+    setupNav('dashboardBtn', '/dashboard');
+    setupNav('adoptionBtn', '/adoption_hub');
+    setupNav('donationBtn', '/donations');
+    setupNav('applicationBtn', '/application');
+    setupNav('logoutBtn', '/login'); 
+
+    // 3. Profile Picture Logic
+    const imageUpload = document.getElementById("imageUpload");
+    const profileImage = document.getElementById("profileImage");
+    const toast = document.getElementById("successToast");
+
+    const savedImage = localStorage.getItem("profileImage");
+    if(savedImage && profileImage){
+        profileImage.src = savedImage;
+    }
+
+    if (imageUpload) {
+        imageUpload.addEventListener("change", function(){
+            const file = this.files[0];
+            if(file){
+                const reader = new FileReader();
+                reader.onload = function(e){
+                    profileImage.src = e.target.result;
+                    localStorage.setItem("profileImage", e.target.result);
+                    if(toast) {
+                        toast.classList.add("show");
+                        setTimeout(() => { toast.classList.remove("show"); }, 3000);
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // 4. Help Menu Logic
+    const helpToggle = document.getElementById('helpToggle');
+    const helpMenu = document.getElementById('helpMenu');
+
+    if (helpToggle && helpMenu) {
+        helpToggle.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            const isVisible = helpMenu.style.display === 'block';
+            helpMenu.style.display = isVisible ? 'none' : 'block';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (!helpToggle.contains(e.target) && !helpMenu.contains(e.target)) {
+                helpMenu.style.display = 'none';
+            }
+        });
     }
 });
 </script>
-
 </body>
 </html>

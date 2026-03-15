@@ -64,13 +64,13 @@
   <div class="overlay" id="overlay"></div>
 
   <main id="dashboardSection" class="main-content-dashboard">
-    <section class="left-col">
-     <div class="card">
-  <h2>Current Application</h2>
-  <div id="activeAppContainer" class="app-status-box">
-    <p id="appLoadingText">Loading your application...</p>
+  <section class="left-col">
+  <div class="card">
+    <h2>Current Application</h2>
+    <div id="activeAppContainer" class="app-status-box">
+      <p>Loading your application...</p>
+    </div>
   </div>
-</div>
 
       <div class="card">
         <h2>Top Matches for You</h2>
@@ -113,95 +113,74 @@
   </main>
 
 <script>
-    
 // LOAD SIDEBAR
 fetch('/sidebar')
 .then(res => res.text())
 .then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
 
-  document.getElementById('sidebar-placeholder').innerHTML = data;
-
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('sidebar');
-
-  if(menuToggle && sidebar){
-      menuToggle.addEventListener('click',()=>{
-          sidebar.classList.toggle('closed');
-          document.body.classList.toggle('sidebar-closed');
-      });
-  }
-
-  const currentPath = window.location.pathname;
-
-  const dashBtn = document.getElementById('dashboardBtn');
-  const adoptionBtn = document.getElementById('adoptionBtn');
-  const donationBtn = document.getElementById('donationBtn');
-  const applicationBtn = document.getElementById('applicationBtn');
-  // DASHBOARD
-  if(dashBtn){
-      if(currentPath === '/dashboard'){
-          dashBtn.classList.add('active-item');
-          dashBtn.onclick = () => window.location.href='/home';
-      } else {
-          dashBtn.onclick = () => window.location.href='/dashboard';
-      }
-  }
-
-  // ADOPTION HUB
-  if(adoptionBtn){
-      if(currentPath === '/adoption_hub'){
-          adoptionBtn.classList.add('active-item');
-          adoptionBtn.onclick = () => window.location.href='/home';
-      } else {
-          adoptionBtn.onclick = () => window.location.href='/adoption_hub';
-      }
-  }
-
-  // DONATIONS
-  if(donationBtn){
-      if(currentPath === '/donations'){
-          donationBtn.classList.add('active-item');
-          donationBtn.onclick = () => window.location.href='/home';
-      } else {
-          donationBtn.onclick = () => window.location.href='/donations';
-      }
-  }
-  if(applicationBtn){
-      if(currentPath === '/application'){
-          applicationBtn.classList.add('active-item');
-          applicationBtn.onclick = () => window.location.href='/home';
-      } else {
-          applicationBtn.onclick = () => window.location.href='/application';
-      }
-  }
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Kuhanin ang data mula sa localStorage
-    const savedApp = JSON.parse(localStorage.getItem('userApplication'));
-    const appBox = document.querySelector('.app-status-box');
-
-    // 2. I-check kung may active application
-    if (savedApp && appBox) {
-        // I-update ang content ng dashboard card gamit ang data mula sa application form
-        appBox.innerHTML = `
-            <img src="${savedApp.petImg}" alt="${savedApp.petName}">
-            <div class="status-info">
-                <h4>${savedApp.petName}</h4>
-                <p>Status: Form Submitted</p>
-                <div class="progress-container">
-                    <div class="progress-bar" style="width: 25%;"></div>
-                </div>
-            </div>
-        `;
-
-        // Gawing clickable para pumunta sa summary
-        appBox.style.cursor = "pointer";
-        appBox.addEventListener('click', () => {
-            window.location.href = '/application';
+    // 1. Sidebar Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    if(menuToggle && sidebar){
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            document.body.classList.toggle('sidebar-closed');
         });
-    } else if (appBox) {
-        appBox.innerHTML = `<p>No active applications.</p>`;
     }
+
+    // 2. Helper function para sa navigation at logout
+    const setupNav = (btnId, targetPath) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            // Highlight kung ito ang active page (maliban sa logout)
+            if (window.location.pathname === targetPath && btnId !== 'logoutBtn') {
+                btn.classList.add('active-item');
+            }
+            
+            btn.onclick = () => {
+                if (btnId === 'logoutBtn') {
+                    // Logic para sa logout
+                    window.location.href = '/login?msg=logged_out';
+                } else if (window.location.pathname !== targetPath) {
+                    // Logic para sa regular na pages
+                    window.location.href = targetPath;
+                }
+            };
+        }
+    };
+
+    // I-setup ang lahat ng buttons
+    setupNav('dashboardBtn', '/dashboard');
+    setupNav('adoptionBtn', '/adoption_hub');
+    setupNav('donationBtn', '/donations');
+    setupNav('applicationBtn', '/application');
+    setupNav('logoutBtn', '/login'); // Ito ang nag-a-attach ng logout logic
 });
+
+// 3. Application Container Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('activeAppContainer');
+    const savedApp = JSON.parse(localStorage.getItem('userApplication'));
+
+    if (container) { // Siguraduhin na nage-exist ang container bago i-access
+        if (savedApp) {
+            container.innerHTML = `
+                <img src="${savedApp.petImg}" alt="${savedApp.petName}">
+                <div class="status-info">
+                    <h4>${savedApp.petName}</h4>
+                    <p>Status: ${savedApp.status}</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 25%;"></div>
+                    </div>
+                </div>
+            `;
+            container.style.cursor = "pointer";
+            container.onclick = () => window.location.href = '/application';
+        } else {
+            container.innerHTML = `<p>No active applications at the moment.</p>`;
+        }
+    }
 });
 
 </script>

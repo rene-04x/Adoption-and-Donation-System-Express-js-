@@ -204,6 +204,12 @@ nav .account:hover a{
         </li>
 
     </ul>
+    <div class="logout-section" style="margin-top: auto; padding-top: 20px;">
+    <div class="nav-item" id="logoutBtn" data-link="/login">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        Log Out
+    </div>
+</div>
 
 </div>
 
@@ -221,27 +227,29 @@ nav .account:hover a{
         sidebar.classList.add("closed");
     }
 
-    /* NAVIGATION LOGIC */
-    const currentPage = window.location.pathname;
-    
-    // Kunin ang username sa URL para laging bitbit sa susunod na page
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('username') || 'User';
+   const currentPage = window.location.pathname;
+const urlParams = new URLSearchParams(window.location.search);
+const username = urlParams.get('username') || 'User';
 
-    document.querySelectorAll(".nav-item").forEach(item => {
-        const link = item.dataset.link;
+// Pinili natin lahat ng may class na .nav-item
+document.querySelectorAll(".nav-item").forEach(item => {
+    const link = item.dataset.link;
+    if (!link) return; // Laktawan kung walang data-link
 
-        // I-highlight ang active page
-        if (currentPage === link) {
-            item.classList.add("active-item");
+    // I-highlight ang active page (maliban sa logout)
+    if (currentPage === link && item.id !== "logoutBtn") {
+        item.classList.add("active-item");
+    }
+
+    item.addEventListener("click", () => {
+        // Log Out Logic
+        if (item.id === "logoutBtn") {
+            window.location.href = `${link}?msg=logged_out`;
+        } 
+        // Normal Navigation Logic
+        else if (currentPage !== link) {
+            window.location.href = `${link}?username=${encodeURIComponent(username)}`;
         }
-
-        // Click event: Mag-navigate lang kung hindi ito ang kasalukuyang page
-        item.addEventListener("click", () => {
-            if (currentPage !== link) {
-                // I-redirect sa link na may kasamang username
-                window.location.href = `${link}?username=${encodeURIComponent(username)}`;
-            }
-        });
     });
-</script>
+});
+</script>  

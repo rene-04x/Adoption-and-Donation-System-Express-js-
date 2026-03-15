@@ -461,6 +461,18 @@ fetch('/sidebar')
     setupNav('adoptionBtn', '/adoption_hub');
     setupNav('donationBtn', '/donations');
     setupNav('applicationBtn', '/application');
+    // Sa loob ng iyong fetch('/sidebar') logic:
+setupNav('logoutBtn', '/login'); // Gamitin ang route na '/login'
+
+// At sa event listener:
+btn.onclick = () => {
+    if (btnId === 'logoutBtn') {
+        // Gamitin ang short route '/login'
+        window.location.href = '/login?msg=logged_out';
+    } else if (currentPath !== targetPath) {
+        window.location.href = targetPath + queryStr;
+    }
+};
 });
 let currentPetData = {};
 
