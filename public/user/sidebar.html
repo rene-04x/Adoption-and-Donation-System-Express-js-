@@ -108,6 +108,24 @@ nav .account:hover a{
     list-style:none;
 }
 
+.pawssion-brand {
+    font-family: 'Inter', sans-serif; /* Para sumunod sa font ng dashboard */
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+    vertical-align: middle;
+    transition: transform 0.3s ease;
+}
+
+.pawssion-brand:hover {
+    transform: scale(1.02);
+}
+
 /* SIDEBAR ITEMS */
 .nav-item{
     display:flex;
@@ -160,7 +178,10 @@ nav .account:hover a{
 
 <nav>
     <img src="../images/logo.png" alt="PAWSsion Logo" class="logo" id="menuToggle">
-    <img src="../images/PAWSsion.png" alt="PAWSsion" class="name" id="homeLink" style="cursor: pointer;">
+    
+    <div class="pawssion-brand" id="homeLink" style="cursor: pointer; margin-left: 15px;">
+        PAWSsion
+    </div>
 
     <div class="account" onclick="location.href='/profile'">
         <i class="fa-solid fa-circle-user account-icon"></i>
