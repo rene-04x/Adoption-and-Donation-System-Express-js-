@@ -267,65 +267,66 @@ body.sidebar-closed #hubSection{
   <div class="hub-header">
     <h1>Available Pets</h1>
   </div>
+<div class="filter-bar">
+   <div class="search-box">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="text" placeholder="Search by name, breed..." oninput="updateDisplay()">
+</div>
 
-  <div class="filter-bar">
-    <div class="search-box">
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <input type="text" placeholder="Search by name, breed...">
-    </div>
-
-    <div class="dropdown">
+    <div class="dropdown" style="position: relative;">
       <button class="filter-btn" onclick="toggleDropdown('filterMenu')">
         <i class="fa-solid fa-filter"></i> Filter By ⌵
       </button>
       <div id="filterMenu" class="dropdown-content">
-        <a href="#">All</a>
-        <a href="#">Dogs</a>
-        <a href="#">Cats</a>
-        <a href="#">Female</a>
-        <a href="#">Male</a>
+        <a href="#" onclick="filterBy('All')">All</a>
+        <a href="#" onclick="filterBy('Dog')">Dogs</a>
+        <a href="#" onclick="filterBy('Cat')">Cats</a>
       </div>
     </div>
 
-    <div class="dropdown">
+    <div class="dropdown" style="position: relative;">
       <button class="filter-btn" onclick="toggleDropdown('sortMenu')">
         <i class="fa-solid fa-sort"></i> Sort By ⌵
       </button>
       <div id="sortMenu" class="dropdown-content">
-        <a href="#">All</a>
-        <a href="#">Name: A-Z</a>
-        <a href="#">Age: Youngest - Oldest</a>
-        <a href="#">Date Added: Newest - Oldest</a>
+        <a href="#" onclick="sortPets('Name: A-Z')">Name: A-Z</a>
+        <a href="#" onclick="sortPets('Age: Youngest - Oldest')">Age: Youngest - Oldest</a>
+      </div>
+    </div>
+</div>
+
+<div class="adoption-grid">
+    <div class="pet-card" 
+       data-name="Adobo" data-breed="Aspin" data-type="Dog" data-age="2"
+       onclick="openModal('Adobo', '../images/dog1.png', 'Female', 'Aspin', '2 years old', 'Brown and White, extremely kind and loyal.')">
+    <div class="pet-image-wrap">
+      <span class="match-badge">98% Match</span>
+      <span class="status-badge">Available</span>
+      <img src="../images/dog1.png">
+      <div class="pet-info">
+        <h3>Adobo</h3>
+        <p>Aspin • 2 years old</p>
       </div>
     </div>
   </div>
 
-  <div class="adoption-grid">
-    <div class="pet-card">
-      <div class="pet-image-wrap">
-        <span class="match-badge">98% Match</span>
-        <span class="status-badge">Available</span>
-        <img src="../images/dog1.png">
-        <div class="pet-info">
-          <h3>Adobo</h3>
-          <p>Brown and White, extremely kind and loyal.</p>
-        </div>
+    <div class="pet-card" 
+       data-name="Luna" data-breed="Shih Tzu" data-type="Dog" data-age="1"
+       onclick="openModal('Luna', '../images/dog2.png', 'Female', 'Shih Tzu', '1 year old', 'Playful and energetic puppy looking for a home.')">
+    <div class="pet-image-wrap">
+      <span class="match-badge">95% Match</span>
+      <span class="status-badge">Available</span>
+      <img src="../images/dog2.png">
+      <div class="pet-info">
+        <h3>Luna</h3>
+        <p>Shih Tzu • 1 year old</p>
       </div>
     </div>
-
-    <div class="pet-card">
-      <div class="pet-image-wrap">
-        <span class="match-badge">95% Match</span>
-        <span class="status-badge">Available</span>
-        <img src="../images/dog2.png">
-        <div class="pet-info">
-          <h3>Luna</h3>
-          <p>Playful and energetic puppy looking for a home.</p>
-        </div>
-      </div>
-    </div>
+  </div>
     
-    <div class="pet-card">
+  <div class="pet-card" 
+       data-name="Cooper" data-breed="Golden Retriever Mix" data-type="Dog" data-age="3"
+       onclick="openModal('Cooper', '../images/dog3.png', 'Male', 'Golden Retriever Mix', '3 years old', 'Friendly Golden Retriever mix, loves long walks.')">
       <div class="pet-image-wrap">
         <span class="match-badge">92% Match</span>
         <span class="status-badge">Available</span>
@@ -337,43 +338,68 @@ body.sidebar-closed #hubSection{
       </div>
     </div>
 
-    <div class="pet-card">
+    <div class="pet-card" 
+         data-name="Bella" data-breed="Labrador" data-type="Dog" data-age="4"
+         onclick="openModal('Bella', '../images/dog4.png', 'Female', 'Labrador', '4 years old', 'A gentle soul who loves belly rubs and quiet naps.')">
       <div class="pet-image-wrap">
         <span class="match-badge">89% Match</span>
         <span class="status-badge">Available</span>
         <img src="../images/dog4.png">
         <div class="pet-info">
           <h3>Bella</h3>
-          <p>A gentle soul who loves belly rubs and quiet naps.</p>
+          <p>Labrador • 4 years old</p>
         </div>
       </div>
     </div>
 
-    <div class="pet-card">
+    <div class="pet-card" 
+         data-name="Milo" data-breed="Beagle" data-type="Dog" data-age="2"
+          onclick="openModal('Milo', '../images/dog1.png', 'Male', 'Beagle', '2 years old', 'Active and smart, perfect for an adventurous owner.')">
       <div class="pet-image-wrap">
         <span class="match-badge">87% Match</span>
         <span class="status-badge">Available</span>
         <img src="../images/dog1.png">
         <div class="pet-info">
           <h3>Milo</h3>
-          <p>Active and smart, perfect for an adventurous owner.</p>
+          <p>Beagle • 2 years old</p>
         </div>
       </div>
     </div>
 
-    <div class="pet-card">
+    <div class="pet-card" 
+         data-name="Daisy" data-breed="Poodle" data-type="Dog" data-age="1.5"
+         onclick="openModal('Daisy', '../images/dog2.png', 'Female', 'Poodle', '1.5 years old', 'Sweet-natured and very social with other pets.')">
       <div class="pet-image-wrap">
         <span class="match-badge">85% Match</span>
         <span class="status-badge">Available</span>
         <img src="../images/dog2.png">
         <div class="pet-info">
           <h3>Daisy</h3>
-          <p>Sweet-natured and very social with other pets.</p>
+          <p>Poodle • 1.5 years old</p>
         </div>
       </div>
     </div>
 
   </div>
+  <div id="petModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
+  <div style="background:white; width:90%; max-width:800px; border-radius:24px; display:flex; overflow:hidden; position:relative;">
+    <button onclick="closeModal()" style="position:absolute; top:20px; right:20px; border:none; background:white; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
+    
+    <div style="width:40%; background:#eee;">
+      <img id="modalImg" src="" style="width:100%; height:100%; object-fit:cover;">
+    </div>
+    
+    <div style="width:60%; padding:40px; overflow-y:auto; max-height:80vh;">
+      <h2 id="modalName" style="color:#02407D; font-size:32px; margin-bottom:10px;"></h2>
+      <div id="modalDetails" style="font-size:14px; line-height:1.8; color:#333;">
+        </div>
+      <button id="adoptBtn" 
+        style="margin-top:20px; background:#02407D; color:white; border:none; padding:12px 25px; border-radius:50px; cursor:pointer; font-weight:600;">
+    Adopt Me
+</button>
+    </div>
+  </div>
+</div>
 </main>
 
 <script>
@@ -389,62 +415,152 @@ window.onclick = function(event){
     document.querySelectorAll(".dropdown-content").forEach(menu => menu.classList.remove("show"));
   }
 }
-
 // LOAD SIDEBAR
 fetch('/sidebar')
 .then(res => res.text())
 .then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
 
-  document.getElementById('sidebar-placeholder').innerHTML = data;
+    // Sidebar Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
 
-  const menuToggle = document.getElementById('menuToggle');
-  const sidebar = document.getElementById('sidebar');
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            document.body.classList.toggle('sidebar-closed');
+        });
+    }
 
-  if(menuToggle && sidebar){
-      menuToggle.addEventListener('click',()=>{
-          sidebar.classList.toggle('closed');
-          document.body.classList.toggle('sidebar-closed');
-      });
-  }
+    // 1. Kunin ang username sa URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username') || 'User';
+    const queryStr = `?username=${encodeURIComponent(username)}`;
+    const currentPath = window.location.pathname;
 
-  const currentPath = window.location.pathname;
+    // 2. Helper function para sa navigation
+    const setupNav = (btnId, targetPath) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            // Highlight kung ito ang active page
+            if (currentPath === targetPath) {
+                btn.classList.add('active-item');
+            }
+            
+            // Mag-redirect sa target path na may dala-dalang username
+            btn.onclick = () => {
+                if (currentPath !== targetPath) {
+                    window.location.href = targetPath + queryStr;
+                }
+            };
+        }
+    };
 
-  const dashBtn = document.getElementById('dashboardBtn');
-  const adoptionBtn = document.getElementById('adoptionBtn');
-  const donationBtn = document.getElementById('donationBtn');
-
-  // DASHBOARD
-  if(dashBtn){
-      if(currentPath === '/dashboard'){
-          dashBtn.classList.add('active-item');
-          dashBtn.onclick = () => window.location.href='/home';
-      } else {
-          dashBtn.onclick = () => window.location.href='/dashboard';
-      }
-  }
-
-  // ADOPTION HUB
-  if(adoptionBtn){
-      if(currentPath === '/adoption_hub'){
-          adoptionBtn.classList.add('active-item');
-          adoptionBtn.onclick = () => window.location.href='/home';
-      } else {
-          adoptionBtn.onclick = () => window.location.href='/adoption_hub';
-      }
-  }
-
-  // DONATIONS
-  if(donationBtn){
-      if(currentPath === '/donations'){
-          donationBtn.classList.add('active-item');
-          donationBtn.onclick = () => window.location.href='/home';
-      } else {
-          donationBtn.onclick = () => window.location.href='/donations';
-      }
-  }
-
+    // I-setup lahat ng buttons
+    setupNav('dashboardBtn', '/dashboard');
+    setupNav('adoptionBtn', '/adoption_hub');
+    setupNav('donationBtn', '/donations');
+    setupNav('applicationBtn', '/application');
 });
+let currentPetData = {};
 
+function openModal(name, imgSrc, sex, breed, age, description) {
+    // I-save ang data sa global variable
+    currentPetData = { name, imgSrc, sex, breed, age, description };
+
+    const modal = document.getElementById('petModal');
+    document.getElementById('modalName').textContent = name;
+    document.getElementById('modalImg').src = imgSrc;
+
+        document.getElementById('modalDetails').innerHTML = `
+            <p><strong>Type:</strong> Dog</p>
+            <p><strong>Sex:</strong> ${sex}</p>
+            <p><strong>Breed:</strong> ${breed}</p>
+            <p><strong>Age:</strong> ${age}</p>
+            <p><strong>Behavior:</strong> ${description}</p>
+            <p><strong>Location:</strong> Camarines Sur Polytechnic Colleges</p>
+        `;
+        
+        modal.style.display = 'flex';
+    }
+// Function para sa redirection
+function goToApplication() {
+    const username = new URLSearchParams(window.location.search).get('username') || 'User';
+    const dateApplied = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    
+    // I-format ang URL parameters
+    const params = new URLSearchParams({
+        username: username,
+        pet: currentPetData.name,
+        img: currentPetData.imgSrc,
+        date: dateApplied
+    });
+    
+    // Mag-redirect sa application page
+    window.location.href = `/application?${params.toString()}`;
+}
+
+// I-attach ang event listener sa button (gawin ito minsan lang sa labas)
+document.getElementById('adoptBtn').addEventListener('click', goToApplication);
+function closeModal() {
+    const modal = document.getElementById('petModal');
+    modal.style.display = 'none';
+}
+
+// Opsyonal: I-close ang modal kapag clinic ang labas (background)
+window.onclick = function(event) {
+    const modal = document.getElementById('petModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+// Global State para ma-track ang kasalukuyang filter
+let currentFilter = 'All';
+
+// Master function na nag-aapply ng Search AT Filter
+function updateDisplay() {
+    const searchTerm = document.querySelector('.search-box input').value.toLowerCase();
+    const cards = Array.from(document.querySelectorAll('.pet-card'));
+    
+    cards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const breed = card.dataset.breed.toLowerCase();
+        const type = card.dataset.type; // 'Dog' o 'Cat'
+        const sex = card.dataset.sex;   // 'Male' o 'Female'
+        
+        // Logic: Search + Filter (Dapat pasok sa dalawa)
+        const matchesSearch = name.includes(searchTerm) || breed.includes(searchTerm);
+        const matchesFilter = (currentFilter === 'All' || type === currentFilter || sex === currentFilter);
+        
+        card.style.display = (matchesSearch && matchesFilter) ? 'block' : 'none';
+    });
+}
+
+// Event Listener para sa Search
+document.querySelector('.search-box input').addEventListener('input', updateDisplay);
+
+// Function para sa Filter (tinatawag ng dropdown links)
+function filterBy(category) {
+    currentFilter = category;
+    updateDisplay(); // I-apply ang bagong filter kasama ang existing search term
+    document.querySelectorAll(".dropdown-content").forEach(m => m.classList.remove("show"));
+}
+
+// Function para sa Sort (Gumagana sa kahit anong display status)
+function sortPets(criteria) {
+    const grid = document.querySelector('.adoption-grid');
+    const cards = Array.from(document.querySelectorAll('.pet-card'));
+    
+    cards.sort((a, b) => {
+        if (criteria === 'Name: A-Z') return a.dataset.name.localeCompare(b.dataset.name);
+        if (criteria === 'Age: Youngest - Oldest') return parseFloat(a.dataset.age) - parseFloat(b.dataset.age);
+        if (criteria === 'Date Added: Newest - Oldest') return b.dataset.date.localeCompare(a.dataset.date);
+    });
+    
+    // I-re-append ang mga cards sa tamang pagkakasunod-sunod
+    cards.forEach(card => grid.appendChild(card));
+    document.querySelectorAll(".dropdown-content").forEach(m => m.classList.remove("show"));
+}
 </script>
 
 </body>

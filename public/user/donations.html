@@ -126,7 +126,18 @@
     .contact-info { text-align: left; }
     .contact-info p { font-size: 14px; color: #444; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
     .contact-info i { color: var(--primary-blue); width: 18px; }
-
+    .success-alert {
+    display: none; /* Naka-hide by default */
+    background: #dcfce7;
+    color: #166534;
+    padding: 15px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid #bbf7d0;
+    animation: fadeIn 0.5s ease;
+}
     .submit-donation {
       background: var(--primary-blue); color: white; padding: 15px;
       border-radius: 12px; border: none; font-weight: 800; cursor: pointer;
@@ -153,6 +164,9 @@
 <div id="sidebar-placeholder"></div>
 
 <main id="donationSection">
+  <div id="successAlert" class="success-alert">
+    <i class="fa-solid fa-check-circle"></i> Donation submitted successfully! Thank you for your kindness.
+</div>
   <header class="donation-header">
     <h1>Your Donation Makes a Difference</h1>
     <p>Help us continue our mission to care for and rehome animals in need</p>
@@ -251,7 +265,10 @@
             <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=GCASH-PAWSSION" alt="QR" style="width:100%;">
         </div>
         <p style="font-size:13px;color:#64748b;margin-bottom:10px;">Scan using GCash app to donate.</p>
-        <div style="font-size:14px; color:var(--text-gray); cursor:pointer;"><i class="fa-solid fa-upload"></i> Upload Receipt</div>
+        <div style="font-size:14px; color:var(--primary-blue); cursor:pointer; font-weight: 600;" id="uploadTrigger">
+    <i class="fa-solid fa-upload"></i> <span id="fileNameDisplay">Upload Receipt</span>
+</div>
+<input type="file" id="receiptInput" accept="image/*" style="display: none;">
       </div>
 
       <div class="location-container" id="locationView">
@@ -297,50 +314,13 @@ cashTab?.addEventListener('click', () => {
     locationView.style.display = 'none';
 });
 
-
 // LOAD SIDEBAR
 fetch('/sidebar')
 .then(res => res.text())
 .then(data => {
-
     document.getElementById('sidebar-placeholder').innerHTML = data;
 
-    const currentPath = window.location.pathname;
-
-    // DASHBOARD
-    const dashBtn = document.getElementById('dashboardBtn');
-    if (dashBtn) {
-        if (currentPath === '/dashboard') {
-            dashBtn.classList.add('active-item');
-            dashBtn.onclick = () => window.location.href = '/home';
-        } else {
-            dashBtn.onclick = () => window.location.href = '/dashboard';
-        }
-    }
-
-    // ADOPTION
-    const adoptionBtn = document.getElementById('adoptionBtn');
-    if (adoptionBtn) {
-        if (currentPath === '/adoption_hub') {
-            adoptionBtn.classList.add('active-item');
-            adoptionBtn.onclick = () => window.location.href = '/home';
-        } else {
-            adoptionBtn.onclick = () => window.location.href = '/adoption_hub';
-        }
-    }
-
-    // DONATIONS
-    const donationBtn = document.getElementById('donationBtn');
-    if (donationBtn) {
-        if (currentPath === '/donations') {
-            donationBtn.classList.add('active-item');
-            donationBtn.onclick = () => window.location.href = '/home';
-        } else {
-            donationBtn.onclick = () => window.location.href = '/donations';
-        }
-    }
-
-    // SIDEBAR COLLAPSE / TOGGLE
+    // Sidebar Toggle
     const menuToggle = document.getElementById('menuToggle');
     const sidebar = document.getElementById('sidebar');
 
@@ -351,7 +331,77 @@ fetch('/sidebar')
         });
     }
 
+    // 1. Kunin ang username sa URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username') || 'User';
+    const queryStr = `?username=${encodeURIComponent(username)}`;
+    const currentPath = window.location.pathname;
+
+    // 2. Helper function para sa navigation
+    const setupNav = (btnId, targetPath) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            // Highlight kung ito ang active page
+            if (currentPath === targetPath) {
+                btn.classList.add('active-item');
+            }
+            
+            // Mag-redirect sa target path na may dala-dalang username
+            btn.onclick = () => {
+                if (currentPath !== targetPath) {
+                    window.location.href = targetPath + queryStr;
+                }
+            };
+        }
+    };
+
+    // I-setup lahat ng buttons
+    setupNav('dashboardBtn', '/dashboard');
+    setupNav('adoptionBtn', '/adoption_hub');
+    setupNav('donationBtn', '/donations');
+    setupNav('applicationBtn', '/application');
 });
+const submitBtn = document.getElementById('mainSubmitBtn');
+const successAlert = document.getElementById('successAlert');
+
+submitBtn?.addEventListener('click', () => {
+    // 1. I-display ang success message
+    successAlert.style.display = 'block';
+    
+    // 2. I-scroll sa itaas para makita agad ng user
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // 3. I-reset ang form (optional)
+    document.querySelectorAll('input, textarea').forEach(input => {
+        if(input.type !== 'radio') input.value = '';
+    });
+
+    // 4. I-hide ang message pagkatapos ng 5 segundo
+    setTimeout(() => {
+        successAlert.style.display = 'none';
+    }, 5000);
+});
+// PAG-HANDLE SA UPLOAD RECEIPT
+const uploadTrigger = document.getElementById('uploadTrigger');
+const receiptInput = document.getElementById('receiptInput');
+const fileNameDisplay = document.getElementById('fileNameDisplay');
+
+// Kapag ni-click yung text, i-trigger yung hidden file input
+if(uploadTrigger && receiptInput) {
+    uploadTrigger.addEventListener('click', () => {
+        receiptInput.click();
+    });
+
+    // Kapag may piniling file
+    receiptInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            const name = e.target.files[0].name;
+            // Ipakita ang pangalan ng file sa halip na "Upload Receipt"
+            fileNameDisplay.textContent = name.length > 20 ? name.substring(0, 17) + '...' : name;
+            fileNameDisplay.style.color = "#166534"; // Gawing green para alam na successful
+        }
+    });
+}
 </script>
 
 </body>

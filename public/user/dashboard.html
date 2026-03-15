@@ -65,17 +65,12 @@
 
   <main id="dashboardSection" class="main-content-dashboard">
     <section class="left-col">
-      <div class="card">
-        <h2>Current Application</h2>
-        <div class="app-status-box">
-          <img src="../images/dog1.png" alt="Chade">
-          <div class="status-info">
-            <h4>Chade</h4>
-            <p>Status: Form Submitted</p>
-            <div class="progress-container"><div class="progress-bar"></div></div>
-          </div>
-        </div>
-      </div>  
+     <div class="card">
+  <h2>Current Application</h2>
+  <div id="activeAppContainer" class="app-status-box">
+    <p id="appLoadingText">Loading your application...</p>
+  </div>
+</div>
 
       <div class="card">
         <h2>Top Matches for You</h2>
@@ -118,77 +113,97 @@
   </main>
 
 <script>
-    // FIXED: Fetch using the clean Express route defined in server.js
-    fetch('/sidebar') 
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('sidebar-placeholder').innerHTML = data;
+    
+// LOAD SIDEBAR
+fetch('/sidebar')
+.then(res => res.text())
+.then(data => {
 
-        const currentPath = window.location.pathname;
+  document.getElementById('sidebar-placeholder').innerHTML = data;
 
-        // --- DASHBOARD BUTTON LOGIC ---
-        const dashBtn = document.getElementById('dashboardBtn');
-        if (dashBtn) {
-            if (currentPath === '/dashboard') {
-                dashBtn.classList.add('active-item');
-                dashBtn.onclick = () => { window.location.href = '/home'; };
-            } else {
-                dashBtn.onclick = () => { window.location.href = '/dashboard'; };
-            }
-        }
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
 
-        // --- DONATION BUTTON LOGIC ---
-        const donationBtn = document.getElementById('donationBtn');
-        if (donationBtn) {
-            if (currentPath === '/donations') {
-                donationBtn.classList.add('active-item');
-                donationBtn.onclick = () => { window.location.href = '/home'; };
-            } else {
-                donationBtn.onclick = () => { window.location.href = '/donations'; };
-            }
-        }
-        // --- APPLICATION BUTTON LOGIC ---
-        const applicationBtn = document.getElementById('applicationBtn');
-        if (applicationBtn) {
-            if (page === 'application.html') {
-                applicationBtn.classList.add('active-item');
-                // Already active: click to go home
-                applicationBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
-            } else {
-                // Not active: click to go to application page
-                applicationBtn.addEventListener('click', () => { window.location.href = 'application.html'; });
-            }
-        }
-        // --- ADOPTION BUTTON LOGIC ---
-        const adoptionBtn = document.getElementById('adoptionBtn');
-        if (adoptionBtn) {
-            if (currentPath === '/adoption_hub') {
-                adoptionBtn.classList.add('active-item');
-                adoptionBtn.onclick = () => { window.location.href = '/home'; };
-            } else {
-                adoptionBtn.onclick = () => { window.location.href = '/adoption_hub'; };
-            }
-        }
+  if(menuToggle && sidebar){
+      menuToggle.addEventListener('click',()=>{
+          sidebar.classList.toggle('closed');
+          document.body.classList.toggle('sidebar-closed');
+      });
+  }
 
-        // --- PROFILE/ACCOUNT BUTTON LOGIC ---
-        // Ensure this points to the clean /profile route
-        const accountBtn = document.querySelector('.account');
-        if(accountBtn) {
-            accountBtn.onclick = () => { window.location.href = '/profile'; };
-        }
+  const currentPath = window.location.pathname;
 
-        // 2. Sidebar Toggle Logic
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        
-        if (menuToggle && sidebar) {
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('closed');
-                document.body.classList.toggle('sidebar-closed');
-            });
-        }
-    })
-    .catch(err => console.error('Error loading sidebar:', err));
+  const dashBtn = document.getElementById('dashboardBtn');
+  const adoptionBtn = document.getElementById('adoptionBtn');
+  const donationBtn = document.getElementById('donationBtn');
+  const applicationBtn = document.getElementById('applicationBtn');
+  // DASHBOARD
+  if(dashBtn){
+      if(currentPath === '/dashboard'){
+          dashBtn.classList.add('active-item');
+          dashBtn.onclick = () => window.location.href='/home';
+      } else {
+          dashBtn.onclick = () => window.location.href='/dashboard';
+      }
+  }
+
+  // ADOPTION HUB
+  if(adoptionBtn){
+      if(currentPath === '/adoption_hub'){
+          adoptionBtn.classList.add('active-item');
+          adoptionBtn.onclick = () => window.location.href='/home';
+      } else {
+          adoptionBtn.onclick = () => window.location.href='/adoption_hub';
+      }
+  }
+
+  // DONATIONS
+  if(donationBtn){
+      if(currentPath === '/donations'){
+          donationBtn.classList.add('active-item');
+          donationBtn.onclick = () => window.location.href='/home';
+      } else {
+          donationBtn.onclick = () => window.location.href='/donations';
+      }
+  }
+  if(applicationBtn){
+      if(currentPath === '/application'){
+          applicationBtn.classList.add('active-item');
+          applicationBtn.onclick = () => window.location.href='/home';
+      } else {
+          applicationBtn.onclick = () => window.location.href='/application';
+      }
+  }
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Kuhanin ang data mula sa localStorage
+    const savedApp = JSON.parse(localStorage.getItem('userApplication'));
+    const appBox = document.querySelector('.app-status-box');
+
+    // 2. I-check kung may active application
+    if (savedApp && appBox) {
+        // I-update ang content ng dashboard card gamit ang data mula sa application form
+        appBox.innerHTML = `
+            <img src="${savedApp.petImg}" alt="${savedApp.petName}">
+            <div class="status-info">
+                <h4>${savedApp.petName}</h4>
+                <p>Status: Form Submitted</p>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 25%;"></div>
+                </div>
+            </div>
+        `;
+
+        // Gawing clickable para pumunta sa summary
+        appBox.style.cursor = "pointer";
+        appBox.addEventListener('click', () => {
+            window.location.href = '/application';
+        });
+    } else if (appBox) {
+        appBox.innerHTML = `<p>No active applications.</p>`;
+    }
+});
+});
+
 </script>
 </body>
 </html>

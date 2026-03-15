@@ -12,9 +12,6 @@ app.use('/user', express.static(path.join(__dirname, 'public/user')));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/landing_page/index.html');
 });
-app.get('/home', (req, res) => {
-    res.sendFile(__dirname + '/public/user/home.html');
-});
 app.get('/profile', (req, res) => {
     // Ensure the file is actually at public/user/profile.html
     res.sendFile(path.join(__dirname, 'public', 'user', 'profile.html'));
@@ -25,7 +22,15 @@ app.get('/donations', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-    res.sendFile(__dirname + '/public/user/dashboard.html');
+    const username = req.query.username || 'User'; // Dito kukunin ang username
+    const filePath = path.join(__dirname, 'public/user/dashboard.html');
+
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) return res.status(500).send("Error");
+        // Palitan lahat ng {{username}} sa HTML
+        const renderedHtml = data.replace(/{{username}}/g, username);
+        res.send(renderedHtml);
+    });
 });
 app.get('/adoption_hub', (req, res) => {
     res.sendFile(__dirname + '/public/user/adoption_hub.html');
@@ -58,8 +63,8 @@ app.get('/home', (req, res) => {
 
     fs.readFile(filePath, 'utf8', (err, data) => {
         if (err) return res.status(500).send("Could not load home.html");
-        const htmlWithUsername = data.replace('{{username}}', username);
-        res.send(htmlWithUsername);
+       
+      res.send(data.replace(/{{username}}/g, username));
     });
 });
 app.get('/application', (req, res) => {

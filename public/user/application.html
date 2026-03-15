@@ -16,6 +16,7 @@
     <div class="application-container">
       
       <div class="progress-wrapper">
+
     <div class="pet-profile">
         <img src="https://placedog.net/300/300" alt="Pet Image" class="pet-image">
         <h2 style="margin-top: 10px; font-size: 20px;">Chada</h2>
@@ -173,67 +174,54 @@
 </div>
     </form> 
 </div>
+<script>
+// LOAD SIDEBAR
+fetch('/sidebar')
+.then(res => res.text())
+.then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
 
-  <script>
-    fetch('sidebar.html')
-    .then(response => response.text())
-    .then(data => {
-        document.getElementById('sidebar-placeholder').innerHTML = data;
+    // Sidebar Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
 
-        const path = window.location.pathname;
-        const page = path.split("/").pop();
+    if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('closed');
+            document.body.classList.toggle('sidebar-closed');
+        });
+    }
 
-        const dashBtn = document.getElementById('dashboardBtn');
-        if (dashBtn) {
-            if (page === 'dashboard.html' || page === '') {
-                dashBtn.classList.add('active-item');
-                dashBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
-            } else {
-                dashBtn.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
+    // 1. Kunin ang username sa URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username') || 'User';
+    const queryStr = `?username=${encodeURIComponent(username)}`;
+    const currentPath = window.location.pathname;
+
+    // 2. Helper function para sa navigation
+    const setupNav = (btnId, targetPath) => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            // Highlight kung ito ang active page
+            if (currentPath === targetPath) {
+                btn.classList.add('active-item');
             }
+            
+            // Mag-redirect sa target path na may dala-dalang username
+            btn.onclick = () => {
+                if (currentPath !== targetPath) {
+                    window.location.href = targetPath + queryStr;
+                }
+            };
         }
-        const donationBtn = document.getElementById('donationBtn');
-        if (donationBtn) {
-            if (page === 'donations.html') {
-                donationBtn.classList.add('active-item');
-            } else {
-                donationBtn.addEventListener('click', () => { 
-                    window.location.href = 'donations.html'; 
-                });
-            }
-        }
+    };
 
-        const applicationBtn = document.getElementById('applicationBtn');
-        if (applicationBtn) {
-            if (page === 'application.html') {
-                applicationBtn.classList.add('active-item');
-            } else {
-                applicationBtn.addEventListener('click', () => { 
-                    window.location.href = 'application.html'; 
-                });
-            }
-        }
-                const adoptionBtn = document.getElementById('adoptionBtn');
-        if (adoptionBtn) {
-            if (page === 'adoption_hub.html') {
-                adoptionBtn.classList.add('active-item');
-                adoptionBtn.addEventListener('click', () => { window.location.href = 'home.html'; });
-            } else {
-                adoptionBtn.addEventListener('click', () => { window.location.href = 'adoption_hub.html'; });
-            }
-        }
-
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        
-        if (menuToggle && sidebar) {
-            menuToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('closed');
-                document.body.classList.toggle('sidebar-closed');
-            });
-        }
-    })
-    .catch(err => console.error('Error loading sidebar:', err));
+    // I-setup lahat ng buttons
+    setupNav('dashboardBtn', '/dashboard');
+    setupNav('adoptionBtn', '/adoption_hub');
+    setupNav('donationBtn', '/donations');
+    setupNav('applicationBtn', '/application');
+});
 
     const showMessage = (text, type) => {
       const msgEl = document.getElementById('formMessage');
@@ -251,7 +239,8 @@
         }
       }
       return true;
-    };document.addEventListener('DOMContentLoaded', function() {
+    };
+    document.addEventListener('DOMContentLoaded', function() {
   
 
     const adoptionForm = document.getElementById('adoptionForm');
@@ -376,7 +365,41 @@
                 target.style.fontWeight = "bold";
             }
         }
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const petName = urlParams.get('pet');
+    const petImg = urlParams.get('img');
+    const date = urlParams.get('date');
 
+    if (petName) {
+        document.querySelector('.pet-image').src = petImg;
+        document.querySelector('h2').textContent = petName;
+        document.querySelector('p').textContent = `Date Applied: ${date}`;
+        
+        // I-set ang status pill base sa requirement
+        const statusPill = document.getElementById('statusPill');
+        statusPill.textContent = "Pending";
+    }
+});
+// Sa loob ng submit event listener:
+const applicationData = {
+    name: "Chada", // O kunin mula sa dynamic na source
+    status: "Pending Review",
+    image: "https://placedog.net/300/300", 
+    date: new Date().toLocaleDateString()
+};
+
+// I-save sa localStorage
+localStorage.setItem('currentApplication', JSON.stringify(applicationData));
+
+// Sa application.html (Submit Function)
+const formData = {
+    petName: document.querySelector('h2').textContent, // Tiyakin na ito ay Chada o Chade
+    petImg: document.querySelector('.pet-image').src,
+    // ... iba pang fields
+};
+localStorage.setItem('userApplication', JSON.stringify(formData));
 </script>
 </body>
 </html>

@@ -120,9 +120,11 @@
         const adoptionBtn = document.getElementById('adoptionBtn');
         const donationBtn = document.getElementById('donationBtn');
         const profileBtn = document.querySelector('.account');
-
+const homeLink = document.getElementById('homeLink');
         sidebar.classList.add('closed');
-
+const urlParams = new URLSearchParams(window.location.search);
+      const username = urlParams.get('username') || 'User';
+      const userQuery = `?username=${encodeURIComponent(username)}`;
         menuToggle.addEventListener('click', () => {
           sidebar.classList.toggle('closed');
           document.body.classList.toggle('sidebar-open');
@@ -140,6 +142,7 @@
         if(adoptionBtn) adoptionBtn.addEventListener('click', () => window.location.href = '/adoption_hub');
         if(donationBtn) donationBtn.addEventListener('click', () => window.location.href = '/donations');
         if(profileBtn) profileBtn.addEventListener('click', () => window.location.href = '/profile');
+        if(profileBtn) profileBtn.addEventListener('click', () => window.location.href = '/application');
       });
   </script>
 </body>
