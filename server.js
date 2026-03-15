@@ -127,6 +127,22 @@ app.get('/form3', (req, res) => {
     res.sendFile(__dirname + '/public/login/form3.html');
 });
 
+
+app.get('/help-center', (req, res) => {
+    res.sendFile(__dirname + '/public/support/help-center.html');
+});
+
+app.get('/feedback', (req, res) => {
+    res.sendFile(__dirname + '/public/support/feedback.html');
+});
+
+app.get('/contact-support', (req, res) => {
+    res.sendFile(__dirname + '/public/support/contact-support.html');
+});
+
+
+
+
 app.listen(3000, () => {
     console.log('Server is running at http://localhost:3000');
 });
