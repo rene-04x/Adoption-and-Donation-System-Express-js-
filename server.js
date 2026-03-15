@@ -42,6 +42,15 @@ app.get('/about', (req, res) => {
     res.sendFile(__dirname + '/public/landing_page/about.html');
 });
 
+app.get('/donate', (req, res) => {
+    res.sendFile(__dirname + '/public/landing_page/donate.html');
+});
+
+// Optional: allow direct file access via /donate.html
+app.get('/donate.html', (req, res) => {
+    res.sendFile(__dirname + '/public/landing_page/donate.html');
+});
+
 app.get('/how', (req, res) => {
     res.sendFile(__dirname + '/public/landing_page/howItWorks.html');
 });

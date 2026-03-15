@@ -31,15 +31,28 @@
       padding: 0 20px;
     }
 
-    /* Logo on the left */
-    nav .logo {
-      height: 50px;
-      margin-right: 20px;
+    /* NEW Logo Section Styles */
+    .logo-section {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
     }
 
-    nav.name {
-      height: 30px;
-      margin-right: 20px;
+    .logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 160px;
+        object-fit: cover;
+        margin-right: 12px;
+    }
+
+    .pawssion-brand {
+        font-weight: 800;
+        font-size: 24px;
+        background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     /* Center menu links */
@@ -631,9 +644,10 @@
 </head>
 <body>
   <nav>
-    <!-- Logo -->
-    <img src="../../images/logo.png" alt="PAWSsion Logo" class="logo">
-    <img src="../../images/PAWSsion.png" alt="PAWSsion" class="name">
+    <a href="/" class="logo-section">
+      <img src="../../images/logo.png" alt="PAWSsion Logo" class="logo">
+      <span class="pawssion-brand">PAWSsion</span>
+    </a>
 
     <!-- Centered menu links -->
     <div class="menu-container">
@@ -734,16 +748,16 @@
         <div class="footer-col">
             <h3>Quick Links</h3>
             <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/contact">Contact Us</a></li>
             </ul>
         </div>
         <div class="footer-col">
             <h3>Legal</h3>
             <ul>
-                <li><a href="#">Terms & Use</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Cookie Policy</a></li>
+                <li><a href="/terms">Terms & Use</a></li>
+                <li><a href="/policy">Privacy Policy</a></li>
+                <li><a href="/faqs">FAWS</a></li>
             </ul>
         </div>
     </div>

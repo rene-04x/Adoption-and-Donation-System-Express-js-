@@ -31,28 +31,15 @@
       padding: 0 20px;
     }
 
-    /* NEW Logo Section Styles */
-    .logo-section {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
+    /* Logo on the left */
+    nav .logo {
+      height: 50px;
+      margin-right: 20px;
     }
 
-    .logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 160px;
-        object-fit: cover;
-        margin-right: 12px;
-    }
-
-    .pawssion-brand {
-        font-weight: 800;
-        font-size: 24px;
-        background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
+    nav.name {
+      height: 30px;
+      margin-right: 20px;
     }
 
     /* Center menu links */
@@ -178,45 +165,37 @@
 
     #about {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10% 5%;
-    }
-
-    #about .about_content {
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 80px;
-        flex-wrap: wrap;
-        width: 100%;
-        max-width: 1100px;
-    }
-
-    #about .about_text {
-        max-width: 520px;
-        text-align: left;
     }
 
     #about h3 {
+        padding-top: 8%;
+        padding-left: 5%;
         color: black;
         font-size: 30px;
         font-family: 'Inter', sans-serif;
         font-weight: 800;
-        margin-bottom: 20px;
+        white-space: nowrap;
     }
 
-    #about .about_text p {
+    #about .pawssion_about {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 100px;
+    }
+
+    #about .pawssion_about p {
         color: #333;
         font-size: 20px;
-        line-height: 1.6;
-        margin: 0;
+        max-width: 600px;
+        text-align: justify;
+        margin-left: -29%;
+        line-height: 1.5;
+        margin-top: 50px;
     }
 
-    #about .about_image img {
-        max-width: 420px;
-        width: 100%;
-        height: auto;
+    #about .pawssion_about img {
+      margin-top: 60px;
     }
 
     #founders .header {
@@ -541,134 +520,130 @@
     }
 
     #mission {
-    background-color: #02407D;
-    padding: 60px 20px;
-    height: 30px; /* Changed from 100vh to fit content */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20%;
-}
+      background-color: #02407D;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
 
-#mission h1 {
-    font-size: 27px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
+    #mission h1,
+    #mission h3 {
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      line-height: 2;
+      padding-bottom: 20px;
+    }
 
-#mission h3 {
-    font-size: 21px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    max-width: 800px;
-}
+    #mission h1 {
+      padding-top: 30px;
+      font-size: 30px;
+      font-weight: 600;
+    }
 
-#mission p {
-    font-size: 15px;
-    font-weight: 400;
-    line-height: 1.5;
-    max-width: 900px;
-    margin-bottom: 40px;
-    opacity: 0.9;
-}
+    #mission h3 {
+      font-size: 35px;
+      font-weight: 600;
+    }
 
-.discover-text {
-    color: #fff;
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 50px;
-}
+    #mission p {
+      color: #ffffff;
+      font-size: 25px;
+      text-align: center;
+      padding-left: 11%;
+      padding-right: 11%;
+      font-weight: 100;
+      opacity: 0.9;
+    }
 
-#mission_contain {
-    width: 100%;
-    max-width: 1200px;
-}
+    #mission_contain #box_container {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr; /* Tatlong magkakapantay na column */
+      gap: 10px;
+      margin-left:40px;
+    }
 
-#box_container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
-    justify-items: center;
-}
+    #mission_contain #box_container .mission1,
+    #mission_contain #box_container  .mission2,
+    #mission_contain #box_container .mission3 {
+      background-color: #fafafa;
+      border-radius: 20px;
+      box-sizing: border-box;
+      width:  380px;
+      height: 450px;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+      gap: 50px;
+      margin-top: -50%;
+  
+    }
 
-.mission-card {
-    background: #fff;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 380px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-}
+    #mission_contain #box_container .mission1 img,
+    #mission_contain #box_container  .mission2 img,
+    #mission_contain #box_container .mission3 img  {
+      margin-top: 20px;
+      width: 50vh;
+      height:40vh;
+      border: 1px solid #beb9b9;
+      border-radius: 20px;
+    }
 
-/* Gray area for images in the screenshot */
-.card-image-placeholder {
-    background-color: #D9D9D9;
-    height: 220px;
-    width: 100%;
-}
+    #mission_contain #box_container .mission1 .mission_logo,
+    #mission_contain #box_container .mission2 .mission_logo,
+    #mission_contain #box_container .mission3 .mission_logo {
+        display: flex;          /* Ginagawa silang magkatabi */
+        align-items: center;    /* Center vertical alignment */
+        gap: 10px;              /* Space sa pagitan ng logo at text image */
+        margin-top: 5px;       /* Kaunting distansya mula sa picture sa itaas */
+        margin-left: 10px;
+        margin-bottom: 20px;
+    }
 
-.card-image-content {
-  width: 100%;
-  height: 220px;
-  object-fit: contain; /* This ensures the QR code isn't distorted */
-  background-color: #ffffff; /* Sets a clean background */
-}
+    /* Linisin ang image styles sa loob nito */
+    #mission_contain #box_container .mission1 .mission_logo img,
+    #mission_contain #box_container .mission2 .mission_logo img,
+    #mission_contain #box_container .mission3 .mission_logo img {
+        width: 40px;            /* Size ng maliit na logo */
+        height: auto;
+        border-radius: 0;
+        border: none;
+        margin: 0;              /* Tinanggal ang margin-left para hindi tumabingi */
+    }
 
-.card-content {
-    padding: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-grow: 1;
-}
+    #mission_contain #box_container .mission1 .mission_desc,
+    #mission_contain #box_container .mission2 .mission_desc,
+    #mission_contain #box_container .mission3 .mission_desc {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end; /* Para pantay sa kaliwa ang text */
+      padding: 10px; /* Pantay na padding sa loob ng box */
+      padding-right: 20px;
+    }
 
-.mission_logo_row {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    margin-bottom: 30px;
-}
+    #mission_contain #box_container .mission1 .mission_desc p,
+    #mission_contain #box_container .mission2 .mission_desc p,
+    #mission_contain #box_container .mission3 .mission_desc p {
+      color: #000000;
+      font-size: 12px;
+      text-align: justify;
+    }
 
-.mini-logo {
-    width: 60px; /* Adjusted to look like the image logo text */
-    height: auto;
-}
+    #mission_contain #box_container .mission1 a,
+    #mission_contain #box_container .mission2 a,
+    #mission_contain #box_container .mission3 a {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 15px;
+      background-color: #02407D;
+      border-radius: 20px;
+      padding: 10px 40px;
+    }
 
-.mission_logo_row p {
-    color: #333 !important; /* Force black text */
-    font-size: 14px !important;
-    text-align: left !important;
-    padding: 0 !important;
-    line-height: 1.4 !important;
-    opacity: 1 !important;
-}
-
-.mission-btn {
-    background-color: #02407D;
-    color: white;
-    padding: 12px 30px;
-    border-radius: 30px;
-    font-weight: 700;
-    font-size: 16px;
-    text-decoration: none;
-    transition: 0.3s;
-    margin-top: auto; /* Pushes button to bottom */
-    width: 90%;
-    text-align: center;
-}
-
-.mission-btn:hover {
-    background-color: #012a52;
-    transform: scale(1.05);
-}
-
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-    #mission h3 { font-size: 24px; }
-    .discover-text { font-size: 20px; }
-}
+    #mission_contain #box_container .mission1 a:hover,
+    #mission_contain #box_container .mission2 a:hover,
+    #mission_contain #box_container .mission3 a:hover {
+      background-color: #ffffff;
+      border: 1px solid #02407D;
+      color: #02407D;
+    }
 
     #values {
       margin-bottom: 10%;
@@ -814,15 +789,13 @@
         width: 90%;
         height: auto;
         padding-bottom: 30px;
-
-        
     }
 
     /* Mission Section */
     #mission_contain #box_container .mission1,
     #mission_contain #box_container .mission2,
     #mission_contain #box_container .mission3 {
-        width: 80%;
+        width: 90%;
         height: auto;
         margin-top: 20px;
         padding-bottom: 20px;
@@ -1205,380 +1178,13 @@
       }
     }
 
-  
-
-    #footer {
-      min-height: 100vh; /* Tinaasan natin para may space talaga sa baba */
-      width: 100%;
-      margin-top: -70px;
-      background-image: url('../images/footer_bg.png'), url('../images/footer_bg.png');
-      background-position: left 25%, right 13%;
-      background-size: 53% auto, 53% auto;
-      background-repeat: no-repeat, no-repeat;
-      
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 50px 0; /* Pantay na padding */
-      position: relative;
-      overflow: hidden;
-    }
-
-        /* Base style para sa lahat ng scattered logos */
-    #footer img.ccs, 
-    #footer img.cspc, 
-    #footer img.honeygold, 
-    #footer img.pbc {
-      position: absolute;
-      transition: transform 0.3s ease;
-      z-index: 1; 
-    }
-
-    #footer img.ccs {
-      top: 10%;
-      left: 18%;
-      
-    }
-
-    #footer img.cspc {
-      top: 30%;
-      left: 33%;
-    }
-
-    #footer img.honeygold {
-      top: 20%;
-      right: 19%;
-    }
-
-    #footer img.pbc {
-      bottom: 15%;
-      right: 42%;
-      top: 5px;
-    }
-
-    #footer .info {
-      display: flex;
-      justify-content: flex-start; 
-      align-items: center;
-      gap: 30px;
-      padding-left: 0; 
-      width: 100%; 
-      margin-left: -6%;
-    }
-
-    #footer .info img {
-      transition: transform 0.3s ease;
-    }
-
-    #footer .info img.fb,
-    #footer .info img.twitter,
-    #footer .info img.tiktok,
-    #footer .info img.insta,
-    #footer .info img.mess {
-      background-color: #02407D;
-      border-radius: 50px;
-      padding: 10px;
-      width: 40px;
-      height: 40px; /* Force square ratio para perfect circle ang border-radius */
-      object-fit: contain;
-      margin-right: 20px;
-    }
-
-    /* Hover effect para mas maganda */
-    #footer .info img:hover {
-      transform: translateY(-5px);
-      background-color: #0707B8;
-    }
-
-    .footer-top-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      width: 100%;
-      padding: 0 8%;
-      margin-top: auto; /* PINAKA-IMPORTANTE: Itutulak nito ang row sa bottom */
-      margin-bottom: 20px;
-    }
-
-    #footer h1 {
-      color: #02407D;
-      font-size: 50px; /* Mas malaki para mas pansin */
-      font-weight: 900;
-      margin: 0;
-      line-height: 1;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 50px;
-    }
-
-    .footer-links p {
-      color: #333;
-      font-weight: 800;
-      font-size: 22px;
-      margin: 0 !important;
-      white-space: nowrap;
-    }
-
-    .footer-columns {
-      display: flex;
-      gap: 90px;
-      transform: translateY(100%); /* Itutulak nito ang columns pababa ng 40px */
-    }
-
-    .footer-col {
-      text-align: left; /* Para pantay sa kaliwa ang mga links */
-    }
-
-    /* Style para sa Header (Quick Links / Legal) */
-    .footer-col h3 {
-      color: #000;
-      font-weight: 800;
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-
-    /* Style para sa listahan ng links */
-    .footer-col ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-col ul li {
-      margin-bottom: 12px;
-      margin-top: 40px;
-    }
-
-    .footer-col ul li a {
-      color: #333;
-      font-weight: 500;
-      font-size: 18px;
-      transition: color 0.3s;
-    }
-
-    .footer-col ul li a:hover {
-      color: #02407D;
-      text-decoration: underline;
-    }
-
-    /* Social icons sa ilalim ng H1 */
-    #footer .info {
-      display: flex;
-      justify-content: flex-start; 
-      align-items: center;
-      gap: 15px;
-      width: 100%;
-      padding: 0 8% 40px 8%; /* Pantay na padding sa h1 */
-    }
-
-    .footer_buttons a {
-      padding: 15px 30px;
-      border-radius: 50px;
-      border: 2px solid #02407D; /* Blue border para makita sa puti */
-      color: #02407D;
-      font-weight: 700;
-      transition: 0.3s;
-    }
-
-    .footer_buttons a:hover {
-      background: #02407D;
-      color: #fff;
-    }
-
-    #footer p {
-      color: #333;
-      max-width: 600px;
-      margin-bottom: 40px;
-      font-weight: 600;
-      margin-bottom: 0;
-      align-self: flex-start; 
-      padding-left: 5%; 
-      text-align: left; 
-      font-size: 20px;
-    }
-
-    #footer a.gmail {
-      display: flex;         /* Ito ang magtatabi sa kanila */
-      align-items: center;   /* Center vertical alignment */
-      gap: 5px;             /* Space sa pagitan ng icon at text */
-      align-self: flex-start; /* Itutulak ang buong link sa kaliwa */
-      padding: 10px 5%;      /* Pantay na offset sa ibang text */
-      text-decoration: none;
-      color: #000;
-    }
-
-    #footer a.gmail img {
-      width: 30px;           /* I-adjust ang laki ng icon */
-      height: auto;
-    }
-
-    #footer a.gmail p {
-      margin: 0 !important;  /* Alisin ang default margin para hindi tumalon */
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    #footer .phone {
-      display: flex;         /* Ito ang magtatabi sa kanila */
-      align-items: center;   /* Center vertical alignment */
-      gap: 5px;             /* Space sa pagitan ng icon at text */
-      align-self: flex-start; /* Itutulak ang buong link sa kaliwa */
-      padding: 10px 5%;      /* Pantay na offset sa ibang text */
-      text-decoration: none;
-      color: #000;
-    }
-
-    #footer .phone img {
-      width: 30px;           /* I-adjust ang laki ng icon */
-      height: auto;
-    }
-
-    #footer .phone p {
-      margin: 0 !important;  /* Alisin ang default margin para hindi tumalon */
-      font-size: 18px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-          /* Responsive for Footer Section */
-    @media (max-width: 900px) {
-        #footer {
-            padding: 50px 5%;
-            min-height: auto; /* Hayaan ang content ang mag-dikta ng height */
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* 1. scattered logos - Gawing mas maliit at i-adjust ang position */
-        #footer img.ccs, #footer img.cspc, #footer img.honeygold, #footer img.pbc {
-            position: relative; /* Imbes na absolute, gawin nating flow ng page */
-            width: 80px;
-            height: auto;
-            display: inline-block;
-            margin: 10px;
-            top: auto; left: auto; right: auto; bottom: auto; /* Reset positions */
-        }
-
-        /* 2. Top Row (H1 and Columns) */
-        .footer-top-row {
-        flex-direction: column; /* Stack ang text sa itaas ng links */
-            align-items: center;
-            gap: 20px;
-            padding: 0;
-            margin-bottom: 30px;
-            margin-top: 20px;
-        }
-
-        #footer h1 {
-            font-size: 35px;
-            text-align: center;
-        
-        }
-
-        /* 3. Footer Columns (Links) */
-        .footer-columns {
-            transform: translateY(0); /* Alisin ang desktop translate */
-            flex-direction: row; /* Panatilihing side-by-side ang Quick Links at Legal */
-            justify-content: center;
-            gap: 40px;
-            width: 100%;
-        }
-
-        .footer-col h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .footer-col ul li {
-            margin-top: 10px; /* Bawasan ang malaking gap sa desktop */
-            margin-bottom: 5px;
-        }
-
-        /* 4. Info/Social Icons */
-        #footer .info {
-            justify-content: center;
-            padding: 20px 0;
-            margin-left: 0; 
-        }
-
-        /* 5. Contact Info (Email & Phone) */
-        #footer p {
-            padding-left: 0;
-            text-align: center;
-            align-self: center;
-            font-size: 16px;
-        }
-
-        #footer a.gmail, #footer .phone {
-            align-self: center; /* I-center ang email at phone */
-            padding: 10px 0;
-            justify-content: center;
-        }
-
-        #footer a.gmail p, #footer .phone p {
-            font-size: 16px;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .footer-columns {
-            flex-direction: column; /* I-stack na rin ang links pag sobrang liit ng screen */
-            gap: 20px;
-        }
-    }
-
-    .bottom-bar {
-      display: flex;
-      justify-content: space-between; 
-      align-items: center;
-      padding: 5px 8%;
-      background-color: #fff;
-      width: 100%;
-    }
-
-    /* Itong dalawa ang mag-eensure na "centered" ang logo */
-    .copyright-text, .spacer {
-      flex: 1; 
-    }
-
-    .copyright-text p {
-      color: #000000;
-      font-size: 20px;
-      margin: 0 !important;
-      text-align: left; /* Text sa kaliwa */
-    }
-
-    .spacer {
-      /* Empty space sa kanan para pantay sa copyright-text box */
-    }
-
-    /* Mobile Fix: Pagpatungin sila kapag masyadong maliit na ang screen */
-    @media (max-width: 768px) {
-      .bottom-bar {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
-      }
-      .copyright-text p {
-        text-align: center;
-      }
-      .spacer {
-        display: none; /* Alisin ang spacer sa mobile */
-      }
-    }
-
    </style>
 </head>
 <body>
   <nav>
-    <a href="/" class="logo-section">
-      <img src="../../images/logo.png" alt="PAWSsion Logo" class="logo">
-      <span class="pawssion-brand">PAWSsion</span>
-    </a>
+    <!-- Logo -->
+    <img src="../../images/logo.png" alt="PAWSsion Logo" class="logo">
+    <img src="../../images/PAWSsion.png" alt="PAWSsion" class="name">
 
     <!-- Centered menu links -->
     <div class="menu-container">
@@ -1599,21 +1205,17 @@
 
   <!-- Sections --> 
   <section id="about">
-    <div class="about_content">
-      <div class="about_text">
-        <h3>What is PAWSsion?</h3>
-        <p>
-          PAWSsion is a web-based adoption and donation system created to help 
-          the CSPC – PAWSsion Benevolence Circle Organization manage rescued cats 
-          and dogs, connect them with responsible adopters, and track community support transparently. 
-          The name combines “paws” and “passion,” representing a strong commitment to animal welfare 
-          and using technology to ensure better pet matching, transparency, and compassionate care.
-        </p>
-      </div>
-      <div class="about_image">
-        <img src="../images/PBC_logo_Big.png" class="pbc_logo">
-      </div>
-    </div>
+   <h3>What is PAWSsion?</h3>
+   <div class="pawssion_about">
+    <p>
+        PAWSsion is a web-based adoption and donation system created to help 
+        the CSPC – PAWSsion Benevolence Circle Organization manage rescued cats 
+        and dogs, connect them with responsible adopters, and track community support transparently. 
+        The name combines “paws” and “passion,” representing a strong commitment to animal welfare 
+        and using technology to ensure better pet matching, transparency, and compassionate care.
+    </p>
+    <img src="../images/PBC_logo_Big.png" class="pbc_logo">
+   </div>
   </section>
   
   <section id="founders">
@@ -1753,50 +1355,49 @@
     </div>
   </section>
 
-  <section id="mission">
-    <h1>OUR MISSION</h1>
-    <h3>Make adoption better, for every pet and every person.</h3>
-    <p>We're transforming the way communities adopt and support rescued animals by building a technology-driven platform that connects pets, adopters, and donors in one trusted ecosystem.</p>
-    
-    <h2 class="discover-text">Discover how we make a difference below 👇</h2>
-
-    <div id="mission_contain">
-        <div id="box_container">
-            <div class="mission-card">
-                <img src="../images/match.png" alt="Donation QR Code" class="card-image-content">
-                <div class="card-content">
-                    <div class="mission_logo_row">
-                        <img src="../../images/logo.png" alt="Logo" class="mini-logo">
-                        <p>provides adoption insights and recommends suitable pets to adopters based on their preferences.</p>
-                    </div>
-                    <a href="#" class="mission-btn">Analytics & Match</a>
-                </div>
-            </div>
-
-            <div class="mission-card">
-                 <img src="../images/petlist.png" alt="Donation QR Code" class="card-image-content">
-                <div class="card-content">
-                    <div class="mission_logo_row">
-                        <img src="../../images/logo.png" alt="Logo" class="mini-logo">
-                        <p>An online pet listing system where users can browse available cats and dogs, view profiles, and submit adoption requests.</p>
-                    </div>
-                    <a href="#" class="mission-btn">PAWSsion Adoption</a>
-                </div>
-            </div>
-
-            <div class="mission-card">
-                <img src="../images/qr.png" alt="Donation QR Code" class="card-image-content">
-                <div class="card-content">
-                    <div class="mission_logo_row">
-                        <img src="../../images/logo.png" alt="Logo" class="mini-logo">
-                        <p>A transparent donation tracking platform that allows supporters to contribute cash or materials and monitor how their help is used.</p>
-                    </div>
-                    <a href="#" class="mission-btn">PAWSsion Donations</a>
-                </div>
-            </div>
+  <section id="mission_contain">
+    <div id="mission">
+      <h1>OUR MISSION</h1>
+      <h3>Make adoption better, for every pet and every person.</h3>
+      <p>We’re transforming the way communities adopt and support rescued animals by building a technology-driven platform that connects pets, adopters, and donors in one trusted ecosystem.</p>
+      <h1>Discover how we make a difference below 👇</h1>
+  </div>
+  <div id="box_container">
+    <div class="mission1">
+      <img src="../images/matchmaking.JPG">
+      <div class="mission_logo">
+        <img src="../images/footer_logo.png">
+        <img style="width: 100px; height: auto;" src="../images/PAWSsion.png">
+        <div class="mission_desc">
+          <p>Provides adoption insights and recommends suitable pets to adopters based on their preferences.<br><br></p>
         </div>
+      </div>
+      <a href="">Matchmaking</a>
     </div>
-</section>
+    <div class="mission2">
+      <img src="../images/adoption.JPG">
+      <div class="mission_logo">
+        <img src="../images/footer_logo.png">
+        <img style="width: 100px; height: auto;" src="../images/PAWSsion.png">
+        <div class="mission_desc">
+          <p>An online pet listing system where users can browse available cats and dogs, view profiles, and submit adoption requests.</p>
+        </div>
+      </div>
+      <a href="">PAWSsion Adoption</a>
+    </div>
+    <div class="mission3">
+      <img src="../images/donation.JPG">
+      <div class="mission_logo">
+        <img src="../images/footer_logo.png">
+        <img style="width: 100px; height: auto;" src="../images/PAWSsion.png">
+        <div class="mission_desc">
+          <p>A transparent donation tracking platform that allows supporters to contribute cash or materials and monitor how their help is used.</p>
+        </div>
+      </div>
+      <a href="">PAWSsion Donations</a>
+    </div>
+  </div>
+  </section>
 
   <section id="values">
     <h3>OUR VALUES</h3>
@@ -1822,7 +1423,6 @@
     </div>
   </section>
 
-  
   <section id="footer">
     <img src="../images/CCS_logo.png" class="ccs">
     <img src="../images/CSPC_logo.png" class="cspc">
@@ -1836,16 +1436,16 @@
         <div class="footer-col">
             <h3>Quick Links</h3>
             <ul>
-                <li><a href="/about">About Us</a></li>
-                <li><a href="/contact">Contact Us</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
             </ul>
         </div>
         <div class="footer-col">
             <h3>Legal</h3>
             <ul>
-                <li><a href="/terms">Terms & Use</a></li>
-                <li><a href="/policy">Privacy Policy</a></li>
-                <li><a href="/faqs">FAQS</a></li>
+                <li><a href="#">Terms & Use</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Cookie Policy</a></li>
             </ul>
         </div>
     </div>
