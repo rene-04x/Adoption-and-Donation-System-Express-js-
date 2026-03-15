@@ -223,6 +223,20 @@
             reader.readAsDataURL(file);
         }
     };
+
+    // 5. Navigation Logic for Sidebar Items
+    document.getElementById('dashboardBtn').onclick = () => {
+        window.location.href = '/dashboard';
+    };
+    document.getElementById('adoptionBtn').onclick = () => {
+        window.location.href = '/adoption_hub';
+    };
+    document.getElementById('applicationBtn').onclick = () => {
+        window.location.href = '/application';
+    };
+    document.getElementById('donationBtn').onclick = () => {
+        window.location.href = '/donations';
+    };
 </script>
 
 </body>
