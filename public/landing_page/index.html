@@ -17,29 +17,44 @@
     }
 
     /* Navigation Settings */
-    nav {
-      position: fixed; /* always at top */
-      top: 0;
-      width: 100%;
-      height: 70px;
-      background: #fff;
-      z-index: 1000;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-    }
+    /* Navigation Settings */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  background: #fff;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+}
 
-    /* Logo on the left */
-    nav .logo {
-      height: 50px;
-      margin-right: 20px;
-    }
+/* NEW Logo Section Styles */
+.logo-section {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    
+}
 
-    nav.name {
-      height: 30px;
-      margin-right: 20px;
-    }
+.logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 160px;
+    object-fit: cover;
+    margin-right: 12px;
+}
+
+.pawssion-brand {
+    font-weight: 800;
+    font-size: 24px;
+    background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
     /* Center menu links */
     nav .menu-container {
@@ -261,7 +276,7 @@
 
     width: 100%;
     min-height: 100vh;          /* full viewport height minimum */
-    padding: 5% 2%;     
+    padding: 20px 2% 5%;
             /* responsive padding */
     box-sizing: border-box;
     overflow: hidden;          /* allow full image to be visible */
@@ -689,14 +704,15 @@
     }
 
     section h1 {
-      font-size: 30px !important;
+      font-size: 27px !important;
       margin-top: 10px;
       line-height: 1.2;
     }
 
-    section p {
-      font-size: 16px !important;
-      padding: 0 15px;
+   section p {
+      font-size: 22px; /* Baguhin ang value na ito */
+      margin-top: 15px;
+      color: #333;
     }
 
     section p br {
@@ -801,10 +817,10 @@
 </head>
 <body>
   <nav>
-    <!-- Logo -->
-    <img src="../../images/logo.png" alt="PAWSsion Logo" class="logo">
-    <img src="../../images/PAWSsion.png" alt="PAWSsion" class="name">
-
+     <a href="/" class="logo-section">
+            <img src="/images/logo.png" alt="PAWSsion Logo" class="logo">
+            <div class="pawssion-brand">PAWSsion</div>
+        </a>
     <!-- Centered menu links -->
     <div class="menu-container">
       <ul>
