@@ -14,20 +14,32 @@ app.get('/', (req, res) => {
 });
 app.get('/profile', (req, res) => {
     // Ensure the file is actually at public/user/profile.html
-    res.sendFile(path.join(__dirname, 'public', 'user', 'profile.html'));
+    res.sendFile(path.join(__dirname, '/public/user/profile.html'));
 });
 
 app.get('/donations', (req, res) => {
     res.sendFile(__dirname + '/public/user/donations.html');
 });
 
+// ROUTE FOR DASHBOARD
 app.get('/dashboard', (req, res) => {
-    const username = req.query.username || 'User'; // Dito kukunin ang username
+    const username = req.query.username || 'User';
     const filePath = path.join(__dirname, 'public/user/dashboard.html');
 
     fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) return res.status(500).send("Error");
-        // Palitan lahat ng {{username}} sa HTML
+        if (err) return res.status(500).send("Error loading Dashboard");
+        const renderedHtml = data.replace(/{{username}}/g, username);
+        res.send(renderedHtml);
+    });
+});
+
+// ROUTE FOR PROFILE
+app.get('/profile', (req, res) => {
+    const username = req.query.username || 'User';
+    const filePath = path.join(__dirname, 'public/user/profile.html');
+
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) return res.status(500).send("Error loading Profile");
         const renderedHtml = data.replace(/{{username}}/g, username);
         res.send(renderedHtml);
     });
