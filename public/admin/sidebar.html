@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>PAWSsion Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f8fafc; display: flex; }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100%;
+            background: #f4f9ff; 
+            z-index: 2000;
+            padding: 20px 15px; 
+            box-shadow: 4px 0 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5px 30px 5px;
+        }
+
+        .pawssion-brand {
+            font-weight: 800;
+            font-size: 22px;
+            background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-label {
+            color: #64748b;
+            font-size: 10px;
+            margin: 15px 0 10px 12px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 16px;
+            color: #475569;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            margin-bottom: 4px;
+        }
+
+        .nav-item i { font-size: 18px; width: 24px; text-align: center; }
+
+        .nav-item:hover { background: rgba(2, 64, 125, 0.05); color: #02407D; }
+
+        .active-item {
+            background: #02407D !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(2, 64, 125, 0.2);
+        }
+
+        .sidebar-footer { margin-top: auto; padding-top: 20px; }
+
+        @media (max-width: 900px) {
+            .sidebar { left: -260px; }
+            .top-navbar { left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <img src="../images/logo.png" alt="Logo" style="height: 35px;">
+            <div style="line-height: 1;">
+                <div class="pawssion-brand">PAWSsion</div>
+                <div style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Admin Portal</div>
+            </div>
+        </div>
+    </div>
+
+    <p class="sidebar-label">MAIN MENU</p>
+    <div class="nav-item active-item" id="dashboardBtn">
+        <i class="fa-solid fa-table-cells-large"></i> Dashboard
+    </div>
+
+    <p class="sidebar-label">MANAGEMENT</p>
+    <div class="nav-item">
+        <i class="fa-solid fa-circle-nodes" style="color: #3b82f6;"></i> Organizations
+    </div>
+    <div class="nav-item">
+        <i class="fa-solid fa-paw" style="color: #0ea5e9;"></i> Animals
+    </div>
+    <div class="nav-item">
+        <i class="fa-solid fa-shield-dog" style="color: #60a5fa;"></i> Adoption
+    </div>
+    <div class="nav-item">
+        <i class="fa-solid fa-hand-holding-heart" style="color: #38bdf8;"></i> Donation
+    </div>
+    <div class="nav-item">
+        <i class="fa-solid fa-bullhorn" style="color: #f87171;"></i> Announcement
+    </div>
+
+    <p class="sidebar-label">DATA & REPORTS</p>
+    <div class="nav-item">
+        <i class="fa-solid fa-chart-line" style="color: #3b82f6;"></i> Monitoring
+    </div>
+    <div class="nav-item">
+        <i class="fa-solid fa-chart-simple" style="color: #60a5fa;"></i> Analytics
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="nav-item"><i class="fa-solid fa-gear"></i> Setting</div>
+        <div class="nav-item"><i class="fa-solid fa-circle-question"></i> Support</div>
+        <div class="nav-item" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
+    </div>
+</div>
+
+</body>
+</html>
