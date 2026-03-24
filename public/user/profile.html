@@ -77,6 +77,149 @@
         /* TOAST */
         .toast { position: fixed; bottom: 30px; right: 30px; background: #22c55e; color: white; padding: 12px 18px; border-radius: 10px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); opacity: 0; transform: translateY(20px); transition: 0.4s; z-index: 5000; pointer-events: none;}
         .toast.show { opacity: 1; transform: translateY(0); }
+        /* --- PRO UI GLASSMORPHISM PROFILE SECTION --- */
+
+.profile-container {
+    margin-left: 300px;
+    padding: 120px 40px 60px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Subtle radial glow to make the glass pop */
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(2, 64, 125, 0.05) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(47, 110, 219, 0.05) 0px, transparent 50%);
+}
+
+body.sidebar-closed .profile-container {
+    margin-left: 0;
+}
+
+.profile-card {
+    width: 100%;
+    max-width: 680px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px) saturate(170%);
+    -webkit-backdrop-filter: blur(20px) saturate(170%);
+    border-radius: 40px; /* Modern Squircle look */
+    padding: 60px 50px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+        0 10px 30px -5px rgba(0, 0, 0, 0.05),
+        0 25px 60px -15px rgba(2, 64, 125, 0.1);
+    text-align: center;
+    animation: profileFadeIn 0.8s ease-out;
+}
+
+@keyframes profileFadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Avatar Styling */
+.avatar-section {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.avatar-image {
+    width: 160px;
+    height: 160px;
+    border-radius: 45px; /* Premium Squircle */
+    object-fit: cover;
+    border: 6px solid #fff;
+    box-shadow: 0 15px 35px rgba(2, 64, 125, 0.12);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.avatar-image:hover {
+    transform: scale(1.05) rotate(2deg);
+}
+
+/* Pro Button Styling */
+.change-pic-btn {
+    margin-top: 25px !important;
+    background: #fff !important;
+    color: var(--primary-blue) !important;
+    border: 1px solid rgba(2, 64, 125, 0.1) !important;
+    padding: 10px 22px !important;
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important;
+    transition: all 0.3s ease !important;
+}
+
+.change-pic-btn:hover {
+    background: var(--primary-blue) !important;
+    color: #fff !important;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(2, 64, 125, 0.2) !important;
+}
+
+.profile-card h2 {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--primary-blue);
+    margin: 20px 0 35px;
+    letter-spacing: -0.8px;
+}
+
+/* Info Box & Rows */
+.info-box {
+    background: rgba(255, 255, 255, 0.4) !important;
+    border: 1px solid rgba(255, 255, 255, 0.7) !important;
+    border-radius: 30px !important;
+    padding: 10px 35px !important;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 0 !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    transition: transform 0.2s ease;
+}
+
+.info-row:last-child {
+    border-bottom: none !important;
+}
+
+.info-row:hover {
+    transform: translateX(5px);
+}
+
+.label {
+    font-weight: 600 !important;
+    color: #64748b !important;
+    font-size: 13px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.value {
+    font-weight: 700 !important;
+    color: var(--primary-blue) !important;
+    font-size: 16px !important;
+}
+
+/* Updated Success Toast */
+.toast {
+    background: #10b981 !important; /* Premium Emerald */
+    border-radius: 20px !important;
+    padding: 16px 28px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.25) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
     </style>
 </head>
 <body>
@@ -106,7 +249,7 @@
 <main class="profile-container">
     <div class="profile-card">
         <div class="avatar-section">
-            <img id="profileImage" class="avatar-image" src="../images/imongavatar.png" alt="Profile">
+            <img id="profileImage" class="avatar-image" src="../images/dog1.png" alt="Profile">
             <br>
             <input type="file" id="imageUpload" accept="image/*" style="display:none">
             <button class="change-pic-btn" onclick="document.getElementById('imageUpload').click()" style="margin-top:15px; padding: 8px 15px; border-radius: 8px; cursor: pointer; border: 1px solid #ddd; background: white;">
