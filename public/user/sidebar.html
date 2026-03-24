@@ -464,6 +464,9 @@
   <div class="nav-item" id="donationBtn" data-link="/donations">
     <i class="fa-solid fa-money-bill"></i> My Donations
   </div>
+   <div class="nav-item" id="KamustahanBtn" data-link="/kamustahan">
+    <i class="fa-solid fa-heart"></i> Kamustahan
+  </div>
 
   <div class="logout-section" style="margin-top: auto; padding-top: 20px;">
     <div class="nav-item" id="logoutBtn" data-link="/login">
@@ -472,89 +475,131 @@
   </div>
 </div>
 
+<div id="sidebar-placeholder"></div>
+<div class="overlay" id="overlay"></div>
+
 <script>
-// SIDEBAR TOGGLE
-const menuToggle = document.getElementById("menuToggle");
-const sidebar = document.getElementById("sidebar");
+  // -------------------- Load Sidebar --------------------
+  fetch('/sidebar')
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById('sidebar-placeholder').innerHTML = data;
 
-menuToggle.addEventListener("click", () => {
-  sidebar.classList.toggle("closed");
-});
+      const sidebar = document.getElementById('sidebar');
+      const menuToggle = document.getElementById('menuToggle');
+      const overlay = document.getElementById('overlay');
 
-if (window.innerWidth < 900) {
-  sidebar.classList.add("closed");
-}
+      const dashBtn = document.getElementById('dashboardBtn');
+      const adoptionBtn = document.getElementById('adoptionBtn');
+      const donationBtn = document.getElementById('donationBtn');
+      const applicationBtn = document.getElementById('applicationBtn');
+      const profileBtn = document.querySelector('.account');
+      const logoutBtn = document.getElementById('logoutBtn');
 
-// NAVIGATION + ACTIVE STATE
-const currentPage = window.location.pathname;
-const urlParams = new URLSearchParams(window.location.search);
-const username = urlParams.get('username') || 'User';
+      // -------------------- Username --------------------
+      const urlParams = new URLSearchParams(window.location.search);
+      let username = urlParams.get('username') || localStorage.getItem('username') || 'User';
 
-document.querySelectorAll(".nav-item").forEach(item => {
-  const link = item.dataset.link;
-  if (!link) return;
+      // Save username in localStorage for future use
+      if (username && username !== 'User') localStorage.setItem('username', username);
 
-  if (currentPage === link && item.id !== "logoutBtn") {
-    item.classList.add("active-item");
-  }
+      const userQuery = `?username=${encodeURIComponent(username)}`;
 
-  item.addEventListener("click", () => {
-    if (item.id === "logoutBtn") {
-      window.location.href = `${link}?msg=logged_out`;
-    } else if (currentPage !== link) {
-      window.location.href = `${link}?username=${encodeURIComponent(username)}`;
-    }
-  });
-});
+      // -------------------- Sidebar Toggle --------------------
+      sidebar.classList.add('closed');
 
-// NOTIFICATION DROPDOWN
-const notificationBtn = document.getElementById('notificationBtn');
-const notifDropdown = document.getElementById('notifDropdown');
-const notifBadge = document.getElementById('notificationBadge');
+      if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('closed');
+          document.body.classList.toggle('sidebar-open');
+          overlay.classList.toggle('active');
+        });
+      }
 
-notificationBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  notifDropdown.classList.toggle('visible');
-});
+      if (overlay) {
+        overlay.addEventListener('click', () => {
+          sidebar.classList.add('closed');
+          document.body.classList.remove('sidebar-open');
+          overlay.classList.remove('active');
+        });
+      }
 
-window.addEventListener('click', (e) => {
-  if (notifDropdown.classList.contains('visible') &&
-      !notifDropdown.contains(e.target) &&
-      e.target !== notificationBtn) {
-    notifDropdown.classList.remove('visible');
-  }
-});
+      // -------------------- Navigation --------------------
+      if (dashBtn) dashBtn.addEventListener('click', () => window.location.href = `/dashboard${userQuery}`);
+      if (adoptionBtn) adoptionBtn.addEventListener('click', () => window.location.href = `/adoption_hub${userQuery}`);
+      if (donationBtn) donationBtn.addEventListener('click', () => window.location.href = `/donations${userQuery}`);
+      if (applicationBtn) applicationBtn.addEventListener('click', () => window.location.href = `/application${userQuery}`);
+      if (KamustahanBtn) KamustahanBtn.addEventListener('click', () => window.location.href = `/kamustahan${userQuery}`);
+      if (logoutBtn) logoutBtn.addEventListener('click', () => window.location.href = `/login?msg=logged_out`);
 
-// Action buttons inside notifications
-notifDropdown.querySelectorAll('.notif-action-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    const action = btn.dataset.action;
-    if (action === 'view' && btn.dataset.target) {
-      window.location.href = btn.dataset.target;
-    }
-    // You can add 'dismiss' logic here if needed
-  });
-});
+      // -------------------- Profile Button --------------------
+      if (profileBtn) {
+        profileBtn.addEventListener('click', () => {
+          window.location.href = `/profile${userQuery}`;
+        });
 
-// Clear all
-const clearBtn = document.getElementById('clearNotifBtn');
-if (clearBtn) {
-  clearBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    notifDropdown.querySelectorAll('.notif-item').forEach(i => i.remove());
-    updateBadgeCount();
-  });
-}
+        const profileLink = profileBtn.querySelector('a');
+        if (profileLink) profileLink.href = `/profile${userQuery}`;
+      }
 
-function updateBadgeCount() {
-  const remaining = notifDropdown.querySelectorAll('.notif-item').length;
-  notifBadge.textContent = remaining;
-  notifBadge.style.display = remaining > 0 ? 'flex' : 'none';
-}
+      // -------------------- Active Page Highlight --------------------
+      document.querySelectorAll('.nav-item').forEach(item => {
+        const link = item.dataset.link;
+        if (!link) return;
+        if (window.location.pathname === link && item.id !== 'logoutBtn') {
+          item.classList.add('active-item');
+        }
+      });
 
-updateBadgeCount();
+      // -------------------- Notifications --------------------
+      const notificationBtn = document.getElementById('notificationBtn');
+      const notifDropdown = document.getElementById('notifDropdown');
+      const notifBadge = document.getElementById('notificationBadge');
+
+      if (notificationBtn && notifDropdown) {
+        notificationBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          notifDropdown.classList.toggle('visible');
+        });
+
+        window.addEventListener('click', e => {
+          if (notifDropdown.classList.contains('visible') &&
+              !notifDropdown.contains(e.target) &&
+              e.target !== notificationBtn) {
+            notifDropdown.classList.remove('visible');
+          }
+        });
+
+        // Notification action buttons
+        notifDropdown.querySelectorAll('.notif-action-btn').forEach(btn => {
+          btn.addEventListener('click', e => {
+            e.stopPropagation();
+            const action = btn.dataset.action;
+            if (action === 'view' && btn.dataset.target) {
+              window.location.href = btn.dataset.target;
+            }
+          });
+        });
+
+        // Clear all notifications
+        const clearBtn = document.getElementById('clearNotifBtn');
+        if (clearBtn) {
+          clearBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            notifDropdown.querySelectorAll('.notif-item').forEach(i => i.remove());
+            updateBadgeCount();
+          });
+        }
+
+        function updateBadgeCount() {
+          const remaining = notifDropdown.querySelectorAll('.notif-item').length;
+          notifBadge.textContent = remaining;
+          notifBadge.style.display = remaining > 0 ? 'flex' : 'none';
+        }
+
+        updateBadgeCount();
+      }
+    });
 </script>
-
 </body>
 </html>

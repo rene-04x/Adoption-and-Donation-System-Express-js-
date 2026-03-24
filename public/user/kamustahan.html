@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAWSsion - Kamustahan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700,800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:#f0f2f5; font-family:'Inter',sans-serif; min-height:100vh; color:#050505; overflow-x:hidden; }
+#kamustahanSection { margin-left:320px; padding:110px 4% 40px; transition:all 0.4s ease; animation: fadeIn 0.8s ease-out; }
+body.sidebar-closed #kamustahanSection { margin-left:0; }
+.kamustahan-header { margin-bottom:20px; }
+.kamustahan-header h1 { font-size:28px; color:#1877f2; font-weight:700; }
+.kamustahan-header p { color:#65676b; margin-top:4px; }
+
+.filter-bar { display:flex; gap:15px; margin-bottom:20px; align-items:center; position:relative; z-index:100; }
+.search-box { flex:1; position:relative; display:flex; align-items:center; }
+.search-box i { position:absolute; left:15px; color:#65676b; font-size:14px; pointer-events:none; }
+.search-box input { width:100%; padding:10px 15px 10px 40px; border-radius:20px; border:1px solid #ccd0d5; outline:none; font-size:14px; background:#fff; }
+.search-box input:focus { border-color:#1877f2; box-shadow:0 0 0 2px rgba(24,119,242,0.2); }
+.filter-btn { padding:8px 15px; border-radius:20px; border:1px solid #ccd0d5; background:white; cursor:pointer; display:flex; align-items:center; gap:6px; font-size:14px; }
+.dropdown { position:relative; display:inline-block; }
+.dropdown-content { display:none; position:absolute; right:0; background:white; min-width:180px; box-shadow:0 4px 12px rgba(0,0,0,0.15); border-radius:8px; margin-top:5px; padding:5px 0; border:1px solid #ccd0d5; z-index:1000; }
+.dropdown-content a { color:#050505; padding:8px 15px; display:block; font-size:14px; text-decoration:none; }
+.dropdown-content a:hover { background:#f0f2f5; color:#1877f2; }
+.show { display:block; }
+
+.feed { display:flex; flex-direction:column; gap:15px; margin-top:1rem; }
+
+/* Facebook-like post card */
+.update-card { background:white; padding:12px 15px; border-radius:12px; border:1px solid #dddfe2; box-shadow:0 1px 2px rgba(0,0,0,0.05); transition:0.2s; }
+.update-card:hover { box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+.update-card .header { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.update-card .header img { width:40px; height:40px; border-radius:50%; }
+.update-card .header span { font-weight:600; font-size:15px; }
+.update-card p { color:#050505; font-size:14px; line-height:1.4; margin-bottom:10px; }
+
+.update-actions { display:flex; gap:20px; border-top:1px solid #eee; padding-top:8px; font-size:14px; color:#65676b; }
+.update-actions button { border:none; background:none; cursor:pointer; display:flex; align-items:center; gap:5px; padding:4px 0; font-size:14px; color:#65676b; border-radius:6px; transition:0.2s; }
+.update-actions button:hover { background:#f0f2f5; color:#1877f2; }
+.update-actions .like.active { color:#1877f2; font-weight:600; }
+
+/* Comments */
+.comment-section { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+.comment { display:flex; align-items:flex-start; gap:10px; }
+.comment img { width:30px; height:30px; border-radius:50%; }
+.comment-body { display:flex; flex-direction:column; }
+.comment-body .comment-user { font-weight:600; font-size:14px; margin-right:5px; }
+.comment-body .text { font-size:14px; margin-top:2px; }
+.comment-body .time { font-size:11px; color:#65676b; margin-top:1px; }
+.reply-section .comment { display:flex; align-items:flex-start; gap:5px; margin-top:4px; }
+.comment-input { display:none; margin-top:5px; flex-direction:row; gap:5px; }
+.comment-input input, .reply-input input { flex:1; border-radius:20px; border:1px solid #ccd0d5; padding:6px 12px; outline:none; font-size:14px; }
+.comment-input button, .reply-input button { border:none; background:none; cursor:pointer; font-size:16px; color:#1877f2; }
+.reply-input { display:none; flex-direction:row; gap:5px; margin-top:5px; }
+
+/* Media grid for images */
+.post-media { display:grid; gap:5px; margin-top:10px; }
+.post-media img { width:100%; height:100%; object-fit:cover; border-radius:8px; }
+.post-media.grid-1 { grid-template-columns:1fr; }
+.post-media.grid-2 { grid-template-columns:1fr 1fr; }
+.post-media.grid-3 { grid-template-columns:1fr 1fr 1fr; }
+
+/* New update input */
+.new-update { display:flex; align-items:center; gap:10px; margin-top:15px; border-radius:20px; padding:8px 12px; background:white; border:1px solid #ccd0d5; box-shadow:0 1px 2px rgba(0,0,0,0.05); cursor:pointer; }
+.new-update img { width:40px; height:40px; border-radius:50%; }
+.new-update input { flex:1; border:none; outline:none; padding:10px 12px; border-radius:20px; background:#f0f2f5; cursor:pointer; }
+
+/* Modal Styles */
+.update-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:200; justify-content:center; align-items:center; }
+.update-modal .modal-content { background:white; padding:20px; border-radius:12px; width:100%; max-width:500px; }
+.modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.modal-header #closeModal { font-size:20px; cursor:pointer; }
+.modal-body textarea { width:100%; padding:10px; border-radius:12px; border:1px solid #ccd0d5; outline:none; resize:none; }
+.media-buttons { display:flex; gap:10px; margin-top:10px; }
+.media-buttons label { cursor:pointer; display:flex; align-items:center; gap:5px; font-size:14px; color:#1877f2; }
+.media-preview { display:flex; flex-wrap:wrap; gap:10px; margin-top:10px; }
+.media-preview img, .media-preview video { width:80px; height:80px; object-fit:cover; border-radius:8px; border:1px solid #ccc; }
+.modal-footer { margin-top:15px; text-align:right; }
+.modal-footer button { padding:8px 16px; border:none; border-radius:20px; background:#1877f2; color:white; cursor:pointer; font-weight:600; }
+
+@keyframes fadeIn { from { opacity:0; transform: translateY(20px);} to { opacity:1; transform: translateY(0);} }
+</style>
+</head>
+<body>
+
+<div id="sidebar-placeholder"></div>
+
+<main id="kamustahanSection">
+  <div class="kamustahan-header">
+    <h1>Pet Updates <small style="color:#65676b; font-weight:400;">(Kamustahan)</small></h1>
+    <p>Share your updates and check on other adopters' pets!</p>
+  </div>
+
+  <div class="filter-bar">
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Search by pet name or adopter">
+    </div>
+    <div class="dropdown">
+      <button class="filter-btn" onclick="toggleDropdown('filterMenu')"><i class="fa-solid fa-filter"></i> Filter ⌵</button>
+      <div id="filterMenu" class="dropdown-content">
+        <a href="#" onclick="filterBy('All')">All</a>
+        <a href="#" onclick="filterBy('Dogs')">Dogs</a>
+        <a href="#" onclick="filterBy('Cats')">Cats</a>
+      </div>
+    </div>
+    <div class="dropdown">
+      <button class="filter-btn" onclick="toggleDropdown('sortMenu')"><i class="fa-solid fa-sort"></i> Sort ⌵</button>
+      <div id="sortMenu" class="dropdown-content">
+        <a href="#" onclick="sortUpdates('Newest')">Newest</a>
+        <a href="#" onclick="sortUpdates('Oldest')">Oldest</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- New Update Input -->
+  <div class="new-update" id="newUpdateTrigger">
+<img src="../images/user-avatar.png" alt="User Avatar">
+  <input type="text" id="updatePlaceholder" readonly placeholder="Share an update...">
+    <div style="display:flex; gap:10px; margin-left:auto;">
+      <i class="fas fa-image" style="cursor:pointer;"></i>
+      <i class="fas fa-video" style="cursor:pointer;"></i>
+    </div>
+  </div>
+
+ 
+  <!-- Modal -->
+  <div id="updateModal" class="update-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span id="closeModal">&times;</span>
+        <h3>Create Post</h3>
+      </div>
+      <div class="modal-body">
+        <textarea id="modalInput" placeholder="What's on your mind?" rows="4"></textarea>
+        <div class="media-preview" id="mediaPreview"></div>
+        <div class="media-buttons">
+          <label><i class="fas fa-image"></i> Add Image
+            <input type="file" id="imageInput" accept="image/*" multiple hidden>
+          </label>
+          <label><i class="fas fa-video"></i> Add Video
+            <input type="file" id="videoInput" accept="video/*" hidden>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="postModalBtn">Post</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feed -->
+  <div class="feed" id="feed"></div>
+</main>
+<script>
+  // Sidebar load
+  fetch('/sidebar')
+  .then(res => res.text())
+  .then(data => { 
+    document.getElementById('sidebar-placeholder').innerHTML = data; 
+    initializeSidebar(); 
+  });
+
+  function initializeSidebar() {
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const currentPath = window.location.pathname;
+    const urlParams = new URLSearchParams(window.location.search);
+    let username = urlParams.get('username') || localStorage.getItem('username') || 'User';
+    if (username !== 'User') localStorage.setItem('username', username);
+    const queryStr = `?username=${encodeURIComponent(username)}`;
+
+    if (menuToggle && sidebar) {
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('closed');
+        document.body.classList.toggle('sidebar-closed');
+      });
+    }
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      const link = item.dataset.link;
+      if (!link) return;
+      if (currentPath === link && item.id !== 'logoutBtn') item.classList.add('active-item');
+      item.addEventListener('click', () => {
+        if (item.id === 'logoutBtn') {
+          localStorage.removeItem('username');
+          window.location.href = '/login?msg=logged_out';
+        } else {
+          window.location.href = link + queryStr;
+        }
+      });
+    });
+  }
+
+  function toggleDropdown(id) {
+    document.getElementById("filterMenu").classList.remove("show");
+    document.getElementById("sortMenu").classList.remove("show");
+    document.getElementById(id).classList.toggle("show");
+  }
+
+  window.onclick = function(event){
+    if(!event.target.matches('.filter-btn') && !event.target.closest('.filter-btn')){
+      document.querySelectorAll(".dropdown-content").forEach(menu => menu.classList.remove("show"));
+    }
+  }
+
+  const feed = document.getElementById('feed');
+
+  // Modal functionality
+  const modal = document.getElementById('updateModal');
+  const modalInput = document.getElementById('modalInput');
+  const newUpdateTrigger = document.getElementById('newUpdateTrigger');
+  const closeModal = document.getElementById('closeModal');
+  const postModalBtn = document.getElementById('postModalBtn');
+  const imageInput = document.getElementById('imageInput');
+  const videoInput = document.getElementById('videoInput');
+  const mediaPreview = document.getElementById('mediaPreview');
+
+  newUpdateTrigger.addEventListener('click', () => {
+    modal.style.display = 'flex';
+    modalInput.focus();
+  });
+
+  closeModal.addEventListener('click', () => modal.style.display = 'none');
+  window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
+
+  // Show selected images/videos in preview
+  imageInput.addEventListener('change', e => {
+    mediaPreview.innerHTML = '';
+    Array.from(e.target.files).forEach(file => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      mediaPreview.appendChild(img);
+    });
+  });
+
+  videoInput.addEventListener('change', e => {
+    mediaPreview.innerHTML = '';
+    const file = e.target.files[0];
+    if(file){
+      const vid = document.createElement('video');
+      vid.src = URL.createObjectURL(file);
+      vid.controls = true;
+      mediaPreview.appendChild(vid);
+    }
+  });
+
+  // Posting from modal
+  postModalBtn.addEventListener('click', () => {
+    const message = modalInput.value.trim();
+    if(!message && mediaPreview.children.length === 0) return;
+
+    const username = localStorage.getItem('username') || 'User';
+    const card = document.createElement('div');
+    card.classList.add('update-card');
+
+    // Media grid
+    let images = [];
+    let mediaHTML = '';
+    Array.from(mediaPreview.children).forEach(media => {
+      if(media.tagName === 'IMG') images.push(media.src);
+    });
+    if(images.length>0){
+      const gridClass = images.length===1?'grid-1':images.length===2?'grid-2':'grid-3';
+      mediaHTML += `<div class="post-media ${gridClass}">`;
+      for(let i=0;i<Math.min(9,images.length);i++){
+        mediaHTML += `<img src="${images[i]}">`;
+      }
+      mediaHTML += '</div>';
+    }
+    Array.from(mediaPreview.children).forEach(media=>{
+      if(media.tagName==='VIDEO'){
+        mediaHTML += `<video src="${media.src}" controls style="width:100%; margin-top:5px; border-radius:8px;"></video>`;
+      }
+    });
+
+    card.innerHTML = `
+      <div class="header">
+        <img src="../images/user-avatar.png">
+        <span>${username}</span>
+      </div>
+      <p>${message}</p>
+      ${mediaHTML}
+      <div class="update-actions">
+        <button class="like"><i class="fas fa-thumbs-up"></i> Like</button>
+        <button class="comment-toggle"><i class="fas fa-comment"></i> Comment</button>
+      </div>
+      <div class="comment-section"></div>
+      <div class="comment-input">
+        <input type="text" placeholder="Write a comment...">
+        <button>Post</button>
+      </div>
+    `;
+    feed.prepend(card);
+
+    // reset modal
+    modalInput.value = '';
+    mediaPreview.innerHTML = '';
+    modal.style.display = 'none';
+
+    // Like & Comment toggle
+    const likeBtn = card.querySelector('.like');
+    likeBtn.addEventListener('click', e=> e.currentTarget.classList.toggle('active'));
+
+    const commentToggle = card.querySelector('.comment-toggle');
+    const commentInputDiv = card.querySelector('.comment-input');
+    const commentSection = card.querySelector('.comment-section');
+
+    commentToggle.addEventListener('click', ()=>{
+      commentInputDiv.style.display = commentInputDiv.style.display==='flex'?'none':'flex';
+      if(commentInputDiv.style.display==='flex') commentInputDiv.querySelector('input').focus();
+    });
+
+    // Comments with username, date, time, replies
+    const postBtn = commentInputDiv.querySelector('button');
+    const commentInput = commentInputDiv.querySelector('input');
+    postBtn.addEventListener('click', ()=> addComment(commentSection, commentInput, username));
+    commentInput.addEventListener('keypress', e => { if(e.key==='Enter') postBtn.click(); });
+  });
+
+  function addComment(section, input, username){
+    const text = input.value.trim();
+    if(!text) return;
+    const now = new Date();
+    const commentDiv = document.createElement('div');
+    commentDiv.classList.add('comment');
+    commentDiv.innerHTML = `
+      <img src="../images/user-avatar.png">
+      <div class="comment-body">
+        <span class="comment-user">${username}</span>
+        <div class="text">${text}</div>
+        <div class="time">${now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})} • ${now.toLocaleDateString()}</div>
+        <button class="reply-btn" style="border:none;background:none;color:#1877f2;font-size:12px;margin-top:2px;">Reply</button>
+        <div class="reply-section" style="margin-left:30px;margin-top:5px;"></div>
+        <div class="reply-input" style="display:none; flex-direction:row; gap:5px; margin-top:5px;">
+          <input type="text" placeholder="Write a reply...">
+          <button style="border:none;background:none;color:#1877f2;cursor:pointer;">Post</button>
+        </div>
+      </div>
+    `;
+    section.appendChild(commentDiv);
+    input.value='';
+
+    const replyBtn = commentDiv.querySelector('.reply-btn');
+    const replyInputDiv = commentDiv.querySelector('.reply-input');
+    const replyInput = replyInputDiv.querySelector('input');
+    const replyPostBtn = replyInputDiv.querySelector('button');
+    const replySection = commentDiv.querySelector('.reply-section');
+
+    replyBtn.addEventListener('click', ()=>{
+      replyInputDiv.style.display = replyInputDiv.style.display==='flex'?'none':'flex';
+      if(replyInputDiv.style.display==='flex') replyInput.focus();
+    });
+
+    replyPostBtn.addEventListener('click', ()=>{
+      const replyText = replyInput.value.trim(); if(!replyText) return;
+      const replyNow = new Date();
+      const replyDiv = document.createElement('div');
+      replyDiv.classList.add('comment');
+      replyDiv.style.marginBottom='4px';
+      replyDiv.innerHTML = `
+        <img src="../images/user-avatar.png">
+        <div class="comment-body">
+          <span class="comment-user">${username}</span>
+          <div class="text">${replyText}</div>
+          <div class="time">${replyNow.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})} • ${replyNow.toLocaleDateString()}</div>
+        </div>
+      `;
+      replySection.appendChild(replyDiv);
+      replyInput.value='';
+    });
+
+    replyInput.addEventListener('keypress', e=>{ if(e.key==='Enter') replyPostBtn.click(); });
+  }
+  // Set username in update input
+const updatePlaceholder = document.getElementById('updatePlaceholder');
+const currentUser = localStorage.getItem('username') || 'User';
+
+updatePlaceholder.placeholder = `What's on your mind, ${currentUser}?`;
+</script>
+
+</body>
+</html>

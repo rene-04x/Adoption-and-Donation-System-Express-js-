@@ -12,10 +12,7 @@ app.use('/user', express.static(path.join(__dirname, 'public/user')));
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/landing_page/index.html');
 });
-app.get('/profile', (req, res) => {
-    // Ensure the file is actually at public/user/profile.html
-    res.sendFile(path.join(__dirname, '/public/user/profile.html'));
-});
+
 
 app.get('/donations', (req, res) => {
     res.sendFile(__dirname + '/public/user/donations.html');
@@ -160,10 +157,9 @@ app.get('/feedback', (req, res) => {
 app.get('/contact-support', (req, res) => {
     res.sendFile(__dirname + '/public/support/contact-support.html');
 });
-
-
-
-
+app.get('/kamustahan', (req, res) => {
+    res.sendFile(__dirname + '/public/user/kamustahan.html');
+});
 app.listen(3000, () => {
     console.log('Server is running at http://localhost:3000');
 });

@@ -227,10 +227,10 @@ body.sidebar-closed .profile-container {
 <nav>
     <img src="/images/logo.png" alt="Logo" class="logo" id="menuToggle">
     <img src="/images/PAWSsion.png" alt="PAWSsion" class="name">
-    <div class="account">
-        <i class="fa-solid fa-circle-user account-icon"></i>
-        <span>Profile</span>
-    </div>
+<div class="account" onclick="location.href='/profile'">
+  <i class="fa-solid fa-circle-user account-icon"></i>
+  <a href="/profile">Profile</a>
+</div>
 </nav>
 
 <div class="sidebar" id="sidebar">
@@ -383,6 +383,15 @@ body.sidebar-closed .profile-container {
     document.getElementById('donationBtn').onclick = () => {
         window.location.href = '/donations';
     };
+    const urlParams = new URLSearchParams(window.location.search);
+let username = urlParams.get('username');
+
+if (!username) {
+    username = localStorage.getItem('username') || 'User';
+}
+
+// Now you can use `username` to display greeting
+document.querySelector('h2').textContent = `Hi, ${username}`;
 </script>
 
 </body>

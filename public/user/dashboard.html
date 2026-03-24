@@ -539,9 +539,8 @@
 
     </section>
   </main>
-
 <script>
-// Sidebar loading (unchanged - add your toggle/nav logic here if needed)
+// -------------------- Sidebar Loading --------------------
 fetch('/sidebar')
   .then(res => res.text())
   .then(data => {
@@ -553,10 +552,19 @@ function initializeSidebar() {
   const menuToggle = document.getElementById('menuToggle');
   const sidebar = document.getElementById('sidebar');
   const currentPath = window.location.pathname;
+
+  // Read username from URL param or localStorage
   const urlParams = new URLSearchParams(window.location.search);
-  const username = urlParams.get('username') || 'User';
+  let username = urlParams.get('username') || localStorage.getItem('username') || 'User';
+
+  // Store username in localStorage so other pages can access it
+  if (username && username !== 'User') {
+    localStorage.setItem('username', username);
+  }
+
   const queryStr = `?username=${encodeURIComponent(username)}`;
 
+  // Sidebar toggle
   if (menuToggle && sidebar) {
     menuToggle.addEventListener('click', () => {
       sidebar.classList.toggle('closed');
@@ -564,37 +572,51 @@ function initializeSidebar() {
     });
   }
 
+  // Sidebar navigation links
   document.querySelectorAll('.nav-item').forEach(item => {
     const link = item.dataset.link;
     if (!link) return;
 
+    // Highlight active page
     if (currentPath === link && item.id !== 'logoutBtn') {
       item.classList.add('active-item');
     }
 
+    // Navigation click
     item.addEventListener('click', () => {
       if (item.id === 'logoutBtn') {
+        localStorage.removeItem('username'); // Clear username on logout
         window.location.href = `${link}?msg=logged_out`;
       } else if (currentPath !== link) {
         window.location.href = `${link}${queryStr}`;
       }
     });
   });
+
+  // Profile button logic
+  const profileBtn = document.querySelector('.account');
+  if (profileBtn) {
+    profileBtn.addEventListener('click', () => {
+      window.location.href = `/profile${queryStr}`;
+    });
+
+    const profileLink = profileBtn.querySelector('a');
+    if (profileLink) profileLink.href = `/profile${queryStr}`;
+  }
 }
 
-// Current Application - enhanced rendering
+// -------------------- Current Application --------------------
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('activeAppContainer');
   if (!container) return;
 
-  // Example data structure (you can replace this with real data from localStorage / API)
   const savedApp = JSON.parse(localStorage.getItem('userApplication')) || {
-    petImg: "../images/dog-example-chade.jpg",   // ← change to your actual path
-    petName: "Chade",
+    petImg: "../images/dog-example-chade.jpg",
+    petName: "pets",
     status: "Form Submitted",
     submittedDate: "May 24, 2024",
     applicationType: "Standard Adoption Form",
-    progress: 35  // percentage
+    progress: 35
   };
 
   if (savedApp && savedApp.petName) {
@@ -605,23 +627,19 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
         <div class="app-info">
           <div class="app-pet-name">${savedApp.petName}</div>
-          
           <div class="app-status">
             <span class="status-badge">
               <i class="fas fa-check-circle"></i>
               Status: ${savedApp.status}
             </span>
           </div>
-
           <div class="app-meta">
             <strong>Application Type:</strong> ${savedApp.applicationType}<br>
             <strong>Submitted on:</strong> ${savedApp.submittedDate}
           </div>
-
           <div class="progress-container">
             <div class="progress-bar" style="width: ${savedApp.progress || 35}%;"></div>
           </div>
-
           <div class="app-actions">
             <a href="/application" class="view-details-btn">
               <i class="fas fa-eye"></i> View Details
