@@ -1,249 +1,560 @@
-<style>
-:root{
-    --primary-blue:#02407D;
-    --hover-blue:#2f6edb;
-    --accent-yellow:#FFD700;
-    --glass-white:rgba(255,255,255,0.85);
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PAWSsion Dashboard</title>
+  <!-- Font Awesome (assuming you're using it for icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-/* NAVBAR */
-nav{
-    position:fixed;
-    top:0;
-    width:100%;
-    height:80px;
-    background:rgba(255,255,255,0.95);
-    backdrop-filter:blur(10px);
-    z-index:3000;
-    box-shadow:0 4px 20px rgba(0,0,0,0.05);
-    display:flex;
-    align-items:center;
-    padding:0 2%;
-}
-
-nav .logo{
-    height:50px;
-    cursor:pointer;
-    transition:0.3s ease;
-    margin-left:10px;
-}
-
-nav .logo:hover{
-    transform:rotate(-5deg) scale(1.08);
-}
-
-nav .name{
-    height:28px;
-    margin-left:20px;
-}
-
-/* ACCOUNT BUTTON */
-nav .account{
-    margin-left:auto;
-    margin-right:20px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    background:rgba(124,169,255,0.15);
-    padding:8px 18px;
-    border-radius:50px;
-    cursor:pointer;
-    border:1px solid rgba(2,64,125,0.15);
-    transition:all .35s ease;
-}
-
-nav .account:hover{
-    background:var(--primary-blue);
-    transform:translateY(-2px);
-    box-shadow:0 8px 15px rgba(2,64,125,0.25);
-}
-
-nav .account-icon{
-    font-size:26px;
-    color:var(--primary-blue);
-    transition:0.3s;
-}
-
-nav .account a{
-    color:var(--primary-blue);
-    font-weight:600;
-    font-size:15px;
-    pointer-events:none;
-}
-
-nav .account:hover .account-icon,
-nav .account:hover a{
-    color:white !important;
-}
-
-/* SIDEBAR */
-.sidebar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:300px;
-    height:100%;
-    background:#ffffff;
-    z-index:2000;
-    padding:100px 20px 40px;
-    box-shadow:8px 0 30px rgba(0,0,0,0.08);
-    display:flex;
-    flex-direction:column;
-    transition:0.35s ease;
-}
-
-.sidebar.closed{
-    left:-300px;
-}
-
-.sidebar-label{
-    color:#777;
-    font-size:13px;
-    margin:25px 0 12px 12px;
-    font-weight:500;
-    letter-spacing:1px;
-}
-
-.sidebar ul{
-    list-style:none;
-}
-
-/* SIDEBAR ITEMS */
-.nav-item{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    padding:12px 15px;
-    color:#333;
-    font-size:16px;
-    font-weight:500;
-    border-radius:10px;
-    transition:all .25s ease;
-    margin-bottom:6px;
-    cursor:pointer;
-}
-
-.nav-item i{
-    color:var(--primary-blue);
-    font-size:18px;
-}
-
-.nav-item:hover{
-    background:linear-gradient(135deg,var(--primary-blue),var(--hover-blue));
-    color:white;
-    transform:translateX(5px);
-}
-
-.nav-item:hover i{
-    color:white;
-}
-
-.active-item{
-    background:var(--primary-blue);
-    color:white !important;
-}
-
-.active-item i{
-    color:white !important;
-}
-
-/* MOBILE */
-@media(max-width:900px){
-
-    .sidebar{
-        left:-300px;
+  <style>
+    :root {
+      --primary-blue: #02407D;
+      --hover-blue: #2f6edb;
+      --accent-yellow: #FFD700;
+      --glass-white: rgba(255,255,255,0.85);
     }
 
-}
-</style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f8fafc;
+    }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 80px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      z-index: 3000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+      padding: 0 2%;
+      gap: 16px;
+    }
+
+    nav .logo {
+      height: 50px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-left: 10px;
+    }
+
+    nav .logo:hover {
+      transform: rotate(-5deg) scale(1.08);
+    }
+
+    nav .pawssion-brand {
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: -0.5px;
+      background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      cursor: pointer;
+    }
+
+    /* RIGHT GROUP: notification + dropdown */
+    .nav-right-group {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      position: relative;
+      gap: 12px;
+    }
+
+    /* ACCOUNT BUTTON */
+    nav .notification {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all .35s ease;
+    }
+
+    nav .notification:hover {
+      background: rgba(59,130,246,0.25);
+      transform: translateY(-2px);
+    }
+
+    nav .notification-img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+
+    nav .notification-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #f97316;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    nav .account {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(124,169,255,0.15);
+      padding: 8px 18px;
+      border-radius: 50px;
+      cursor: pointer;
+      border: 1px solid rgba(2,64,125,0.15);
+      transition: all .35s ease;
+    }
+
+    nav .account:hover {
+      background: var(--primary-blue);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(2,64,125,0.25);
+    }
+
+    nav .account-icon {
+      font-size: 26px;
+      color: var(--primary-blue);
+      transition: 0.3s;
+    }
+
+    nav .account a {
+      color: var(--primary-blue);
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      pointer-events: none;
+    }
+
+    nav .account:hover .account-icon,
+    nav .account:hover a {
+      color: white !important;
+    }
+
+    /* NOTIFICATION DROPDOWN */
+    .notif-dropdown {
+      position: absolute;
+      top: 62px;
+      right: 0;
+      width: 340px;
+      background: rgba(255,255,255,0.98);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px) translateX(-30%);
+      transition: all 0.25s ease;
+      z-index: 4000;
+    }
+
+    .notif-dropdown.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) translateX(-30%);
+    }
+
+    .notif-dropdown header {
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notif-dropdown header h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .notif-dropdown header button {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      font-weight: 700;
+      padding: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .notif-dropdown header button:hover {
+      color: #1f2937;
+    }
+
+    .notif-item {
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .notif-item:last-child {
+      border-bottom: none;
+    }
+
+    .notif-item-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .notif-item-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(59,130,246,0.12);
+      color: #1d4ed8;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .notif-item-content {
+      flex: 1;
+    }
+
+    .notif-item-content strong {
+      display: block;
+      font-size: 14px;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .notif-item-content span {
+      font-size: 13px;
+      color: #4b5563;
+    }
+
+    .notif-item-right {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .notif-item-right i {
+      color: rgba(100, 116, 139, 0.8);
+      font-size: 16px;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+
+    .notif-item-right i:hover {
+      color: rgba(15, 23, 42, 0.9);
+    }
+
+    .notif-action-btn {
+      border: 1px solid rgba(2,64,125,0.2);
+      background: rgba(255,255,255,0.9);
+      color: #02407d;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+
+    .notif-action-btn:hover {
+      background: rgba(2,64,125,0.12);
+    }
+
+    /* SIDEBAR (unchanged except minor cleanup) */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100%;
+      background: #ffffff;
+      z-index: 2000;
+      padding: 100px 20px 40px;
+      box-shadow: 8px 0 30px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      transition: left 0.35s ease;
+    }
+
+    .sidebar.closed {
+      left: -300px;
+    }
+
+    .sidebar-label {
+      color: #777;
+      font-size: 13px;
+      margin: 25px 0 12px 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 15px;
+      color: #333;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 10px;
+      transition: all .25s ease;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background: linear-gradient(135deg, var(--primary-blue), var(--hover-blue));
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .nav-item i {
+      color: var(--primary-blue);
+      font-size: 18px;
+    }
+
+    .nav-item:hover i {
+      color: white;
+    }
+
+    .active-item {
+      background: var(--primary-blue);
+      color: white !important;
+    }
+
+    .active-item i {
+      color: white !important;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        left: -300px;
+      }
+      .sidebar.closed {
+        left: -300px;
+      }
+    }
+  </style>
+</head>
+<body>
 
 <nav>
-    <img src="../images/logo.png" alt="PAWSsion Logo" class="logo" id="menuToggle">
-    <a href="/home?username={{username}}">
-        <img src="/images/PAWSsion.png" alt="PAWSsion" class="name" id="homeLink" style="cursor: pointer;">
-    </a>
+  <img src="../images/logo.png" alt="PAWSsion Logo" class="logo" id="menuToggle"/>
+  
+  <div class="pawssion-brand" id="homeLink">
+    PAWSsion
+  </div>
 
-    <div class="account" onclick="location.href='/profile'">
-        <i class="fa-solid fa-circle-user account-icon"></i>
-        <a href="/profile">Profile</a>
+  <div class="nav-right-group">
+
+    <div class="notification" id="notificationBtn" title="Notifications">
+      <img src="../images/notification.png" alt="Notifications" class="notification-img"/>
+      <span class="notification-badge" id="notificationBadge">3</span>
     </div>
+
+    <div class="notif-dropdown" id="notifDropdown" aria-hidden="true">
+      <header>
+        <h4>Notifications</h4>
+        <button id="clearNotifBtn" title="Clear all"><i class="fa-solid fa-ellipsis"></i></button>
+      </header>
+
+      <div class="notif-item">
+        <div class="notif-item-left">
+          <span class="notif-item-icon">✅</span>
+          <div class="notif-item-content">
+            <strong>Welcome!</strong>
+            <span>You’ve successfully logged in to PAWSsion.</span>
+          </div>
+        </div>
+        <div class="notif-item-right">
+          <i class="fa-solid fa-ellipsis"></i>
+        </div>
+      </div>
+
+      <div class="notif-item">
+        <div class="notif-item-left">
+          <span class="notif-item-icon">📩</span>
+          <div class="notif-item-content">
+            <strong>Application Sent!</strong>
+            <span>Your adoption request is now on its way...</span>
+          </div>
+        </div>
+        <div class="notif-item-right">
+          <button class="notif-action-btn" data-action="view" data-target="/application">View</button>
+        </div>
+      </div>
+
+      <div class="notif-item">
+        <div class="notif-item-left">
+          <span class="notif-item-icon">⚠️</span>
+          <div class="notif-item-content">
+            <strong>Donation Not Completed</strong>
+            <span>Something went wrong. Please try again.</span>
+          </div>
+        </div>
+        <div class="notif-item-right">
+          <i class="fa-solid fa-ellipsis"></i>
+        </div>
+      </div>
+
+      <div class="notif-item">
+        <div class="notif-item-left">
+          <span class="notif-item-icon">💛</span>
+          <div class="notif-item-content">
+            <strong>Thank You for Your Kindness!</strong>
+            <span>Your donation helps give animals a better life.</span>
+          </div>
+        </div>
+        <div class="notif-item-right">
+          <i class="fa-solid fa-ellipsis"></i>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="account" onclick="location.href='/profile'">
+    <i class="fa-solid fa-circle-user account-icon"></i>
+    <a href="/profile">Profile</a>
+  </div>
 </nav>
 
-
+<!-- Your sidebar code remains the same -->
 <div class="sidebar" id="sidebar">
+  <p class="sidebar-label">Menu</p>
 
-    <p class="sidebar-label">Menu</p>
+  <div class="nav-item" id="dashboardBtn" data-link="/dashboard">
+    <span class="icon">⊞</span> Dashboard
+  </div>
 
-    <div class="nav-item" id="dashboardBtn" data-link="/dashboard">
-        <span class="icon">⊞</span> Dashboard
+  <div class="nav-item" id="adoptionBtn" data-link="/adoption_hub">
+    <i class="fa-solid fa-paw"></i> Adoption Hub
+  </div>
+
+  <div class="nav-item" id="applicationBtn" data-link="/application">
+    <i class="fa-solid fa-chalkboard-user"></i> My Application
+  </div>
+
+  <p class="sidebar-label">Community & Support</p>
+
+  <div class="nav-item" id="donationBtn" data-link="/donations">
+    <i class="fa-solid fa-money-bill"></i> My Donations
+  </div>
+
+  <div class="logout-section" style="margin-top: auto; padding-top: 20px;">
+    <div class="nav-item" id="logoutBtn" data-link="/login">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
     </div>
-
-    <ul>
-
-        <li>
-            <div class="nav-item" id="adoptionBtn" data-link="/adoption_hub">
-                <i class="fa-solid fa-paw"></i> Adoption Hub
-            </div>
-        </li>
-
-        <li>
-            <div class="nav-item" id="applicationBtn" data-link="/application">
-                <i class="fa-solid fa-chalkboard-user"></i>
-                My Application
-            </div>
-        </li>
-
-    </ul>
-    <p class="sidebar-label">Community & Support</p>
-    <ul>
-
-        <li>
-            <div class="nav-item" id="donationBtn" data-link="/donations">
-                <i class="fa-solid fa-money-bill"></i>
-                My Donations
-            </div>
-        </li>
-
-    </ul>
-
+  </div>
 </div>
 
 <script>
-    /* SIDEBAR TOGGLE */
-    const menuToggle = document.getElementById("menuToggle");
-    const sidebar = document.getElementById("sidebar");
+// SIDEBAR TOGGLE
+const menuToggle = document.getElementById("menuToggle");
+const sidebar = document.getElementById("sidebar");
 
-    menuToggle.addEventListener("click", () => {
-        sidebar.classList.toggle("closed");
-    });
+menuToggle.addEventListener("click", () => {
+  sidebar.classList.toggle("closed");
+});
 
-    /* CLOSE ON MOBILE */
-    if (window.innerWidth < 900) {
-        sidebar.classList.add("closed");
+if (window.innerWidth < 900) {
+  sidebar.classList.add("closed");
+}
+
+// NAVIGATION + ACTIVE STATE
+const currentPage = window.location.pathname;
+const urlParams = new URLSearchParams(window.location.search);
+const username = urlParams.get('username') || 'User';
+
+document.querySelectorAll(".nav-item").forEach(item => {
+  const link = item.dataset.link;
+  if (!link) return;
+
+  if (currentPage === link && item.id !== "logoutBtn") {
+    item.classList.add("active-item");
+  }
+
+  item.addEventListener("click", () => {
+    if (item.id === "logoutBtn") {
+      window.location.href = `${link}?msg=logged_out`;
+    } else if (currentPage !== link) {
+      window.location.href = `${link}?username=${encodeURIComponent(username)}`;
     }
+  });
+});
 
-    /* NAVIGATION LOGIC */
-    const currentPage = window.location.pathname;
-    
-    // Kunin ang username sa URL para laging bitbit sa susunod na page
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('username') || 'User';
+// NOTIFICATION DROPDOWN
+const notificationBtn = document.getElementById('notificationBtn');
+const notifDropdown = document.getElementById('notifDropdown');
+const notifBadge = document.getElementById('notificationBadge');
 
-    document.querySelectorAll(".nav-item").forEach(item => {
-        const link = item.dataset.link;
+notificationBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  notifDropdown.classList.toggle('visible');
+});
 
-        // I-highlight ang active page
-        if (currentPage === link) {
-            item.classList.add("active-item");
-        }
+window.addEventListener('click', (e) => {
+  if (notifDropdown.classList.contains('visible') &&
+      !notifDropdown.contains(e.target) &&
+      e.target !== notificationBtn) {
+    notifDropdown.classList.remove('visible');
+  }
+});
 
-        // Click event: Mag-navigate lang kung hindi ito ang kasalukuyang page
-        item.addEventListener("click", () => {
-            if (currentPage !== link) {
-                // I-redirect sa link na may kasamang username
-                window.location.href = `${link}?username=${encodeURIComponent(username)}`;
-            }
-        });
-    });
+// Action buttons inside notifications
+notifDropdown.querySelectorAll('.notif-action-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const action = btn.dataset.action;
+    if (action === 'view' && btn.dataset.target) {
+      window.location.href = btn.dataset.target;
+    }
+    // You can add 'dismiss' logic here if needed
+  });
+});
+
+// Clear all
+const clearBtn = document.getElementById('clearNotifBtn');
+if (clearBtn) {
+  clearBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    notifDropdown.querySelectorAll('.notif-item').forEach(i => i.remove());
+    updateBadgeCount();
+  });
+}
+
+function updateBadgeCount() {
+  const remaining = notifDropdown.querySelectorAll('.notif-item').length;
+  notifBadge.textContent = remaining;
+  notifBadge.style.display = remaining > 0 ? 'flex' : 'none';
+}
+
+updateBadgeCount();
 </script>
+
+</body>
+</html>

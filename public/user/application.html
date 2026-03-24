@@ -221,6 +221,18 @@ fetch('/sidebar')
     setupNav('adoptionBtn', '/adoption_hub');
     setupNav('donationBtn', '/donations');
     setupNav('applicationBtn', '/application');
+    // Sa loob ng iyong fetch('/sidebar') logic:
+setupNav('logoutBtn', '/login'); // Gamitin ang route na '/login'
+
+// At sa event listener:
+btn.onclick = () => {
+    if (btnId === 'logoutBtn') {
+        // Gamitin ang short route '/login'
+        window.location.href = '/login?msg=logged_out';
+    } else if (currentPath !== targetPath) {
+        window.location.href = targetPath + queryStr;
+    }
+};
 });
 
     const showMessage = (text, type) => {
@@ -250,7 +262,21 @@ fetch('/sidebar')
 
     if (adoptionForm) {
         adoptionForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+    e.preventDefault();
+
+    // 1. Kunin ang impormasyon ng pet na naka-display sa page
+    const petData = {
+        petName: document.querySelector('h2').textContent,
+        petImg: document.querySelector('.pet-image').src,
+        status: "Pending Review",
+        // ... iba pang data
+    };
+
+    // 2. I-save sa localStorage
+    localStorage.setItem('userApplication', JSON.stringify(petData));
+
+    // 3. Ipakita ang success message at summary (yung existing code mo)
+    successAlert.style.display = 'block';
 
        
     if (successAlert) {
@@ -382,13 +408,13 @@ document.addEventListener("DOMContentLoaded", () => {
         statusPill.textContent = "Pending";
     }
 });
-// Sa loob ng submit event listener:
-const applicationData = {
-    name: "Chada", // O kunin mula sa dynamic na source
-    status: "Pending Review",
-    image: "https://placedog.net/300/300", 
-    date: new Date().toLocaleDateString()
+// Sa application.html (Submit Function)
+const petData = {
+    petName: document.querySelector('h2').textContent, // Pangalan ng Pet
+    petImg: document.querySelector('.pet-image').src, // URL ng image
+    status: "Form Submitted"
 };
+localStorage.setItem('userApplication', JSON.stringify(petData));
 
 // I-save sa localStorage
 localStorage.setItem('currentApplication', JSON.stringify(applicationData));

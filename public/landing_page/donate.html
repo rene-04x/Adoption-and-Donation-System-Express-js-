@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PAWSsion</title>
+  <title>PAWSsion - Donate</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     /* Reset and basic styles */
@@ -19,7 +19,7 @@
 
     /* Navigation Settings */
     nav {
-      position: fixed; /* always at top */
+      position: fixed;
       top: 0;
       width: 100%;
       height: 70px;
@@ -31,26 +31,61 @@
       padding: 0 20px;
     }
 
-    /* Logo on the left */
-    nav .logo {
-      height: 50px;
-      margin-right: 20px;
+    .logo-section {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
     }
 
-    nav.name {
-      height: 30px;
-      margin-right: 20px;
+    .logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 160px;
+      object-fit: cover;
+      margin-right: 12px;
     }
 
-    /* Center menu links */
+    .pawssion-brand {
+      font-weight: 800;
+      font-size: 24px;
+      background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     nav .menu-container {
-      flex: 1; /* take remaining space */
+      flex: 1;
       display: flex;
       justify-content: center;
       margin-left: -50px;
     }
 
-    nav .account {
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav li { margin: 0 15px; }
+
+    nav li a {
+      color: #02407D;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav li a.active, nav li a:hover {
+      color: #02407D;
+      text-decoration: 2px underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+
+     nav .account {
       display: flex;
       align-items: center;
       gap: 0px;
@@ -92,519 +127,112 @@
     nav .account:hover img.account-icon {
       content: url("../../images/account_icon_hover.png");
     }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      align-items: center;
-      margin: 0;
-      padding: 0;
-    }
-
-    nav li {
-      margin: 0 15px;
-    }
-
-    nav li a {
-      color: #02407D;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-
-    nav li a.active,
-    nav li a:hover {
-      color: #02407D;
-      text-decoration: 2px underline;
-      text-decoration-thickness: 2px;
-      text-underline-offset: 4px;
-    }
-
-    /* Responsive for Mobile Devices (Navigation and Layout) */
-    @media only screen and (max-width: 520px) {
-        
-        /* 1. Navigation Fixes (Gaya ng sa index.html) */
-        nav {
-          height: auto;
-          padding: 15px 10px;
-          flex-direction: column; /* Pinagpapatong ang logo, menu, at account */
-          gap: 15px;
-          position: relative; 
-        }
-        
-        nav .menu-container {
-          margin-left: 0; /* Tinatanggal ang negative margin sa desktop */
-          width: 100%;
-        }
-
-        nav ul {
-          justify-content: center;
-          gap: 10px;
-        }
-
-        nav li {
-          margin: 0 5px;
-        }
-
-        nav li a {
-          font-size: 13px;
-        }
-
-        nav .account {
-          width: 100%;
-          justify-content: center;
-        }
-
-    }
-
     /* Sections */
-    section {
-      min-height: 100vh;  
-      padding-top: 5%;
-    }
+    section { min-height: 100vh; padding-top: 5%; }
 
-    section h1 {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      font-weight: 800; /* extra bold */
-      font-size: 50px;
-      color: #000000;
-      padding-bottom: 10px;
-      margin-top: 5%;
-    }
-
-    section p {
-      margin: 0;
-      font-size: 20px;
-      color: #000000;
-    }
-
- /* Donate Section Layout */
- #donate {
+    /* DONATE SECTION */
+    #donate {
       display: flex;
-      flex-direction: row-reverse;
-      /* Gamitin ang flex-start para dikit sa taas ng container */
-      align-items: flex-start; 
+      flex-direction: row;
+      align-items: flex-start;
       justify-content: space-between;
-      /* 150px padding-top para hindi matakpan ng fixed Nav */
-      padding: 150px 8% 100px 8%; 
+      padding: 150px 8% 100px 8%;
       min-height: 80vh;
       background-color: #FFFFFF;
     }
 
-   /* Container para sa H1 at P */
-  .donate-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column; /* Pagpatungin ang H1 at P */
-    align-items: flex-end;   /* I-align lahat sa kanan */
-    text-align: right;
-  }
-
-  #donate h1 {
-    font-size: 50px;
-    font-weight: 900;
-    color: #000000;
-    margin: 0;
-    line-height: 1.1;
-
-    margin-top: 40px;
-    margin-left: 30px;
-  }
-
-  #donate p {
-    font-size: 25px;
-    color: #333;
-    margin-top: 50px; /* Space sa pagitan ng H1 at P */
-    max-width: 450px; /* Para hindi masyadong mahaba ang linya ng text */
-    line-height: 1.6;
-    margin-left: 80px;
-    text-align: center;
-  }
-
-  /* Siguraduhin na ang Image Grid ay hindi masyadong dikit */
-  .donate_img {
-    flex: 1.2;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 90px; /* Binawasan ko para sakto sa view */
-    padding-right: 80px;
-  }
-
-    .donate_img img {
-      width: 90%;
-      height: auto;
-      border-radius: 25px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-
-    /* Staggered Effect (Katulad ng aso na may headphones) */
-    /* Ibinaba ang 1st at 3rd image */
-    .donate_img img:nth-child(odd) {
-      transform: translateY(50px);
-    }
-
-    /* Responsive for Mobile */
-    @media (max-width: 900px) {
-      #donate {
-        flex-direction: column; /* Stack vertically sa mobile */
-        text-align: center;
-      }
-      #donate h1 {
-        margin-top: -7%;
-        text-align: center;
-        margin-left: 0;
-      }
-        #donate p {
-          margin-top: 20px;
-          margin-left: 0;
-          text-align: center;
-        }
-
-      #donate_img {
-        order: 2; /* Images sa baba */
-        padding-right: 0;
-        margin-top: 60px;
-      }
-    }
+    .donate-text { flex: 1; display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+    #donate h1 { font-size: 45px; font-weight: 900; color: #000000; margin-top: 20px; line-height: 1.1; }
+    #donate p { font-size: 20px; color: #333; margin-top: 30px; max-width: 500px; line-height: 1.6; }
 
     .donate_btn {
-      display: inline-flex; /* para icon + text side by side */
+      display: inline-flex;
       align-items: center;
-      gap: 25px; /* space sa pagitan ng paw at text */
-      background-color: #ffffff; /* button bg color */
+      gap: 15px;
+      background-color: #ffffff;
       color: #02407D;
-      padding: 15px 25px;
+      padding: 12px 30px;
       border: #02407D solid 1px;
       border-radius: 50px;
       cursor: pointer;
-      font-weight: 600;
-      font-size: 20px;
-      text-decoration: none;
+      font-weight: 700;
+      font-size: 18px;
+      margin-top: 40px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       transition: all 0.3s ease;
-      margin-top: 40px; /* space mula sa <p> */
-      margin-bottom: 30px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      margin-right: 90px;
     }
 
-   .donate_btn:hover {
-      background-color: #ffffff;
-      color: #02407D;
-      transform: scale(1.05);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    .donate_btn:hover { transform: scale(1.05); background-color: #02407D; color: #fff; }
+
+    .donate_img {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+      max-width: 500px;
+      margin-left: auto;
     }
 
-    .donate_btn a {
-      color: inherit; /* matches parent color */
-    }
+    .donate_img img { width: 100%; height: auto; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .donate_img img:nth-child(odd) { transform: translateY(40px); }
 
-    /* In-Kind Section Styling */
+    /* IN-KIND SECTION */
     #inkind {
-      min-height: 50vh; /* O kahit anong height na gusto mo */
+      min-height: 50vh;
       display: flex;
       flex-direction: column;
-      align-items: flex-start; /* Itutulak lahat sa kaliwa */
-      justify-content: center;
-      padding: 50px 5%; /* Para hindi dikit sa gilid ng screen */
-      text-align: left; /* Para sa mga multi-line text */
-    }
-
-    #inkind a {
-      display: inline-block;
-      margin-top: -65px;
-      margin-left: 20%;
-      background-color: #FFFFFF;
-      color: #000000; /* Kulay ng text */
-      border: 1px solid #02407D; /* Kailangan ng 'solid' para lumabas ang border */
-      border-radius: 50px;
-      padding: 15px 30px;
-      font-weight: 600;
-      font-size: 20px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Optional: para may konting lalim */
-      cursor: pointer;
-    }
-
-    /* Hover effect para maging interactive */
-    #inkind a:hover {
-      background-color: #02407D;
-      color: #FFFFFF;
-      transform: translateY(-3px); /* Tatalon ng konti pataas */
-      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-    }
-
-    #inkind h1 {
-      font-size: 40px; /* Pantay sa size ng Donate Online */
-      font-weight: 900;
-      color: #000000;
-      margin: 0;
-      line-height: 1.1;
-    }
-
-    #inkind p {
-      font-size: 20px;
-      color: #333;
-      margin-top: 20px; 
-    }
-
-    #inkind .inkind_img {
-      display: flex;
       align-items: center;
-      gap: 40px; /* Space sa pagitan ng mapa at text */
-      margin-top: 30px;
-      margin-left: 30px;
+      padding: 80px 8%;
+      background-color: #fff;
     }
+    #inkind h1 { color: #000; font-size: 40px; font-weight: 900; }
+    #inkind p { color: #333; margin: 20px 0; font-size: 18px; }
+    .inkind_img { display: flex; align-items: center; gap: 50px; margin-top: 40px; }
+    .map_img { width: 450px; border-radius: 20px; }
+    .inkind_text { background-color: #02407D; padding: 40px; border-radius: 30px; text-align: left; }
+    .inkind_text h1 { color: #fff !important; font-size: 28px; margin-bottom: 20px; }
+    .inkind_text ul { list-style: none; }
+    .inkind_text ul li { color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; font-size: 16px; }
+    .inkind_text ul li img { width: 20px; }
 
-     .inkind_img .map_img {
-      margin-top: -100px;
-    }
-  
-
-    #inkind .inkind_text {
-      align-items: flex-start; 
-      background-color: #02407D;
-      padding: 50px 80px;
-      border-radius: 30px;
-    }
-
-    #inkind .inkind_text h1 {
-      color: #fff;
-      font-size: 30px;
-      margin-bottom: 15px;
-    }
-
-    #inkind .inkind_text ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    #inkind .inkind_text ul li {
-      font-size: 15px;
-      color: #fff;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: left;
-      gap: 15px; /* Space sa pagitan ng paw icon at text */
-    }
-
-    #inkind .inkind_text ul li img {
-      width: 30px;
-      height: 30px;
-    }
-
-     /* Responsive for Mobile (In-Kind Section) */
-    @media (max-width: 900px) {
-        #inkind {
-            padding: 50px 5%;
-            align-items: center; /* Center align ang buong section content */
-            text-align: center;
-        }
-
-        #inkind .inkind_img {
-            flex-direction: column; /* I-stack ang mapa at ang blue box vertically */
-            align-items: center;    /* I-center ang mapa at box */
-            gap: 30px;              /* Space sa pagitan ng mapa at box */
-            margin-left: 0;
-            width: 100%;
-        }
-
-        /* I-adjust ang laki ng mapa sa mobile */
-        .inkind_img .map_img {
-            margin-top: 0;          /* Alisin ang negative margin sa desktop */
-            width: 100%;            /* Sakop ang buong lapad ng mobile */
-            max-width: 400px;       /* Para hindi masyadong lumaki sa tablet */
-        }
-
-        #inkind .inkind_text {
-            padding: 30px 20px;     /* Mas maliit na padding sa loob ng blue box */
-            width: 100%;            /* Full width sa mobile */
-            border-radius: 20px;
-        }
-
-        #inkind .inkind_text h1 {
-            font-size: 24px;        /* Pinaliit na title para sa mobile */
-        }
-
-        #inkind .inkind_text ul li {
-            font-size: 14px;        /* Mas maliit na text para sa list items */
-            text-align: left;       /* Panatilihing left-aligned ang list text */
-        }
-
-        /* Ayusin ang "Make a Donation" button sa mobile */
-        #inkind a {
-            margin-top: 30px;       /* Space mula sa blue box */
-            margin-left: 0;         /* I-center ang button */
-            width: 100%;            /* Gawing full width ang button para madaling pindutin */
-            max-width: 300px;
-            text-align: center;
-        }
-    }
-
-    .happenings h1 {
-      font-size: 40px;
-      font-weight: 900;
-      color: #000000;
-      margin: 0;
-      line-height: 1.1;
-      text-align: left;
-      padding-left: 5%;
-    }
-
-    .carousel-container {
-      position: relative;
-      width: 100%;
-      max-width: 1200px; /* Adjust base sa design mo */
-      margin: auto;
-      overflow: hidden; /* Itatago nito yung images na lampas sa view */
-    }
-
-    /* Update mo itong part na ito sa CSS mo */
-    .carousel-slide {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-      gap: 20px;
-      padding: 20px 0;
-    }
-
-    .carousel-slide img {
-      /* Sa Desktop, 3 images ang kita. Sa Mobile, 1 image lang. */
-      flex: 0 0 calc(33.333% - 14px); 
-      width: 100%;
-      border-radius: 15px;
-      object-fit: cover;
-      height: 300px;
-    }
-
-    @media (max-width: 768px) {
-      .carousel-slide img {
-        flex: 0 0 100%; /* Isang image lang sa screen pag mobile */
-      }
-    }
-
-    /* Navigation Buttons (Blue Circles) */
+    /* HAPPENINGS */
+    .happenings { padding: 80px 8%; background: #fff; }
+    .happenings h1 { color: #000; font-size: 40px; text-align: left; margin-bottom: 40px; }
+    .carousel-container { position: relative; max-width: 1200px; margin: auto; overflow: hidden; }
+    .carousel-slide { display: flex; transition: transform 0.5s ease; gap: 20px; }
+    .carousel-slide img { flex: 0 0 calc(33.333% - 14px); height: 300px; object-fit: cover; border-radius: 15px; }
     .prev-btn, .next-btn {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background-color: #2563eb; /* Blue color */
-      color: white;
-      border: none;
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 10;
-      font-size: 20px;
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: #02407D; color: #fff; border: none; width: 40px; height: 40px;
+      border-radius: 50%; cursor: pointer; z-index: 10;
     }
+    .prev-btn { left: 10px; } .next-btn { right: 10px; }
 
-    .prev-btn { left: 10px; }
-    .next-btn { right: 10px; }
-
-    /* Dots Indicators */
-    .dots-container {
-      text-align: center;
-      padding: 20px;
-    }
-
-    .dot {
-      height: 12px;
-      width: 12px;
-      margin: 0 5px;
-      background-color: #bbb;
-      border-radius: 50%;
-      display: inline-block;
-      border: 1px solid #777;
-    }
-
-    .dot.active {
-      background-color: #000; /* Solid black katulad sa screenshot */
-    }
-
-    
+    /* --- FOOTER STYLES (MATCHING HOWITWORKS.HTML) --- */
     #footer {
-      min-height: 100vh; /* Tinaasan natin para may space talaga sa baba */
+      min-height: 100vh;
       width: 100%;
-      margin-top: -70px;
       background-image: url('../images/footer_bg.png'), url('../images/footer_bg.png');
       background-position: left 25%, right 13%;
       background-size: 53% auto, 53% auto;
       background-repeat: no-repeat, no-repeat;
-      
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 50px 0; /* Pantay na padding */
+      padding: 50px 0;
       position: relative;
       overflow: hidden;
     }
 
-        /* Base style para sa lahat ng scattered logos */
-    #footer img.ccs, 
-    #footer img.cspc, 
-    #footer img.honeygold, 
-    #footer img.pbc {
+    #footer img.ccs, #footer img.cspc, #footer img.honeygold, #footer img.pbc {
       position: absolute;
       transition: transform 0.3s ease;
       z-index: 1; 
     }
-
-    #footer img.ccs {
-      top: 10%;
-      left: 18%;
-      
-    }
-
-    #footer img.cspc {
-      top: 30%;
-      left: 33%;
-    }
-
-    #footer img.honeygold {
-      top: 20%;
-      right: 19%;
-    }
-
-    #footer img.pbc {
-      bottom: 15%;
-      right: 42%;
-      top: 5px;
-    }
-
-    #footer .info {
-      display: flex;
-      justify-content: flex-start; 
-      align-items: center;
-      gap: 30px;
-      padding-left: 0; 
-      width: 100%; 
-      margin-left: -6%;
-    }
-
-    #footer .info img {
-      transition: transform 0.3s ease;
-    }
-
-    #footer .info img.fb,
-    #footer .info img.twitter,
-    #footer .info img.tiktok,
-    #footer .info img.insta,
-    #footer .info img.mess {
-      background-color: #02407D;
-      border-radius: 50px;
-      padding: 10px;
-      width: 40px;
-      height: 40px; /* Force square ratio para perfect circle ang border-radius */
-      object-fit: contain;
-      margin-right: 20px;
-    }
-
-    /* Hover effect para mas maganda */
-    #footer .info img:hover {
-      transform: translateY(-5px);
-      background-color: #0707B8;
-    }
+    #footer img.ccs { top: 10%; left: 18%; }
+    #footer img.cspc { top: 30%; left: 33%; }
+    #footer img.honeygold { top: 20%; right: 19%; }
+    #footer img.pbc { top: 5px; right: 42%; }
 
     .footer-top-row {
       display: flex;
@@ -612,292 +240,103 @@
       align-items: flex-end;
       width: 100%;
       padding: 0 8%;
-      margin-top: auto; /* PINAKA-IMPORTANTE: Itutulak nito ang row sa bottom */
+      margin-top: auto;
       margin-bottom: 20px;
     }
 
-    #footer h1 {
-      color: #02407D;
-      font-size: 50px; /* Mas malaki para mas pansin */
-      font-weight: 900;
-      margin: 0;
-      line-height: 1;
-    }
+    #footer h1 { color: #02407D; font-size: 50px; font-weight: 900; margin: 0; line-height: 1; }
+    .footer-columns { display: flex; gap: 90px; transform: translateY(100px); }
+    .footer-col { text-align: left; }
+    .footer-col h3 { color: #000; font-weight: 800; font-size: 20px; margin-bottom: 20px; }
+    .footer-col ul { list-style: none; padding: 0; }
+    .footer-col ul li { margin-top: 40px; }
+    .footer-col ul li a { color: #333; font-weight: 500; font-size: 18px; transition: color 0.3s; }
+    .footer-col ul li a:hover { color: #02407D; text-decoration: underline; }
 
-    .footer-links {
-      display: flex;
-      gap: 50px;
-    }
-
-    .footer-links p {
-      color: #333;
-      font-weight: 800;
-      font-size: 22px;
-      margin: 0 !important;
-      white-space: nowrap;
-    }
-
-    .footer-columns {
-      display: flex;
-      gap: 90px;
-      transform: translateY(100%); /* Itutulak nito ang columns pababa ng 40px */
-    }
-
-    .footer-col {
-      text-align: left; /* Para pantay sa kaliwa ang mga links */
-    }
-
-    /* Style para sa Header (Quick Links / Legal) */
-    .footer-col h3 {
-      color: #000;
-      font-weight: 800;
-      font-size: 20px;
-      margin-bottom: 20px;
-    }
-
-    /* Style para sa listahan ng links */
-    .footer-col ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .footer-col ul li {
-      margin-bottom: 12px;
-      margin-top: 40px;
-    }
-
-    .footer-col ul li a {
-      color: #333;
-      font-weight: 500;
-      font-size: 18px;
-      transition: color 0.3s;
-    }
-
-    .footer-col ul li a:hover {
-      color: #02407D;
-      text-decoration: underline;
-    }
-
-    /* Social icons sa ilalim ng H1 */
     #footer .info {
       display: flex;
       justify-content: flex-start; 
       align-items: center;
       gap: 15px;
       width: 100%;
-      padding: 0 8% 40px 8%; /* Pantay na padding sa h1 */
+      padding: 0 8% 40px 8%;
     }
 
-
-    .footer_buttons a {
-      padding: 15px 30px;
+    #footer .info img {
+      background-color: #02407D;
       border-radius: 50px;
-      border: 2px solid #02407D; /* Blue border para makita sa puti */
-      color: #02407D;
-      font-weight: 700;
-      transition: 0.3s;
+      padding: 10px;
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      transition: transform 0.3s ease;
     }
 
-    .footer_buttons a:hover {
-      background: #02407D;
-      color: #fff;
-    }
+    #footer .info img:hover { transform: translateY(-5px); background-color: #0707B8; }
 
     #footer p {
       color: #333;
       max-width: 600px;
-      margin-bottom: 40px;
-      font-weight: 600;
-      margin-bottom: 0;
       align-self: flex-start; 
-      padding-left: 5%; 
+      padding-left: 8%; 
       text-align: left; 
       font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 0;
     }
 
-    #footer a.gmail {
-      display: flex;         /* Ito ang magtatabi sa kanila */
-      align-items: center;   /* Center vertical alignment */
-      gap: 5px;             /* Space sa pagitan ng icon at text */
-      align-self: flex-start; /* Itutulak ang buong link sa kaliwa */
-      padding: 10px 5%;      /* Pantay na offset sa ibang text */
+    #footer a.gmail, #footer .phone {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      align-self: flex-start;
+      padding: 10px 8%;
       text-decoration: none;
       color: #000;
     }
 
-    #footer a.gmail img {
-      width: 30px;           /* I-adjust ang laki ng icon */
-      height: auto;
-    }
-
-    #footer a.gmail p {
-      margin: 0 !important;  /* Alisin ang default margin para hindi tumalon */
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    #footer .phone {
-      display: flex;         /* Ito ang magtatabi sa kanila */
-      align-items: center;   /* Center vertical alignment */
-      gap: 5px;             /* Space sa pagitan ng icon at text */
-      align-self: flex-start; /* Itutulak ang buong link sa kaliwa */
-      padding: 10px 5%;      /* Pantay na offset sa ibang text */
-      text-decoration: none;
-      color: #000;
-    }
-
-    #footer .phone img {
-      width: 30px;           /* I-adjust ang laki ng icon */
-      height: auto;
-    }
-
-    #footer .phone p {
-      margin: 0 !important;  /* Alisin ang default margin para hindi tumalon */
-      font-size: 18px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-          /* Responsive for Footer Section */
-    @media (max-width: 900px) {
-        #footer {
-            padding: 50px 5%;
-            min-height: auto; /* Hayaan ang content ang mag-dikta ng height */
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* 1. scattered logos - Gawing mas maliit at i-adjust ang position */
-        #footer img.ccs, #footer img.cspc, #footer img.honeygold, #footer img.pbc {
-            position: relative; /* Imbes na absolute, gawin nating flow ng page */
-            width: 80px;
-            height: auto;
-            display: inline-block;
-            margin: 10px;
-            top: auto; left: auto; right: auto; bottom: auto; /* Reset positions */
-        }
-
-        /* 2. Top Row (H1 and Columns) */
-        .footer-top-row {
-          flex-direction: column; /* Stack ang text sa itaas ng links */
-            align-items: center;
-            gap: 20px;
-            padding: 0;
-            margin-bottom: 30px;
-            margin-top: 20px;
-        }
-
-        #footer h1 {
-            font-size: 35px;
-            text-align: center;
-          
-        }
-
-        /* 3. Footer Columns (Links) */
-        .footer-columns {
-            transform: translateY(0); /* Alisin ang desktop translate */
-            flex-direction: row; /* Panatilihing side-by-side ang Quick Links at Legal */
-            justify-content: center;
-            gap: 40px;
-            width: 100%;
-        }
-
-        .footer-col h3 {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        .footer-col ul li {
-            margin-top: 10px; /* Bawasan ang malaking gap sa desktop */
-            margin-bottom: 5px;
-        }
-
-        /* 4. Info/Social Icons */
-        #footer .info {
-            justify-content: center;
-            padding: 20px 0;
-            margin-left: 0; 
-        }
-
-        /* 5. Contact Info (Email & Phone) */
-        #footer p {
-            padding-left: 0;
-            text-align: center;
-            align-self: center;
-            font-size: 16px;
-        }
-
-        #footer a.gmail, #footer .phone {
-            align-self: center; /* I-center ang email at phone */
-            padding: 10px 0;
-            justify-content: center;
-        }
-
-        #footer a.gmail p, #footer .phone p {
-            font-size: 16px;
-        }
-    }
-
-
-        @media (max-width: 480px) {
-        .footer-columns {
-            flex-direction: column; /* I-stack na rin ang links pag sobrang liit ng screen */
-            gap: 20px;
-        }
-    }
+    #footer a.gmail img, #footer .phone img { width: 30px; height: auto; }
+    #footer a.gmail p, #footer .phone p { margin: 0 !important; font-size: 18px; padding-left: 0; }
 
     .bottom-bar {
       display: flex;
       justify-content: space-between; 
       align-items: center;
-      padding: 5px 8%;
+      padding: 20px 8%;
       background-color: #fff;
       width: 100%;
+      border-top: 1px solid #ddd;
     }
 
-    /* Itong dalawa ang mag-eensure na "centered" ang logo */
-    .copyright-text, .spacer {
-      flex: 1; 
-    }
+    .copyright-text, .spacer { flex: 1; }
+    .copyright-text p { color: #000; font-size: 18px; text-align: left; margin: 0 !important; }
 
-    .copyright-text p {
-      color: #000000;
-      font-size: 20px;
-      margin: 0 !important;
-      text-align: left; /* Text sa kaliwa */
-    }
-
-    .spacer {
-      /* Empty space sa kanan para pantay sa copyright-text box */
-    }
-
-    /* Mobile Fix: Pagpatungin sila kapag masyadong maliit na ang screen */
-    @media (max-width: 768px) {
-      .bottom-bar {
-        flex-direction: column;
-        gap: 20px;
-        text-align: center;
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      #donate { flex-direction: column; align-items: center; text-align: center; padding-top: 100px; }
+      .donate-text { align-items: center; text-align: center; margin-bottom: 50px; }
+      .donate_img { margin-left: 0; justify-content: center; }
+      #footer { min-height: auto; padding: 50px 5%; }
+      #footer img.ccs, #footer img.cspc, #footer img.honeygold, #footer img.pbc {
+        position: relative; width: 80px; display: inline-block; margin: 10px; top: auto; left: auto; right: auto;
       }
-      .copyright-text p {
-        text-align: center;
-      }
-      .spacer {
-        display: none; /* Alisin ang spacer sa mobile */
-      }
+      .footer-top-row { flex-direction: column; align-items: center; }
+      .footer-columns { transform: translateY(0); flex-direction: row; gap: 40px; margin-top: 20px; }
+      #footer .info { justify-content: center; }
+      #footer p, #footer a.gmail, #footer .phone { align-self: center; text-align: center; padding-left: 0; }
+      .bottom-bar { flex-direction: column; gap: 20px; text-align: center; }
+      .copyright-text p { text-align: center; }
+      .spacer { display: none; }
     }
-
-   </style>
+  </style>
 </head>
 <body>
-  <nav>
-    <!-- Logo -->
-    <img src="../../images/logo.png" alt="PAWSsion Logo" class="logo">
-    <img src="../../images/PAWSsion.png" alt="PAWSsion" class="name">
 
-    <!-- Centered menu links -->
+  <nav>
+    <a href="/" class="logo-section">
+      <img src="../../images/logo.png" alt="Logo" class="logo">
+      <div class="pawssion-brand">PAWSsion</div>
+    </a>
     <div class="menu-container">
       <ul>
         <li><a href="/">Home</a></li>
@@ -906,86 +345,56 @@
         <li><a href="/how">How it Works</a></li>
       </ul>
     </div>
-
-      <!-- Account button on the right -->
-      <div class="account">
-        <a href="/login" class="account-btn">Account</a>
-        <img src="../../images/account_icon.png" class="account-icon">
-      </div>
+    <div class="account">
+      <a href="/login">Account</a>
+      <img src="../../images/account_icon.png" class="account-icon">
+    </div>
   </nav>
 
-  <!-- Sections --> 
   <section id="donate">
     <div class="donate-text">
       <h1>DONATE ONLINE</h1>
-      <p>
-        Help us help more animals.<br>
-        The shelter and all our programs and campaigns are funded solely by donations.
-        You can donate any amount via online.
-      </p>
+      <p>Help us help more animals. The shelter and all our programs and campaigns are funded solely by donations. You can donate any amount via online.</p>
       <div class="donate_btn">
-        <img src="../../images/donate_logo.png" class="donate_logo">
-        <a>Donate Now</a>
+        <img src="../../images/donate_logo.png" style="width:25px;">
+        <span>Donate Now</span>
       </div>
     </div>
-    
-  
     <div class="donate_img">
-      <img src="../../images/dog_donate.png">
-      <img src="../../images/dog_donate.png">
-      <img src="../../images/dog_donate.png">
-      <img src="../../images/dog_donate.png">
+      <img src="../../images/dog_donate.png" alt="Dog 1">
+      <img src="../../images/dog_donate.png" alt="Dog 2">
+      <img src="../../images/dog_donate.png" alt="Dog 3">
+      <img src="../../images/dog_donate.png" alt="Dog 4">
     </div>
   </section>
-  
-  <section id="inkind">
-   <h1>DONATE IN KIND</h1>
-   <p>Donations can be dropped off at <strong>Camarines Sur Polytechnic Colleges , Nabua, Philippines, 4431</strong></p>
 
-   <div class="inkind_img">
-    <img src="../../images/cspc_map.png" class="map_img">
-    <div class="inkind_text">
-      <h1>sPAWl Us Please</h1>
-      <ul>
-        <li><img src="../../images/white paw.png">Dog food (kibble and canned)</li>
-        <li><img src="../../images/white paw.png">Cat food (kibble and canned)</li>
-        <li><img src="../../images/white paw.png">Crates, carriers, or cages</li>
-        <li><img src="../../images/white paw.png">Dog and cat treats</li>
-        <li><img src="../../images/white paw.png">Scratching posts for cats</li>
-        <li><img src="../../images/white paw.png">Brushes and toys for cats</li>
-        <li><img src="../../images/white paw.png">Vaccines, medicine, and vitamins</li>
-        <li><img src="../../images/white paw.png">Cleaning supplies (bleach,disinfectant, gloves, trash bags)</li>
-      </ul>
+  <section id="inkind">
+    <h1>DONATE IN KIND</h1>
+    <p>Donations can be dropped off at <strong>Camarines Sur Polytechnic Colleges, Nabua</strong></p>
+    <div class="inkind_img">
+      <img src="../../images/cspc_map.png" class="map_img">
+      <div class="inkind_text">
+        <h1>sPAWl Us Please</h1>
+        <ul>
+          <li><img src="../../images/white paw.png"> Dog and Cat food</li>
+          <li><img src="../../images/white paw.png"> Crates and Carriers</li>
+          <li><img src="../../images/white paw.png"> Vaccines and Medicine</li>
+          <li><img src="../../images/white paw.png"> Cleaning Supplies</li>
+        </ul>
+      </div>
     </div>
-   </div>
-   <a>Make a Donation</a>
   </section>
 
   <section class="happenings">
     <h1>PAWSsion Happenings</h1>
-
     <div class="carousel-container">
       <button class="prev-btn">&#10094;</button>
       <button class="next-btn">&#10095;</button>
-    
       <div class="carousel-slide">
-        <img src="../../images/happenings1.png" alt="PH 1">
-        <img src="../../images/happenings2.png" alt="PH 2">
-        <img src="../../images/happenings3.png" alt="PH 3">
-        <img src="../../images/happenings4.png" alt="PH 4">
-        <img src="../../images/happenings5.png" alt="PH 5">
-        <img src="../../images/happenings1.png" alt="PH 1">
-        <img src="../../images/happenings2.png" alt="PH 2">
-        <img src="../../images/happenings3.png" alt="PH 3">
-        <img src="../../images/happenings4.png" alt="PH 4">
-        <img src="../../images/happenings5.png" alt="PH 5">
-      </div>
-    
-      <div class="dots-container">
-        <span class="dot active"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
-        <span class="dot"></span>
+        <img src="../../images/happenings1.png">
+        <img src="../../images/happenings2.png">
+        <img src="../../images/happenings3.png">
+        <img src="../../images/happenings4.png">
       </div>
     </div>
   </section>
@@ -995,38 +404,38 @@
     <img src="../images/CSPC_logo.png" class="cspc">
     <img src="../images/honeygold_logo.png" class="honeygold">
     <img src="../images/PBC_logo.png" class="pbc">
- 
+
     <div class="footer-top-row">
-    <h1 id="PAWSsion">PAWSsion</h1>
-    
-    <div class="footer-columns">
+      <h1 id="PAWSsion">PAWSsion</h1>
+      <div class="footer-columns">
         <div class="footer-col">
-            <h3>Quick Links</h3>
-            <ul>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="/about">About Us</a></li>
+            <li><a href="/contact">Contact Us</a></li>
+          </ul>
         </div>
         <div class="footer-col">
-            <h3>Legal</h3>
-            <ul>
-                <li><a href="#">Terms & Use</a></li>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Cookie Policy</a></li>
-            </ul>
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="/terms">Terms & Use</a></li>
+            <li><a href="/policy">Privacy Policy</a></li>
+            <li><a href="/faqs">FAQS</a></li>
+          </ul>
         </div>
+      </div>
     </div>
-</div>
- 
+
     <div class="info">
-       <a href=""> <img src="../images/fb.png" class="fb"></a>
-       <a href=""><img src="../images/twitter.png" class="twitter"></a>
-       <a href=""><img src="../images/tiktok.png" class="tiktok"></a>
-       <a href=""><img src="../images/instagram.png" class="insta"></a>
-       <a href=""><img src="../images/messenger.png" class="mess"></a>
+      <a href="#"><img src="../images/fb.png" class="fb"></a>
+      <a href="#"><img src="../images/twitter.png" class="twitter"></a>
+      <a href="#"><img src="../images/tiktok.png" class="tiktok"></a>
+      <a href="#"><img src="../images/instagram.png" class="insta"></a>
+      <a href="#"><img src="../images/messenger.png" class="mess"></a>
     </div>
+
     <p>For Customer Support and General Concerns:</p>
-    <a href="" class="gmail">
+    <a href="mailto:PAWSsion@gmail.com" class="gmail">
       <img src="../images/email.png">
       <p>PAWSsion@gmail.com</p>
     </a>
@@ -1034,103 +443,41 @@
       <img src="../images/phone.png">
       <p>(+63) 992 487 4712</p>
     </div>
- </section>
+  </section>
+
   <div class="bottom-bar">
     <div class="copyright-text">
       <p>© PAWSsion 2025 <br>All Rights Reserved.</p>
     </div>
-    
     <img src="../images/footer_logo.png" class="logo">
-    
     <div class="spacer"></div>
   </div>
-</body>
-</html>
 
-<script>
-  const slide = document.querySelector('.carousel-slide');
-  const nextBtn = document.querySelector('.next-btn');
-  const prevBtn = document.querySelector('.prev-btn');
-  const dots = document.querySelectorAll('.dot');
+  <script>
+    const slide = document.querySelector('.carousel-slide');
+    const nextBtn = document.querySelector('.next-btn');
+    const prevBtn = document.querySelector('.prev-btn');
+    let counter = 0;
 
-  let counter = 0;
-
-  function updateCarousel() {
-    const images = document.querySelectorAll('.carousel-slide img');
-    const totalImages = images.length;
-    
-    // Alamin kung ilang images ang kasya sa screen (Desktop = 3, Mobile = 1)
-    const visibleCards = window.innerWidth > 768 ? 3 : 1;
-    const maxIndex = totalImages - visibleCards;
-
-    // Siguraduhin na hindi lalampas ang counter sa dulo
-    if (counter > maxIndex) counter = maxIndex;
-    if (counter < 0) counter = 0;
-
-    // Movement calculation
-    const itemWidth = images[0].clientWidth + 20; // image width + gap
-    slide.style.transform = `translateX(${-itemWidth * counter}px)`;
-
-    // --- DOTS LOGIC (Fixed to 4 dots) ---
-    dots.forEach(dot => dot.classList.remove('active'));
-
-    if (counter === 0) {
-      // 1st Dot - Kapag nasa pinaka-umpisa
-      dots[0].classList.add('active');
-    } else if (counter >= maxIndex) {
-      // 4th Dot - Kapag nasa pinaka-dulo na
-      dots[3].classList.add('active');
-    } else {
-      // 2nd at 3rd Dots - Depende sa progress ng scroll sa gitna
-      const progress = counter / maxIndex;
-      if (progress < 0.5) {
-        dots[1].classList.add('active');
-      } else {
-        dots[2].classList.add('active');
-      }
+    function updateCarousel() {
+      const itemsVisible = window.innerWidth > 768 ? 3 : 1;
+      const size = slide.clientWidth / itemsVisible;
+      slide.style.transform = 'translateX(' + (-size * counter) + 'px)';
     }
-  }
 
-  nextBtn.addEventListener('click', () => {
-    const images = document.querySelectorAll('.carousel-slide img');
-    const visibleCards = window.innerWidth > 768 ? 3 : 1;
-    const maxIndex = images.length - visibleCards;
-
-    if (counter < maxIndex) {
+    nextBtn.addEventListener('click', () => {
+      if (counter >= 3) counter = -1;
       counter++;
-    } else {
-      counter = 0; // Optional: Balik sa start pag dulo na
-    }
-    updateCarousel();
-  });
-
-  prevBtn.addEventListener('click', () => {
-    const images = document.querySelectorAll('.carousel-slide img');
-    const visibleCards = window.innerWidth > 768 ? 3 : 1;
-    const maxIndex = images.length - visibleCards;
-
-    if (counter > 0) {
-      counter--;
-    } else {
-      counter = maxIndex; // Optional: Punta sa dulo pag nasa start
-    }
-    updateCarousel();
-  });
-
-  // Gawing clickable ang dots para tumalon sa specific sections
-  dots.forEach((dot, index) => {
-    dot.addEventListener('click', () => {
-      const images = document.querySelectorAll('.carousel-slide img');
-      const visibleCards = window.innerWidth > 768 ? 3 : 1;
-      const maxIndex = images.length - visibleCards;
-      
-      // I-calculate ang talon base sa dot index (0, 1, 2, 3)
-      counter = Math.round((maxIndex / 3) * index);
       updateCarousel();
     });
-  });
 
-  window.addEventListener('resize', updateCarousel);
-  // Initial call para ma-set ang sizes
-  setTimeout(updateCarousel, 100); 
-</script>
+    prevBtn.addEventListener('click', () => {
+      if (counter <= 0) counter = 4;
+      counter--;
+      updateCarousel();
+    });
+
+    window.addEventListener('resize', updateCarousel);
+  </script>
+</body>
+</html>

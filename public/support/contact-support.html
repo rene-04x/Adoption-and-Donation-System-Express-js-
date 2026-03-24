@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWSsion – Contact Support</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-blue: #02407D;
+            --primary-light: #4E94DA;
+            --accent-teal: #2D9B9B;
+            --bg-gray: #F9FAFB;
+        }
+
+        /* --- RESET & BASE --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #ffffff; 
+            font-family: 'Inter', sans-serif;
+            color: #000000;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            height: 80px;
+            background: white;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-size: 22px;
+            margin-right: 25px;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-light);
+            transform: translateX(-5px);
+        }
+
+        nav img {
+            height: 45px;
+            margin-right: 15px;
+        }
+
+        nav h2 {
+            color: var(--primary-blue);
+            font-weight: 800;
+            font-size: 22px;
+        }
+
+        /* --- CONTENT WRAPPER --- */
+        .content-container {
+            padding: 60px 0;
+        }
+
+        /* --- TITLE --- */
+        .title-section { text-align: center; margin-bottom: 50px; padding: 0 20px; }
+        .title-section h1 { font-size: 48px; font-weight: 800; color: var(--primary-blue); margin-bottom: 15px; text-transform: uppercase; }
+        .title-section p { max-width: 700px; margin: 0 auto; color: #555; line-height: 1.6; }
+
+        /* --- INFO CARDS --- */
+        .contact-cards-container { 
+            display: flex; 
+            justify-content: center; 
+            gap: 25px; 
+            margin-bottom: 60px;
+            flex-wrap: wrap; 
+        }
+
+        .contact-card { 
+            width: 300px; 
+            height: 100px; 
+            background: #FFFFFF; 
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05); 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            padding: 20px; 
+            border: 1px solid #f0f0f0;
+            transition: 0.3s;
+        }
+
+        .contact-card:hover { transform: translateY(-5px); box-shadow: 0px 8px 25px rgba(0,0,0,0.1); }
+
+        .card-icon img { width: 35px; height: 35px; object-fit: contain; margin-right: 15px; }
+        .card-title { font-weight: 700; font-size: 15px; color: #111; margin-bottom: 2px; }
+        .card-detail { font-weight: 500; font-size: 13px; color: #666; }
+
+        /* --- MAP & FORM SECTION --- */
+        .form-map-section {
+            display: flex;
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0px 10px 40px rgba(0,0,0,0.06);
+            border: 1px solid #f0f0f0;
+        }
+
+        .map-container { flex: 1; min-height: 500px; background: #e5e7eb; }
+        .map-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .form-container { flex: 1; padding: 50px; background: #ffffff; }
+        .form-container h2 { font-size: 26px; font-weight: 800; margin-bottom: 30px; color: var(--primary-blue); }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .full-width { grid-column: span 2; }
+
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-weight: 700; font-size: 13px; margin-bottom: 8px; color: #333; }
+
+        .form-group input, .form-group select, .form-group textarea {
+            padding: 14px;
+            border: 1px solid #E5E7EB;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #F9FAFB;
+            outline: none;
+            transition: border-color 0.3s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary-blue); background: #fff; }
+
+        .send-btn {
+            background: var(--accent-teal); 
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .send-btn:hover { background: #248080; transform: translateY(-2px); }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 950px) {
+            .form-map-section { flex-direction: column; margin: 20px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .title-section h1 { font-size: 36px; }
+            .map-container { min-height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/profile" class="back-btn" title="Back to Profile">
+            <i class="fa-solid fa-arrow-left"></i>
+        </a>
+        <img src="/images/logo.png" alt="PAWSsion Logo">
+        <h2>PAWSsion Help Center</h2>
+    </nav>
+
+    <div class="content-container">
+        <div class="title-section">
+            <h1>Contact Us</h1>
+            <p>Have questions about the adoption process or how to donate? Our team and partner organizations are here to help.</p>
+        </div>
+
+        <div class="contact-cards-container">
+            <div class="contact-card">
+                <div class="card-icon"><img src="../images/phone-icon.png" alt="Phone"></div>
+                <div class="card-info">
+                    <p class="card-title">Call Us</p>
+                    <p class="card-detail">(+63) 992 487 4712</p>
+                </div>
+            </div>
+            <div class="contact-card">
+                <div class="card-icon"><img src="../images/email-icon.png" alt="Email"></div>
+                <div class="card-info">
+                    <p class="card-title">Email Us</p>
+                    <p class="card-detail">PAWSsion@gmail.com</p>
+                </div>
+            </div>
+            <div class="contact-card">
+                <div class="card-icon"><img src="../images/location-icon.png" alt="Location"></div>
+                <div class="card-info">
+                    <p class="card-title">Location</p>
+                    <p class="card-detail">Bula, Camarines Sur</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-map-section">
+            <div class="map-container">
+                <img src="../images/map.png" alt="Map Location Overview">
+            </div>
+
+            <div class="form-container">
+                <h2>Send us a Message</h2>
+                <form id="contactForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" placeholder="Enter First Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" placeholder="Enter Last Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" placeholder="example@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Subject</label>
+                            <select required>
+                                <option value="">-- Choose Subject --</option>
+                                <option value="adoption">Adoption Inquiry</option>
+                                <option value="donation">Donation Help</option>
+                                <option value="volunteer">Volunteer Interest</option>
+                                <option value="technical">Technical Issue</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Message</label>
+                            <textarea rows="5" placeholder="How can we help you today?" required></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="send-btn full-width">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple form submission handler
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you! Your message has been sent to the PAWSsion team.');
+            this.reset();
+        });
+    </script>
+
+</body>
+</html>
