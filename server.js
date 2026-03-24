@@ -85,6 +85,10 @@ app.get('/faqs', (req, res) => {
 });
 
 
+// ADMIN SIDE ROUTES
+app.get('/admin', (req, res) => {
+    res.sendFile(__dirname + '/public/admin/home.html');
+});
 
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/login/user-login.html');
