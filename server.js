@@ -86,6 +86,28 @@ app.get('/faqs', (req, res) => {
 app.get('/admin', (req, res) => {
     res.sendFile(__dirname + '/public/admin/home.html');
 });
+app.get('/organizations', (req, res) => {
+    res.sendFile(__dirname + '/public/admin/organization.html');
+});
+app.get('/animals', (req, res) => {
+    res.sendFile(__dirname + '/public/admin/animals.html');
+});
+app.get('/adoptions', (req, res) => {
+    res.sendFile(__dirname + '/public/admin/adoptions.html');
+}); 
+app.get('/donations', (req, res) => {
+    res.sendFile(__dirname + '/public/admin/donation.html');
+});
+app.get('/announcements', (req, res) => {
+    res.sendFile(__dirname + '/public/admin/announcement.html');
+});
+app.get('/monitoring', (req, res) => {
+    res.sendFile(__dirname + '/public/admin/monitoring.html');
+}   );
+app.get('/analytics', (req, res) => {
+    res.sendFile(__dirname + '/public/admin/analytics.html');
+}   );          
+
 
 app.get('/login', (req, res) => {
     res.sendFile(__dirname + '/public/login/user-login.html');

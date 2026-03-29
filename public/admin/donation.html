@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWSsion - Admin Organization</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-blue: #02407D;
+            --accent-blue: #3b82f6;
+            --bg-light: #f4f9ff;
+            --white: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            /* This creates the transition from white at the top to soft blue at the bottom */
+            background: linear-gradient(180deg, #FFFFFF 0%, #A5CFFF 100%);
+            background-attachment: fixed; /* This keeps the background from moving when you scroll */
+            min-height: 100vh;
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* --- TOPBAR --- */
+        .top-navbar {
+            position: fixed;
+            top: 0; left: var(--sidebar-width); right: 0;
+            height: 70px;
+            background: rgba(244, 249, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 30px;
+            z-index: 1000;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .header-title-section h1 { font-size: 18px; font-weight: 700; color: #02407D; }
+        .header-title-section span { color: #ACAB57; }
+        .pawssion-brand {
+            font-weight: 800;
+            background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* FIXED USER PROFILE SECTION */
+        .user-profile-section { 
+            display: flex; 
+            align-items: center; 
+            gap: 25px; 
+            padding-right: 10px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center; /* Vertical alignment fix */
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .user-name {
+            font-size: 17px;
+            font-weight: bold;
+            color: #02407D;
+        }
+        .user-profile-section { display: flex; align-items: center; gap: 25px;  padding-right: 10px;}
+        .notification-bell { position: relative; color: #02407D; font-size: 22px; cursor: pointer; }
+        .notification-badge {
+            position: absolute; top: -5px; right: -5px; background: #ff0000;
+            color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold;
+        }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #02407D; object-fit: cover; }
+
+        /* --- LAYOUT --- */
+        #donationSection {
+            padding: 100px 40px 40px 40px;
+            margin-left: var(--sidebar-width); 
+            display: flex;
+            gap: 25px;
+            align-items: flex-start; /* Pantay ang top ng main content at sidebar */
+        }
+
+        .main-container {
+            flex: 2.5;
+        }
+
+        /* --- CONTROLS ROW (Search & Filter) --- */
+        .controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; 
+            margin-bottom: 25px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 65%;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 20px;
+            top: 24px; /* In-adjust para sa laki ng input */
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px 15px 55px;
+            border-radius: 35px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            outline: none;
+            font-size: 14px;
+        }
+
+        /* Filter button adjusted to align with Reject Header */
+        .filter-btn {
+            background: white;
+            padding: 12px 25px;
+            border-radius: 35px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            color: var(--text-main);
+            font-weight: 500;
+            min-width: 160px;
+            justify-content: space-between;
+            margin-top: 0px; 
+        }
+
+        /* --- TABLE STYLE --- */
+        .table-card {
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        thead { background: var(--primary-blue); color: white; }
+        th { padding: 22px 20px; text-align: left; font-size: 15px; font-weight: 500; }
+        td { padding: 20px; font-size: 14px; border-bottom: 1px solid #f8fafc; }
+
+        .status-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .status-rejected { background: #ff0000; }
+        .status-verified { background: #00ff40; }
+        .status-pending { background: #ffcc00; }
+
+        /* --- REJECTED SIDEBAR --- */
+        .rejected-sidebar {
+            flex: 1;
+            background: white;
+            border-radius: 30px;
+            padding: 30px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            /* Margin top is set to align with the table blue header */
+            margin-top: 78px; 
+        }
+
+        .rejected-title {
+            color: #ff0000;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 20px;
+            letter-spacing: 1.5px;
+        }
+
+        .reject-item { margin-bottom: 25px; }
+        .reject-header { 
+            font-weight: 700; 
+            font-size: 14px; 
+            color: #000; 
+            margin-bottom: 8px; 
+        }
+        .reject-desc { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    </style>
+</head>
+<body>
+
+    <div id="sidebar-placeholder"></div>
+
+    <header class="top-navbar">
+        <div class="header-title-section">
+            <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
+            <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
+        </div>
+        <div class="user-profile-section">
+            <div class="notification-bell">
+                <i class="fa-solid fa-bell"></i>
+                <span class="notification-badge">30</span>
+            </div>
+            <div class="user-info">
+                <img src="../images/dog2.png" alt="Irene" class="user-avatar">
+                <span class="user-name">Irene</span>
+            </div>
+        </div>
+    </header>
+
+    <main id="donationSection">
+        <div class="main-container">
+            <div class="controls-row">
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="search-input" placeholder="Search by name, amount...">
+                </div>
+                <button class="filter-btn">
+                    <span><i class="fa-solid fa-filter"></i> All Status</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+            </div>
+
+            <div class="table-card">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Donor Name</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Proof of Payment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Feb 11</td>
+                            <td>Jhyzzeel</td>
+                            <td><strong>₱100.00</strong></td>
+                            <td>GCash</td>
+                            <td><span class="status-dot status-rejected"></span> rejected</td>
+                            <td><a href="#" style="color:#1e293b; text-decoration:none;">[View Receipt]</a></td>
+                        </tr>
+                        <tr>
+                            <td>Feb 14</td>
+                            <td>Carla Karura</td>
+                            <td><strong>₱10.00</strong></td>
+                            <td>GCash</td>
+                            <td><span class="status-dot status-verified"></span> verified</td>
+                            <td><a href="#" style="color:#1e293b; text-decoration:none;">[View Receipt]</a></td>
+                        </tr>
+                        <tr>
+                            <td>Feb 18</td>
+                            <td>Mariel Bambila</td>
+                            <td><strong>₱10.00</strong></td>
+                            <td>GCash</td>
+                            <td><span class="status-dot status-pending"></span> pending</td>
+                            <td><a href="#" style="color:#1e293b; text-decoration:none;">[View Receipt]</a></td>
+                        </tr>
+                        <tr>
+                            <td>Feb 19</td>
+                            <td>Maria Belen</td>
+                            <td><strong>₱20.00</strong></td>
+                            <td>GCash</td>
+                            <td><span class="status-dot status-rejected"></span> rejected</td>
+                            <td><a href="#" style="color:#1e293b; text-decoration:none;">[View Receipt]</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <aside class="rejected-sidebar">
+            <h2 class="rejected-title">REJECTED</h2>
+            
+            <div class="reject-item">
+                <div class="reject-header">Jhyzzeel - Amount Mismatch</div>
+                <div class="reject-desc">Amount declared is ₱100 but the GCash receipt shows ₱1,500. Verification failed due to amount discrepancy.</div>
+            </div>
+
+            <div class="reject-item">
+                <div class="reject-header">
+                    Maria Belen - No Record Found
+                    <i class="fa-solid fa-ellipsis" style="color:#cbd5e1; font-size: 10px;"></i>
+                </div>
+                <div class="reject-desc">We verified our transaction history for Feb 11, and the reference number provided does not exist. Please double-check your receipt.</div>
+            </div>
+        </aside>
+    </main>
+    <script>
+    // Load Sidebar
+        fetch('sidebar.html').then(res => res.text()).then(data => {
+            document.getElementById('sidebar-placeholder').innerHTML = data;
+        });
+        document.addEventListener("click", function(e){
+    if(e.target.closest("#organizationsBtn")){
+        window.location.href = "organizations.html";
+    }
+    if(e.target.closest("#dashboardBtn")){
+        window.location.href = "home.html";
+    }
+    if(e.target.closest("#animalsBtn")){
+        window.location.href = "animals.html";
+    }   
+    if(e.target.closest("#adoptionBtn")){
+        window.location.href = "adoptions.html";
+    }   
+      if(e.target.closest("#donationBtn")){
+            window.location.href = "donation.html";
+          } 
+         if(e.target.closest("#announcementsBtn")){
+            window.location.href = "announcement.html";   
+        }  
+      if(e.target.closest("#monitoringBtn")){
+            window.location.href = "monitoring.html";   
+        }
+        if(e.target.closest("#analyticsBtn")){
+            window.location.href = "analytics.html";   
+        }
+});
+
+    </script>
+</body>
+</html>

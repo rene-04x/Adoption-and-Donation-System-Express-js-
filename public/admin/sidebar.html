@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>PAWSsion Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', 'Segoe UI', sans-serif; background: #f8fafc; display: flex; }
@@ -95,32 +95,32 @@
     </div>
 
     <p class="sidebar-label">MAIN MENU</p>
-    <div class="nav-item active-item" id="dashboardBtn">
+    <div class="nav-item" id="dashboardBtn">
         <i class="fa-solid fa-table-cells-large"></i> Dashboard
     </div>
 
     <p class="sidebar-label">MANAGEMENT</p>
-    <div class="nav-item">
+    <div class="nav-item" id="organizationsBtn">
         <i class="fa-solid fa-circle-nodes" style="color: #3b82f6;"></i> Organizations
     </div>
-    <div class="nav-item">
+    <div class="nav-item " id="animalsBtn">
         <i class="fa-solid fa-paw" style="color: #0ea5e9;"></i> Animals
     </div>
-    <div class="nav-item">
+    <div class="nav-item" id="adoptionBtn">
         <i class="fa-solid fa-shield-dog" style="color: #60a5fa;"></i> Adoption
     </div>
-    <div class="nav-item">
+    <div class="nav-item" id="donationBtn">
         <i class="fa-solid fa-hand-holding-heart" style="color: #38bdf8;"></i> Donation
     </div>
-    <div class="nav-item">
+    <div class="nav-item" id="announcementsBtn">
         <i class="fa-solid fa-bullhorn" style="color: #f87171;"></i> Announcement
     </div>
 
     <p class="sidebar-label">DATA & REPORTS</p>
-    <div class="nav-item">
+    <div class="nav-item"id="monitoringBtn">
         <i class="fa-solid fa-chart-line" style="color: #3b82f6;"></i> Monitoring
     </div>
-    <div class="nav-item">
+    <div class="nav-item"id="analyticsBtn">
         <i class="fa-solid fa-chart-simple" style="color: #60a5fa;"></i> Analytics
     </div>
 
@@ -130,6 +130,50 @@
         <div class="nav-item" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
     </div>
 </div>
+<script>
+const navItems = document.querySelectorAll('.nav-item');
 
+
+navItems.forEach(item => {
+    item.addEventListener('click', function () {
+        // remove active sa lahat
+        navItems.forEach(i => i.classList.remove('active-item'));
+
+        // add active sa clicked
+        this.classList.add('active-item');
+    });
+});
+
+// NAVIGATION (MANUAL REDIRECT)
+document.getElementById('dashboardBtn').onclick = () => {
+    window.location.href = "home.html";
+};
+
+document.getElementById('organizationsBtn').onclick = () => {
+    window.location.href = "organizations.html";
+};
+
+document.getElementById('animalsBtn').onclick = () => {
+    window.location.href = "animals.html";
+};
+
+document.getElementById('adoptionBtn').onclick = () => {
+    window.location.href = "adoption.html";
+};
+
+document.getElementById('donationBtn').onclick = () => {
+    window.location.href = "donation.html";
+};
+
+document.getElementById('announcementsBtn').onclick = () => {
+    window.location.href = "announcement.html";
+};
+document.getElementById('monitoringBtn').onclick = () => {
+    window.location.href = "monitoring.html";
+};  
+document.getElementById('analyticsBtn').onclick = () => {
+    window.location.href = "analytics.html";
+};  
+</script>
 </body>
 </html>

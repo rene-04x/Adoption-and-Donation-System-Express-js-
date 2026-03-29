@@ -241,6 +241,7 @@ body.sidebar-closed .profile-container {
         <div class="nav-item" id="applicationBtn"><i class="fa-solid fa-chalkboard-user"></i> My Application</div>
         <p class="sidebar-label">Community & Support</p>
         <div class="nav-item" id="donationBtn"><i class="fa-solid fa-money-bill"></i> My Donations</div>
+        <div class="nav-item" id="kamustahanBtn"><i class="fa-solid fa-heart"></i> Kamustahan</div>
     </div>
     <div class="sidebar-spacer"></div>
     <div class="nav-item" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out</div>
@@ -383,6 +384,10 @@ body.sidebar-closed .profile-container {
     document.getElementById('donationBtn').onclick = () => {
         window.location.href = '/donations';
     };
+    document.getElementById('kamustahanBtn').onclick = () => {
+        window.location.href = '/kamustahan';
+    };
+    
     const urlParams = new URLSearchParams(window.location.search);
 let username = urlParams.get('username');
 

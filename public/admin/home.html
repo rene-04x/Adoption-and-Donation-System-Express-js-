@@ -264,6 +264,32 @@
         fetch('sidebar.html').then(res => res.text()).then(data => {
             document.getElementById('sidebar-placeholder').innerHTML = data;
         });
+        document.addEventListener("click", function(e){
+    if(e.target.closest("#organizationsBtn")){
+        window.location.href = "organizations.html";
+    }
+    if(e.target.closest("#dashboardBtn")){
+        window.location.href = "home.html";
+    }
+    if(e.target.closest("#animalsBtn")){
+        window.location.href = "animals.html";
+    }   
+    if(e.target.closest("#adoptionBtn")){
+        window.location.href = "adoptions.html";
+    }   
+      if(e.target.closest("#donationBtn")){
+            window.location.href = "donation.html";
+          } 
+         if(e.target.closest("#announcementsBtn")){
+            window.location.href = "announcement.html";   
+        }  
+      if(e.target.closest("#monitoringBtn")){
+            window.location.href = "monitoring.html";   
+        }
+        if(e.target.closest("#analyticsBtn")){
+            window.location.href = "analytics.html";   
+        }
+});
 
         // Donation Line Chart
         new Chart(document.getElementById('donationChart'), {
@@ -308,6 +334,7 @@
                     }
                 }
             }
+            
         });
     </script>
 </body>
