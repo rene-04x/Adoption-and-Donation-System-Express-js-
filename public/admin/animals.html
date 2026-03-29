@@ -216,6 +216,93 @@
             color: #64748b;
             margin-bottom: 10px;
         }
+            /* PROFILE MODAL */
+        .profile-modal {
+        position: absolute;
+            top: 70px; /* same height ng navbar */
+            right: 30px; /* adjust depende sa spacing mo */
+            display: none;
+            z-index: 2000;
+        }
+
+        .profile-card {
+            background: #fff;
+            width: 300px;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 15px;
+            height: 15px;
+            background: white;
+            transform: rotate(45deg);
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+
+        .profile-card h2 {
+            color: #02407D;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .profile-card .email {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .role {
+            font-size: 13px;
+            color: #444;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .edit-btn {
+            background: #f59e0b;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .change-pass {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+    }
 
         /* DETAILS ROW */
         .details-row {
@@ -363,6 +450,7 @@
             resize: none;
             height: 70px;
         }
+        
         /* ANIMATION */
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.9); }
@@ -382,7 +470,36 @@
             <div class="notification-bell">
                 <i class="fa-solid fa-bell"></i>
                 <span class="notification-badge">30</span>
+            </div>	
+            
+            <!-- PROFILE MODAL -->
+        <div id="profileModal" class="profile-modal">
+            <div class="profile-card">
+                <!-- Close button -->
+                <span class="close-btn">&times;</span>
+
+                <img src="../images/dog2.png" class="profile-img">
+                <h2>Irene Espeleta</h2>
+                <p class="email">irespeleta@gmail.com</p>
+
+                <div class="role">
+                    <span>President</span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>address</span>
+                </div>
+
+                <button class="edit-btn">
+                    <i class="fa-solid fa-pen"></i> Edit Profile
+                </button>
+
+                <div class="change-pass">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Change Password</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
             </div>
+        </div>
+
             <div class="user-info">
                 <img src="../images/dog2.png" alt="Irene" class="user-avatar">
                 <span class="user-name">Irene</span>
@@ -503,63 +620,93 @@
   </div>
 </div>
 </section>
-    
     <script>
-        // Load Sidebar
-        fetch('sidebar.html').then(res => res.text()).then(data => {
-            document.getElementById('sidebar-placeholder').innerHTML = data;
-        });
+/* ================= SIDEBAR LOAD ================= */
+fetch('sidebar.html')
+.then(res => res.text())
+.then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
 
-        document.addEventListener("click", function(e){
-        if(e.target.closest("#organizationsBtn")){
-            window.location.href = "organizations.html";
-        }
-        if(e.target.closest("#dashboardBtn")){
-            window.location.href = "home.html";
-        }
-        if(e.target.closest("#animalsBtn")){
-            window.location.href = "animals.html";
-        }
-        if(e.target.closest("#adoptionBtn")){
-            window.location.href = "adoptions.html";
-        } 
-      if(e.target.closest("#donationBtn")){
-            window.location.href = "donation.html";
-        }   
-         if(e.target.closest("#announcementsBtn")){
-            window.location.href = "announcement.html";   
-        }  
-          if(e.target.closest("#monitoringBtn")){
-            window.location.href = "monitoring.html";   
-        }
-        if(e.target.closest("#analyticsBtn")){
-            window.location.href = "analytics.html";   
+    const currentPage = window.location.pathname.split("/").pop();
+
+    const navMap = {
+        "home.html": "dashboardBtn",
+        "organizations.html": "organizationsBtn",
+        "animals.html": "animalsBtn",
+        "adoptions.html": "adoptionBtn",
+        "donation.html": "donationBtn",
+        "announcement.html": "announcementsBtn",
+        "monitoring.html": "monitoringBtn",
+        "analytics.html": "analyticsBtn"
+    };
+
+    if(navMap[currentPage]) {
+        document.getElementById(navMap[currentPage])?.classList.add("active-item");
+    }
+
+    const routes = {
+        dashboardBtn: "home.html",
+        organizationsBtn: "organizations.html",
+        animalsBtn: "animals.html",
+        adoptionBtn: "adoptions.html",
+        donationBtn: "donation.html",
+        announcementsBtn: "announcement.html",
+        monitoringBtn: "monitoring.html",
+        analyticsBtn: "analytics.html"
+    };
+
+    Object.keys(routes).forEach(id => {
+        const el = document.getElementById(id);
+        if(el){
+            el.addEventListener("click", () => {
+                window.location.href = routes[id];
+            });
         }
     });
+});
 
+
+/* ================= PROFILE MODAL ================= */
+const profileModal = document.getElementById("profileModal");
+
+document.querySelector(".user-info").addEventListener("click", (e) => {
+    e.stopPropagation();
+    profileModal.style.display = "block";
+});
+
+document.querySelector(".profile-card .close-btn").addEventListener("click", () => {
+    profileModal.style.display = "none";
+});
+
+document.addEventListener("click", () => {
+    profileModal.style.display = "none";
+});
+
+document.querySelector(".profile-card").addEventListener("click", (e) => {
+    e.stopPropagation();
+});
+
+
+/* ================= ANIMAL MODAL ================= */
 const modal = document.getElementById("animalModal");
-const closeBtn = document.querySelector(".close-btn");
+const closeBtn = document.querySelector(".modal .close-btn");
 
+/* VIEW BUTTONS */
 document.querySelectorAll(".view-btn").forEach(btn => {
     btn.addEventListener("click", () => {
 
-        // Basic info
         document.getElementById("modalName").innerText = btn.dataset.name;
         document.getElementById("modalMeta").innerText = btn.dataset.meta;
         document.getElementById("modalAge").innerText = btn.dataset.age;
         document.getElementById("modalSize").innerText = btn.dataset.size;
         document.getElementById("modalImage").src = btn.dataset.img;
-
-        // Description & behavior
         document.getElementById("modalDescription").innerText = btn.dataset.description;
         document.getElementById("modalBehavior").innerText = btn.dataset.behavior;
 
-        // TAGS (dynamic)
         const tagsContainer = document.getElementById("modalTags");
-        tagsContainer.innerHTML = ""; // clear first
+        tagsContainer.innerHTML = "";
 
-        const tags = btn.dataset.tags.split(",");
-        tags.forEach(tag => {
+        btn.dataset.tags.split(",").forEach(tag => {
             const span = document.createElement("span");
             span.className = "tag";
             span.innerText = tag;
@@ -570,15 +717,14 @@ document.querySelectorAll(".view-btn").forEach(btn => {
     });
 });
 
-// Close
 closeBtn.onclick = () => modal.style.display = "none";
 
 window.onclick = (e) => {
-    if (e.target == modal) {
-        modal.style.display = "none";
-    }
+    if (e.target == modal) modal.style.display = "none";
 };
 
+
+/* ================= ADD ANIMAL ================= */
 const addModal = document.getElementById("addModal");
 const openAdd = document.getElementById("openAddModal");
 const closeAdd = document.querySelector(".close-add");
@@ -586,7 +732,6 @@ const closeAdd = document.querySelector(".close-add");
 openAdd.onclick = () => addModal.style.display = "flex";
 closeAdd.onclick = () => addModal.style.display = "none";
 
-// SAVE ANIMAL
 document.getElementById("saveAnimal").onclick = () => {
 
     const name = document.getElementById("name").value;
@@ -606,7 +751,6 @@ document.getElementById("saveAnimal").onclick = () => {
     newCard.innerHTML = `
         <span class="status-badge">Available</span>
         <img src="${img}" alt="${name}">
-
         <div class="card-content">
             <h3>${name}</h3>
             <div class="card-meta">${meta}</div>
@@ -638,36 +782,9 @@ document.getElementById("saveAnimal").onclick = () => {
 
     grid.appendChild(newCard);
 
-    // RE-ATTACH VIEW EVENT
-    newCard.querySelector(".view-btn").addEventListener("click", function() {
-
-        document.getElementById("modalName").innerText = this.dataset.name;
-        document.getElementById("modalMeta").innerText = this.dataset.meta;
-        document.getElementById("modalAge").innerText = this.dataset.age;
-        document.getElementById("modalSize").innerText = this.dataset.size;
-        document.getElementById("modalImage").src = this.dataset.img;
-        document.getElementById("modalDescription").innerText = this.dataset.description;
-        document.getElementById("modalBehavior").innerText = this.dataset.behavior;
-
-        const tagsContainer = document.getElementById("modalTags");
-        tagsContainer.innerHTML = "";
-
-        this.dataset.tags.split(",").forEach(tag => {
-            const span = document.createElement("span");
-            span.className = "tag";
-            span.innerText = tag;
-            tagsContainer.appendChild(span);
-        });
-
-        modal.style.display = "flex";
-    });
-
     addModal.style.display = "none";
 };
-
-
-        
 </script>
-    </body>
-</html>
-    
+
+ </body>
+ </html>

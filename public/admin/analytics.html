@@ -293,38 +293,50 @@
         </div>
     </section>
     <script>
-        // Load Sidebar
-        fetch('sidebar.html').then(res => res.text()).then(data => {
-            document.getElementById('sidebar-placeholder').innerHTML = data;
-        });
-        
+       fetch('sidebar.html')
+.then(res => res.text())
+.then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
 
-        document.addEventListener("click", function(e){
-        if(e.target.closest("#organizationsBtn")){
-            window.location.href = "organizations.html";
-        }
-        if(e.target.closest("#dashboardBtn")){
-            window.location.href = "home.html";
-        }
-        if(e.target.closest("#animalsBtn")){
-            window.location.href = "animals.html";
-        }
-        if(e.target.closest("#adoptionBtn")){
-            window.location.href = "adoptions.html";
-        }   
-        if(e.target.closest("#donationBtn")){
-            window.location.href = "donation.html";
-        }
-        if(e.target.closest("#announcementsBtn")){
-            window.location.href = "announcement.html";   
-        }  
-        if(e.target.closest("#monitoringBtn")){
-            window.location.href = "monitoring.html";   
-        }
-        if(e.target.closest("#analyticsBtn")){
-            window.location.href = "analytics.html";   
+    // ✅ ACTIVE PAGE (blue highlight)
+    const currentPage = window.location.pathname.split("/").pop();
+
+    const navMap = {
+        "home.html": "dashboardBtn",
+        "organizations.html": "organizationsBtn",
+        "animals.html": "animalsBtn",
+        "adoptions.html": "adoptionBtn",
+        "donation.html": "donationBtn",
+        "announcement.html": "announcementsBtn",
+        "monitoring.html": "monitoringBtn",
+        "analytics.html": "analyticsBtn"
+    };
+
+    if(navMap[currentPage]) {
+        document.getElementById(navMap[currentPage])?.classList.add("active-item");
+    }
+
+    // ✅ CLICK NAVIGATION
+    const routes = {
+        dashboardBtn: "home.html",
+        organizationsBtn: "organizations.html",
+        animalsBtn: "animals.html",
+        adoptionBtn: "adoptions.html",
+        donationBtn: "donation.html",
+        announcementsBtn: "announcement.html",
+        monitoringBtn: "monitoring.html",
+        analyticsBtn: "analytics.html"
+    };
+
+    Object.keys(routes).forEach(id => {
+        const el = document.getElementById(id);
+        if(el){
+            el.addEventListener("click", () => {
+                window.location.href = routes[id];
+            });
         }
     });
+});
       // Common Chart Defaults
         Chart.defaults.font.family = "'Inter', sans-serif";
         Chart.defaults.color = '#64748b';

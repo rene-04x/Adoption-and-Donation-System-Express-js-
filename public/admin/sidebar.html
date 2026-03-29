@@ -133,7 +133,6 @@
 <script>
 const navItems = document.querySelectorAll('.nav-item');
 
-
 navItems.forEach(item => {
     item.addEventListener('click', function () {
         // remove active sa lahat
@@ -141,39 +140,36 @@ navItems.forEach(item => {
 
         // add active sa clicked
         this.classList.add('active-item');
+
+        // redirect based sa ID
+        switch(this.id) {
+            case "dashboardBtn":
+                window.location.href = "home.html";
+                break;
+            case "organizationsBtn":
+                window.location.href = "organizations.html";
+                break;
+            case "animalsBtn":
+                window.location.href = "animals.html";
+                break;
+            case "adoptionBtn":
+                window.location.href = "adoption.html";
+                break;
+            case "donationBtn":
+                window.location.href = "donation.html";
+                break;
+            case "announcementsBtn":
+                window.location.href = "announcement.html";
+                break;
+            case "monitoringBtn":
+                window.location.href = "monitoring.html";
+                break;
+            case "analyticsBtn":
+                window.location.href = "analytics.html";
+                break;
+        }
     });
 });
-
-// NAVIGATION (MANUAL REDIRECT)
-document.getElementById('dashboardBtn').onclick = () => {
-    window.location.href = "home.html";
-};
-
-document.getElementById('organizationsBtn').onclick = () => {
-    window.location.href = "organizations.html";
-};
-
-document.getElementById('animalsBtn').onclick = () => {
-    window.location.href = "animals.html";
-};
-
-document.getElementById('adoptionBtn').onclick = () => {
-    window.location.href = "adoption.html";
-};
-
-document.getElementById('donationBtn').onclick = () => {
-    window.location.href = "donation.html";
-};
-
-document.getElementById('announcementsBtn').onclick = () => {
-    window.location.href = "announcement.html";
-};
-document.getElementById('monitoringBtn').onclick = () => {
-    window.location.href = "monitoring.html";
-};  
-document.getElementById('analyticsBtn').onclick = () => {
-    window.location.href = "analytics.html";
-};  
 </script>
 </body>
 </html>

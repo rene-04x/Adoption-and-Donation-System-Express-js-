@@ -192,6 +192,93 @@ td {
     justify-content: center;
     cursor: pointer;
 }
+          /* PROFILE MODAL */
+        .profile-modal {
+        position: absolute;
+            top: 70px; /* same height ng navbar */
+            right: 30px; /* adjust depende sa spacing mo */
+            display: none;
+            z-index: 2000;
+        }
+
+        .profile-card {
+            background: #fff;
+            width: 300px;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 15px;
+            height: 15px;
+            background: white;
+            transform: rotate(45deg);
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+
+        .profile-card h2 {
+            color: #02407D;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .profile-card .email {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .role {
+            font-size: 13px;
+            color: #444;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .edit-btn {
+            background: #f59e0b;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .change-pass {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+    }
  </style>
  <body>
 
@@ -202,11 +289,40 @@ td {
             <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
             <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
         </div>
-        <div class="user-profile-section">
+<div class="user-profile-section">
             <div class="notification-bell">
                 <i class="fa-solid fa-bell"></i>
                 <span class="notification-badge">30</span>
             </div>
+            
+            <!-- PROFILE MODAL -->
+        <div id="profileModal" class="profile-modal">
+            <div class="profile-card">
+                <!-- Close button -->
+                <span class="close-btn">&times;</span>
+
+                <img src="../images/dog2.png" class="profile-img">
+                <h2>Irene Espeleta</h2>
+                <p class="email">irespeleta@gmail.com</p>
+
+                <div class="role">
+                    <span>President</span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>address</span>
+                </div>
+
+                <button class="edit-btn">
+                    <i class="fa-solid fa-pen"></i> Edit Profile
+                </button>
+
+                <div class="change-pass">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Change Password</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+
             <div class="user-info">
                 <img src="../images/dog2.png" alt="Irene" class="user-avatar">
                 <span class="user-name">Irene</span>
@@ -290,35 +406,72 @@ td {
 </section>
     
     <script>
-        // Load Sidebar
-        fetch('sidebar.html').then(res => res.text()).then(data => {
-            document.getElementById('sidebar-placeholder').innerHTML = data;
-        });
+      fetch('sidebar.html')
+.then(res => res.text())
+.then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
 
-        document.addEventListener("click", function(e){
-        if(e.target.closest("#organizationsBtn")){
-            window.location.href = "organizations.html";
-        }
-        if(e.target.closest("#dashboardBtn")){
-            window.location.href = "home.html";
-        }
-        if(e.target.closest("#animalsBtn")){
-            window.location.href = "animals.html";
-        }   
-        if(e.target.closest("#adoptionBtn")){
-            window.location.href = "adoptions.html";
-        }  
-        if(e.target.closest("#donationBtn")){
-            window.location.href = "donation.html";
-        } 
-          if(e.target.closest("#monitoringBtn")){
-            window.location.href = "monitoring.html";   
-        }
-        if(e.target.closest("#analyticsBtn")){
-            window.location.href = "analytics.html";   
+    // ✅ ACTIVE PAGE (blue highlight)
+    const currentPage = window.location.pathname.split("/").pop();
+
+    const navMap = {
+        "home.html": "dashboardBtn",
+        "organizations.html": "organizationsBtn",
+        "animals.html": "animalsBtn",
+        "adoptions.html": "adoptionBtn",
+        "donation.html": "donationBtn",
+        "announcement.html": "announcementsBtn",
+        "monitoring.html": "monitoringBtn",
+        "analytics.html": "analyticsBtn"
+    };
+
+    if(navMap[currentPage]) {
+        document.getElementById(navMap[currentPage])?.classList.add("active-item");
+    }
+
+    // ✅ CLICK NAVIGATION
+    const routes = {
+        dashboardBtn: "home.html",
+        organizationsBtn: "organizations.html",
+        animalsBtn: "animals.html",
+        adoptionBtn: "adoptions.html",
+        donationBtn: "donation.html",
+        announcementsBtn: "announcement.html",
+        monitoringBtn: "monitoring.html",
+        analyticsBtn: "analytics.html"
+    };
+
+    Object.keys(routes).forEach(id => {
+        const el = document.getElementById(id);
+        if(el){
+            el.addEventListener("click", () => {
+                window.location.href = routes[id];
+            });
         }
     });
-        
+});
+           const modal = document.getElementById("profileModal");
+
+    // OPEN
+    document.querySelector(".user-info").addEventListener("click", (e) => {
+        e.stopPropagation();
+        modal.style.display = "block";
+    });
+
+    // CLOSE BUTTON (X)
+    document.querySelector(".close-btn").addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // CLOSE kapag click outside
+    document.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // prevent close kapag click inside card
+    document.querySelector(".profile-card").addEventListener("click", (e) => {
+        e.stopPropagation();
+    });
 </script>
     </body>
 </html>
