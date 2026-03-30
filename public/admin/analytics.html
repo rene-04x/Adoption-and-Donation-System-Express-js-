@@ -25,12 +25,13 @@
 
         /* --- DASHBOARD LAYOUT --- */
         #analyticsSection {
-            padding: 90px 40px 40px 40px;
+            padding: 90px 30px 40px 30px;
             margin-left: var(--sidebar-width);
             transition: all 0.4s ease;
         }
-
-          /* --- TOPBAR --- */
+   
+     
+        /* --- TOPBAR --- */
         .top-navbar {
             position: fixed;
             top: 0; left: var(--sidebar-width); right: 0;
@@ -79,6 +80,93 @@
             color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold;
         }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #02407D; object-fit: cover; }
+
+  .profile-modal {
+        position: absolute;
+            top: 70px; /* same height ng navbar */
+            right: 30px; /* adjust depende sa spacing mo */
+            display: none;
+            z-index: 2000;
+        }
+
+        .profile-card {
+            background: #fff;
+            width: 300px;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .profile-card::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 15px;
+            height: 15px;
+            background: white;
+            transform: rotate(45deg);
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+
+        .profile-card h2 {
+            color: #02407D;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .profile-card .email {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .role {
+            font-size: 13px;
+            color: #444;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .edit-btn {
+            background: #f59e0b;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .change-pass {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+    }
 
         /* --- QUICK STATS --- */
         .top-stats {
@@ -187,14 +275,43 @@
 
     <header class="top-navbar">
         <div class="header-title-section">
-            <h1>PAWSsion System <span>Intelligence</span></h1>
-            <p style="color: #64748b; font-size: 13px; font-weight: 500;">Institutional Descriptive Analytics & Welfare Insights</p>
+            <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
+            <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
         </div>
         <div class="user-profile-section">
             <div class="notification-bell">
-                <i class="fa-regular fa-bell"></i>
+                <i class="fa-solid fa-bell"></i>
                 <span class="notification-badge">30</span>
+            </div>	
+            
+            <!-- PROFILE MODAL -->
+        <div id="profileModal" class="profile-modal">
+            <div class="profile-card">
+                <!-- Close button -->
+                <span class="close-btn">&times;</span>
+
+                <img src="../images/dog2.png" class="profile-img">
+                <h2>Irene Espeleta</h2>
+                <p class="email">irespeleta@gmail.com</p>
+
+                <div class="role">
+                    <span>President</span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>address</span>
+                </div>
+
+                <button class="edit-btn">
+                    <i class="fa-solid fa-pen"></i> Edit Profile
+                </button>
+
+                <div class="change-pass">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Change Password</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
             </div>
+        </div>
+
             <div class="user-info">
                 <img src="../images/dog2.png" alt="Irene" class="user-avatar">
                 <span class="user-name">Irene</span>
@@ -437,6 +554,28 @@
                 plugins: { legend: { display: false } }
             }
         });
+        // --- PROFILE MODAL LOGIC ---
+const userInfo = document.querySelector('.user-info');
+const profileModal = document.getElementById('profileModal');
+const closeProfile = document.querySelector('.close-btn');
+
+// Pag-click sa User Info (Avatar/Pangalan) para bumukas ang modal
+userInfo.addEventListener('click', (e) => {
+    e.stopPropagation(); // Pigilan ang pag-close agad
+    profileModal.style.display = 'block';
+});
+
+// Pag-click sa 'X' button para magsara
+closeProfile.addEventListener('click', () => {
+    profileModal.style.display = 'none';
+});
+
+// Pagsara ng modal kapag nag-click sa labas nito
+window.addEventListener('click', (e) => {
+    if (!profileModal.contains(e.target) && e.target !== userInfo) {
+        profileModal.style.display = 'none';
+    }
+});
 </script>
     </body>
 </html>
