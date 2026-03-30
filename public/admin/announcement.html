@@ -19,15 +19,16 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Inter', sans-serif;
-            /* This creates the transition from white at the top to soft blue at the bottom */
             background: linear-gradient(180deg, #FFFFFF 0%, #A5CFFF 100%);
-            background-attachment: fixed; /* This keeps the background from moving when you scroll */
+            background-attachment: fixed;
             min-height: 100vh;
             color: var(--text-main);
             overflow-x: hidden;
         }
+
         #announcementSection {
             padding: 100px 30px 40px 30px;
             margin-left: var(--sidebar-width); 
@@ -49,24 +50,24 @@
             border-bottom: 1px solid #f1f5f9;
         }
 
-        .header-title-section h1 { font-size: 18px; font-weight: 700; color: #02407D; }
-        .header-title-section span { color: #ACAB57; }
         .pawssion-brand {
             font-weight: 800;
             background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        /* FIXED USER PROFILE SECTION */
+
+      /* FIXED USER PROFILE SECTION */
         .user-profile-section { 
             display: flex; 
             align-items: center; 
             gap: 25px; 
             padding-right: 10px;
         }
+
         .user-info {
             display: flex;
-            align-items: center; /* Vertical alignment fix */
+            align-items: center;
             gap: 12px;
             cursor: pointer;
         }
@@ -76,18 +77,20 @@
             font-weight: bold;
             color: #02407D;
         }
-        .user-profile-section { display: flex; align-items: center; gap: 25px;  padding-right: 10px;}
+
         .notification-bell { position: relative; color: #02407D; font-size: 22px; cursor: pointer; }
         .notification-badge {
             position: absolute; top: -5px; right: -5px; background: #ff0000;
             color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold;
         }
+        
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #02407D; object-fit: cover; }
-           /* PROFILE MODAL */
+
+        /* PROFILE MODAL (Dating Design) */
         .profile-modal {
-        position: absolute;
-            top: 70px; /* same height ng navbar */
-            right: 30px; /* adjust depende sa spacing mo */
+            position: absolute;
+            top: 70px;
+            right: 30px;
             display: none;
             z-index: 2000;
         }
@@ -99,9 +102,10 @@
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            animation: fadeIn 0.3s ease;
+            position: relative;
         }
 
+        /* Yung triangle pointer sa taas ng card */
         .profile-card::before {
             content: "";
             position: absolute;
@@ -119,20 +123,11 @@
             border-radius: 50%;
             object-fit: cover;
             margin-bottom: 15px;
+            border: 3px solid var(--primary-blue);
         }
 
-
-        .profile-card h2 {
-            color: #02407D;
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .profile-card .email {
-            font-size: 13px;
-            color: #333;
-            margin-bottom: 15px;
-        }
+        .profile-card h2 { color: #02407D; font-size: 20px; margin-bottom: 5px; }
+        .profile-card .email { font-size: 13px; color: #333; margin-bottom: 15px; }
 
         .role {
             font-size: 13px;
@@ -152,6 +147,7 @@
             font-weight: bold;
             cursor: pointer;
             margin-bottom: 15px;
+            width: 100%;
         }
 
         .change-pass {
@@ -162,16 +158,69 @@
             padding: 12px;
             border-radius: 12px;
             cursor: pointer;
+            font-size: 13px;
         }
-        .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 24px;
-        cursor: pointer;
-    }
- </style>
- <body>
+
+        /* --- ACTION BAR --- */
+        .action-bar { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; }
+        .search-container { position: relative; width: 450px; }
+        .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
+        .search-container input {
+            width: 100%; padding: 12px 12px 12px 48px; border-radius: 30px;
+            border: 1.5px solid #e2e8f0; outline: none; background: white;
+        }
+        .filter-btn, .archive-btn, .post-btn {
+            padding: 12px 20px; border-radius: 12px; border: 1.5px solid #e2e8f0;
+            background: white; cursor: pointer; display: flex; align-items: center;
+            gap: 8px; font-size: 14px; font-weight: 600; color: #334155;
+        }
+        .post-btn { margin-left: auto; background: var(--primary-blue); color: white; border: none; }
+
+        /* --- ANNOUNCEMENT GRID & CARDS --- */
+        .announcement-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding-bottom: 50px;
+        }
+
+        .announcement-card {
+            background: white; border-radius: 20px; padding: 20px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f1f5f9; display: flex; flex-direction: column;
+            transition: transform 0.2s;
+        }
+        
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .tag { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .tag.Urgent { background: #fee2e2; color: #ef4444; }
+        .tag.Event { background: #fef3c7; color: #f59e0b; }
+        .tag.General { background: #dcfce7; color: #22c55e; }
+        .tag.Update { background: #dbeafe; color: #3b82f6; }
+
+        .card-title { font-size: 15px; font-weight: 800; margin: 10px 0 5px 0; color: #1e293b; }
+        .card-meta { font-size: 11px; color: #94a3b8; margin-bottom: 12px; line-height: 1.6; }
+        .card-body { font-size: 12.5px; color: #475569; line-height: 1.5; flex-grow: 1; margin-bottom: 15px; }
+        .card-footer { border-top: 1px solid #f1f5f9; padding-top: 12px; font-size: 11px; color: #64748b; }
+
+        /* --- MODAL STYLES --- */
+        #postModal .profile-card { width: 750px; text-align: left; max-width: 90vw; }
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .form-group { margin-bottom: 15px; }
+        .input-styled { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; }
+        .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 20px; transition: .4s; }
+        .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .4s; }
+        input:checked + .slider { background: #22c55e; }
+        input:checked + .slider:before { transform: translateX(14px); }
+
+        .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #64748b; }
+
+        @media (max-width: 1400px) { .announcement-grid { grid-template-columns: repeat(3, 1fr); } }
+    </style>
+</head>
+<body>
 
     <div id="sidebar-placeholder"></div>
 
@@ -180,47 +229,126 @@
             <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
             <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
         </div>
-   <div class="user-profile-section">
-            <div class="notification-bell">
-                <i class="fa-solid fa-bell"></i>
-                <span class="notification-badge">30</span>
-            </div>
-            
-            <!-- PROFILE MODAL -->
-        <div id="profileModal" class="profile-modal">
-            <div class="profile-card">
-                <!-- Close button -->
-                <span class="close-btn">&times;</span>
-
-                <img src="../images/dog2.png" class="profile-img">
-                <h2>Irene Espeleta</h2>
-                <p class="email">irespeleta@gmail.com</p>
-
-                <div class="role">
-                    <span>President</span>
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>address</span>
-                </div>
-
-                <button class="edit-btn">
-                    <i class="fa-solid fa-pen"></i> Edit Profile
-                </button>
-
-                <div class="change-pass">
-                    <i class="fa-solid fa-lock"></i>
-                    <span>Change Password</span>
-                    <i class="fa-solid fa-chevron-right"></i>
-                </div>
-            </div>
-        </div>
-
-            <div class="user-info">
-                <img src="../images/dog2.png" alt="Irene" class="user-avatar">
-                <span class="user-name">Irene</span>
-            </div>
-        </div>
-    </header>
+        <div class="user-profile-section">
+    <div class="notification-bell">
+        <i class="fa-solid fa-bell"></i>
+        <span class="notification-badge">30</span>
+    </div>
     
+    <div id="profileModal" class="profile-modal">
+        <div class="profile-card">
+            <span class="close-btn" id="closeProfile">&times;</span>
+            <img src="../images/dog2.png" class="profile-img">
+            <h2>Irene Espeleta</h2>
+            <p class="email">irespeleta@gmail.com</p>
+
+            <div class="role">
+                <span>President</span>
+                <i class="fa-solid fa-location-dot"></i>
+                <span>Nabua, Bicol</span>
+            </div>
+
+            <button class="edit-btn">
+                <i class="fa-solid fa-pen"></i> Edit Profile
+            </button>
+
+            <div class="change-pass">
+                <i class="fa-solid fa-lock"></i>
+                <span>Change Password</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="user-info" id="userTrigger">
+        <img src="../images/dog2.png" alt="Irene" class="user-avatar">
+        <span class="user-name">Irene</span>
+    </div>
+</div>
+</header>
+
+    <main id="announcementSection">
+        <div class="action-bar">
+            <div class="search-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search Announcement by Title, type or date...">
+            </div>
+            <button class="filter-btn"><i class="fa-solid fa-filter"></i> All Status <i class="fa-solid fa-chevron-down"></i></button>
+            <button class="archive-btn"><i class="fa-solid fa-box-archive"></i> Archive Announcement</button>
+            <button class="post-btn" id="openPostBtn"><i class="fa-solid fa-plus"></i> Post Announcement</button>
+        </div>
+
+        <div class="announcement-grid" id="announcementGrid">
+            </div>
+
+        <div id="postModal" class="profile-modal" style="top: 15%; left: 50%; transform: translateX(-50%);">
+            <div class="profile-card">
+                <span class="close-btn" id="closePost">&times;</span>
+                <div style="margin-bottom: 20px;">
+                    <h2 style="color: #02407D;">Post New Announcement</h2>
+                    <p style="color: #64748b; font-size: 14px;">Fill out the details below to notify your audience.</p>
+                </div>
+
+                <div class="modal-grid">
+                    <div class="col-left">
+                        <div class="form-group">
+                            <label style="font-weight: 700; font-size: 12px;">Event Title</label>
+                            <input type="text" class="input-styled" id="titleInp" placeholder="e.g., Weekend Adoption Fair">
+                        </div>
+                        <div class="form-group">
+                            <label style="font-weight: 700; font-size: 12px;">Venue Place</label>
+                            <input type="text" class="input-styled" id="venueInp" placeholder="CSPC Campus">
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="form-group" style="flex: 1;"><label>Date</label><input type="date" class="input-styled" id="dateInp"></div>
+                            <div class="form-group" style="flex: 1;"><label>Time</label><input type="time" class="input-styled" id="timeInp"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Message Content</label>
+                            <textarea class="input-styled" id="descInp" rows="4" placeholder="Detailed announcement..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-right">
+                        <div class="form-group">
+                            <label>Category (tag)</label>
+                            <select class="input-styled" id="tagInp">
+                                <option>General</option>
+                                <option>Urgent</option>
+                                <option>Event</option>
+                                <option>Update</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Target Audience</label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; font-size: 12px;">
+                                <label><input type="radio" name="target" value="Donors"> Donors</label>
+                                <label><input type="radio" name="target" value="Adopters"> Adopters</label>
+                                <label><input type="radio" name="target" value="Volunteers"> Volunteers</label>
+                                <label><input type="radio" name="target" value="All Users" checked> All Users</label>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                                <span style="font-size: 12px;">Pin to Dashboard</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <label class="switch"><input type="checkbox" checked><span class="slider"></span></label>
+                                <span style="font-size: 12px;">Send Push Notification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button class="archive-btn" id="draftBtn">DRAFT</button>
+                    <button class="post-btn" id="addPostBtn" style="margin-left: 0;">Publish Announcement</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <script>
         fetch('sidebar.html')
 .then(res => res.text())
@@ -266,16 +394,18 @@
         }
     });
 });
- const modal = document.getElementById("profileModal");
+
+const modal = document.getElementById("profileModal");
 
     // OPEN
-    document.querySelector(".user-info").addEventListener("click", (e) => {
+    document.getElementById("userTrigger").addEventListener("click", (e) => {
         e.stopPropagation();
         modal.style.display = "block";
     });
 
     // CLOSE BUTTON (X)
-    document.querySelector(".close-btn").addEventListener("click", () => {
+    document.getElementById("closeProfile").addEventListener("click", (e) => {
+        e.stopPropagation(); // add this to ensure it only closes
         modal.style.display = "none";
     });
 
@@ -288,8 +418,83 @@
     document.querySelector(".profile-card").addEventListener("click", (e) => {
         e.stopPropagation();
     });
+
+        // --- 3. POST ANNOUNCEMENT MODAL LOGIC ---
+        const postModal = document.getElementById("postModal");
         
-</script>
-    </body>
+        // OPEN POST MODAL
+        document.getElementById("openPostBtn").addEventListener("click", (e) => {
+            e.stopPropagation();
+            postModal.style.display = "block";
+        });
+
+        // CLOSE BUTTON (X) for Post Modal
+        document.getElementById("closePost").addEventListener("click", () => {
+            postModal.style.display = "none";
+        });
+
+        // --- 4. GLOBAL CLICK LOGIC ---
+        
+        // CLOSE kapag click outside
+        document.addEventListener("click", () => {
+            profileModal.style.display = "none";
+            postModal.style.display = "none";
+        });
+
+        // Prevent close kapag click INSIDE profile card
+        document.querySelector(".profile-card").addEventListener("click", (e) => {
+            e.stopPropagation();
+        });
+
+        // Prevent close kapag click INSIDE post modal card (Para hindi mawala ang tinatype mo)
+        document.querySelector("#postModal .profile-card").addEventListener("click", (e) => {
+            e.stopPropagation();
+        });
+
+
+        // --- 5. PUBLISH LOGIC ---
+        document.getElementById("addPostBtn").onclick = function() {
+            const title = document.getElementById("titleInp").value;
+            const venue = document.getElementById("venueInp").value;
+            const date = document.getElementById("dateInp").value;
+            const time = document.getElementById("timeInp").value;
+            const desc = document.getElementById("descInp").value;
+            const tag = document.getElementById("tagInp").value;
+            const target = document.querySelector('input[name="target"]:checked').value;
+
+            // Date Formatting
+            const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' }) : "Recently";
+
+            const card = document.createElement("div");
+            card.className = "announcement-card";
+            card.innerHTML = `
+                <div class="card-header">
+                    <span class="tag ${tag}">${tag}</span>
+                    <i class="fa-solid fa-ellipsis-vertical" style="color: #94a3b8; cursor: pointer;"></i>
+                </div>
+                <h3 class="card-title">${title || "New Announcement"}</h3>
+                <div class="card-meta">
+                    <i class="fa-regular fa-calendar"></i> ${formattedDate} | <i class="fa-regular fa-clock"></i> ${time || "TBA"}<br>
+                    <i class="fa-solid fa-location-dot"></i> ${venue || "CSPC Campus"}
+                </div>
+                <p class="card-body">${desc || "No description provided."}</p>
+                <div class="card-footer">
+                    <i class="fa-solid fa-users-viewfinder"></i> Target: <strong>${target}</strong>
+                </div>
+            `;
+
+            document.getElementById("announcementGrid").prepend(card);
+            
+            // Clear and Close
+            postModal.style.display = "none";
+            document.getElementById("titleInp").value = "";
+            document.getElementById("venueInp").value = "";
+            document.getElementById("dateInp").value = "";
+            document.getElementById("timeInp").value = "";
+            document.getElementById("descInp").value = "";
+        };
+
+       
+    </script>
+</body>
 </html>
-    
