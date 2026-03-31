@@ -3,34 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAWSsion Analytics</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>PAWSsion - Admin Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary-blue: #02407D;
-            --accent-gold: #ACAB57;
-            --bg-light: #f8fafc;
+            --accent-blue: #3b82f6;
+            --bg-light: #f4f9ff;
             --white: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
             --sidebar-width: 260px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: var(--white);
-            color: #334155;
+            /* This creates the transition from white at the top to soft blue at the bottom */
+            background: linear-gradient(180deg, #FFFFFF 0%, #A5CFFF 100%);
+            background-attachment: fixed; /* This keeps the background from moving when you scroll */
+            min-height: 100vh;
+            color: var(--text-main);
             overflow-x: hidden;
         }
-
-        /* --- DASHBOARD LAYOUT --- */
         #analyticsSection {
-            padding: 90px 30px 40px 30px;
-            margin-left: var(--sidebar-width);
+            padding: 100px 30px 40px 30px;
+            margin-left: var(--sidebar-width); 
             transition: all 0.4s ease;
         }
-   
-     
+
         /* --- TOPBAR --- */
         .top-navbar {
             position: fixed;
@@ -80,8 +83,8 @@
             color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold;
         }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #02407D; object-fit: cover; }
-
-  .profile-modal {
+                /* PROFILE MODAL */
+        .profile-modal {
         position: absolute;
             top: 70px; /* same height ng navbar */
             right: 30px; /* adjust depende sa spacing mo */
@@ -167,8 +170,7 @@
         font-size: 24px;
         cursor: pointer;
     }
-
-        /* --- QUICK STATS --- */
+          /* --- QUICK STATS --- */
         .top-stats {
             display: flex;
             align-items: flex-end;
@@ -267,6 +269,14 @@
 
         .note-text { font-size: 12px; color: #64748b; margin-top: 15px; }
 
+
+        @keyframes fadeIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+
+  
     </style>
 </head>
 <body>
@@ -282,7 +292,7 @@
             <div class="notification-bell">
                 <i class="fa-solid fa-bell"></i>
                 <span class="notification-badge">30</span>
-            </div>	
+            </div>
             
             <!-- PROFILE MODAL -->
         <div id="profileModal" class="profile-modal">
@@ -409,6 +419,8 @@
 
         </div>
     </section>
+
+
     <script>
        fetch('sidebar.html')
 .then(res => res.text())
@@ -454,7 +466,10 @@
         }
     });
 });
-      // Common Chart Defaults
+
+
+
+// Common Chart Defaults
         Chart.defaults.font.family = "'Inter', sans-serif";
         Chart.defaults.color = '#64748b';
 
@@ -576,6 +591,7 @@ window.addEventListener('click', (e) => {
         profileModal.style.display = 'none';
     }
 });
+      
 </script>
     </body>
 </html>
