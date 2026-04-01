@@ -76,7 +76,6 @@
             font-weight: bold;
             color: #02407D;
         }
-        .user-profile-section { display: flex; align-items: center; gap: 25px;  padding-right: 10px;}
         .notification-bell { position: relative; color: #02407D; font-size: 22px; cursor: pointer; }
         .notification-badge {
             position: absolute; top: -5px; right: -5px; background: #ff0000;
@@ -91,11 +90,14 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 35px;
-            gap: 20px;
+            gap: 15px;
+            width: 100%;
         }
+ 
 
         .search-box {
             flex: 1;
+            min-width: 300px;
             position: relative;
         }
 
@@ -126,15 +128,19 @@
         .filter-group {
             display: flex;
             gap: 12px;
+            margin-left: auto;
         }
 
+
+
         .filter-btn, .add-btn {
-            padding: 10px 18px;
+            padding: 12px 20px;
             border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .filter-btn {
@@ -159,29 +165,41 @@
         /* GRID */
         .animals-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* from 3 → 4 */
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
-        /* CARD */
+        /* CARD is now clickable */
         .animal-card {
             background: #ffffff;
             border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            cursor: pointer;
         }
 
         .animal-card:hover {
-            transform: translateY(-8px) scale(1.01);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: translateY(-10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 12px 32px rgba(0, 0, 0, 0.08);
+            border-color: rgba(59, 130, 246, 0.2);
         }
 
         /* IMAGE */
         .animal-card img {
             width: 100%;
-            height: 150px;
-            object-fit: cover;
+            height: 120px;
+            object-fit: contain;
+            background: #f8fafc;
+            transition: transform 0.4s ease;
+        }
+
+        .animal-card:hover img {
+            transform: scale(1.05);
         }
 
         /* BADGE */
@@ -189,32 +207,42 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: linear-gradient(135deg, #22c55e, #16a34a);
+            background: linear-gradient(135deg, #10b981, #059669);
             color: white;
             font-size: 11px;
-            padding: 5px 12px;
+            padding: 6px 14px;
             border-radius: 50px;
             font-weight: 700;
             letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            z-index: 10;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         /* CONTENT */
         .card-content {
-            padding: 16px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         /* TITLE */
         .card-content h3 {
-            font-size: 17px;
+            font-size: 14px;
             font-weight: 700;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
+            color: #1e293b;
+            letter-spacing: -0.3px;
+            line-height: 1.2;
         }
 
         /* META */
         .card-meta {
             font-size: 11px;
             color: #64748b;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
+            font-weight: 500;
         }
             /* PROFILE MODAL */
         .profile-modal {
@@ -296,77 +324,109 @@
             border-radius: 12px;
             cursor: pointer;
         }
-        .close-btn {
-        position: absolute;
-        top: 10px;
-        right: 15px;
-        font-size: 24px;
-        cursor: pointer;
-    }
+
 
         /* DETAILS ROW */
         .details-row {
             display: flex;
             justify-content: space-between;
-            font-size: 11px;
-            margin-bottom: 12px;
+            font-size: 10px;
+            margin-bottom: 6px;
             color: #475569;
+            gap: 6px;
+        }
+
+        .details-row span {
+            background: #f8fafc;
+            padding: 4px 8px;
+            border-radius: 6px;
+            flex: 1;
+            text-align: center;
+            font-weight: 500;
+            font-size: 10px;
+            border: 1px solid #e2e8f0;
         }
 
         /* TAGS */
         .tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 14px;
+            gap: 4px;
+            margin-bottom: 8px;
         }
 
         .tag {
-            background: #eff6ff;
-            color: #1d4ed8;
-            border-radius: 50px;
-            font-weight: 600;
+            background: linear-gradient(135deg, #e0f2fe, #ecf9ff);
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            border-radius: 6px;
+            font-weight: 700;
             font-size: 9px;
-            padding: 4px 8px;
+            padding: 3px 8px;
+            transition: all 0.2s ease;
+            letter-spacing: 0.2px;
+        }
+
+        .tag:hover {
+            background: linear-gradient(135deg, #bae6fd, #e0f2fe);
+            border-color: #38bdf8;
         }
 
         /* DESCRIPTION */
         .description-text {
-            font-size: 11px;
+            font-size: 10px;
             color: #64748b;
-            margin-top: 8px;
-            line-height: 1.5;
+            margin-top: 0;
+            line-height: 1.4;
+            flex: 1;
+            margin-bottom: 8px;
         }
 
         /* LINK */
         .behavior-link {
-            font-size: 12px;
+            font-size: 10px;
             color: #2563eb;
             font-weight: 600;
-            margin-top: 10px;
-            display: inline-block;
+            margin-top: 6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            transition: all 0.2s ease;
         }
 
         .behavior-link:hover {
-            text-decoration: underline;
+            color: #1d4ed8;
+            gap: 6px;
+        }
+
+        .behavior-link::after {
+            content: "→";
         }
 
         /* BUTTON */
         .view-btn {
-            margin-top: 15px;
+            margin-top: auto;
             width: 100%;
-            border-radius: 10px;
+            border-radius: 8px;
             border: none;
-            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            background: linear-gradient(135deg, #002d7f, #003da3);
             color: white;
-            font-weight: 600;
-            font-size: 12px;
+            font-weight: 700;
+            font-size: 11px;
             padding: 8px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            letter-spacing: 0.3px;
         }
 
         .view-btn:hover {
-            background: linear-gradient(135deg, #172554, #1d4ed8);
+            background: linear-gradient(135deg, #001f52, #002d7f);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 45, 127, 0.3);
+        }
+
+        .view-btn:active {
+            transform: translateY(0);
         }
         /* MODAL */
         .modal {
@@ -383,73 +443,504 @@
         /* BOX */
         .modal-content {
             background: white;
-            border-radius: 16px;
-            width: 700px;
+            border-radius: 24px;
+            width: 850px;
             max-width: 90%;
-            padding: 20px;
+            padding: 0;
             position: relative;
             animation: fadeIn 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-left: 6px solid #002d7f;
+            overflow: hidden;
+            cursor: default;
         }
 
         /* CLOSE BUTTON */
         .close-btn {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 22px;
+                right: 20px;
+    
+            font-size: 28px;
             cursor: pointer;
+            z-index: 2001;
+            color: #94a3b8;
+            transition: color 0.2s ease;
+            user-select: none;
+            padding: 5px 10px;
         }
 
-        /* BODY */
-        .modal-body {
-            display: flex;
-            gap: 20px;
-        }
-
-        .modal-body img {
-            width: 250px;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-
-        /* INFO */
-        .modal-info h2 {
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .modal-info p {
-            font-size: 13px;
+        .close-btn:hover {
             color: #64748b;
         }
 
-        .modal-details {
-            margin: 10px 0;
-            font-size: 12px;
+        .modal-body {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+}
+
+/* LEFT SIDE CONTAINER */
+.modal-left {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border-right: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+/* IMAGE FIXED */
+.modal-left img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border-bottom: 2px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+        .modal-body img {
+            width: 100%;
+            height: 160px;
+            object-fit: contain;
+            border-radius: 0;
+            background: #fff;
+        }
+
+        .modal-info {
+            padding: 30px;
+            overflow-y: visible;
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+        }
+
+        .modal-info h2 {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: #002d7f;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-info > p {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 14px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .modal-info .status-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            font-size: 10px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .modal-info h4 {
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 10px;
+            color: #002d7f;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+        }
+
+        .modal-info h4:first-of-type {
+            margin-top: 0;
+        }
+
+        .modal-info p {
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .modal-details {
+            margin: 16px 0;
+            font-size: 13px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .modal-details span {
+            background: linear-gradient(135deg, #e0f2fe, #ecf9ff);
+            padding: 7px 14px;
+            border-radius: 22px;
+            font-weight: 700;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            font-size: 11px;
+            letter-spacing: 0.3px;
+        }
+        /* FIX POSITION NG BADGE */
+.modal-status {
+    position: absolute;
+    top: 20px;
+    right: 70px;
+}
+
+        /* RESCUE BOX FIX */
+        .rescue-journey {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 18px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* TITLE */
+        .rescue-journey h4 {
+            font-size: 13px;
+            color: #002d7f;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ITEMS */
+        .rescue-journey-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .rescue-journey-item:last-of-type {
+            border-bottom: none;
+        }
+
+        /* LABEL */
+        .rescue-journey-label {
+            font-weight: 700;
+            color: #002d7f;
+            font-size: 11px;
+        }
+
+        /* VALUE */
+        .rescue-journey-value {
+            color: #475569;
+            font-weight: 500;
+            text-align: right;
+        }
+
+        /* QUOTE FIX */
+        .rescue-journey p {
+            margin-top: auto;
+            font-size: 11px;
+            color: #64748b;
+            font-style: italic;
+            border-top: 2px dashed #cbd5e1;
+            padding-top: 12px;
+            line-height: 1.6;
+        }
+
+        /* Medical Records Table */
+        .medical-records {
+            margin-top: 22px;
+        }
+
+        .medical-records table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+            font-size: 12px;
+        }
+
+        .medical-records th {
+            background: #002d7f;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .medical-records td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 12px;
+            color: #475569;
+        }
+
+        .medical-records tr:hover {
+            background: #f8fafc;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 18px;
         }
 
         .form-group input,
         .form-group textarea {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #cbd5e1;
-            font-size: 12px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1.5px solid #e2e8f0;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background-color: #ffffff;
+            color: #1e293b;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #002d7f;
+            box-shadow: 0 0 0 3px rgba(0, 45, 127, 0.1);
+            background-color: #f8fafc;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #94a3b8;
+            font-size: 13px;
         }
 
         .form-group textarea {
             resize: none;
-            height: 70px;
+            height: 80px;
+            grid-column: 1 / -1;
+            font-family: 'Inter', sans-serif;
         }
+
+        .form-group input:nth-child(n+6) {
+            grid-column: 1 / -1;
+        }
+   /* ================= ADD ANIMAL MODAL - COMPACT HEIGHT ================= */
+#addAnimalModal .modal-content {
+    width: 550px;
+    max-width: 95%;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    font-family: 'Inter', sans-serif;
+    max-height: 80vh; /* limit modal height */
+}
+
+/* MODAL BODY LAYOUT */
+#addAnimalModal .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* LEFT SIDE */
+#addAnimalModal .modal-left {
+    background: #f9fafb;
+    border-right: 1px solid #e2e8f0;
+    padding: 12px;
+    border-radius: 10px 0 0 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+#addAnimalModal .modal-left img {
+    width: 100%;
+    height: 120px; /* smaller height */
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background: #e2e8f0;
+}
+
+/* RESCUE SECTION */
+#addAnimalModal .rescue-journey h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: #002d7f;
+    margin-bottom: 8px;
+}
+
+#addAnimalModal .rescue-journey-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 6px;
+    font-size: 12px;
+}
+
+#addAnimalModal .rescue-journey-item label {
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 2px;
+}
+
+#addAnimalModal .rescue-journey-item input {
+    padding: 5px 6px;
+    font-size: 12px;
+    border-radius: 5px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+}
+
+/* NOTES */
+#addAnimalModal textarea {
+    width: 100%;
+    min-height: 45px; /* shorter height */
+    padding: 5px 6px;
+    border-radius: 5px;
+    border: 1px solid #cbd5e1;
+    font-size: 12px;
+    background: #ffffff;
+    resize: vertical;
+}
+
+/* RIGHT SIDE */
+#addAnimalModal .modal-info {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+/* INPUT FIELDS */
+#addAnimalModal input[type="text"],
+#addAnimalModal textarea {
+    width: 100%;
+    padding: 5px 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    border-radius: 5px;
+    border: 1px solid #e2e8f0;
+    background: #f9fafb;
+}
+
+#addAnimalModal input:focus,
+#addAnimalModal textarea:focus {
+    border-color: #002d7f;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(0,45,127,0.1);
+}
+
+/* MEDICAL TABLE */
+#addAnimalModal .medical-records table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-top: 5px;
+}
+
+#addAnimalModal .medical-records th {
+    background: #002d7f;
+    color: white;
+    padding: 5px;
+    font-size: 10px;
+}
+
+#addAnimalModal .medical-records td {
+    border-bottom: 1px solid #e2e8f0;
+    padding: 4px;
+}
+
+#addAnimalModal .medical-records input {
+    width: 100%;
+    padding: 3px 5px;
+    font-size: 11px;
+    border-radius: 4px;
+}
+
+/* BUTTONS */
+#addAnimalModal #addMedicalRow {
+    margin-top: 5px;
+    background: #002d7f;
+    color: white;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+#addAnimalModal #addMedicalRow:hover {
+    background: #001f66;
+}
+
+.removeRow {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 3px 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.removeRow:hover {
+    background: #dc2626;
+}
+
+/* FILE INPUT */
+#addAnimalModal input[type="file"] {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+/* SAVE BUTTON */
+#addAnimalModal #saveNewAnimal {
+    margin-top: 10px;
+    background: linear-gradient(135deg, #002d7f, #003da3);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#addAnimalModal #saveNewAnimal:hover {
+    background: linear-gradient(135deg, #001f52, #002d7f);
+}
+
+/* CLOSE BUTTON */
+#addAnimalModal .close-btn {
+    position: absolute;
+    right: 10px;
+    top: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    color: #64748b;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    #addAnimalModal .modal-body {
+        grid-template-columns: 1fr;
+    }
+
+    #addAnimalModal .modal-left {
+        border-right: none;
+        border-bottom: 1px solid #e2e8f0;
+    }
+}
         
         /* ANIMATION */
         @keyframes fadeIn {
@@ -519,107 +1010,214 @@
             <button class="filter-btn">
                 <i class="fa fa-filter"></i> All Status
             </button>
-            <button class="add-btn" id="openAddModal">
+            <button class="add-btn" id="addAnimalBtn">
                 <i class="fa fa-plus"></i> Add New Animal
             </button>
         </div>
     </div>
 
-    <!-- Animal Cards -->
-    <div class="animals-grid">
+<!-- Animal Cards -->
+<div class="animals-grid">
 
-        <!-- Card 1 -->
-        <div class="animal-card">
-    <span class="status-badge">Available</span>
-    <img src="../images/dog1.png" alt="Adodo">
+    <!-- Card 1 -->
+    <div class="animal-card">
+        <span class="status-badge">Available</span>
+        <img src="../images/dog1.png" alt="Adodo">
 
-    <div class="card-content">
-        <h3>Adodo</h3>
-        <div class="card-meta">Aspin · Dog · Male</div>
+        <div class="card-content">
+            <h3>Adodo</h3>
+            <div class="card-meta">Aspin · Dog · Male</div>
 
-        <div class="details-row">
-            <span><strong>Age:</strong> 1 year</span>
-            <span><strong>Size:</strong> Medium</span>
+            <div class="details-row">
+                <span><strong>Age:</strong> 1 year</span>
+                <span><strong>Size:</strong> Medium</span>
+            </div>
+
+            <div class="tags">
+                <span class="tag">Vaccinated</span>
+                <span class="tag">Neutered</span>
+                <span class="tag">Kid-Safe</span>
+                <span class="tag">Friendly</span>
+                <span class="tag">Active</span>
+                <span class="tag">Calm</span>
+            </div>
+
+            <span class="behavior-link">Behavior & History</span>
+
+            <p class="description-text">
+                Si Adodo ay mahilig maglaro ng catch. Siya ay nasa rescue mula sa Nabu Market.
+                Mabait sa mga bata at mahinahon sa ibang aso.
+            </p>
+
+            <button class="view-btn"  
+                data-name="Adodo"
+                data-meta="Aspin · Dog · Male"
+                data-age="Age: 1 year"
+                data-size="Size: Medium"
+                data-img="../images/dog1.png"
+                data-tags="Vaccinated,Neutered,Kid-Safe,Friendly,Active,Calm"
+                data-description="Si Adodo ay mahilig maglaro ng catch..."
+                data-behavior="Mahilig maglaro, hindi agresibo..."
+            >
+                <i class="fa fa-eye"></i> View
+            </button>
         </div>
-
-        <div class="tags">
-            <span class="tag">Vaccinated</span>
-            <span class="tag">Neutered</span>
-            <span class="tag">Kid-Safe</span>
-            <span class="tag">Friendly</span>
-            <span class="tag">Active</span>
-            <span class="tag">Calm</span>
-        </div>
-
-        <span class="behavior-link">Behavior & History</span>
-
-        <p class="description-text">
-            Si Adodo ay mahilig maglaro ng catch. Siya ay nasa rescue mula sa Nabu Market.
-            Mabait sa mga bata at mahinahon sa ibang aso.
-        </p>
-
-        <button class="view-btn"  
-         data-name="Adodo"
-            data-meta="Aspin · Dog · Male"
-            data-age="Age: 1 year"
-            data-size="Size: Medium"
-            data-img="../images/dog1.png"
-            data-tags="Vaccinated,Neutered,Kid-Safe,Friendly,Active,Calm"
-            data-description="Si Adodo ay mahilig maglaro ng catch. Siya ay nasa rescue mula sa Nabu Market. Mabait sa mga bata at mahinahon sa ibang aso."
-            data-behavior="Mahilig maglaro, hindi agresibo, madaling makisama sa tao at ibang aso."
-        >
-            <i class="fa fa-eye"></i> View
-        </button>
     </div>
-</div><div id="animalModal" class="modal">
+
+</div> <!-- ✅ CLOSE GRID -->
+
+
+<!-- ================= ANIMAL MODAL ================= -->
+<div id="animalModal" class="modal">
   <div class="modal-content">
     <span class="close-btn">&times;</span>
 
     <div class="modal-body">
-      <img id="modalImage" src="">
 
+      <!-- LEFT -->
+      <div class="modal-left">
+        <img id="modalImage" src="">
+
+        <div class="rescue-journey">
+          <h4>Rescue Journey</h4>
+
+          <div class="rescue-journey-item">
+            <div class="rescue-journey-label">Date:</div>
+            <div class="rescue-journey-value">Jan 2025</div>
+          </div>
+
+          <div class="rescue-journey-item">
+            <div class="rescue-journey-label">Location:</div>
+            <div class="rescue-journey-value">CSPC Nabua</div>
+          </div>
+
+          <div class="rescue-journey-item">
+            <div class="rescue-journey-label">Rescuer:</div>
+            <div class="rescue-journey-value">Linda Walker</div>
+          </div>
+
+          <p>"Niligtas siya at may sugat..."</p>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
       <div class="modal-info">
-        <h2 id="modalName"></h2>
-        <p id="modalMeta"></p>
-
-        <div class="modal-details">
-          <span id="modalAge"></span>
-          <span id="modalSize"></span>
+        <div class="modal-header">
+          <h2 id="modalName"></h2>
+          <span class="status-badge modal-status">Available</span>
         </div>
 
+        <p id="modalMeta"></p>
+
+        <h4>Behavior & Traits</h4>
         <div id="modalTags" class="tags"></div>
 
-        <h4>Behavior & History</h4>
         <p id="modalBehavior"></p>
-
-        <h4>Description</h4>
         <p id="modalDescription"></p>
+
+        <div class="medical-records">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Treatment</th>
+                <th>Administered by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Feb 1, 2026</td>
+                <td>Vaccinated</td>
+                <td>Dr. Emenem</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button class="view-btn" style="margin-top:20px;">
+          Update Record
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ================= ADD ANIMAL MODAL ================= -->
+<div id="addAnimalModal" class="modal">
+  <div class="modal-content">
+
+    <!-- CLOSE -->
+    <span class="close-btn" id="closeAddModal">&times;</span>
+
+    <div class="modal-body">
+
+      <!-- FORM CONTENT -->
+      <div class="modal-info">
+
+        <h2>Add New Animal</h2>
+
+        <!-- BASIC INFO -->
+        <input type="text" id="addAnimalName" placeholder="Animal Name">
+
+        <input type="text" id="addAnimalBreed" placeholder="Breed">
+        <input type="text" id="addAnimalType" placeholder="Type (Dog/Cat)">
+        <input type="text" id="addAnimalGender" placeholder="Gender">
+
+        <input type="text" id="addAnimalAge" placeholder="Age">
+        <input type="text" id="addAnimalSize" placeholder="Size">
+        <input type="text" id="addAnimalStatus" placeholder="Status (Available/Adopted)">
+
+        <!-- BEHAVIOR -->
+        <h4>Behavior</h4>
+        <textarea id="addAnimalBehavior" placeholder="Behavior details"></textarea>
+
+        <textarea id="addAnimalDescription" placeholder="Description"></textarea>
+
+        <!-- MEDICAL RECORDS -->
+        <h4>Medical Records</h4>
+
+        <div class="medical-records">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Treatment</th>
+                <th>Administered by</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody id="addMedicalRecords">
+              <tr>
+                <td><input type="text" placeholder="Date"></td>
+                <td><input type="text" placeholder="Treatment"></td>
+                <td><input type="text" placeholder="Administered by"></td>
+                <td><button type="button" class="removeRow">✖</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <button type="button" id="addMedicalRow">
+            + Add Record
+          </button>
+        </div>
+
+        <!-- IMAGE -->
+        <input type="file" id="addAnimalImage">
+
+        <!-- SAVE -->
+        <button id="saveNewAnimal">
+          <i class="fa fa-save"></i> Save Animal
+        </button>
+
       </div>
     </div>
   </div>
 </div>
-<!-- ADD ANIMAL MODAL -->
-<div id="addModal" class="modal">
-  <div class="modal-content">
-    <span class="close-add">&times;</span>
 
-    <h2>Add New Animal</h2>
-
-    <div class="form-group">
-      <input type="text" id="name" placeholder="Name">
-      <input type="text" id="meta" placeholder="Breed · Type · Gender">
-      <input type="text" id="age" placeholder="Age (e.g. 1 year)">
-      <input type="text" id="size" placeholder="Size (Small/Medium)">
-      <input type="text" id="image" placeholder="Image path (../images/dog1.png)">
-      <input type="text" id="tags" placeholder="Tags (comma separated)">
-      <textarea id="behavior" placeholder="Behavior"></textarea>
-      <textarea id="description" placeholder="Description"></textarea>
     </div>
-
-    <button id="saveAnimal" class="view-btn">Save Animal</button>
   </div>
 </div>
-</section>
     <script>
 /* ================= SIDEBAR LOAD ================= */
 fetch('sidebar.html')
@@ -678,27 +1276,20 @@ document.querySelector(".profile-card .close-btn").addEventListener("click", () 
     profileModal.style.display = "none";
 });
 
-document.addEventListener("click", () => {
-    profileModal.style.display = "none";
-});
-
 document.querySelector(".profile-card").addEventListener("click", (e) => {
     e.stopPropagation();
 });
 
 
 /* ================= ANIMAL MODAL ================= */
-const modal = document.getElementById("animalModal");
-const closeBtn = document.querySelector(".modal .close-btn");
+document.addEventListener("DOMContentLoaded", () => {
+    /* ================= ANIMAL MODAL ================= */
+    const modal = document.getElementById("animalModal");
+    const closeBtn = document.querySelector("#animalModal .close-btn");
 
-/* VIEW BUTTONS */
-document.querySelectorAll(".view-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-
+    function openAnimalModal(btn) {
         document.getElementById("modalName").innerText = btn.dataset.name;
         document.getElementById("modalMeta").innerText = btn.dataset.meta;
-        document.getElementById("modalAge").innerText = btn.dataset.age;
-        document.getElementById("modalSize").innerText = btn.dataset.size;
         document.getElementById("modalImage").src = btn.dataset.img;
         document.getElementById("modalDescription").innerText = btn.dataset.description;
         document.getElementById("modalBehavior").innerText = btn.dataset.behavior;
@@ -709,70 +1300,167 @@ document.querySelectorAll(".view-btn").forEach(btn => {
         btn.dataset.tags.split(",").forEach(tag => {
             const span = document.createElement("span");
             span.className = "tag";
-            span.innerText = tag;
+            span.innerText = tag.trim();
             tagsContainer.appendChild(span);
         });
 
-        modal.style.display = "flex";
+        if (modal) {
+            modal.style.display = "flex";
+        }
+    }
+
+    /* ✅ FIX: ONLY VIEW BUTTON INSIDE CARD */
+    document.querySelectorAll(".animal-card .view-btn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openAnimalModal(btn);
+        });
+    });
+
+    /* CARD CLICK */
+    document.querySelectorAll(".animal-card").forEach(card => {
+        card.addEventListener("click", (e) => {
+            const btn = card.querySelector(".view-btn");
+            if (btn && e.target !== btn) {
+                openAnimalModal(btn);
+            }
+        });
+    });
+
+    if (closeBtn) {
+        closeBtn.onclick = () => {
+            if (modal) modal.style.display = "none";
+        };
+    }
+
+    /* CLOSE MODALS ON BACKDROP CLICK */
+    window.addEventListener("click", (e) => {
+    if (modal && e.target === modal) {
+        modal.style.display = "none";
+    }
+    if (addModal && e.target === addModal) {
+        addModal.style.display = "none";
+    }
+});
+/* ================= ADD ANIMAL MODAL ================= */
+const addBtn = document.getElementById("addAnimalBtn");
+const addModal = document.getElementById("addAnimalModal");
+const closeAddModal = document.getElementById("closeAddModal");
+
+addBtn.addEventListener("click", () => {
+    addModal.style.display = "flex";
+});
+
+closeAddModal.addEventListener("click", () => {
+    addModal.style.display = "none";
+});
+
+window.addEventListener("click", (e) => {
+    if (e.target === addModal) {
+        addModal.style.display = "none";
+    }
+});
+const addMedicalRowBtn = document.getElementById("addMedicalRow");
+const medicalTable = document.getElementById("addMedicalRecords");
+
+addMedicalRowBtn.addEventListener("click", () => {
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td><input type="text" placeholder="Date"></td>
+        <td><input type="text" placeholder="Treatment"></td>
+        <td><input type="text" placeholder="Administered by"></td>
+        <td><button type="button" class="removeRow">✖</button></td>
+    `;
+
+    medicalTable.appendChild(row);
+
+    row.querySelector(".removeRow").addEventListener("click", () => {
+        row.remove();
     });
 });
 
-closeBtn.onclick = () => modal.style.display = "none";
+// remove default row
+document.querySelectorAll(".removeRow").forEach(btn => {
+    btn.addEventListener("click", function () {
+        this.closest("tr").remove();
+    });
+});
 
-window.onclick = (e) => {
-    if (e.target == modal) modal.style.display = "none";
-};
+/* ================= SAVE NEW ANIMAL ================= */
+const saveAnimalBtn = document.getElementById("saveNewAnimal");
 
+saveAnimalBtn.addEventListener("click", () => {
+    // Get all form values
+    const name = document.getElementById("addAnimalName").value.trim();
+    const breed = document.getElementById("addAnimalBreed").value.trim();
+    const type = document.getElementById("addAnimalType").value.trim();
+    const gender = document.getElementById("addAnimalGender").value.trim();
+    const age = document.getElementById("addAnimalAge").value.trim();
+    const size = document.getElementById("addAnimalSize").value.trim();
+    const status = document.getElementById("addAnimalStatus").value.trim();
+    const behavior = document.getElementById("addAnimalBehavior").value.trim();
+    const description = document.getElementById("addAnimalDescription").value.trim();
+    const imageInput = document.getElementById("addAnimalImage");
 
-/* ================= ADD ANIMAL ================= */
-const addModal = document.getElementById("addModal");
-const openAdd = document.getElementById("openAddModal");
-const closeAdd = document.querySelector(".close-add");
+    // Validation
+    if (!name || !breed || !type || !gender) {
+        alert("Please fill in all required fields");
+        return;
+    }
 
-openAdd.onclick = () => addModal.style.display = "flex";
-closeAdd.onclick = () => addModal.style.display = "none";
-
-document.getElementById("saveAnimal").onclick = () => {
-
-    const name = document.getElementById("name").value;
-    const meta = document.getElementById("meta").value;
-    const age = document.getElementById("age").value;
-    const size = document.getElementById("size").value;
-    const img = document.getElementById("image").value;
-    const tags = document.getElementById("tags").value;
-    const behavior = document.getElementById("behavior").value;
-    const description = document.getElementById("description").value;
-
-    const grid = document.querySelector(".animals-grid");
-
+    // Create new animal card
     const newCard = document.createElement("div");
     newCard.className = "animal-card";
+    
+    // Get image (use placeholder if no image selected)
+    let imageSrc = "../images/default-animal.png";
+    if (imageInput.files && imageInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            newCard.querySelector("img").src = e.target.result;
+        };
+        reader.readAsDataURL(imageInput.files[0]);
+    }
+
+    // Generate tags based on inputs
+    const tags = [];
+    if (behavior.includes("friendly")) tags.push("Friendly");
+    if (behavior.includes("calm")) tags.push("Calm");
+    if (behavior.includes("active")) tags.push("Active");
+    if (behavior.includes("vaccin")) tags.push("Vaccinated");
+    if (tags.length === 0) tags.push("New");
 
     newCard.innerHTML = `
-        <span class="status-badge">Available</span>
-        <img src="${img}" alt="${name}">
+        <span class="status-badge">${status || "Available"}</span>
+        <img src="${imageSrc}" alt="${name}">
+        
         <div class="card-content">
             <h3>${name}</h3>
-            <div class="card-meta">${meta}</div>
-
+            <div class="card-meta">${breed} · ${type} · ${gender}</div>
+            
             <div class="details-row">
-                <span><strong>Age:</strong> ${age}</span>
-                <span><strong>Size:</strong> ${size}</span>
+                <span><strong>Age:</strong> ${age || "N/A"}</span>
+                <span><strong>Size:</strong> ${size || "N/A"}</span>
             </div>
-
+            
             <div class="tags">
-                ${tags.split(",").map(tag => `<span class="tag">${tag}</span>`).join("")}
+                ${tags.map(tag => `<span class="tag">${tag}</span>`).join("")}
             </div>
-
-            <p class="description-text">${description}</p>
-
+            
+            <span class="behavior-link">Behavior & History</span>
+            
+            <p class="description-text">
+                ${description || "No description provided."}
+            </p>
+            
             <button class="view-btn"
                 data-name="${name}"
-                data-meta="${meta}"
-                data-age="Age: ${age}"
-                data-size="Size: ${size}"
-                data-img="${img}"
-                data-tags="${tags}"
+                data-meta="${breed} · ${type} · ${gender}"
+                data-age="Age: ${age || 'N/A'}"
+                data-size="Size: ${size || 'N/A'}"
+                data-img="${imageSrc}"
+                data-tags="${tags.join(",")}"
                 data-description="${description}"
                 data-behavior="${behavior}">
                 <i class="fa fa-eye"></i> View
@@ -780,10 +1468,45 @@ document.getElementById("saveAnimal").onclick = () => {
         </div>
     `;
 
-    grid.appendChild(newCard);
+    // Add to grid
+    document.querySelector(".animals-grid").appendChild(newCard);
 
+    // Attach event listeners to new card's view button
+    const viewBtn = newCard.querySelector(".view-btn");
+    viewBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        openAnimalModal(viewBtn);
+    });
+
+    // Attach card click listener
+    newCard.addEventListener("click", (e) => {
+        const btn = newCard.querySelector(".view-btn");
+        if (btn && e.target !== btn) {
+            openAnimalModal(btn);
+        }
+    });
+
+    // Reset form
+    document.getElementById("addAnimalName").value = "";
+    document.getElementById("addAnimalBreed").value = "";
+    document.getElementById("addAnimalType").value = "";
+    document.getElementById("addAnimalGender").value = "";
+    document.getElementById("addAnimalAge").value = "";
+    document.getElementById("addAnimalSize").value = "";
+    document.getElementById("addAnimalStatus").value = "";
+    document.getElementById("addAnimalBehavior").value = "";
+    document.getElementById("addAnimalDescription").value = "";
+    document.getElementById("addAnimalImage").value = "";
+
+    // Close modal
     addModal.style.display = "none";
-};
+
+    // Success feedback
+    alert("Animal added successfully!");
+});
+
+
+});
 </script>
 
  </body>
