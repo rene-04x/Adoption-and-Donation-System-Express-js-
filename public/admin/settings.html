@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWSsion - Settings</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-blue: #02407D;
+            --accent-green: #ACAB57;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --border-color: #f1f5f9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            color: var(--text-main);
+        }
+
+        /* ===== TOP NAVBAR ===== */
+        .top-navbar {
+            position: fixed;
+            top: 0; left: var(--sidebar-width); right: 0;
+            height: 80px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title-section h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        .header-title-section h1 span {
+            color: var(--accent-green);
+            font-weight: 500;
+        }
+
+        .header-title-section p {
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 2px;
+        }
+
+        /* ===== USER SECTION ===== */
+        .user-profile-section {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .notification-bell {
+            position: relative;
+            font-size: 22px;
+            color: var(--primary-blue);
+            cursor: pointer;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -8px;
+            background: var(--primary-blue);
+            color: white;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid #ddd;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--primary-blue);
+            font-size: 15px;
+        }
+
+        /* ===== SETTINGS GRID LAYOUT ===== */
+        #settingsSection {
+            margin-left: var(--sidebar-width);
+            padding: 110px 60px 40px 60px;
+        }
+
+        .settings-container {
+            max-width: 1100px;
+        }
+
+        .settings-item {
+            display: grid;
+            /* Column logic: Icon | Title | Description | Arrow */
+            grid-template-columns: 60px 280px 1fr 50px;
+            align-items: start;
+            padding: 32px 0;
+            column-gap: 20px;
+            transition: background 0.2s;
+        }
+
+        .settings-item:not(:last-child) {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .settings-item:hover {
+            background-color: #fafbfc;
+        }
+
+        .settings-icon {
+            font-size: 24px;
+            color: #1e293b;
+            justify-self: start;
+            margin-top: 2px;
+        }
+
+        .settings-item h3 {
+            font-size: 21px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .settings-item p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        .settings-arrow {
+            font-size: 18px;
+            color: #1e293b;
+            justify-self: end;
+            cursor: pointer;
+            padding: 5px;
+            margin-top: 5px;
+        }
+
+        .settings-arrow:hover {
+            color: var(--primary-blue);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="sidebar-placeholder"></div>
+
+    <header class="top-navbar">
+        <div class="header-title-section">
+            <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
+            <p>Animal Adoption & Donation Management System</p>
+        </div>
+
+        <div class="user-profile-section">
+            <div class="notification-bell">
+                <i class="fa-regular fa-bell"></i>
+                <span class="notification-badge">30</span>
+            </div>
+            
+            <div class="user-info">
+                <img src="../images/dog2.png" alt="Irene" class="user-avatar">
+                <span class="user-name">Irene</span>
+            </div>
+        </div>
+    </header>
+
+    <section id="settingsSection">
+        <div class="settings-container">
+
+            <div class="settings-item">
+                <i class="fa-solid fa-gear settings-icon"></i>
+                <h3>General Settings</h3>
+                <p>Manage the basic information and branding of the organization, including website name, contact details, logo, theme color, and footer content.</p>
+                <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
+            </div>
+
+            <div class="settings-item">
+                <i class="fa-solid fa-bars-staggered settings-icon"></i>
+                <h3>About & Content Management</h3>
+                <p>Edit and update the website's main content such as About Us, Mission, Vision, History, Developer section, and other public information displayed on the site.</p>
+                <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
+            </div>
+
+            <div class="settings-item">
+                <i class="fa-solid fa-user settings-icon"></i>
+                <h3>Officer Management</h3>
+                <p>Add, update, or remove organization officers including their photos, positions, term year, and short descriptions.</p>
+                <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
+            </div>
+
+            <div class="settings-item">
+                <i class="fa-solid fa-hand-holding-dollar settings-icon"></i>
+                <h3>Donation Settings</h3>
+                <p>Configure donation details such as GCash, bank information, QR codes, donation categories, and visibility of donation history.</p>
+                <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
+            </div>
+
+            <div class="settings-item">
+                <i class="fa-solid fa-user-gear settings-icon"></i>
+                <h3>User & Admin Management</h3>
+                <p>Manage admin accounts, assign roles and permissions, reset passwords, and control access levels within the system.</p>
+                <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
+            </div>
+
+            <div class="settings-item">
+                <i class="fa-regular fa-shield-halved settings-icon"></i>
+                <h3>Security Settings</h3>
+                <p>Protect the system by updating passwords, enabling security features, managing backups, and restoring database data when needed.</p>
+                <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
+            </div>
+
+            <div class="settings-item">
+                <i class="fa-solid fa-bell settings-icon"></i>
+                <h3>Notification Settings</h3>
+                <p>Set up automated notifications and email alerts for new donations, contact form submissions, and system updates.</p>
+                <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+/* ================= SIDEBAR LOAD ================= */
+fetch('sidebar.html')
+.then(res => res.text())
+.then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
+
+    const currentPage = window.location.pathname.split("/").pop();
+
+    const navMap = {
+        "home.html": "dashboardBtn",
+        "organizations.html": "organizationsBtn",
+        "animals.html": "animalsBtn",
+        "adoptions.html": "adoptionBtn",
+        "donation.html": "donationBtn",
+        "announcement.html": "announcementsBtn",
+        "monitoring.html": "monitoringBtn",
+        "analytics.html": "analyticsBtn",
+        "settings.html": "settingsBtn"
+    };
+
+    if(navMap[currentPage]) {
+        document.getElementById(navMap[currentPage])?.classList.add("active-item");
+    }
+
+    const routes = {
+        dashboardBtn: "home.html",
+        organizationsBtn: "organizations.html",
+        animalsBtn: "animals.html",
+        adoptionBtn: "adoptions.html",
+        donationBtn: "donation.html",
+        announcementsBtn: "announcement.html",
+        monitoringBtn: "monitoring.html",
+        analyticsBtn: "analytics.html",
+        settingsBtn: "settings.html"
+    };
+
+    Object.keys(routes).forEach(id => {
+        const el = document.getElementById(id);
+        if(el){
+            el.addEventListener("click", () => {
+                window.location.href = routes[id];
+            });
+        }
+    });
+});
+    </script>
+
+</body>
+</html>
