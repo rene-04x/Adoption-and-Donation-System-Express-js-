@@ -19,6 +19,7 @@
             --sidebar-width: 260px;
         }
 
+        /* Standard Resets */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
@@ -30,7 +31,7 @@
             overflow-x: hidden;
         }
 
-        /* --- TOPBAR (Updated to match your CSS) --- */
+        /* --- TOPBAR --- */
         .top-navbar {
             position: fixed;
             top: 0; left: var(--sidebar-width); right: 0;
@@ -54,42 +55,21 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .user-profile-section { 
-            display: flex; 
-            align-items: center; 
-            gap: 25px; 
-            padding-right: 10px;
-        }
-
+        .user-profile-section { display: flex; align-items: center; gap: 25px; padding-right: 10px; }
         .notification-bell { position: relative; color: #02407D; font-size: 22px; cursor: pointer; }
-        
         .notification-badge {
             position: absolute; top: -5px; right: -5px; background: #ff0000;
             color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold;
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-        }
-
-        .user-name {
-            font-size: 17px;
-            font-weight: bold;
-            color: #02407D;
-        }
-
-        .user-avatar { 
-            width: 40px; height: 40px; border-radius: 50%; 
-            border: 2px solid #02407D; object-fit: cover; 
-        }
+        .user-info { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .user-name { font-size: 17px; font-weight: bold; color: #02407D; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #02407D; object-fit: cover; }
 
         /* ===== CONTENT SECTION ===== */
         #supportSection {
             margin-left: var(--sidebar-width);
-            padding: 110px 60px 40px 60px; /* Top padding adjusted for 70px navbar */
+            padding: 110px 60px 40px 60px;
             transition: all 0.4s ease;
         }
 
@@ -101,36 +81,22 @@
         }
 
         /* SEARCH */
-        .search-wrapper {
-            position: relative;
-            margin-bottom: 35px;
-        }
-
+        .search-wrapper { position: relative; margin-bottom: 35px; }
         .search-wrapper i {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-blue);
-            font-size: 20px;
+            position: absolute; left: 20px; top: 50%; transform: translateY(-50%);
+            color: var(--primary-blue); font-size: 20px;
         }
-
         .search-wrapper input {
-            width: 100%;
-            padding: 18px 20px 18px 55px;
-            border-radius: 14px;
-            border: 2px solid var(--primary-blue);
-            font-size: 16px;
-            background: white;
-            outline: none;
+            width: 100%; padding: 18px 20px 18px 55px; border-radius: 14px;
+            border: 2px solid var(--primary-blue); font-size: 16px; background: white; outline: none;
         }
 
-        /* HELP GRID */
+        /* HELP GRID - Updated to 2 rows of 3 */
         .help-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 25px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .help-card {
@@ -140,6 +106,8 @@
             border: 1px solid #eef2f6;
             box-shadow: 0 15px 35px rgba(0,0,0,0.04);
             transition: 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .help-card:hover {
@@ -148,132 +116,79 @@
         }
 
         .icon-container {
-            width: 70px;
-            height: 70px;
-            background: #f1f7ff;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
+            width: 60px; height: 60px; background: #f1f7ff;
+            border-radius: 14px; display: flex; align-items: center;
+            justify-content: center; margin-bottom: 15px;
         }
+        .main-icon { font-size: 28px; color: var(--primary-blue); }
 
-        .main-icon { font-size: 32px; color: var(--primary-blue); }
+        .help-card h3 { font-size: 18px; margin-bottom: 10px; font-weight: 700; color: var(--primary-blue); }
+        .help-card p { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; flex-grow: 1; }
 
-        .help-card h3 { font-size: 18px; margin-bottom: 10px; font-weight: 700; }
-        .help-card p {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
-        /* BUTTONS */
         .card-btn {
-            display: inline-block;
-            padding: 10px 18px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: 0.2s;
+            display: inline-block; padding: 10px 18px; border-radius: 20px;
+            font-size: 13px; font-weight: 700; text-decoration: none; transition: 0.2s; text-align: center;
         }
-
         .btn-yellow { background: #FFE8A3; color: #000; }
         .btn-blue { background: #E0F2FE; color: #0369A1; }
-        .btn-gray { background: #E2E8F0; color: #1e293b; }
-        .card-btn:hover { opacity: 0.8; }
+        .btn-gray { background: #F1F5F9; color: #475569; }
 
-        /* BOTTOM GRID */
-        .support-bottom-grid {
+        /* FEEDBACK SECTION */
+        .feedback-section {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+
+        .feedback-header { margin-bottom: 25px; }
+        .feedback-header h3 { font-size: 22px; color: var(--primary-blue); font-weight: 800; }
+        .feedback-header p { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+
+        .feedback-form {
             display: grid;
-            grid-template-columns: 1.6fr 1fr;
-            gap: 30px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
         }
 
-        .content-box {
-            background: #fff;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 14px; font-weight: 700; color: var(--primary-blue); }
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 12px 15px; border-radius: 10px; border: 1px solid #e2e8f0;
+            font-family: inherit; font-size: 14px; outline: none;
         }
+        .form-group textarea { grid-column: span 2; height: 120px; resize: none; }
+        .full-width { grid-column: span 2; }
 
-        .content-box h3 { margin-bottom: 20px; font-weight: 700; }
-
-        /* TABLE */
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; font-size: 14px; color: var(--text-muted); padding-bottom: 15px; }
-        td { padding: 15px 0; border-top: 1px solid #f1f5f9; font-size: 14px; }
-
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-        .status-open { background: #FEF08A; color: #854d0e; }
-        .status-resolved { background: #4ADE80; color: white; }
-
-        /* CHAT CARD */
-        .chat-card {
-            background: linear-gradient(180deg, #FF8C42 0%, #FF8C42 30%, #ffffff 30%);
-            border-radius: 20px;
-            overflow: hidden;
-            padding: 0;
-        }
-
-        .chat-header {
-            padding: 18px 25px;
+        .submit-feedback-btn {
+            background: var(--primary-blue);
             color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chat-body { padding: 25px; }
-
-        .chat-bubble {
-            background: #fff7ed;
-            padding: 18px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
             cursor: pointer;
-            margin-bottom: 15px;
-            border: 1px solid #fdba74;
-            transition: 0.2s;
+            transition: background 0.3s;
+            justify-self: end;
         }
-        .chat-bubble:hover { background: #ffedd5; }
-
-        .system-status {
-            background: #DCFCE7;
-            padding: 8px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            margin-top: 15px;
-            font-size: 13px;
-            color: #166534;
-            font-weight: 600;
-        }
+        .submit-feedback-btn:hover { background: #012d5a; }
 
     </style>
 </head>
 
 <body>
-
     <div id="sidebar-placeholder"></div>
 
     <header class="top-navbar">
         <div class="header-title-section">
             <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
-            <p style="font-size:11px; color:#64748b; font-weight: 500;">Animal Adoption & Donation Management System</p>
+            <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
         </div>
 
         <div class="user-profile-section">
             <div class="notification-bell">
-                <i class="fa-regular fa-bell"></i>
+                <i class="fa-solid fa-bell"></i>
                 <span class="notification-badge">30</span>
             </div>
             <div class="user-info">
@@ -285,7 +200,6 @@
 
     <section id="supportSection">
         <div class="support-container">
-
             <div class="page-header">
                 <h2>PAWSsion Support Center</h2>
             </div>
@@ -297,87 +211,77 @@
 
             <div class="help-grid">
                 <div class="help-card">
-                    <div class="icon-container">
-                        <i class="fa-solid fa-book-open main-icon"></i>
-                    </div>
+                    <div class="icon-container"><i class="fa-solid fa-book-open main-icon"></i></div>
                     <h3>User Guides</h3>
                     <p>New here? Learn step-by-step how adoptions, donations, and profiles work.</p>
                     <a href="#" class="card-btn btn-yellow">Start Learning →</a>
                 </div>
 
                 <div class="help-card">
-                    <div class="icon-container">
-                        <i class="fa-solid fa-circle-question main-icon"></i>
-                    </div>
+                    <div class="icon-container"><i class="fa-solid fa-circle-question main-icon"></i></div>
                     <h3>FAQs</h3>
-                    <p>Find quick answers about verification, payments, and getting started.</p>
+                    <p>Find quick answers about verification, payments, and system access.</p>
                     <a href="#" class="card-btn btn-blue">Browse FAQs →</a>
                 </div>
 
                 <div class="help-card">
-                    <div class="icon-container">
-                        <i class="fa-solid fa-screwdriver-wrench main-icon"></i>
-                    </div>
+                    <div class="icon-container"><i class="fa-solid fa-screwdriver-wrench main-icon"></i></div>
                     <h3>Technical Support</h3>
-                    <p>Report issues or request features and we’ll help you right away.</p>
+                    <p>Report issues or request system maintenance from the developer team.</p>
                     <a href="#" class="card-btn btn-gray">Submit Ticket →</a>
+                </div>
+
+                <div class="help-card">
+                    <div class="icon-container"><i class="fa-solid fa-shield-check main-icon" style="color:#10b981;"></i></div>
+                    <h3>Verification Help</h3>
+                    <p>Guidelines on how to verify shelter accounts and user identities properly.</p>
+                    <a href="#" class="card-btn btn-blue">View Requirements →</a>
+                </div>
+
+                <div class="help-card">
+                    <div class="icon-container"><i class="fa-solid fa-user-gear main-icon" style="color:#8b5cf6;"></i></div>
+                    <h3>Account Management</h3>
+                    <p>Learn how to manage roles, update passwords, and secure your admin portal.</p>
+                    <a href="#" class="card-btn btn-yellow">Manage Profile →</a>
+                </div>
+
+                <div class="help-card">
+                    <div class="icon-container"><i class="fa-solid fa-hand-holding-heart main-icon" style="color:#f43f5e;"></i></div>
+                    <h3>Donation Support</h3>
+                    <p>Troubleshoot GCash transactions or bank transfer history issues.</p>
+                    <a href="#" class="card-btn btn-gray">Get Help →</a>
                 </div>
             </div>
 
-            <div class="support-bottom-grid">
-                <div class="content-box">
-                    <h3>Ticket History</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Ticket ID</th>
-                                <th>Subject</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#T1023</td>
-                                <td>Login Issue</td>
-                                <td><span class="status-badge status-open">Open</span></td>
-                            </tr>
-                            <tr>
-                                <td>#T1019</td>
-                                <td>Data Error</td>
-                                <td><span class="status-badge status-resolved">Resolved</span></td>
-                            </tr>
-                            <tr>
-                                <td>#T1011</td>
-                                <td>New Request</td>
-                                <td><span class="status-badge status-open">Open</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="feedback-section">
+                <div class="feedback-header">
+                    <h3>Feedback & Suggestions</h3>
+                    <p>Help us improve the CSPC PAWSsion system. Share your thoughts or suggest new features.</p>
                 </div>
-
-                <div class="content-box chat-card">
-                    <div class="chat-header">
-                        <i class="fa-solid fa-paw"></i> Live Support
+                <form class="feedback-form">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select>
+                            <option>Feature Request</option>
+                            <option>System Improvement</option>
+                            <option>UI/UX Feedback</option>
+                            <option>Other</option>
+                        </select>
                     </div>
-                    <div class="chat-body">
-                        <div class="chat-bubble">
-                            <i class="fa-solid fa-comment-dots" style="font-size: 24px; color: #FF8C42;"></i>
-                            <div>
-                                <strong style="display:block; font-size: 15px;">Need help right now?</strong>
-                                <span style="font-size: 13px; color: #64748b;">Start Live Chat (Online)</span>
-                            </div>
-                        </div>
-
-                        <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">
-                            Email: support@pawssion.org<br>
-                            Phone: 1-800-PAWS-HELP
-                        </p>
-
-                        <div class="system-status">
-                            <i class="fa-solid fa-circle-check"></i> All Systems Operational
-                        </div>
+                    <div class="form-group">
+                        <label>Priority Level</label>
+                        <select>
+                            <option>Low</option>
+                            <option>Medium</option>
+                            <option>High (Urgent)</option>
+                        </select>
                     </div>
-                </div>
+                    <div class="form-group full-width">
+                        <label>Your Suggestion</label>
+                        <textarea placeholder="Tell us what's on your mind..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-feedback-btn">Submit Feedback</button>
+                </form>
             </div>
 
         </div>

@@ -144,7 +144,7 @@
     <div class="sidebar-footer">
         <div class="nav-item" id="settingsBtn"><i class="fa-solid fa-gear" style="color: #60a5fa;"></i> Setting</div>
         <div class="nav-item" id="supportBtn"><i class="fa-solid fa-circle-question" style="color: #60a5fa;"></i> Support</div>
-        <div class="nav-item" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
+        <div class="nav-item" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #60a5fa;"></i> Log out</div>
     </div>
 </div>
 <script>
@@ -190,9 +190,13 @@ navItems.forEach(item => {
             case "supportBtn":
                 window.location.href = "support.html";
                 break;
-        }
+            case "logoutBtn":
+                window.location.href = "/";
+                break;
+            }
     });
 });
+
 </script>
 </body>
 </html>
