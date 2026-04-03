@@ -142,8 +142,8 @@
     </div>
 
     <div class="sidebar-footer">
-        <div class="nav-item" id="settingsBtn"><i class="fa-solid fa-gear style="color: #60a5fa;"></i> Setting</div>
-        <div class="nav-item"><i class="fa-solid fa-circle-question"></i> Support</div>
+        <div class="nav-item" id="settingsBtn"><i class="fa-solid fa-gear" style="color: #60a5fa;"></i> Setting</div>
+        <div class="nav-item" id="supportBtn"><i class="fa-solid fa-circle-question" style="color: #60a5fa;"></i> Support</div>
         <div class="nav-item" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Log out</div>
     </div>
 </div>
@@ -186,6 +186,9 @@ navItems.forEach(item => {
                 break;
             case "settingsBtn":
                 window.location.href = "settings.html";
+                break;
+            case "supportBtn":
+                window.location.href = "support.html";
                 break;
         }
     });

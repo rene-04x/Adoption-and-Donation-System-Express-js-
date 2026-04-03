@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWSsion - Support Center</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-blue: #02407D;
+            --accent-green: #ACAB57;
+            --accent-orange: #FBAB2A;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --sidebar-width: 260px;
+            --bg-light: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* ===== TOP NAVBAR (Matches your design) ===== */
+        .top-navbar {
+            position: fixed;
+            top: 0; left: var(--sidebar-width); right: 0;
+            height: 80px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .header-title-section h1 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        .header-title-section h1 span { color: var(--accent-green); font-weight: 500; }
+
+        /* ===== CONTENT AREA ===== */
+        #supportSection {
+            margin-left: var(--sidebar-width);
+            padding: 110px 60px 40px 60px;
+        }
+
+        .support-container { max-width: 1100px; }
+
+        .page-header { margin-bottom: 30px; }
+        .page-header h2 { font-size: 28px; font-weight: 700; color: var(--text-main); }
+
+        /* Search Bar */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-blue);
+            font-size: 20px;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 18px 20px 18px 55px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            font-size: 16px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .search-wrapper input:focus { border-color: var(--primary-blue); }
+
+        /* Help Cards Grid */
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .help-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .help-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(2, 64, 125, 0.08);
+            border-color: var(--primary-blue);
+        }
+
+        .help-card i {
+            font-size: 32px;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .help-card h3 { font-size: 18px; margin-bottom: 10px; color: #1e293b; }
+        .help-card p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+
+        /* Bottom Layout: History and Contact */
+        .support-bottom-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+
+        .content-box {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            padding: 25px;
+        }
+
+        .content-box h3 { font-size: 18px; margin-bottom: 20px; }
+
+        /* Ticket Table */
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; font-size: 13px; color: var(--text-muted); padding-bottom: 15px; }
+        td { padding: 15px 0; border-top: 1px solid #f1f5f9; font-size: 14px; }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-open { background: #fef3c7; color: #92400e; }
+        .status-resolved { background: #dcfce7; color: #166534; }
+
+        /* Live Chat Card */
+        .chat-card {
+            background: linear-gradient(135deg, #fff 0%, #f0f7ff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .btn-chat {
+            background: var(--primary-blue);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+
+        .btn-chat:hover { background: #013161; transform: scale(1.02); }
+
+        .system-status {
+            font-size: 13px;
+            color: #166534;
+            background: #dcfce7;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 15px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="sidebar-placeholder"></div>
+
+    <header class="top-navbar">
+        <div class="header-title-section">
+            <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
+            <p>Animal Adoption & Donation Management System</p>
+        </div>
+        <div class="user-profile-section" style="display: flex; align-items: center; gap: 20px;">
+             <i class="fa-regular fa-bell" style="font-size: 20px; color: var(--primary-blue);"></i>
+             <img src="../images/dog2.png" alt="User" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+        </div>
+    </header>
+
+    <section id="supportSection">
+        <div class="support-container">
+            
+            <div class="page-header">
+                <h2>Support Center</h2>
+            </div>
+
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search help articles, guides, and FAQs...">
+            </div>
+
+            <div class="help-grid">
+                <div class="help-card">
+                    <i class="fa-solid fa-book-open"></i>
+                    <h3>User Guides</h3>
+                    <p>Step-by-step instructions for all features (Animals, Adoptions, Donations).</p>
+                </div>
+                <div class="help-card">
+                    <i class="fa-solid fa-circle-question"></i>
+                    <h3>FAQs</h3>
+                    <p>Quick answers to common inquiries about verification, fees, and access.</p>
+                </div>
+                <div class="help-card">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <h3>Technical Tickets</h3>
+                    <p>View, create, and manage your reported issues and feature requests.</p>
+                </div>
+            </div>
+
+            <div class="support-bottom-grid">
+                <div class="content-box">
+                    <h3>Recent Support Tickets</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Ticket ID</th>
+                                <th>Subject</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#T1023</td>
+                                <td>Login Issue</td>
+                                <td><span class="status-badge status-open">Open</span></td>
+                            </tr>
+                            <tr>
+                                <td>#T1019</td>
+                                <td>Data Sync Error</td>
+                                <td><span class="status-badge status-resolved">Resolved</span></td>
+                            </tr>
+                            <tr>
+                                <td>#T1011</td>
+                                <td>New Feature Request</td>
+                                <td><span class="status-badge status-open">Open</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="content-box chat-card">
+                    <i class="fa-solid fa-headset" style="font-size: 40px; color: var(--accent-orange); margin-bottom: 15px;"></i>
+                    <h3>Need instant help?</h3>
+                    <p style="margin-bottom: 20px;">Our support team is online and ready to assist you in real-time.</p>
+                    <a href="#" class="btn-chat">
+                        <i class="fa-solid fa-comments"></i> Start Live Chat
+                    </a>
+                    <p style="font-size: 12px; color: var(--text-muted);">Email: support@pawssion.org</p>
+                    <div class="system-status">
+                        <i class="fa-solid fa-circle-check"></i> All Systems Operational
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        /* ================= SIDEBAR LOAD ================= */
+        fetch('sidebar.html')
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById('sidebar-placeholder').innerHTML = data;
+
+            const currentPage = window.location.pathname.split("/").pop();
+
+            const navMap = {
+                "home.html": "dashboardBtn",
+                "organizations.html": "organizationsBtn",
+                "animals.html": "animalsBtn",
+                "adoptions.html": "adoptionBtn",
+                "donation.html": "donationBtn",
+                "announcement.html": "announcementsBtn",
+                "monitoring.html": "monitoringBtn",
+                "analytics.html": "analyticsBtn",
+                "settings.html": "settingsBtn",
+                "support.html": "supportBtn" // Added Support Mapping
+            };
+
+            if(navMap[currentPage]) {
+                document.getElementById(navMap[currentPage])?.classList.add("active-item");
+            }
+
+            const routes = {
+                dashboardBtn: "home.html",
+                organizationsBtn: "organizations.html",
+                animalsBtn: "animals.html",
+                adoptionBtn: "adoptions.html",
+                donationBtn: "donation.html",
+                announcementsBtn: "announcement.html",
+                monitoringBtn: "monitoring.html",
+                analyticsBtn: "analytics.html",
+                settingsBtn: "settings.html",
+                supportBtn: "support.html" // Added Support Route
+            };
+
+            Object.keys(routes).forEach(id => {
+                const el = document.getElementById(id);
+                if(el){
+                    el.addEventListener("click", () => {
+                        window.location.href = routes[id];
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
