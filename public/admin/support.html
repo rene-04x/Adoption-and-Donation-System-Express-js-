@@ -210,10 +210,48 @@
 
         .content-box h3 { margin-bottom: 25px; font-weight: 700; font-size: 20px; color: #000;}
 
-        /* FAQ ACCORDION */
+        /* FAQ ACCORDION FUNCTIONALITY */
         .faq-item { border-bottom: 1px solid #f1f5f9; padding: 15px 0; cursor: pointer;}
         .faq-item:last-child { border-bottom: none; }
-        .faq-question { display: flex; justify-content: space-between; align-items: center; font-size: 15px; font-weight: 600; color: #000;}
+        
+        .faq-question { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 15px; 
+            font-weight: 600; 
+            color: #000;
+            transition: color 0.2s;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            color: var(--text-muted);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, margin-top 0.3s ease;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        /* Active State */
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust based on content length */
+            margin-top: 15px;
+        }
+
+        .faq-item.active .faq-question {
+            color: var(--accent-blue);
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+            color: var(--accent-blue);
+        }
 
         /* TICKET TABLE */
         table.ticket-table { width: 100%; border-collapse: collapse; }
@@ -231,7 +269,132 @@
         .status-open { background: #FEF3C7; color: #92400E; }
         .status-resolved { background: #DCFCE7; color: #166534; }
         .status-progress { background: #E0F2FE; color: #0369A1; }
+        
+        /* --- UPDATED KNOWLEDGE BASE STYLES --- */
 
+.kb-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 20px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    
+    /* Smooth transition for all properties */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer; /* Makes it look clickable */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover Effects */
+.kb-card:hover {
+    transform: translateY(-8px); /* Lifts the card up */
+    border-color: var(--accent-blue); /* Optional: changes border color */
+    box-shadow: 0 12px 24px rgba(2, 64, 125, 0.1); /* Adds a deeper shadow */
+    background-color: #fdfdfe;
+}
+
+/* Optional: Scale the icon slightly on hover */
+.kb-card:hover .icon-container {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+/* Optional: Change title color on hover */
+.kb-card:hover h3 {
+    color: var(--primary-blue);
+    transition: color 0.3s ease;
+}
+
+/* Adding a "Click" effect when pressed */
+.kb-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(2, 64, 125, 0.08);
+}
+
+/* --- UPDATED VIDEO CARD STYLES --- */
+
+.video-card {
+    border-radius: 20px;
+    height: 180px;
+    background-size: 100%; /* Set initial size for zoom effect */
+    background-position: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden; /* Important for the zoom effect */
+    transition: all 0.4s ease;
+}
+
+/* Darker overlay on hover */
+.video-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3); /* Default overlay */
+    border-radius: 20px;
+    transition: background 0.3s ease;
+    z-index: 1;
+}
+
+.video-card:hover::after {
+    background: rgba(0, 0, 0, 0.5); /* Darkens on hover */
+}
+
+/* Background Zoom Effect */
+.video-card:hover {
+    background-size: 110%; /* Subtle zoom in of the dog image */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Play Button Interaction */
+.play-btn {
+    position: relative;
+    z-index: 2;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-blue);
+    font-size: 24px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy effect */
+}
+
+.video-card:hover .play-btn {
+    transform: scale(1.15); /* Pop out effect */
+    background: var(--white);
+    color: var(--accent-blue);
+}
+
+/* Ensure title stays above overlay */
+.video-title {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    z-index: 2;
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    transition: transform 0.3s ease;
+}
+
+.video-card:hover .video-title {
+    transform: translateY(-5px); /* Subtle lift */
+}
+
+/* Active "Pressed" State */
+.video-card:active {
+    transform: scale(0.98);
+}
     </style>
 </head>
 
@@ -274,52 +437,66 @@
                 <div class="kb-card">
                     <div class="icon-container"><i class="fa-solid fa-address-card kb-icon" style="color:#f97316;"></i></div>
                     <h3>Animal Profiling Guide</h3>
-                    <a href="#" class="card-btn btn-yellow">Start Learning →</a>
                 </div>
                 <div class="kb-card">
                     <div class="icon-container"><i class="fa-solid fa-file-signature kb-icon" style="color:#f59e0b;"></i></div>
                     <h3>Adoption Application Process</h3>
                 </div>
                 <div class="kb-card">
-                    <div class="icon-container"><i class="fa-solid fa-code-branch kb-icon" style="color:#f97316;"></i></div>
-                    <h3>Matchmaking      (Rule-based+NLP)</h3>
+                    <div class="icon-container"><i class="fa-solid fa-qrcode kb-icon" style="color:#f97316;"></i></div>
+                    <h3>QR Code Donation Guide</h3>
                 </div>
                 <div class="kb-card">
-                    <div class="icon-container"><i class="fa-solid fa-qrcode kb-icon" style="color:#f59e0b;"></i></div>
-                    <h3>QR Code Donation Guide</h3>
+                    <div class="icon-container"><i class="fa-solid fa-bullhorn kb-icon" style="color:#f59e0b;"></i></div>
+                    <h3>Announcement Guide</h3>
                 </div>
             </div>
 
             <h2 class="section-title">Video Tutorials</h2>
             <div class="video-grid">
-                <div class="video-card" style="background-image: url('../images/vid-thumb-1.jpg');">
+                <div class="video-card" style="background-image: url('../images/dog4.png');">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
                     <div class="video-title">How to Approve Donation</div>
                 </div>
-                <div class="video-card" style="background-image: url('../images/vid-thumb-2.jpg');">
+                <div class="video-card" style="background-image: url('../images/dog5.png');">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="video-title">Kamustahan Monitoring</div>
+                    <div class="video-title">How to Approve Organizations</div>
                 </div>
-                <div class="video-card" style="background-image: url('../images/vid-thumb-3.jpg');">
+                <div class="video-card" style="background-image: url('../images/dog6.png');">
                     <div class="play-btn"><i class="fa-solid fa-play"></i></div>
-                    <div class="video-title">Analytics</div>
+                    <div class="video-title">How to Post System Announcements</div>
                 </div>
             </div>
 
-            <div class="support-bottom-grid">
+          <div class="support-bottom-grid">
                 <div class="content-box">
                     <h3>Frequently Asked Questions</h3>
+                    
                     <div class="faq-item">
-                        <div class="faq-question">How do I approve an Adoption? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-question">How do I approve an Adoption application? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer">Navigate to the <strong>Adoptions</strong> module, select a "Pending" application, review the adopter's details, and click the "Approve" button. The animal's status will automatically update to "Adopted."</div>
                     </div>
+
                     <div class="faq-item">
-                        <div class="faq-question">How does the Matchmaking Work? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-question">How do I update an animal's medical record? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer">Go to the <strong>Animals</strong> module and click on the specific animal's profile. You can edit their profile to update health status, vaccination dates, and behavioral notes.</div>
                     </div>
+
                     <div class="faq-item">
-                        <div class="faq-question">What is the Kamustahan feature and how do I use it? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-question">How are QR Code donations verified? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer">Once a donor scans the QR code and sends funds, the transaction will appear in the <strong>Donations</strong> module. You can cross-reference the reference number and mark it as "Verified."</div>
                     </div>
+
                     <div class="faq-item">
-                        <div class="faq-question">How do I assign roles to other officers (Admin, Staff, Viewer)? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-question">Can I export the monthly analytics reports? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer">Yes. In the <strong>Analytics</strong> module, you can view trends for adoptions and donations. Use the "Export" button at the top right to download a summary for your shelter's monthly report.</div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">How do I update my Admin profile or password? <i class="fa-solid fa-chevron-down"></i></div>
+                        <div class="faq-answer">
+                            To edit your account details, navigate to the <strong>Settings</strong> module. Under the <strong>Profile</strong> tab, you can update your email, display name, and profile picture. To change your password, use the "Security" section to ensure your administrative access remains secure.
+                        </div>
                     </div>
                 </div>
 
@@ -343,7 +520,7 @@
                             </tr>
                             <tr>
                                 <td>TKT-0922</td>
-                                <td>Matchmaking results are not showing any suggestions</td>
+                                <td>Matchmaking results are not showing suggestions</td>
                                 <td><span class="status-badge status-progress">In-progress</span></td>
                                 <td>3/10/2026</td>
                             </tr>
@@ -362,6 +539,23 @@
     </section>
 
     <script>
+        /* ================= FAQ TOGGLE LOGIC ================= */
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const isActive = item.classList.contains('active');
+                
+                // Close all other items (Optional: remove this if you want multiple open)
+                document.querySelectorAll('.faq-item').forEach(otherItem => {
+                    otherItem.classList.remove('active');
+                });
+
+                // Toggle current item
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
         /* ================= SIDEBAR LOAD & NAVIGATION ================= */
         fetch('sidebar.html')
         .then(res => res.text())
