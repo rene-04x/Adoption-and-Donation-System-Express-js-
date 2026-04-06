@@ -727,209 +727,159 @@
         .form-group input:nth-child(n+6) {
             grid-column: 1 / -1;
         }
-   /* ================= ADD ANIMAL MODAL - COMPACT HEIGHT ================= */
-#addAnimalModal .modal-content {
-    width: 550px;
+/* --- MODAL BASE --- */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    /* Tinanggal ang backdrop-filter dito para hindi buong screen ang malabo */
+    background-color: rgba(0, 0, 0, 0.4); /* Mas madilim ng konti para lumitaw ang puti */
+    align-items: center; 
+    justify-content: center;
+}
+/* --- COMPACT MAIN CONTAINER (800px) --- */
+.compact-styled-modal {
+    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white */
+    
+    /* DITO ILALAGAY ANG BLUR */
+    backdrop-filter: blur(15px); 
+    -webkit-backdrop-filter: blur(15px);
+    
+    width: 800px !important;
     max-width: 95%;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 15px;
+    border-radius: 16px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    font-family: 'Inter', sans-serif;
-    max-height: 80vh; /* limit modal height */
+    position: relative;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border para sa glass look */
 }
 
-/* MODAL BODY LAYOUT */
-#addAnimalModal .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+/* 2-Panel Grid Layout */
+.styled-modal-grid {
+    display: grid;
+    grid-template-columns: 310px 1fr; /* Fixed left width, fluid right */
 }
 
-/* LEFT SIDE */
-#addAnimalModal .modal-left {
-    background: #f9fafb;
+/* --- LEFT PANEL (GRAY BACKGROUND) --- */
+.modal-panel-left {
+    background-color: rgba(248, 250, 252, 0.7); /* Transparent gray */
+    padding: 30px;
     border-right: 1px solid #e2e8f0;
-    padding: 12px;
-    border-radius: 10px 0 0 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    max-height: 70vh;
-    overflow-y: auto;
 }
 
-#addAnimalModal .modal-left img {
-    width: 100%;
-    height: 120px; /* smaller height */
-    object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 10px;
-    background: #e2e8f0;
-}
-
-/* RESCUE SECTION */
-#addAnimalModal .rescue-journey h4 {
-    font-size: 13px;
+.panel-title {
+    font-size: 14px;
+    color: #02407D; /* Main Blue */
+    margin-bottom: 15px;
     font-weight: 700;
-    color: #002d7f;
-    margin-bottom: 8px;
 }
 
-#addAnimalModal .rescue-journey-item {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 6px;
-    font-size: 12px;
+/* Special styling for Rescue Journey Title to match mockup */
+.rescue-title { margin-top: 25px; }
+
+/* Photo Upload Box */
+.photo-upload-container {
+    background: #fff;
+    border: 3px solid #3b82f6; /* Prominent Blue border from mockup */
+    border-radius: 4px; /* Slight curve */
+    height: 180px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #94a3b8;
+    cursor: pointer;
+    position: relative;
+    margin-bottom: 25px;
 }
 
-#addAnimalModal .rescue-journey-item label {
-    font-weight: 600;
-    color: #334155;
-    margin-bottom: 2px;
-}
+.photo-upload-container .upload-icon { font-size: 40px; margin-bottom: 15px; color: #cbd5e1; }
+.upload-text { font-size: 13px; color: #475569; font-weight: 600; }
+.photo-upload-container input { position: absolute; opacity: 0; width: 100%; height: 100%; cursor: pointer; }
 
-#addAnimalModal .rescue-journey-item input {
-    padding: 5px 6px;
-    font-size: 12px;
-    border-radius: 5px;
-    border: 1px solid #cbd5e1;
-    background: #ffffff;
+/* Rescue Inputs Left Side */
+.journey-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+.journey-input-group label { font-size: 12px; font-weight: 600; color: #02407D; display: block; margin-bottom: 6px; }
+.journey-input-group input, 
+.journey-input-group textarea {
+    width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; color: #1e293b;
 }
+.journey-input-group textarea { height: 100px; resize: none; }
 
-/* NOTES */
-#addAnimalModal textarea {
-    width: 100%;
-    min-height: 45px; /* shorter height */
-    padding: 5px 6px;
-    border-radius: 5px;
-    border: 1px solid #cbd5e1;
-    font-size: 12px;
-    background: #ffffff;
-    resize: vertical;
-}
-
-/* RIGHT SIDE */
-#addAnimalModal .modal-info {
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    max-height: 70vh;
+/* --- RIGHT PANEL (WHITE BACKGROUND) --- */
+.modal-panel-right {
+    padding: 30px 45px;
+    background: transparent; /* Transparent para makita ang blur sa background container */
+    display: flex; flex-direction: column;
     overflow-y: auto;
+    max-height: 85vh;
 }
 
-/* INPUT FIELDS */
-#addAnimalModal input[type="text"],
-#addAnimalModal textarea {
-    width: 100%;
-    padding: 5px 8px;
-    margin-bottom: 8px;
-    font-size: 13px;
-    border-radius: 5px;
-    border: 1px solid #e2e8f0;
-    background: #f9fafb;
+.right-header h2 { font-size: 24px; color: #02407D; font-weight: 800; margin-bottom: 5px; }
+.right-header p { font-size: 13px; color: #64748b; margin-bottom: 30px; }
+
+.section-title {
+    font-size: 14px; color: #02407D; font-weight: 700;
+    margin-bottom: 15px;
 }
 
-#addAnimalModal input:focus,
-#addAnimalModal textarea:focus {
-    border-color: #002d7f;
-    background: #ffffff;
-    box-shadow: 0 0 0 2px rgba(0,45,127,0.1);
+/* Main Inputs Right Side */
+.input-row { display: grid; gap: 15px; margin-bottom: 15px; }
+.input-row.split { grid-template-columns: 1fr 1fr; }
+.input-field input, .input-field select {
+    width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px;
+    background-color: #fbfdff; /* Slight tint on focus immitation */
+}
+/* Select dropdown arrow style */
+.input-field select {
+    appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center; background-size: 20px;
 }
 
-/* MEDICAL TABLE */
-#addAnimalModal .medical-records table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 11px;
-    margin-top: 5px;
+/* Traits & Tags Pills */
+.traits-input-group { position: relative; display: flex; align-items: center; margin-bottom: 10px; }
+.traits-input-group input { flex: 1; padding: 10px 40px 10px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+.add-trait-btn { position: absolute; right: 8px; background: #02407D; color: #fff; border: none; width: 26px; height: 26px; border-radius: 4px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+
+.pill-tag {
+    display: inline-block; background: #fff; color: #02407D;
+    padding: 6px 15px; border-radius: 20px; border: 1px solid #e2e8f0;
+    font-size: 13px; font-weight: 600; margin-right: 8px; margin-top: 5px; cursor: pointer;
 }
 
-#addAnimalModal .medical-records th {
-    background: #002d7f;
-    color: white;
-    padding: 5px;
-    font-size: 10px;
+/* Medical Records Section Complex Style */
+.medical-mini-form {
+    display: flex; gap: 15px; align-items: flex-end; margin-bottom: 15px;
+    background-color: #fbfdff; padding: 10px; border-radius: 8px; border: 1px solid #e6f0f9;
 }
+.med-input-field { flex: 1; }
+.med-input-field label { font-size: 12px; font-weight: 600; color: #02407D; display: block; margin-bottom: 4px; }
+.med-input-field input { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 13px; }
+.add-med-btn { background: #02407D; color: #fff; border: none; width: 32px; height: 32px; border-radius: 6px; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
 
-#addAnimalModal .medical-records td {
-    border-bottom: 1px solid #e2e8f0;
-    padding: 4px;
+/* Medical Table Styled after mockup */
+.medical-table-container { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; }
+.medical-table { width: 100%; border-collapse: collapse; font-size: 12px; color: #475569; }
+.medical-table th { text-align: left; padding: 8px; color: #64748b; font-weight: 600; border-bottom: 1px solid #e2e8f0; }
+.medical-table td { padding: 12px 8px; }
+.empty-table-msg { text-align: center; color: #02407D; font-weight: 600; font-size: 13px; padding-top: 30px; }
+
+/* Register Button (Footer) */
+.modal-actions { margin-top: auto; padding-top: 30px; text-align: center; }
+.styled-register-btn {
+    background: #02407D; color: #fff; border: none;
+    padding: 15px 70px; border-radius: 8px;
+    font-size: 17px; font-weight: 700; cursor: pointer;
+    transition: 0.3s; width: 100%;
 }
+.styled-register-btn:hover { background: #002d7f; transform: translateY(-2px); }
 
-#addAnimalModal .medical-records input {
-    width: 100%;
-    padding: 3px 5px;
-    font-size: 11px;
-    border-radius: 4px;
+/* Close Button Position */
+.close-btn {
+    position: absolute; right: 20px; top: 15px;
+    font-size: 24px; cursor: pointer; color: #94a3b8; z-index: 10;
 }
-
-/* BUTTONS */
-#addAnimalModal #addMedicalRow {
-    margin-top: 5px;
-    background: #002d7f;
-    color: white;
-    border: none;
-    padding: 5px 8px;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-#addAnimalModal #addMedicalRow:hover {
-    background: #001f66;
-}
-
-.removeRow {
-    background: #ef4444;
-    color: white;
-    border: none;
-    padding: 3px 5px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 10px;
-}
-
-.removeRow:hover {
-    background: #dc2626;
-}
-
-/* FILE INPUT */
-#addAnimalModal input[type="file"] {
-    margin-top: 5px;
-    font-size: 12px;
-}
-
-/* SAVE BUTTON */
-#addAnimalModal #saveNewAnimal {
-    margin-top: 10px;
-    background: linear-gradient(135deg, #002d7f, #003da3);
-    color: white;
-    border: none;
-    padding: 8px;
-    border-radius: 5px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-#addAnimalModal #saveNewAnimal:hover {
-    background: linear-gradient(135deg, #001f52, #002d7f);
-}
-
-/* CLOSE BUTTON */
-#addAnimalModal .close-btn {
-    position: absolute;
-    right: 10px;
-    top: 6px;
-    font-size: 18px;
-    cursor: pointer;
-    color: #64748b;
-}
-
 /* RESPONSIVE */
 @media (max-width: 600px) {
     #addAnimalModal .modal-body {
@@ -1142,77 +1092,137 @@
     </div>
   </div>
 </div>
-<!-- ================= ADD ANIMAL MODAL ================= -->
 <div id="addAnimalModal" class="modal">
-  <div class="modal-content">
+    <div class="modal-content compact-styled-modal">
+        <span class="close-btn" id="closeAddModal">&times;</span>
+        
+        <form id="addAnimalForm" class="styled-modal-grid">
+            
+            <div class="modal-panel-left">
+                <div class="panel-section">
+                    <h4 class="panel-title">Photos</h4>
+                    <div class="photo-upload-container">
+                        <i class="fa-regular fa-image upload-icon"></i>
+                        <b class="upload-text">Upload main photo</b>
+                        <input type="file" id="animalPhoto" accept="image/*">
+                    </div>
+                </div>
 
-    <!-- CLOSE -->
-    <span class="close-btn" id="closeAddModal">&times;</span>
+                <div class="panel-section">
+                    <h4 class="panel-title rescue-title">Rescue Journey</h4>
+                    <div class="journey-row">
+                        <div class="journey-input-group">
+                            <label>Date Found</label>
+                            <input type="date">
+                        </div>
+                        <div class="journey-input-group">
+                            <label>Rescue Area</label>
+                            <input type="text" placeholder="Location">
+                        </div>
+                    </div>
+                    <div class="journey-input-group full-width-journey">
+                        <label>Rescue Details</label>
+                        <textarea placeholder="Rescue Story /Notes"></textarea>
+                    </div>
+                </div>
+            </div>
 
-    <div class="modal-body">
+            <div class="modal-panel-right">
+                <div class="right-header">
+                    <h2>Add New Animal</h2>
+                    <p>Create a new animal record for adoption tracking</p>
+                </div>
 
-      <!-- FORM CONTENT -->
-      <div class="modal-info">
+                <div class="form-section">
+                    <h4 class="section-title">Basic Information</h4>
+                    <div class="input-row full-width">
+                        <div class="input-field">
+                            <input type="text" placeholder="Name">
+                        </div>
+                    </div>
+                    <div class="input-row split">
+                        <div class="input-field">
+                            <select>
+                                <option value="" disabled selected>Species</option>
+                                <option>Dog</option>
+                                <option>Cat</option>
+                            </select>
+                        </div>
+                        <div class="input-field">
+                            <select>
+                                <option value="" disabled selected>Gender</option>
+                                <option>Male</option>
+                                <option>Female</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-row split">
+                        <div class="input-field">
+                            <input type="text" placeholder="Breed">
+                        </div>
+                        <div class="input-field">
+                            <input type="text" placeholder="Age(month)">
+                        </div>
+                    </div>
+                    <div class="input-row full-width">
+                        <div class="input-field">
+                            <input type="text" placeholder="Color">
+                        </div>
+                    </div>
+                </div>
 
-        <h2>Add New Animal</h2>
+                <div class="form-section">
+                    <h4 class="section-title">Behavior and Traits</h4>
+                    <div class="traits-input-group">
+                        <input type="text" placeholder="add (e.g., Friendly)">
+                        <button type="button" class="add-trait-btn"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    <div class="traits-container">
+                        <span class="trait-tag pill-tag">Fiendly ✕</span> <span class="trait-tag pill-tag">Behave ✕</span>
+                    </div>
+                </div>
 
-        <!-- BASIC INFO -->
-        <input type="text" id="addAnimalName" placeholder="Animal Name">
+                <div class="form-section medical-section">
+                    <h4 class="section-title">Medical Information</h4>
+                    <div class="medical-mini-form">
+                        <div class="med-input-field">
+                            <label>Treatment</label>
+                            <input type="text">
+                        </div>
+                        <div class="med-input-field">
+                            <label>Date</label>
+                            <input type="date">
+                        </div>
+                        <div class="med-input-field">
+                            <label>by</label>
+                            <input type="text">
+                        </div>
+                        <button type="button" class="add-med-btn"><i class="fa-solid fa-plus"></i></button>
+                    </div>
+                    
+                    <div class="medical-table-container">
+                        <table class="styled-table medical-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Treatment</th>
+                                    <th>Administeredby</th> </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="3" class="empty-table-msg">No medical added yet</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-        <input type="text" id="addAnimalBreed" placeholder="Breed">
-        <input type="text" id="addAnimalType" placeholder="Type (Dog/Cat)">
-        <input type="text" id="addAnimalGender" placeholder="Gender">
-
-        <input type="text" id="addAnimalAge" placeholder="Age">
-        <input type="text" id="addAnimalSize" placeholder="Size">
-        <input type="text" id="addAnimalStatus" placeholder="Status (Available/Adopted)">
-
-        <!-- BEHAVIOR -->
-        <h4>Behavior</h4>
-        <textarea id="addAnimalBehavior" placeholder="Behavior details"></textarea>
-
-        <textarea id="addAnimalDescription" placeholder="Description"></textarea>
-
-        <!-- MEDICAL RECORDS -->
-        <h4>Medical Records</h4>
-
-        <div class="medical-records">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Treatment</th>
-                <th>Administered by</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-
-            <tbody id="addMedicalRecords">
-              <tr>
-                <td><input type="text" placeholder="Date"></td>
-                <td><input type="text" placeholder="Treatment"></td>
-                <td><input type="text" placeholder="Administered by"></td>
-                <td><button type="button" class="removeRow">✖</button></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <button type="button" id="addMedicalRow">
-            + Add Record
-          </button>
-        </div>
-
-        <!-- IMAGE -->
-        <input type="file" id="addAnimalImage">
-
-        <!-- SAVE -->
-        <button id="saveNewAnimal">
-          <i class="fa fa-save"></i> Save Animal
-        </button>
-
-      </div>
+                <div class="modal-actions">
+                    <button type="submit" class="styled-register-btn">Register Animal</button>
+                </div>
+            </div>
+        </form>
     </div>
-  </div>
 </div>
 
     </div>

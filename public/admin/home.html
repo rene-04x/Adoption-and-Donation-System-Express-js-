@@ -21,9 +21,9 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', sans-serif;
-            /* This creates the transition from white at the top to soft blue at the bottom */
+        
             background: linear-gradient(180deg, #FFFFFF 0%, #A5CFFF 100%);
-            background-attachment: fixed; /* This keeps the background from moving when you scroll */
+            background-attachment: fixed; 
             min-height: 100vh;
             color: var(--text-main);
             overflow-x: hidden;
@@ -147,11 +147,11 @@
             width: 100%; background: #fb923c; color: white; border: none;
             padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 10px;
         }
-                /* PROFILE MODAL */
+                
         .profile-modal {
         position: absolute;
-            top: 70px; /* same height ng navbar */
-            right: 30px; /* adjust depende sa spacing mo */
+            top: 70px;
+            right: 30px; 
             display: none;
             z-index: 2000;
         }
@@ -234,7 +234,37 @@
         font-size: 24px;
         cursor: pointer;
     }
+    
+.dashboard-header {
+    display: flex;
+    justify-content: flex-start;  
+    align-items: flex-start;
+    flex-direction: column;      
+    margin-bottom: 25px;
+}
 
+
+.welcome-text {
+    font-size: 36px;        
+    font-weight: 800;
+    color: #1e293b;
+    letter-spacing: -0.5px;
+    margin-bottom: 5px;     
+    text-align: left;        
+}
+
+.welcome-text span {
+    color: #02407D;         
+    font-weight: 700;
+}
+
+
+.welcome-sub {
+    font-size: 16px;          
+    color: #64748b;
+    margin-top: 4px;
+    text-align: left;
+}
         @keyframes fadeIn {
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
@@ -297,6 +327,17 @@
     </header>
 
     <div id="dashboardSection">
+<div class="dashboard-header">
+
+    <div>
+        <h2 class="welcome-text">
+            <span id="greeting">Welcome</span>, 
+            <span id="userName">Irene</span> 👋
+        </h2>
+    </div>
+
+</div>
+
         <div class="stats-grid">
             <div class="stat-card">
                 <div>
@@ -343,42 +384,26 @@
             </div>
         </div>
 
-        <div class="bottom-grid">
-            <div class="content-box">
-                <h4>Recent Donation</h4>
-                <table class="donation-table">
-                    <thead><tr><th>Date</th><th>Donor</th><th>Donation</th></tr></thead>
-                    <tbody>
-                        <tr><td>2-15-2026</td><td>B*** S***</td><td>50</td></tr>
-                        <tr><td>2-10-2026</td><td>C*** B***</td><td>50</td></tr>
-                        <tr><td>2-05-2026</td><td>D*** D***</td><td>50</td></tr>
-                        <tr><td>2-03-2026</td><td>D*** S***</td><td>50</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="content-box">
-                <h4>Donation Breakdown</h4>
-                <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">Total:</p>
-                <div style="height: 180px;"><canvas id="breakdownChart"></canvas></div>
-            </div>
-
-            <div class="content-box">
-                <h4 style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fa-solid fa-circle-exclamation" style="color: #f97316;"></i> Urgent Needs
-                </h4>
-                <div class="urgent-item">
-                    <p>Medical</p>
-                    <span>2 animals need medical attention</span>
-                </div>
-                <div class="urgent-item">
-                    <p>Food</p>
-                    <span>Pet food supplies running low</span>
-                </div>
-                <button class="manage-btn">Manage Resource</button>
-            </div>
-        </div>
+       <div class="bottom-grid" style="grid-template-columns: 1fr;">
+    <div class="content-box">
+        <h4>Recent Donation</h4>
+        <table class="donation-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Donor</th>
+                    <th>Donation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>2-15-2026</td><td>B*** S***</td><td>50</td></tr>
+                <tr><td>2-10-2026</td><td>C*** B***</td><td>50</td></tr>
+                <tr><td>2-05-2026</td><td>D*** D***</td><td>50</td></tr>
+                <tr><td>2-03-2026</td><td>D*** S***</td><td>50</td></tr>
+            </tbody>
+        </table>
     </div>
+</div>
     <script>
         fetch('sidebar.html')
 .then(res => res.text())
