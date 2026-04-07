@@ -1169,22 +1169,14 @@
       display: flex;
       justify-content: space-between; 
       align-items: center;
-      padding: 5px 8%;
+      padding: 20px 8%;
       background-color: #fff;
       width: 100%;
+      border-top: 1px solid #ddd;
     }
 
-    /* Itong dalawa ang mag-eensure na "centered" ang logo */
-    .copyright-text, .spacer {
-      flex: 1; 
-    }
-
-    .copyright-text p {
-      color: #000000;
-      font-size: 20px;
-      margin: 0 !important;
-      text-align: left; /* Text sa kaliwa */
-    }
+    .copyright-text, .spacer { flex: 1; }
+    .copyright-text p { color: #000; font-size: 18px; text-align: left; margin: 0 !important; }
 
     .spacer {
       /* Empty space sa kanan para pantay sa copyright-text box */
@@ -1768,7 +1760,7 @@
                         <img src="../../images/logo.png" alt="Logo" class="mini-logo">
                         <p>An online pet listing system where users can browse available cats and dogs, view profiles, and submit adoption requests.</p>
                     </div>
-                    <a href="#" class="mission-btn">PAWSsion Adoption</a>
+                    <a href="/login" class="mission-btn">PAWSsion Adoption</a>
                 </div>
             </div>
 
@@ -1779,7 +1771,7 @@
                         <img src="../../images/logo.png" alt="Logo" class="mini-logo">
                         <p>A transparent donation tracking platform that allows supporters to contribute cash or materials and monitor how their help is used.</p>
                     </div>
-                    <a href="#" class="mission-btn">PAWSsion Donations</a>
+                    <a href="/login" class="mission-btn">PAWSsion Donations</a>
                 </div>
             </div>
         </div>
@@ -1860,9 +1852,7 @@
     <div class="copyright-text">
       <p>© PAWSsion 2025 <br>All Rights Reserved.</p>
     </div>
-    
     <img src="../images/footer_logo.png" class="logo">
-    
     <div class="spacer"></div>
   </div>
 </body>
