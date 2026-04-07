@@ -1,10 +1,10 @@
 Notes:
 
 To install and connect the MYSQL in the DB using node.js:
-run in the terminal : npm install mysql2
+  run in the terminal: npm install mysql2
 
 To encrypt passwords:
-run: npm install bcrypt
+  run: npm install bcrypt
 
-For DB credentials:
-run: npm install dotenv
+To DB credentials:
+  run: npm install dotenv
