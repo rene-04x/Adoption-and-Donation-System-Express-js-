@@ -548,23 +548,15 @@ fetch('/sidebar')
     initializeSidebar();
   });
 
-function initializeSidebar() {
+  function initializeSidebar() {
   const menuToggle = document.getElementById('menuToggle');
   const sidebar = document.getElementById('sidebar');
   const currentPath = window.location.pathname;
 
-  // Read username from URL param or localStorage
-  const urlParams = new URLSearchParams(window.location.search);
-  let username = urlParams.get('username') || localStorage.getItem('username') || 'User';
-
-  // Store username in localStorage so other pages can access it
-  if (username && username !== 'User') {
-    localStorage.setItem('username', username);
-  }
-
-  const queryStr = `?username=${encodeURIComponent(username)}`;
-
-  // Sidebar toggle
+  // HINDI na natin kailangan ang URLSearchParams dito.
+  // Ang username ay galing na sa server-side replacement {{username}}
+  
+  // Sidebar toggle logic (retain this)
   if (menuToggle && sidebar) {
     menuToggle.addEventListener('click', () => {
       sidebar.classList.toggle('closed');
@@ -577,32 +569,21 @@ function initializeSidebar() {
     const link = item.dataset.link;
     if (!link) return;
 
-    // Highlight active page
     if (currentPath === link && item.id !== 'logoutBtn') {
       item.classList.add('active-item');
     }
 
-    // Navigation click
     item.addEventListener('click', () => {
+      // CHECK KUNG LOGOUT ANG CLINICK
       if (item.id === 'logoutBtn') {
-        localStorage.removeItem('username'); // Clear username on logout
-        window.location.href = `${link}?msg=logged_out`;
-      } else if (currentPath !== link) {
-        window.location.href = `${link}${queryStr}`;
+        // Option A: Simpleng Redirect sa Logout Route ng Server
+        window.location.href = '/logout'; 
+      } else {
+        // Regular navigation
+        window.location.href = link; 
       }
     });
   });
-
-  // Profile button logic
-  const profileBtn = document.querySelector('.account');
-  if (profileBtn) {
-    profileBtn.addEventListener('click', () => {
-      window.location.href = `/profile${queryStr}`;
-    });
-
-    const profileLink = profileBtn.querySelector('a');
-    if (profileLink) profileLink.href = `/profile${queryStr}`;
-  }
 }
 
 // -------------------- Current Application --------------------

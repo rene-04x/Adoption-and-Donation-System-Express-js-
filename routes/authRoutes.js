@@ -87,20 +87,12 @@ router.get('/form2', (req, res) => res.sendFile(path.join(__dirname, '../public/
 router.get('/form3', (req, res) => res.sendFile(path.join(__dirname, '../public/login/form3.html')));
 
 // LOGOUT ROUTE
-router.post('/logout', (req, res) => {
-    // If you are using express-session:
-    if (req.session) {
-        req.session.destroy(err => {
-            if (err) {
-                return res.status(500).send("Could not log out.");
-            }
-            res.clearCookie('connect.sid'); // clear the session cookie
-            return res.sendStatus(200);
-        });
-    } else {
-        // If you are using JWT, usually you just tell the client to delete the token
-        res.sendStatus(200);
-    }
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) return res.send("Error logging out");
+        res.clearCookie('connect.sid'); // Linisin ang session cookie sa browser
+        res.redirect('/login?msg=logged_out');
+    });
 });
 
 module.exports = router;
