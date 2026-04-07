@@ -9,12 +9,6 @@ router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/login/user-login.html'));
 });
 
-// router.post('/login', (req, res) => {
-//     const username = req.body.username || 'User';
-//     // redirect sa home na nasa user routes
-//     res.redirect('/dashboard?username=' + encodeURIComponent(username));
-// });
-
 router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
@@ -108,4 +102,5 @@ router.post('/logout', (req, res) => {
         res.sendStatus(200);
     }
 });
+
 module.exports = router;
