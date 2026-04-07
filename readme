@@ -8,3 +8,6 @@ To encrypt passwords:
 
 To DB credentials:
   run: npm install dotenv
+
+To use sessions in Express:
+  run: npm install express-session

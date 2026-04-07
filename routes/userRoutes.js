@@ -3,6 +3,8 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const userController = require('../controllers/userController');
+const bcrypt = require('bcrypt');
+const db = require('../Database/db'); // I-import ang connection natin
 
 router.get('/dashboard', userController.getDashboard);
 router.get('/profile', userController.getProfile);

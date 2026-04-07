@@ -73,3 +73,17 @@
     </div>    
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('status') === 'registered') {
+        Swal.fire({
+            title: 'Account Created!',
+            text: 'Registration successful. You can now log in to your account.',
+            icon: 'success',
+            confirmButtonColor: '#ff8c00',
+            confirmButtonText: 'Great!'
+        });
+    }
+</script>
