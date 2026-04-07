@@ -19,7 +19,6 @@ router.post('/login', async (req, res) => {
     const { username, password } = req.body;
 
     try {
-        // 1. Hanapin ang user sa database
         const [rows] = await db.query("SELECT * FROM users WHERE username = ?", [username]);
         
         if (rows.length === 0) {
@@ -27,23 +26,38 @@ router.post('/login', async (req, res) => {
         }
 
         const user = rows[0];
-
-        // 2. I-compare ang typed password sa hashed password sa DB
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (isMatch) {
-            // 3. SUCCESS! Gawa ng session
+            // 1. I-set ang Session
             req.session.userId = user.id;
             req.session.username = user.username;
             
-            return res.redirect('/dashboard');
+            // 2. I-send ang Styled Message bago mag-redirect
+            return res.send(`
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script>
+                    window.onload = function() {
+                        Swal.fire({
+                            title: 'Login Successful!',
+                            text: 'Welcome back, ${user.username}!',
+                            icon: 'success',
+                            confirmButtonColor: '#ff8c00',
+                            confirmButtonText: 'Proceed to Dashboard'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = '/dashboard';
+                            }
+                        });
+                    };
+                </script>
+            `);
         } else {
             return res.send("<script>alert('Wrong password!'); window.history.back();</script>");
         }
     } catch (err) {
-        console.log("--- ACTUAL ERROR FROM DATABASE ---");
-        console.error(err); // DITO NATIN MAKIKITA KUNG ANO ANG MALI
-        res.status(500).send("Login error: " + err.message);
+        console.error(err);
+        res.status(500).send("Login error");
     }
 });
 
