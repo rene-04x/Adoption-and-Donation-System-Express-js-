@@ -11,7 +11,7 @@ router.get('/login', (req, res) => {
 router.post('/login', (req, res) => {
     const username = req.body.username || 'User';
     // redirect sa home na nasa user routes
-    res.redirect('/home?username=' + encodeURIComponent(username));
+    res.redirect('/dashboard?username=' + encodeURIComponent(username));
 });
 
 // --- REGISTER ROUTES ---
