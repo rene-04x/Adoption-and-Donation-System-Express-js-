@@ -14,19 +14,18 @@ const { isAdmin } = require('./middleware/auth');
 //to use session
 const session = require('express-session');
 
-// 3. SET UP MIDDLEWARES (Dapat mauna ang mga ito bago ang Routes)
-app.use(logger); // Custom Logger Middleware para sa "Excellent" rating
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public')); // Para sa static assets gaya ng CSS at Images
-
 app.use(session({
     secret: 'PAWSsion_Safe_Key_2026_@dm1n', // Kahit anong string na mahaba
     resave: false,
     saveUninitialized: false,
     cookie: { maxAge: 3600000 } // Mag-e-expire ang login after 1 hour
 }));
-// 4. USE ROUTES (Proper Ordering)
+
+// 3. SET UP MIDDLEWARES (Dapat mauna ang mga ito bago ang Routes)
+app.use(logger); // Custom Logger Middleware para sa "Excellent" rating
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public')); // Para sa static assets gaya ng CSS at Images
 
 // Protected Admin Routes - dadaan muna sa isAdmin auth check
 app.use('/admin', isAdmin, adminRoutes); 
