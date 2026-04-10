@@ -445,11 +445,49 @@
         document.addEventListener('click', () => { profileModal.style.display = 'none'; });
 
         // Donation Modal Functions
-        function openReviewModal() {
+        function openReviewModal(donation) {
+            const isCash = donation.type.toLowerCase() === 'cash';
+            const modalTitle = document.getElementById('modalTitle');
+            const donorDetails = document.getElementById('donorDetails');
+            const receiptImg = document.querySelector('.receipt-img');
+            const imageSide = document.querySelector('.image-side'); // Ang container ng image
+            const modalGrid = document.querySelector('.modal-grid'); // Ang main grid layout
+
+            modalTitle.innerText = isCash ? "Review Cash Donation" : "Review In-Kind Donation";
+
+            // 1. I-set ang Details
+            donorDetails.innerHTML = `
+                <p style="margin-bottom: 12px; font-size: 16px;">Donor Name: <strong>${donation.donor_name}</strong></p>
+                ${isCash ? `
+                    <p style="margin-bottom: 12px; font-size: 16px;">Amount Declared: <strong>₱ ${parseFloat(donation.amount).toLocaleString()}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Method: <strong>${donation.item_name}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Reference No: <span class="ref-number">${donation.ref_no}</span></p>
+                ` : `
+                    <p style="margin-bottom: 12px; font-size: 16px;">Item: <strong>${donation.item_name}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Email: <strong>${donation.email || 'N/A'}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Contact: <strong>${donation.phone || 'N/A'}</strong></p>
+                `}
+                <p style="margin-bottom: 25px; font-size: 16px; margin-top: 10px;">Date Sent: <strong>${new Date(donation.date).toLocaleDateString()}</strong></p>
+            `;
+
+            // 2. TANGGALIN O IPAKITA ANG IMAGE SIDE
+            if (isCash && donation.receipt_img) {
+                // Kapag Cash, ipakita ang picture
+                imageSide.style.display = "block";
+                modalGrid.style.gridTemplateColumns = "1.2fr 1fr"; // Ibalik sa split view
+                receiptImg.src = '/uploads/receipts/' + donation.receipt_img;
+            } else {
+                // Kapag In-Kind, ITAGO ANG IMAGE SIDE PARA WALANG BROKEN ICON
+                imageSide.style.display = "none";
+                modalGrid.style.gridTemplateColumns = "1fr"; // Gawing full width yung info
+            }
+
+            // Reset view (para kung galing sa rejection state, bumalik sa normal)
             document.getElementById('modalTitle').style.display = "block";
             document.getElementById('initialButtons').style.display = "flex";
             document.getElementById('rejectedView').style.display = "none";
             document.getElementById('rejectedLowerSection').style.display = "none";
+
             document.getElementById('reviewModal').style.display = "flex";
         }
 
@@ -487,6 +525,73 @@
             inkindTableCard.style.display = 'block';
             cashTableCard.style.display = 'none';
         });
+
+        async function loadOrgDonations() {
+    try {
+        // Ito dapat ang tawag para mag-match sa adminRoutes mo
+        const response = await fetch('/admin/donations-data'); 
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const donations = await response.json();
+        console.log("Data received:", donations); // Para makita mo sa Console (F12) kung pumasok
+
+        const cashBody = document.querySelector('#cashTableCard tbody');
+        const inkindBody = document.querySelector('#inkindTableCard tbody');
+
+        cashBody.innerHTML = '';
+        inkindBody.innerHTML = '';
+
+            donations.forEach(d => {
+                const dateStr = new Date(d.date).toLocaleDateString('en-US', {
+                    month: 'short', day: 'numeric', year: 'numeric'
+                });
+
+                if (d.type.toLowerCase() === 'cash') {
+                    // CASH TABLE ROW
+                    const row = `
+                        <tr>
+                            <td>${dateStr}</td>
+                            <td>${d.donor_name}</td>
+                            <td><strong>₱${parseFloat(d.amount).toLocaleString()}</strong></td>
+                            <td><span class="ref-number">${d.ref_no}</span></td>
+                            <td>${d.item_name}</td> <td><span style="color:${getStatusColor(d.status)}; font-weight:600;">${d.status}</span></td>
+                            <td><span class="view-link" onclick="openReviewModal(${JSON.stringify(d).replace(/"/g, '&quot;')})">[View Receipt]</span></td>
+                        </tr>
+                    `;
+                    cashBody.innerHTML += row;
+                } else {
+                    // IN-KIND TABLE ROW
+                    const row = `
+                        <tr>
+                            <td>${dateStr}</td>
+                            <td>${d.donor_name}</td>
+                            <td><strong>${d.item_name}</strong></td>
+                            <td>${d.email || 'N/A'}</td>
+                            <td>${d.phone || 'N/A'}</td>
+                            <td><span style="color:${getStatusColor(d.status)}; font-weight:600;">${d.status}</span></td>
+                            <td><span class="view-link" onclick="openReviewModal(${JSON.stringify(d).replace(/"/g, '&quot;')})">[View Details]</span></td>
+                        </tr>
+                    `;
+                    inkindBody.innerHTML += row;
+                }
+            });
+        } catch (error) {
+            console.error("Error loading admin donations:", error);
+        }
+    }
+
+    // Helper function para sa kulay ng status
+    function getStatusColor(status) {
+        if (status === 'Pending') return 'orange';
+        if (status === 'Rejected') return 'var(--danger)';
+        return 'var(--success-green)';
+    }
+
+    // Tawagin ang function pagka-load ng page
+    loadOrgDonations();
     </script>
 </body>
 </html>
