@@ -707,29 +707,23 @@
             <div class="chip">₱10</div>
             <div class="chip">₱20</div>
             <div class="chip">₱30</div>
-            <div class="chip active">₱50</div>
+            <div class="chip">₱50</div>
           </div>
           <p class="sub-text">or enter custom amount</p>
           <div style="position:relative;">
               <span style="position:absolute; left:15px; top:50%; transform:translateY(-50%); color:#64748b; font-weight:600;">₱</span>
-              <input type="text" class="custom-input" placeholder="Enter custom amount" style="padding-left:35px;">
+              <input type="number" class="custom-input" placeholder="Enter custom amount" style="padding-left:35px;" id="customAmountInput">
           </div>
         </div>
 
         <div class="form-group">
           <label class="label-title">Where should we use your donation?</label>
-          <div class="radio-option">
-            <input type="radio" name="purpose" checked>
-            <label>🤔 Where needed most</label>
+          <div class="amount-chips" id="purposeContainer">
+            <div class="chip purpose-chip" data-value="needed_most">🤔 Where needed most</div>
+            <div class="chip purpose-chip" data-value="medical">🏥 Medical expenses</div>
+            <div class="chip purpose-chip" data-value="food">🦴 Pet food</div>
           </div>
-          <div class="radio-option">
-            <input type="radio" name="purpose">
-            <label>🏥 Medical expenses</label>
-          </div>
-          <div class="radio-option">
-            <input type="radio" name="purpose">
-            <label>🦴 Pet food</label>
-          </div>
+          <input type="hidden" name="selected_purpose" id="selectedPurpose">
         </div>
       </div>
 
@@ -764,8 +758,8 @@
         </div>
         <div class="form-group">
           <label class="label-title" id="referenceLabel">Reference Number<span style="color:#ef4444;">*</span></label>
-          <input type="text" class="custom-input" id="referenceInput">
-        </div>
+          <input type="text" class="custom-input" id="referenceInput" maxlength="13" placeholder="13-digit number">
+      </div>
       </div>
 
       <div class="form-group">
@@ -935,6 +929,107 @@ if(uploadTrigger && receiptInput) {
             fileNameDisplay.textContent = name.length > 20 ? name.substring(0, 17) + '...' : name;
             fileNameDisplay.style.color = "#166534"; // Gawing green para alam na successful
         }
+    });
+}
+
+// AMOUNT CHIP LOGIC
+// 1. Kumuha ng specific container para sa Amount Chips lang
+const amountChipsContainer = document.querySelector('.form-group .amount-chips'); 
+const amountChips = amountChipsContainer.querySelectorAll('.chip');
+const amountInput = document.getElementById('customAmountInput');
+
+amountChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+        // 2. Alisin lang ang 'active' sa mga chips na kasama sa grupong ito
+        amountChips.forEach(c => c.classList.remove('active'));
+        
+        // 3. Idagdag ang active class
+        chip.classList.add('active');
+        
+        // 4. I-clear ang custom input
+        if (amountInput) amountInput.value = '';
+    });
+});
+
+// Logic para sa Custom Input focus
+if (amountInput) {
+    amountInput.addEventListener('focus', () => {
+        amountChips.forEach(c => c.classList.remove('active'));
+    });
+}
+
+const customAmountInput = document.getElementById('customAmountInput');
+
+if (customAmountInput) {
+    customAmountInput.addEventListener('keydown', (e) => {
+        // Listahan ng mga allowed na keys (Numbers, Backspace, Tab, Delete, Arrow keys, at Period/Decimal)
+        const allowedKeys = [
+            'Backspace', 'Tab', 'Enter', 'Delete', 'ArrowLeft', 'ArrowRight', 
+            'ArrowUp', 'ArrowDown', '.'
+        ];
+
+        // Kung hindi number at wala sa allowedKeys, i-prevent ang input
+        if (!/[0-9]/.test(e.key) && !allowedKeys.includes(e.key)) {
+            e.preventDefault();
+        }
+
+        // Pigilan ang paglalagay ng higit sa isang decimal point
+        if (e.key === '.' && customAmountInput.value.includes('.')) {
+            e.preventDefault();
+        }
+    });
+
+    // Para sa mobile or copy-paste, linisin ang non-numeric characters
+    customAmountInput.addEventListener('input', () => {
+        customAmountInput.value = customAmountInput.value.replace(/[^0-9.]/g, '');
+    });
+}
+
+const purposeChips = document.querySelectorAll('.purpose-chip');
+const selectedPurposeInput = document.getElementById('selectedPurpose');
+
+purposeChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+        const isActive = chip.classList.contains('active');
+
+        // Alisin ang active sa lahat ng chips sa grupong ito
+        purposeChips.forEach(c => c.classList.remove('active'));
+
+        if (!isActive) {
+            // Kung hindi pa siya active dati, gawin siyang active
+            chip.classList.add('active');
+            selectedPurposeInput.value = chip.getAttribute('data-value');
+        } else {
+            // Kung active na siya at clinick ulit, mananatiling removed ang active (toggle off)
+            selectedPurposeInput.value = "";
+        }
+    });
+});
+
+const referenceInput = document.getElementById('referenceInput');
+
+if (referenceInput) {
+    referenceInput.addEventListener('keydown', (e) => {
+        // Listahan ng allowed functional keys
+        const allowedKeys = ['Backspace', 'Tab', 'Enter', 'Delete', 'ArrowLeft', 'ArrowRight'];
+
+        // 1. Pigilan kung hindi number (0-9) at wala sa allowedKeys
+        if (!/[0-9]/.test(e.key) && !allowedKeys.includes(e.key)) {
+            e.preventDefault();
+        }
+    });
+
+    // 2. Double check para sa mobile users o copy-paste
+    referenceInput.addEventListener('input', (e) => {
+        // Alisin lahat ng hindi numero
+        let value = e.target.value.replace(/[^0-9]/g, '');
+        
+        // Siguraduhin na hanggang 13 characters lang (backup ng maxlength)
+        if (value.length > 13) {
+            value = value.substring(0, 13);
+        }
+        
+        e.target.value = value;
     });
 }
 </script>
