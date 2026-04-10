@@ -11,3 +11,8 @@ To DB credentials:
 
 To use sessions in Express:
   run: npm install express-session
+
+User Account:
+
+username: irene
+passwords: irespeleta@my.cspc.edu.ph
