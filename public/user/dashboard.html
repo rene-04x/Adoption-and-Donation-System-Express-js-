@@ -234,7 +234,7 @@
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
     }
-    
+
     .details h3 {
       font-size: 1.1rem;
       font-weight: 700;
@@ -445,9 +445,16 @@ fetch('/sidebar')
                 <p style="font-size: 0.75rem; margin-top: 5px;">Ref No: ${d.ref_no}</p>
               </div>
             </div>
-            <div style="text-align: right;">
-              <span style="color: var(--success-green); font-weight: 600; font-size: 0.8rem;">Received</span>
-            </div>
+            
+           <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+               ${d.type === 'Cash' ? `
+                <button onclick="openReceipt('${d.receipt_img}')" 
+                        style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; color: #475569;">
+                    <i class="fa-regular fa-file-lines"></i> Digital Receipt
+                </button>
+            ` : ''}
+                <span style="color: #10b981; font-weight: 600; font-size: 0.75rem;">Received</span>
+           </div>
           </div>
         `).join('');
       } else {
@@ -459,6 +466,17 @@ fetch('/sidebar')
   }
 
   loadTransactions();
+
+  function openReceipt(imgName) {
+    if (!imgName || imgName === 'null') {
+        alert("No digital receipt uploaded for this transaction.");
+        return;
+    }
+    
+    // Ang path kung saan naka-store ang images mo (halimbawa: /uploads/receipts/)
+    const receiptPath = '/uploads/receipts/' + imgName;
+    window.open(receiptPath, '_blank');
+}
 </script>
 </body>
 </html>
