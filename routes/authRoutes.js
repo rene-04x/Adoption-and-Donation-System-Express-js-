@@ -16,36 +16,45 @@ router.post('/login', async (req, res) => {
         const [rows] = await db.query("SELECT * FROM users WHERE username = ?", [username]);
         
         if (rows.length === 0) {
-            return res.send("<script>alert('User not found!'); window.history.back();</script>");
+            return res.status(401).send("<script>alert('User not found!'); window.history.back();</script>");
         }
 
         const user = rows[0];
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (isMatch) {
-            // 1. I-set ang Session
+            // 1. I-set ang Session data
             req.session.userId = user.id;
             req.session.username = user.username;
             
-            // 2. I-send ang Styled Message bago mag-redirect
-            return res.send(`
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script>
-                    window.onload = function() {
-                        Swal.fire({
-                            title: 'Login Successful!',
-                            text: 'Welcome back, ${user.username}!',
-                            icon: 'success',
-                            confirmButtonColor: '#ff8c00',
-                            confirmButtonText: 'Proceed to Dashboard'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                window.location.href = '/dashboard';
-                            }
-                        });
-                    };
-                </script>
-            `);
+            // 2. I-save ang session bago mag-send ng response
+            req.session.save((err) => {
+                if (err) {
+                    console.error("Session Save Error:", err);
+                    return res.status(500).send("Login failed due to session error.");
+                }
+
+                // 3. I-send ang Styled Message (Dito lang dapat mag-send pag safe na ang session)
+                return res.status(200).send(`
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script>
+                        window.onload = function() {
+                            Swal.fire({
+                                title: 'Login Successful!',
+                                text: 'Welcome back, ${user.username}!',
+                                icon: 'success',
+                                confirmButtonColor: '#ff8c00',
+                                confirmButtonText: 'Proceed to Dashboard'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/dashboard';
+                                }
+                            });
+                        };
+                    </script>
+                `);
+            });
+
         } else {
             return res.send("<script>alert('Wrong password!'); window.history.back();</script>");
         }

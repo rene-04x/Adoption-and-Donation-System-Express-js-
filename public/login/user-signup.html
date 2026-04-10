@@ -43,16 +43,18 @@
                         <label>Password</label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
-                            <input type="password" name="password" placeholder="Enter your Password" required>
+                            <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+                            <i class="fas fa-eye toggle-password" data-target="password"></i>
                             <span class="required-star">*</span>
                         </div>
                     </div>
-
+                    
                     <div class="input-group">
                         <label>Confirm Password</label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock"></i>
-                            <input type="password" name="confirm_password" placeholder="Confirm your Password" required>
+                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your Password" required>
+                            <i class="fas fa-eye toggle-password" data-target="confirm_password"></i>
                             <span class="required-star">*</span>
                         </div>
                     </div>
@@ -83,3 +85,14 @@
     </div>    
 </body>
 </html>
+<script>
+    //eye toggle for password field
+    document.querySelectorAll('.toggle-password').forEach(item => {
+        item.addEventListener('click', function () {
+            const target = document.getElementById(this.getAttribute('data-target'));
+            const type = target.getAttribute('type') === 'password' ? 'text' : 'password';
+            target.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash'); // Toggle eye icon
+        });
+    });
+</script>

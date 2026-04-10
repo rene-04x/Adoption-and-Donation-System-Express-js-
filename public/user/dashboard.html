@@ -52,7 +52,7 @@
       transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
       width: calc(100% - 320px);
       margin-left: 320px;
-      padding: 120px 5% 60px;
+      padding: 100px 2% 55px; /* Ginawa nating 40px para mas dikit sa taas */
     }
 
     body.sidebar-closed #dashboardSection {
@@ -60,365 +60,125 @@
       width: 100%;
     }
 
-    .main-content-dashboard {
-      display: grid;
-      grid-template-columns: 1.8fr 1.2fr;
-      gap: 40px;
-      animation: fadeInUp 1s ease-out;
+    .dashboard-grid {
+        display: flex; /* Use flexbox for layout */
+        justify-content: flex-end; /* Align items to the right */
+        gap: 2rem; /* Add space between the Welcome Card and Calendar Widget */
+        padding: 2rem; /* Add padding around the grid */
     }
 
-    .card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      border: 1px solid var(--glass-border);
-      border-radius: 32px;
-      padding: 40px;
-      box-shadow: var(--shadow-heavy);
-      margin-bottom: 40px;
-      position: relative;
-      overflow: hidden;
-      transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+    /* Welcome Card */
+    .welcome-card {
+      background: linear-gradient(to right, #91c1f1, #3299FF); /* Blue gradient */
+      color: white;
+      border-radius: 16px; /* Rounded corners */
+      padding: 1.5rem; /* Inner padding */
+      box-shadow: var(--shadow-light); /* Subtle shadow */
+      display: flex; /* Flexbox for alignment */
+      flex-direction: column; /* Stack content vertically */
+      justify-content: center; /* Center content vertically */
+      height: 150px; /* Fixed height for rectangle */
+      width: 60%; /* Adjust width to make it long */
+      margin-left: auto; /* Push the card to the right */
     }
 
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2);
+    .welcome-card h1 {
+      font-family: 'Inter', sans-serif;
+      font-size: 2rem; /* Title font size */
+      font-weight: bold;
+      margin-bottom: 0.5rem; /* Reduce space below the title */
     }
 
-    .card h2 {
-      font-size: 26px;
-      margin-bottom: 28px;
-      font-weight: 800;
-      position: relative;
-      color: var(--primary-blue);
+    .welcome-card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.2rem; /* Subtitle font size */
+      margin: 0; /* Remove default margin */
     }
 
-    .card h2::before {
-      content: '';
-      position: absolute;
-      bottom: -8px; left: 0;
-      width: 50px; height: 4px;
-      background: var(--gradient-accent);
-      border-radius: 2px;
+    /* Calendar Widget */
+    .calendar-widget {
+      flex: 1;
+      background: white;
+      border-radius: 24px; /* Mas rounded para modern */
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+      padding: 1.5rem;
+      max-width: 400px; /* Para hindi masyadong malapad */
     }
 
-    /* ── Enhanced Current Application ── */
-    .current-app-card {
-      padding: 32px;
-    }
-
-    .current-app-header {
+    .calendar-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      gap: 12px;
+      margin-bottom: 1rem;
     }
 
-    .current-app-header h2 {
-      margin: 0;
-      font-size: 26px;
-    }
-
-    .app-id-badge {
-      background: var(--accent-blue);
-      color: white;
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 14px;
-      border-radius: 999px;
-    }
-
-    .app-content {
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-    }
-
-    .app-photo-wrapper {
-      flex-shrink: 0;
-      width: 140px;
-      height: 140px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      border: 4px solid rgba(59,130,246,0.12);
-      background: #f8fafc;
-    }
-
-    .app-photo {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .app-info {
-      flex: 1;
-    }
-
-    .app-pet-name {
-      font-size: 22px;
+    /* Header: Month and Buttons */
+    .calendar-header h2 {
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--primary-blue);
-      margin-bottom: 8px;
+      letter-spacing: -0.5px;
     }
 
-    .app-status {
+    .nav-arrow {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--light-blue);
+      border: none;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 16px;
+      justify-content: center;
+      transition: 0.2s;
     }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(16,185,129,0.15);
-      color: var(--success-green);
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .status-badge i {
-      font-size: 15px;
-    }
-
-    .app-meta {
-      font-size: 14px;
-      color: var(--text-gray);
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .app-meta strong {
-      color: #475569;
-      font-weight: 600;
-    }
-
-    .progress-container {
-      height: 14px;
-      background: #e2e8f0;
-      border-radius: 999px;
-      overflow: hidden;
-      box-shadow: inset 0 1px 4px rgba(0,0,0,0.06);
-      margin-bottom: 24px;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 35%;                    /* ← adjust based on real progress */
-      background: var(--gradient-success);
-      border-radius: 999px;
-      transition: width 1.4s ease-out;
-      position: relative;
-    }
-
-    .progress-bar::after {
-      content: '';
-      position: absolute;
-      right: -6px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 22px;
-      height: 22px;
-      background: white;
-      border: 4px solid var(--success-green);
-      border-radius: 50%;
-      box-shadow: 0 3px 10px rgba(16,185,129,0.35);
-    }
-
-    .app-actions {
-      text-align: right;
-    }
-
-    .view-details-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .nav-arrow:hover {
       background: var(--accent-blue);
       color: white;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px; /* Mas dikit pero malinis */
+      margin-top: 1rem;
+    }
+
+    #calendarDays {
+    display: contents; 
+    }
+
+    .day {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      color: var(--text-gray);
       font-weight: 600;
-      padding: 10px 20px;
-      border-radius: 12px;
-      transition: all 0.25s;
+      margin-bottom: 5px;
     }
 
-    .view-details-btn:hover {
-      background: #2563eb;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(59,130,246,0.3);
-    }
-
-    /* ── Matches Grid (unchanged) ── */
-    .matches-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 20px;
-    }
-
-    .match-card {
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      aspect-ratio: 3/4;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-      transition: all 0.3s;
+    .date {
+      font-size: 0.9rem;
+      font-weight: 500;
+      aspect-ratio: 1; /* Perfect circle */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px; /* Squircle style */
       cursor: pointer;
+      transition: 0.2s;
     }
 
-    .match-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    .date:hover:not(.today) {
+      background-color: var(--light-blue);
+      color: var(--accent-blue);
     }
 
-    .match-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.3s;
-    }
-
-    .match-card:hover img {
-      transform: scale(1.04);
-    }
-
-    .match-overlay {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    .date.today {
+      background: var(--gradient-accent); /* Blue gradient mo */
       color: white;
-    }
-
-    .match-overlay h5 {
-      font-size: 15px;
-      margin-bottom: 4px;
-    }
-
-    .match-percent {
-      font-size: 12px;
-      background: rgba(34,197,94,0.9);
-      padding: 3px 9px;
-      border-radius: 10px;
-      display: inline-block;
-    }
-
-    /* ── Compact Impact (unchanged) ── */
-    .compact-impact {
-      padding: 28px 32px;
-    }
-
-    .compact-impact .impact-item {
-      display: grid;
-      grid-template-columns: 1fr 100px;
-      gap: 12px;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(226,232,240,0.4);
-    }
-
-    .compact-impact .impact-item:last-child { border-bottom: none; }
-
-    .compact-impact .impact-item-title {
-      font-size: 13.5px;
       font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .compact-impact .impact-bar {
-      height: 7px;
-      background: #e2e8f0;
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 3px;
-    }
-
-    .compact-impact .impact-value {
-      font-size: 13.5px;
-      font-weight: 700;
-      text-align: right;
-    }
-
-    .total-donated.compact {
-      margin-top: 16px;
-      padding: 13px;
-      background: linear-gradient(135deg, #0ea5e9, #3b82f6);
-      color: white;
-      border-radius: 14px;
-      text-align: center;
-      font-weight: 700;
-      font-size: 15px;
-    }
-
-    /* ── Technical Pie Chart (unchanged) ── */
-    .pie-chart-container {
-      position: relative;
-      height: 230px;
-      margin: 20px auto 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .pie-svg {
-      width: 100%;
-      max-width: 230px;
-      filter: drop-shadow(0 8px 18px rgba(59,130,246,0.18));
-    }
-
-    .glow-ring {
-      position: absolute;
-      width: 190px;
-      height: 190px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 40% 40%, rgba(59,130,246,0.12), transparent 70%);
-    }
-
-    .technical-legend {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px 28px;
-      font-size: 13px;
-      margin-top: 10px;
-    }
-
-    .technical-legend .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .technical-legend .legend-dot {
-      width: 13px;
-      height: 13px;
-      border-radius: 50%;
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(25px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @media (max-width: 1100px) {
-      .main-content-dashboard { grid-template-columns: 1fr; }
-      #dashboardSection { margin-left: 0; width: 100%; }
-    }
-
-    @media (max-width: 768px) {
-      .app-content {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-      }
-      .app-actions { text-align: center; margin-top: 20px; }
-      .current-app-header { justify-content: center; }
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
     }
   </style>
 </head>
@@ -446,99 +206,35 @@
   </svg>
 
   <main id="dashboardSection" class="main-content-dashboard">
-
-    <section class="left-col">
-
-      <!-- Enhanced Current Application -->
-      <div class="card current-app-card">
-        <div class="current-app-header">
-          <h2>Current Application</h2>
-          <span class="app-id-badge">ID: 2024-05-22</span>
-        </div>
-
-        <div id="activeAppContainer">
-          <p style="text-align:center; color:#64748b;">Loading your application...</p>
-        </div>
+    <!-- Welcome Card -->
+    <div class="dashboard-grid">
+      <div class="welcome-card">
+        <h1>Welcome back, {{username}}</h1>
+        <p>Ready to help a pet today?</p>
       </div>
 
-      <!-- Top Matches for You (unchanged) -->
-      <div class="card">
-        <h2>Top Matches for You</h2>
-        <div class="matches-grid">
-          <div class="match-card">
-            <img src="../images/dog4.png" alt="Pet">
-            <div class="match-overlay"><h5>Buldog</h5><span class="match-percent">98% Match</span></div>
-          </div>
-          <div class="match-card">
-            <img src="../images/dog2.png" alt="Pet">
-            <div class="match-overlay"><h5>Browny</h5><span class="match-percent">88% Match</span></div>
-          </div>
-          <div class="match-card">
-            <img src="../images/dog3.png" alt="Pet">
-            <div class="match-overlay"><h5>Chim</h5><span class="match-percent">81% Match</span></div>
-          </div>
+      <!-- Calendar Widget -->
+      <div class="calendar-widget">
+        <div class="calendar-header">
+          <button id="prevMonth" class="nav-arrow">&lt;</button>
+          <h2 id="calendarMonth">April 2026</h2>
+          <button id="nextMonth" class="nav-arrow">&gt;</button>
+        </div>
+        <div class="calendar-grid">
+          <div class="day">Sun</div>
+          <div class="day">Mon</div>
+          <div class="day">Tue</div>
+          <div class="day">Wed</div>
+          <div class="day">Thu</div>
+          <div class="day">Fri</div>
+          <div class="day">Sat</div>
+          <!-- Dates will be dynamically generated -->
+          <div id="calendarDays"></div>
         </div>
       </div>
-
-    </section>
-
-    <section class="right-col">
-
-      <!-- Compact Impact -->
-      <div class="card compact-impact">
-        <h2>Your Impact</h2>
-        <ul>
-          <li class="impact-item">
-            <div>
-              <div class="impact-item-title">Monthly Donations</div>
-              <div class="impact-bar"><div class="impact-bar-fill" style="width:62%; background: linear-gradient(90deg, #3b82f6, #60a5fa);"></div></div>
-            </div>
-            <div class="impact-value">₱2,450</div>
-          </li>
-          <li class="impact-item">
-            <div>
-              <div class="impact-item-title">Adoptions Supported</div>
-              <div class="impact-bar"><div class="impact-bar-fill" style="width:47%; background: linear-gradient(90deg, #22c55e, #10b981);"></div></div>
-            </div>
-            <div class="impact-value">5 pets</div>
-          </li>
-          <li class="impact-item">
-            <div>
-              <div class="impact-item-title">Volunteering Hours</div>
-              <div class="impact-bar"><div class="impact-bar-fill" style="width:35%; background: linear-gradient(90deg, #f97316, #f59e0b);"></div></div>
-            </div>
-            <div class="impact-value">14 hrs</div>
-          </li>
-        </ul>
-        <div class="total-donated compact">Total Donated: ₱2,450</div>
-      </div>
-
-      <!-- Donation Breakdown Pie -->
-      <div class="card">
-        <h2>Donation Breakdown</h2>
-        <div class="pie-chart-container">
-          <svg viewBox="0 0 200 200" class="pie-svg">
-            <circle cx="100" cy="100" r="90" fill="none" stroke="#e2e8f055" stroke-width="24"/>
-            <circle cx="100" cy="100" r="90" fill="none" stroke="url(#grad-medical)" stroke-width="24"
-                    stroke-dasharray="565.5" stroke-dashoffset="226.2" transform="rotate(-90 100 100)"/>
-            <circle cx="100" cy="100" r="90" fill="none" stroke="url(#grad-food)" stroke-width="24"
-                    stroke-dasharray="565.5" stroke-dashoffset="424.1" transform="rotate(-90 100 100)"/>
-            <circle cx="100" cy="100" r="90" fill="none" stroke="url(#grad-shelter)" stroke-width="24"
-                    stroke-dasharray="565.5" stroke-dashoffset="509.9" transform="rotate(-90 100 100)"/>
-            <text x="100" y="100" text-anchor="middle" dy=".35em" font-size="36" font-weight="800" fill="#0f172a">60%</text>
-            <text x="100" y="128" text-anchor="middle" font-size="14" fill="#64748b">Medical</text>
-          </svg>
-          <div class="glow-ring"></div>
-        </div>
-        <div class="technical-legend">
-          <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div><span>Medical <strong>60%</strong></span></div>
-          <div class="legend-item"><div class="legend-dot" style="background:#d97706"></div><span>Food <strong>25%</strong></span></div>
-          <div class="legend-item"><div class="legend-dot" style="background:#facc15"></div><span>Shelter <strong>15%</strong></span></div>
-        </div>
-      </div>
-
-    </section>
+    </div>
   </main>
+
 <script>
 // -------------------- Sidebar Loading --------------------
 fetch('/sidebar')
@@ -553,10 +249,7 @@ fetch('/sidebar')
   const sidebar = document.getElementById('sidebar');
   const currentPath = window.location.pathname;
 
-  // HINDI na natin kailangan ang URLSearchParams dito.
-  // Ang username ay galing na sa server-side replacement {{username}}
-  
-  // Sidebar toggle logic (retain this)
+  // Sidebar toggle logic
   if (menuToggle && sidebar) {
     menuToggle.addEventListener('click', () => {
       sidebar.classList.toggle('closed');
@@ -574,71 +267,82 @@ fetch('/sidebar')
     }
 
     item.addEventListener('click', () => {
-      // CHECK KUNG LOGOUT ANG CLINICK
       if (item.id === 'logoutBtn') {
-        // Option A: Simpleng Redirect sa Logout Route ng Server
         window.location.href = '/logout'; 
       } else {
-        // Regular navigation
         window.location.href = link; 
       }
     });
   });
 }
 
-// -------------------- Current Application --------------------
-document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('activeAppContainer');
-  if (!container) return;
+  // Calendar Widget
+  const calendarMonth = document.getElementById("calendarMonth");
+  const calendarDays = document.getElementById("calendarDays");
+  const today = new Date();
 
-  const savedApp = JSON.parse(localStorage.getItem('userApplication')) || {
-    petImg: "../images/dog-example-chade.jpg",
-    petName: "pets",
-    status: "Form Submitted",
-    submittedDate: "May 24, 2024",
-    applicationType: "Standard Adoption Form",
-    progress: 35
-  };
+  let currentMonth = today.getMonth();
+  let currentYear = today.getFullYear();
 
-  if (savedApp && savedApp.petName) {
-    container.innerHTML = `
-      <div class="app-content">
-        <div class="app-photo-wrapper">
-          <img src="${savedApp.petImg}" alt="${savedApp.petName}" class="app-photo">
-        </div>
-        <div class="app-info">
-          <div class="app-pet-name">${savedApp.petName}</div>
-          <div class="app-status">
-            <span class="status-badge">
-              <i class="fas fa-check-circle"></i>
-              Status: ${savedApp.status}
-            </span>
-          </div>
-          <div class="app-meta">
-            <strong>Application Type:</strong> ${savedApp.applicationType}<br>
-            <strong>Submitted on:</strong> ${savedApp.submittedDate}
-          </div>
-          <div class="progress-container">
-            <div class="progress-bar" style="width: ${savedApp.progress || 35}%;"></div>
-          </div>
-          <div class="app-actions">
-            <a href="/application" class="view-details-btn">
-              <i class="fas fa-eye"></i> View Details
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
-  } else {
-    container.innerHTML = `
-      <div style="text-align:center; padding: 40px 0; color: #64748b;">
-        <i class="fas fa-paw" style="font-size:60px; color:#cbd5e1; margin-bottom:16px;"></i>
-        <p style="font-size:18px; margin-bottom:8px;">No active application yet</p>
-        <p style="font-size:15px; color:#94a3b8;">Start your adoption journey today!</p>
-      </div>
-    `;
+  function renderCalendar(month, year) {
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // Set month and year
+    calendarMonth.textContent = new Date(year, month).toLocaleString("default", {
+      month: "long",
+      year: "numeric",
+    });
+
+    // Clear previous days
+    calendarDays.innerHTML = "";
+
+    // Add empty days for the first row
+    for (let i = 0; i < firstDay; i++) {
+      const emptyCell = document.createElement("div");
+      calendarDays.appendChild(emptyCell);
+    }
+
+    // Add days of the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateCell = document.createElement("div");
+      dateCell.textContent = day;
+      dateCell.classList.add("date");
+
+      // Highlight today's date
+      if (
+        day === today.getDate() &&
+        month === today.getMonth() &&
+        year === today.getFullYear()
+      ) {
+        dateCell.classList.add("today");
+      }
+
+      calendarDays.appendChild(dateCell);
+    }
   }
-});
+
+  // Navigation arrows
+  document.getElementById("prevMonth").addEventListener("click", () => {
+    currentMonth--;
+    if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    renderCalendar(currentMonth, currentYear);
+  });
+
+  document.getElementById("nextMonth").addEventListener("click", () => {
+    currentMonth++;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    }
+    renderCalendar(currentMonth, currentYear);
+  });
+
+  // Initial render
+  renderCalendar(currentMonth, currentYear);
 </script>
 </body>
 </html>
