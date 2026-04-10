@@ -30,6 +30,9 @@ app.use(express.static('public')); // Para sa static assets gaya ng CSS at Image
 // Protected Admin Routes - dadaan muna sa isAdmin auth check
 app.use('/admin', isAdmin, adminRoutes); 
 
+// Para mabasa ang images sa browser
+app.use('/uploads', express.static('public/uploads'));
+
 // User and Auth Routes
 app.use('/', userRoutes);
 app.use('/', authRoutes);

@@ -37,6 +37,45 @@ exports.getDonationsAPI = async (req, res) => {
     }
 };
 
+// user's donation submission handler
+exports.submitDonation = async (req, res) => {
+    try {
+        const userId = req.session.userId || null; 
+        const { type, donorName, amount, item_name, email, phone, refNo } = req.body;
+
+        const receiptImg = req.file ? req.file.filename : null;
+        const paymentMethod = (type === 'cash') ? 'GCash' : null;
+
+        const sql = `INSERT INTO donations 
+            (user_id, donor_name, type, amount, item_name, email, phone, payment_method, ref_no, date, receipt_img, status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, 'Pending')`;
+
+        // DITO ANG FIX:
+        // Siguraduhin na ang 'amount' ay Number o NULL (hindi string na "null")
+        const validatedAmount = (amount && amount !== "null" && amount !== "") ? parseFloat(amount) : null;
+
+        const values = [
+            userId, 
+            donorName, 
+            type, 
+            validatedAmount, // Gamitin ang validated version
+            item_name || null, 
+            email || null, 
+            phone || null, 
+            paymentMethod, 
+            refNo || null, 
+            receiptImg
+        ];
+
+        await db.query(sql, values);
+        return res.status(200).json({ success: true, message: "Donation recorded successfully!" });
+
+    } catch (err) {
+        console.error("Database Error:", err);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};
+
 exports.getDashboard = (req, res) => renderUserPage(req, res, 'dashboard.html', "Error loading Dashboard");
 exports.getProfile = (req, res) => renderUserPage(req, res, 'profile.html', "Error loading Profile");
 exports.getDonations = (req, res) => renderUserPage(req, res, 'donations.html', "Error loading Donations");
