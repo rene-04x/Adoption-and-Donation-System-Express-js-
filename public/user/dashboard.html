@@ -29,8 +29,7 @@
     }
 
     body {
-      background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), 
-                  url('../images/PAWSsion 2027.png') no-repeat center center fixed;
+      background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5));
       background-size: cover;
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
@@ -61,10 +60,18 @@
     }
 
     .dashboard-grid {
-        display: flex; /* Use flexbox for layout */
-        justify-content: flex-end; /* Align items to the right */
-        gap: 2rem; /* Add space between the Welcome Card and Calendar Widget */
-        padding: 2rem; /* Add padding around the grid */
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start; /* Para manatili sa itaas ang Calendar */
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .main-content-column {
+      flex: 2; /* Mas malapad ito kaysa sa Calendar */
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
     }
 
     /* Welcome Card */
@@ -78,8 +85,8 @@
       flex-direction: column; /* Stack content vertically */
       justify-content: center; /* Center content vertically */
       height: 150px; /* Fixed height for rectangle */
-      width: 60%; /* Adjust width to make it long */
-      margin-left: auto; /* Push the card to the right */
+      width: 100%;
+      margin: 0;
     }
 
     .welcome-card h1 {
@@ -180,6 +187,64 @@
       font-weight: 700;
       box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
     }
+
+    /* Transaction History */
+    #transactionSection {
+      width: 100%; /* Gamitin ang buong lapad */
+      max-width: 1200px;
+      margin-top: 10px;
+    }
+
+    .transaction-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05); /* Smooth shadow */
+      margin-bottom: 1rem;
+    }
+
+    .transaction-info {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .transaction-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    /* Header style para sa Transactions */
+    .section-header h2 {
+      color: var(--primary-blue);
+      font-weight: 800;
+      font-size: 1.5rem;
+    }
+
+    .section-header p {
+      color: var(--text-gray);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .details h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .details p {
+      font-size: 0.85rem;
+      color: var(--text-gray);
+    }
   </style>
 </head>
 <body>
@@ -208,9 +273,21 @@
   <main id="dashboardSection" class="main-content-dashboard">
     <!-- Welcome Card -->
     <div class="dashboard-grid">
-      <div class="welcome-card">
-        <h1>Welcome back, {{username}}</h1>
-        <p>Ready to help a pet today?</p>
+      <div class="main-content-column">
+        <div class="welcome-card">
+          <h1>Welcome back, {{username}}</h1>
+          <p>Ready to help a pet today?</p>
+        </div>
+
+        <section id="transactionSection" style="display: none;">
+          <div class="section-header">
+            <h2>Transaction History</h2>
+            <p>You've Donated. Thank you for making a difference.</p>
+          </div>
+          
+          <div id="transactionList">
+            </div>
+        </section>
       </div>
 
       <!-- Calendar Widget -->
@@ -234,7 +311,6 @@
       </div>
     </div>
   </main>
-
 <script>
 // -------------------- Sidebar Loading --------------------
 fetch('/sidebar')
@@ -343,6 +419,46 @@ fetch('/sidebar')
 
   // Initial render
   renderCalendar(currentMonth, currentYear);
+
+  /* Transaction History - Placeholder for dynamic data fetching*/
+  async function loadTransactions() {
+    try {
+      const response = await fetch('/api/user-donations'); // Palitan mo ng tamang route mo
+      const donations = await response.json();
+
+      const section = document.getElementById('transactionSection');
+      const list = document.getElementById('transactionList');
+
+      // CHECK: Kung may lamang array ang donations
+      if (donations && donations.length > 0) {
+        section.style.display = 'block'; // Ipakita ang section
+        
+        list.innerHTML = donations.map(d => `
+          <div class="transaction-card">
+            <div class="transaction-info">
+              <div class="transaction-icon" style="background: #eef2ff;">
+                <i class="fa-solid ${d.type === 'In-Kind' ? 'fa-box-open' : 'fa-wallet'}" style="color: #3b82f6;"></i>
+              </div>
+              <div class="details">
+               <h3>${d.type === 'Cash' ? '₱' + d.amount : d.item_count || '1'} ${d.type} Donation</h3>
+                <p>${d.payment_method || d.item_name}</p>
+                <p style="font-size: 0.75rem; margin-top: 5px;">Ref No: ${d.ref_no}</p>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <span style="color: var(--success-green); font-weight: 600; font-size: 0.8rem;">Received</span>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        section.style.display = 'none'; // Itago kung walang record
+      }
+    } catch (error) {
+      console.error("Error loading transactions:", error);
+    }
+  }
+
+  loadTransactions();
 </script>
 </body>
 </html>

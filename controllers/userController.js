@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const db = require('../Database/db');
 
 const renderUserPage = (req, res, fileName, errorMsg) => {
     if (!req.session.userId) {
@@ -15,6 +16,25 @@ const renderUserPage = (req, res, fileName, errorMsg) => {
         // Palitan ang {{username}} sa HTML mo ng totoong pangalan mula sa session
         res.send(data.replace(/{{username}}/g, username));
     });
+};
+
+// Sa controllers/userController.js
+exports.getDonationsAPI = async (req, res) => {
+    try {
+        const userId = req.session.userId; // Kunin ang ID ng naka-login
+        
+        // Query para kunin ang donations ng specific user lang
+        const [rows] = await db.query(
+            "SELECT * FROM donations WHERE user_id = ? ORDER BY date DESC", 
+            [userId]
+        );
+
+        // I-se-send sa frontend ang array (pwedeng may laman, pwedeng empty [])
+        res.json(rows); 
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).json({ error: "Failed to fetch donations" });
+    }
 };
 
 exports.getDashboard = (req, res) => renderUserPage(req, res, 'dashboard.html', "Error loading Dashboard");

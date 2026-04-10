@@ -15,6 +15,8 @@ router.get('/api/user', (req, res) => {
     }
 });
 
+// Ilagay ito sa ilalim ng /api/user route mo
+router.get('/api/user-donations', isAuthenticated, userController.getDonationsAPI);
 router.get('/dashboard', isAuthenticated, userController.getDashboard);
 router.get('/profile', isAuthenticated, userController.getProfile);
 router.get('/donations', isAuthenticated, userController.getDonations);
