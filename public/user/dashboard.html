@@ -433,30 +433,39 @@ fetch('/sidebar')
       if (donations && donations.length > 0) {
         section.style.display = 'block'; // Ipakita ang section
         
-        list.innerHTML = donations.map(d => `
+       list.innerHTML = donations.map(d => {
+        // 1. Tukuyin kung ano ang ipapakitang label (Ref No o Email)
+        const isCash = d.type.toLowerCase() === 'cash';
+        const subDetailLabel = isCash ? `Ref No: ${d.ref_no}` : `Email: ${d.email}`;
+
+        return `
           <div class="transaction-card">
             <div class="transaction-info">
               <div class="transaction-icon" style="background: #eef2ff;">
-                <i class="fa-solid ${d.type === 'In-Kind' ? 'fa-box-open' : 'fa-wallet'}" style="color: #3b82f6;"></i>
+                <i class="fa-solid ${isCash ? 'fa-wallet' : 'fa-box-open'}" style="color: #3b82f6;"></i>
               </div>
               <div class="details">
-               <h3>${d.type === 'Cash' ? '₱' + d.amount : d.item_count || '1'} ${d.type} Donation</h3>
-                <p>${d.payment_method || d.item_name}</p>
-                <p style="font-size: 0.75rem; margin-top: 5px;">Ref No: ${d.ref_no}</p>
+                <h3>${isCash ? '₱' + d.amount : d.item_name}</h3>
+                <p>${isCash ? (d.payment_method || 'GCash') : 'In-Kind Donation'}</p>
+                
+                <p style="font-size: 0.75rem; margin-top: 5px; color: var(--text-gray);">
+                  ${subDetailLabel}
+                </p>
               </div>
             </div>
             
-           <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
-               ${d.type === 'Cash' ? `
-                <button onclick="openReceipt('${d.receipt_img}')" 
-                        style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; color: #475569;">
-                    <i class="fa-regular fa-file-lines"></i> Digital Receipt
-                </button>
-            ` : ''}
-                <span style="color: #10b981; font-weight: 600; font-size: 0.75rem;">Received</span>
-           </div>
+            <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+                ${isCash ? `
+                    <button onclick="openReceipt('${d.receipt_img}')" 
+                            style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; color: #475569;">
+                        <i class="fa-regular fa-file-lines"></i> Digital Receipt
+                    </button>
+                ` : ''}
+                <span style="color: #10b981; font-weight: 600; font-size: 0.75rem;">${d.status}</span>
+            </div>
           </div>
-        `).join('');
+        `;
+      }).join('');
       } else {
         section.style.display = 'none'; // Itago kung walang record
       }

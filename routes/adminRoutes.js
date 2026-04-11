@@ -3,6 +3,12 @@ const router = express.Router();
 const path = require('path');
 const adminController = require('../controllers/adminController');
 
+// Route para sa table ng donations
+router.get('/donations-data', adminController.getAllDonationsAPI);
+
+// Route para sa table ng donations
+router.get('/donations-data', adminController.getAllDonationsAPI);
+
 router.get('/admin_dashboard', adminController.getHome); 
 router.get('/animals', adminController.getAnimals);
 router.get('/adoptions', adminController.getAdoptions);

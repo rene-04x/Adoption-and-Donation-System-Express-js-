@@ -12,6 +12,9 @@ To DB credentials:
 To use sessions in Express:
   run: npm install express-session
 
+To install multer for handling file uploads:
+  run: npm install multer
+
 User Account:
 
 username: irene

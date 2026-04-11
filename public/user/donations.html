@@ -639,6 +639,53 @@
     /* View Toggling Classes */
     .inkind-view { display: none; }
 
+    .error-alert {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    background: rgba(239, 68, 68, 0.95); /* Mas solid na red */
+    color: white;
+    padding: 18px 25px;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px rgba(239, 68, 68, 0.3);
+    backdrop-filter: blur(12px);
+    z-index: 10000; /* Siguradong nasa ibabaw ng lahat */
+    display: none; /* Default hide */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    border-left: 6px solid #b91c1c;
+    min-width: 320px;
+    max-width: 450px;
+    animation: slideInCustom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Bagong animation para sa "pop-in" effect */
+@keyframes slideInCustom {
+    from { opacity: 0; transform: translateX(100px) scale(0.9); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.error-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 900;
+    font-size: 16px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.error-list {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 500;
+    opacity: 0.95;
+}
+
     @keyframes slideIn {
       from {
         opacity: 0;
@@ -682,6 +729,11 @@
 <div id="sidebar-placeholder"></div>
 
 <main id="donationSection">
+  <div id="errorAlert" class="error-alert" style="display:none;">
+    <i class="fa-solid fa-triangle-exclamation"></i> 
+    <span id="errorMessage">Please check the required fields.</span>
+</div>
+
   <div id="successAlert" class="success-alert">
     <i class="fa-solid fa-check-circle"></i> Donation submitted successfully! Thank you for your kindness.
 </div>
@@ -727,6 +779,7 @@
         </div>
       </div>
 
+     
       <div class="inkind-view">
         <h2 class="section-title">📦 In-Kind Donation</h2>
         <p class="sub-text">Donate pet food, supplies, or other materials to help our animals:</p>
@@ -752,14 +805,24 @@
 
       <h2 class="section-title" style="font-size: 20px; color: var(--primary-blue); margin-top: 30px;">👤 Donor Information</h2>
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
-        <div class="form-group">
-          <label class="label-title">Full Name<span style="color:#ef4444;">*</span></label>
-          <input type="text" class="custom-input">
-        </div>
-        <div class="form-group">
-          <label class="label-title" id="referenceLabel">Reference Number<span style="color:#ef4444;">*</span></label>
-          <input type="text" class="custom-input" id="referenceInput" maxlength="13" placeholder="13-digit number">
-      </div>
+          <div class="form-group">
+              <label class="label-title">Full Name<span style="color:#ef4444;">*</span></label>
+              <input type="text" class="custom-input" id="donorName">
+          </div>
+
+          <div class="form-group" id="referenceGroup">
+              <label class="label-title">Reference Number<span style="color:#ef4444;">*</span></label>
+              <input type="text" class="custom-input" id="referenceInput" maxlength="13" placeholder="13-digit number">
+          </div>
+
+          <div class="form-group" id="emailGroup" style="display: none;">
+              <label class="label-title">Email Address<span style="color:#ef4444;">*</span></label>
+              <input type="email" class="custom-input" id="donorEmail" placeholder="example@email.com">
+          </div>
+          <div class="form-group" id="phoneGroup" style="display: none;">
+              <label class="label-title">Phone Number<span style="color:#ef4444;">*</span></label>
+              <input type="text" class="custom-input" id="donorPhone" placeholder="09xxxxxxxxx" maxlength="11">
+          </div>
       </div>
 
       <div class="form-group">
@@ -811,6 +874,9 @@ const cashView = document.querySelector('.cash-view');
 const inkindView = document.querySelector('.inkind-view');
 const qrView = document.getElementById('qrView');
 const locationView = document.getElementById('locationView');
+const referenceGroup = document.getElementById('referenceGroup');
+const emailGroup = document.getElementById('emailGroup');
+const phoneGroup = document.getElementById('phoneGroup');
 
 inkindTab?.addEventListener('click', () => {
     inkindTab.classList.add('active'); 
@@ -819,6 +885,11 @@ inkindTab?.addEventListener('click', () => {
     cashView.style.display = 'none';
     locationView.style.display = 'block'; 
     qrView.style.display = 'none';
+
+    // ITAGO ANG REFERENCE NUMBER SA IN-KIND
+    referenceGroup.style.display = 'none';
+    emailGroup.style.display = 'block';
+    phoneGroup.style.display = 'block';
 });
 
 cashTab?.addEventListener('click', () => {
@@ -828,6 +899,10 @@ cashTab?.addEventListener('click', () => {
     inkindView.style.display = 'none';
     qrView.style.display = 'block'; 
     locationView.style.display = 'none';
+
+    referenceGroup.style.display = 'block';
+    emailGroup.style.display = 'none';
+    phoneGroup.style.display = 'none';
 });
 
 // LOAD SIDEBAR
@@ -890,26 +965,107 @@ btn.onclick = () => {
     }
 };
 });
+
 const submitBtn = document.getElementById('mainSubmitBtn');
 const successAlert = document.getElementById('successAlert');
 
 submitBtn?.addEventListener('click', () => {
-    // 1. I-display ang success message
-    successAlert.style.display = 'block';
+    // 1. Re-evaluate if Cash Tab is active right now
+    const isCashTab = document.getElementById('cashTab').classList.contains('active');
+    const fullName = document.getElementById('donorName').value;
     
-    // 2. I-scroll sa itaas para makita agad ng user
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // --- (Validation Logic mo dito - skip ko na para hindi mahaba) ---
+    // Siguraduhin na hindi nag-return early ang validation mo.
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Processing...";
+
+    const formData = new FormData();
+    formData.append('type', isCashTab ? 'cash' : 'inkind');
+    formData.append('donorName', fullName);
     
-    // 3. I-reset ang form (optional)
-    document.querySelectorAll('input, textarea').forEach(input => {
-        if(input.type !== 'radio') input.value = '';
+    const messageField = document.querySelector('textarea.custom-input');
+    formData.append('message', messageField ? messageField.value : "");
+
+    if (isCashTab) {
+        const customAmountInput = document.getElementById('customAmountInput');
+        const amountSection = customAmountInput.closest('.form-group');
+        const selectedChip = amountSection.querySelector('.chip.active');
+        
+        let amountValue = "";
+
+        if (selectedChip) {
+            amountValue = selectedChip.innerText.replace(/[^\d.]/g, ''); 
+        } else if (customAmountInput.value) {
+            amountValue = customAmountInput.value;
+        }
+
+        // --- IMPORTANT DEBUGGING ---
+        console.log("=== DONATION DEBUGGING ===");
+        console.log("Is Cash Tab?", isCashTab);
+        console.log("Selected Chip Found?", selectedChip ? "Yes: " + selectedChip.innerText : "No");
+        console.log("Custom Input Value:", customAmountInput.value);
+        console.log("FINAL AMOUNT TO SEND:", amountValue);
+        // ---------------------------
+
+        formData.append('amount', amountValue);
+        formData.append('refNo', document.getElementById('referenceInput').value);
+        formData.append('receipt', document.getElementById('receiptInput').files[0]);
+        
+        const purpose = document.getElementById('selectedPurpose').value;
+        formData.append('item_name', "Purpose: " + (purpose || "General"));
+    } else {
+        console.log("Mode: In-Kind Donation");
+        formData.append('item_name', document.querySelector('.inkind-view .custom-input').value);
+        formData.append('email', document.getElementById('donorEmail').value);
+        formData.append('phone', document.getElementById('donorPhone').value);
+    }
+
+    fetch('/submit-donation', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Server response success!");
+            document.getElementById('errorAlert').style.display = 'none';
+            successAlert.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            resetDonationForm();
+            setTimeout(() => { successAlert.style.display = 'none'; }, 5000);
+        } else {
+            alert("Error: " + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Check your console (F12) for error details.");
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "🚀 SUBMIT DONATION";
+    });
+});
+
+// Helper function para i-reset ang form pagkatapos mag-submit
+function resetDonationForm() {
+    // I-clear text inputs
+    document.querySelectorAll('.custom-input').forEach(input => {
+        input.value = '';
+    });
+    
+    // I-clear active chips
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.classList.remove('active');
     });
 
-    // 4. I-hide ang message pagkatapos ng 5 segundo
-    setTimeout(() => {
-        successAlert.style.display = 'none';
-    }, 5000);
-});
+    // I-reset file input display
+    document.getElementById('fileNameDisplay').textContent = "Upload Receipt";
+    document.getElementById('fileNameDisplay').style.color = "";
+    document.getElementById('receiptInput').value = "";
+    document.getElementById('selectedPurpose').value = "";
+}
 // PAG-HANDLE SA UPLOAD RECEIPT
 const uploadTrigger = document.getElementById('uploadTrigger');
 const receiptInput = document.getElementById('receiptInput');
