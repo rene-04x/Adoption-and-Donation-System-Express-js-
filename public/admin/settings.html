@@ -23,7 +23,6 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            /* Creates the transition from white at the top to soft blue at the bottom */
             background: linear-gradient(180deg, #FFFFFF 0%, #A5CFFF 100%);
             background-attachment: fixed;
             min-height: 100vh;
@@ -31,7 +30,7 @@
             overflow-x: hidden;
         }
 
-        /* ===== TOP NAVBAR (Updated to match Dashboard CSS) ===== */
+        /* ===== TOP NAVBAR ===== */
         .top-navbar {
             position: fixed;
             top: 0; left: var(--sidebar-width); right: 0;
@@ -46,12 +45,7 @@
             border-bottom: 1px solid #f1f5f9;
         }
 
-        .header-title-section h1 { 
-            font-size: 18px; 
-            font-weight: 700; 
-            color: #02407D; 
-        }
-
+        .header-title-section h1 { font-size: 18px; font-weight: 700; color: #02407D; }
         .pawssion-brand {
             font-weight: 800;
             background: linear-gradient(90deg, #02407D 0%, #4E94DA 37.5%, #ACAB57 66.35%, #FBAB2A 95.67%);
@@ -59,62 +53,41 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* FIXED USER PROFILE SECTION */
-        .user-profile-section { 
-            display: flex; 
-            align-items: center; 
-            gap: 25px; 
-            padding-right: 10px;
-        }
-
+        .user-profile-section { display: flex; align-items: center; gap: 25px; padding-right: 10px; }
         .notification-bell { position: relative; color: #02407D; font-size: 22px; cursor: pointer; }
         .notification-badge {
             position: absolute; top: -5px; right: -5px; background: #ff0000;
             color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: bold;
         }
-
-        .user-info {
-            display: flex;
-            align-items: center; 
-            gap: 12px;
-            cursor: pointer;
-        }
-        .user-avatar { 
-            width: 40px; 
-            height: 40px; 
-            border-radius: 50%; 
-            border: 2px solid #02407D; 
-            object-fit: cover; 
-        }
-        .user-name {
-            font-size: 17px;
-            font-weight: bold;
-            color: #02407D;
-        }
+        .user-info { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #02407D; object-fit: cover; }
+        .user-name { font-size: 17px; font-weight: bold; color: #02407D; }
 
         /* ===== SETTINGS GRID LAYOUT ===== */
         #settingsSection {
             margin-left: var(--sidebar-width);
             padding: 100px 60px 40px 60px;
-            transition: all 0.4s ease;
         }
 
         .settings-container {
-            max-width: 1100px;
-            background: rgba(255, 255, 255, 0.4); /* Glass effect to show gradient through */
+            max-width: 1200px;
+            background: rgba(255, 255, 255, 0.4);
             border-radius: 20px;
-            padding: 20px;
+            padding: 10px;
             backdrop-filter: blur(5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         .settings-item {
             display: grid;
-            grid-template-columns: 60px 280px 1fr 50px;
-            align-items: start;
-            padding: 32px 15px;
-            column-gap: 20px;
+            /* Column 1: Icon | Column 2: Title | Column 3: Description | Column 4: Arrow */
+            grid-template-columns: 80px 250px 1fr 80px;
+            align-items: center;
+            padding: 25px 0;
             border-radius: 12px;
-            transition: background 0.3s ease;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
         }
 
         .settings-item:not(:last-child) {
@@ -122,42 +95,78 @@
         }
 
         .settings-item:hover {
-            background-color: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
         .settings-icon {
-            font-size: 24px;
+            font-size: 22px;
             color: var(--primary-blue);
-            justify-self: center;
-            margin-top: 2px;
+            text-align: center;
         }
 
         .settings-item h3 {
-            font-size: 19px;
+            font-size: 17px;
             font-weight: 700;
             color: var(--primary-blue);
         }
 
         .settings-item p {
             font-size: 14px;
-            line-height: 1.6;
-            color: var(--text-main);
-            max-width: 600px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            padding-right: 20px;
         }
 
         .settings-arrow {
             font-size: 18px;
             color: var(--primary-blue);
-            justify-self: end;
-            cursor: pointer;
-            padding: 5px;
-            transition: transform 0.2s ease;
+            text-align: center;
+            opacity: 0.7;
+            transition: transform 0.3s ease;
         }
 
         .settings-item:hover .settings-arrow {
-            transform: scale(1.2);
+            opacity: 1;
+            transform: translateX(5px);
         }
+
+        /* ===== MODAL STYLES ===== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-content {
+            background: white;
+            width: 550px;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .modal-header { margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .modal-header h2 { color: var(--primary-blue); font-size: 20px; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text-main); font-size: 13px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit; font-size: 14px;
+        }
+
+        .modal-footer { margin-top: 25px; display: flex; justify-content: flex-end; gap: 12px; }
+        .btn { padding: 12px 24px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s; }
+        .btn-save { background: var(--primary-blue); color: white; }
+        .btn-save:hover { background: #013161; }
+        .btn-cancel { background: #f1f5f9; color: var(--text-muted); }
+        .btn-cancel:hover { background: #e2e8f0; }
 
     </style>
 </head>
@@ -169,7 +178,6 @@
         <div class="header-title-section">
             <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
             <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
-        </div>
         </div>
 
         <div class="user-profile-section">
@@ -188,7 +196,7 @@
     <section id="settingsSection">
         <div class="settings-container">
 
-            <div class="settings-item">
+            <div class="settings-item" onclick="openModal('orgModal')">
                 <i class="fa-solid fa-gear settings-icon"></i>
                 <h3>General Settings</h3>
                 <p>Manage basic information and branding, including website name, contact details, logo, and theme color.</p>
@@ -216,10 +224,10 @@
                 <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
             </div>
 
-            <div class="settings-item">
+            <div class="settings-item" onclick="openModal('profileModal')">
                 <i class="fa-solid fa-user-gear settings-icon"></i>
-                <h3>Admin Management</h3>
-                <p>Manage accounts, assign roles and permissions, and control system access levels.</p>
+                <h3>Account Settings</h3>
+                <p>Update your username, change your account password, and edit your admin profile details.</p>
                 <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
             </div>
 
@@ -230,17 +238,83 @@
                 <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
             </div>
 
-            <div class="settings-item">
-                <i class="fa-solid fa-bell settings-icon"></i>
-                <h3>Notifications</h3>
-                <p>Set up automated alerts for new donations, form submissions, and system updates.</p>
-                <i class="fa-solid fa-arrow-up-right-from-square settings-arrow"></i>
-            </div>
-
         </div>
     </section>
 
+    <div id="orgModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Organization Basic Info</h2>
+            </div>
+            <div class="form-group">
+                <label>Organization Name</label>
+                <input type="text" id="orgName" value="CSPC PAWSsion">
+            </div>
+            <div class="form-group">
+                <label>Mission</label>
+                <textarea id="orgMission" rows="3">To rescue and provide care...</textarea>
+            </div>
+            <div class="form-group">
+                <label>Vision</label>
+                <textarea id="orgVision" rows="3">A world where every animal has a home...</textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal('orgModal')">Cancel</button>
+                <button class="btn btn-save" onclick="saveSettings('orgModal')">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="profileModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Account Settings</h2>
+            </div>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" value="Irene_Admin">
+            </div>
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" id="password" placeholder="Enter new password">
+            </div>
+            <div class="form-group">
+                <label>Profile Picture URL</label>
+                <input type="text" id="profilePic" value="../images/dog2.png">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal('profileModal')">Cancel</button>
+                <button class="btn btn-save" onclick="saveSettings('profileModal')">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function saveSettings(id) {
+            alert("Settings saved successfully!");
+            closeModal(id);
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        /* Sidebar Loader */
+        fetch('sidebar.html')
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById('sidebar-placeholder').innerHTML = data;
+            const currentPage = window.location.pathname.split("/").pop();
+            const navMap = { "settings.html": "settingsBtn" };
+            if(navMap[currentPage]) {
+                const activeBtn = document.getElementById(navMap[currentPage]);
+                if(activeBtn) activeBtn.classList.add("active-item");
+            }
+        });
         /* ================= SIDEBAR LOAD ================= */
         fetch('sidebar.html')
         .then(res => res.text())

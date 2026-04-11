@@ -1,3 +1,5 @@
+const response = await fetch('http://localhost:3000/api/animals');
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,10 +30,13 @@
         }
 
         /* --- LAYOUT --- */
-        #animalsSection {  padding: 100px 40px 40px 40px;
-            margin-left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width));
-            transition: all 0.4s ease; }
+       #animalsSection {  
+            padding: 100px 40px 40px 40px;
+            /* Subtract 20px (or your preferred amount) to move it left */
+            margin-left: calc(var(--sidebar-width) - 25em); 
+            width: calc(100% - (var(--sidebar-width) - 25em));
+            transition: all 0.4s ease; 
+        }
 
         .top-navbar {
             position: fixed; top: 0; left: var(--sidebar-width); right: 0; height: 70px;
@@ -105,7 +110,8 @@
         .animals-grid { 
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); 
-            gap: 25px; 
+            gap: 25px;
+            border: solid 2px red;
         }
 
         .animal-card { 
@@ -456,28 +462,9 @@
             <button class="add-btn-main" onclick="openFormModal('add')"><i class="fa fa-plus"></i> Add New Animal</button>
         </div>
 
-<div class="animals-grid" id="mainGrid">
-            <div class="animal-card">
-                <span class="status-badge">Available</span>
-                <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=500" alt="Adodo">
-                <div class="card-content">
-                    <h3>Adodo</h3>
-                    <p class="card-meta">
-                        <span>Aspin</span> 
-                        <span>•</span> 
-                        <span class="gender-male">
-                            <i class="fa-solid fa-mars"></i> Male
-                        </span>
-                    </p>
-                    <div class="tags">
-                        <span class="tag">Friendly</span>
-                        <span class="tag">Active</span>
-                    </div>
-                    <button class="view-btn" 
-                        onclick="openViewModal('Adodo', 'Aspin', 'Male', 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=500', 'Friendly, Active', 'Nabua Market', '2025-01-12')">
-                        View Profile
-                    </button>
-                </div>
+        <div class="animals-grid" id="mainGrid">
+            <div style="text-align:center; grid-column: 1/-1; padding: 40px; color: #64748b;">
+                <i class="fas fa-spinner fa-spin"></i> Loading animals from database...
             </div>
         </div>
     </section>
@@ -768,53 +755,63 @@
             document.getElementById(id).style.display = 'none'; 
         }
 
-      function openViewModal(name, species, gender, img, tags, loc, date) {
-    // I-store ang data para sa Update function
-    currentData = { name, species, gender, img, tags, loc, date };
-    
-    // Fill the IDs
-    document.getElementById('v-name').innerText = name;
-    document.getElementById('v-meta').innerText = `${species} · ${gender} · 2 Years Old`; // Example age
-    document.getElementById('v-img').src = img;
-    document.getElementById('v-loc').innerText = loc;
-    document.getElementById('v-date').innerText = date;
-    
-    // Clear and Fill Tags
-    const vTags = document.getElementById('v-tags');
-    vTags.innerHTML = '';
-    tags.split(',').forEach(t => {
-        const span = document.createElement('span');
-        span.className = 'tag';
-        span.innerText = t.trim();
-        vTags.appendChild(span);
-    });
-    
-    document.getElementById('viewModal').style.display = 'flex';
-}
 
         // Form Modal Logic (Add/Update)
         function openFormModal(mode) {
             const title = document.getElementById('form-title');
             const submitBtn = document.getElementById('submitBtn');
-            
-            if(mode === 'add') {
+
+            if (mode === 'add') {
                 title.innerText = "Add New Animal";
                 submitBtn.innerText = "Register Animal";
                 document.getElementById('animalForm').reset();
                 document.getElementById('f-preview').style.display = 'none';
                 document.getElementById('photo-placeholder').style.display = 'block';
-            } else {
+                document.getElementById('traits-container').innerHTML = '';
+            } 
+            else {
                 closeModal('viewModal');
                 title.innerText = "Update Record";
                 submitBtn.innerText = "Save Changes";
-                
-                // Prefill Data
-                document.getElementById('f-name').value = currentData.name;
-                document.getElementById('f-loc').value = currentData.loc;
-                document.getElementById('f-date').value = currentData.date;
-                document.getElementById('f-preview').src = currentData.img;
-                document.getElementById('f-preview').style.display = 'block';
-                document.getElementById('photo-placeholder').style.display = 'none';
+                // SAFETY CHECK
+                if (!currentData) {
+                    alert("No animal selected!");
+                    return;
+                }
+                // BASIC FIELDS
+                document.getElementById('f-name').value = currentData.name || '';
+                document.getElementById('f-gender').value = currentData.gender || '';
+                document.getElementById('f-breed').value = currentData.breed || '';
+                document.getElementById('f-age').value = currentData.age || '';
+                document.getElementById('f-color').value = currentData.color || '';
+                document.getElementById('f-status').value = currentData.status || '';
+                document.getElementById('f-loc').value = currentData.rescue_location || '';
+                document.getElementById('f-date').value = currentData.rescue_date
+                    ? currentData.rescue_date.split('T')[0]
+                    : '';
+
+                // IMAGE
+                document.getElementById('f-preview').src = currentData.image_url || '';
+                document.getElementById('f-preview').style.display = currentData.image_url ? 'block' : 'none';
+                document.getElementById('photo-placeholder').style.display = currentData.image_url ? 'none' : 'block';
+
+                // TRAITS (FIXED)
+                const container = document.getElementById('traits-container');
+                container.innerHTML = '';
+
+                if (currentData.traits) {
+                    currentData.traits.split(',').forEach(t => {
+                        const trait = t.trim();
+                        if (trait !== '') {
+                            const span = document.createElement('span');
+                            span.className = 'pill-tag';
+                            span.innerText = trait + ' ✕';
+                            container.appendChild(span);
+                        }
+                    });
+                } else {
+                    container.innerHTML = `<span style="color:#94a3b8;">No traits</span>`;
+                }
             }
             document.getElementById('formModal').style.display = 'flex';
         }
@@ -833,13 +830,161 @@
         }
 
         // Submit Action
-        document.getElementById('submitBtn').onclick = () => {
-            alert("Information successfully updated in the PBC system.");
+        document.getElementById('submitBtn').onclick = async () => {
+        try {
+
+            // GET TRAITS FROM TAGS
+            const traits = Array.from(document.querySelectorAll('#traits-container .pill-tag'))
+            .map(tag => tag.innerText.replace(' ✕', '').trim())
+            .filter(t => t !== '')
+            .join(',');
+
+            const updatedData = {
+                name: document.getElementById('f-name').value,
+                gender: document.getElementById('f-gender').value,
+                breed: document.getElementById('f-breed').value,
+                age: document.getElementById('f-age').value,
+                color: document.getElementById('f-color').value,
+                traits: traits,
+                status: document.getElementById('f-status').value,
+                rescue_location: document.getElementById('f-loc').value,
+                rescue_date: document.getElementById('f-date').value,
+
+                // ✅ ADD THIS
+                rescue_story: document.getElementById('f-notes').value
+            };
+
+            const response = await fetch(`http://localhost:3000/api/animals/${currentData.animal_id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedData)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error("Backend error:", data);
+                throw new Error("Update failed");
+            }
+
+            alert("Animal updated successfully!");
             closeModal('formModal');
-        };
+            loadAnimals();
+
+        } catch (err) {
+            console.error(err);
+            alert("Update failed!");
+        }
+    };
 
         // Close when clicking outside
         window.onclick = e => { if (e.target.className === 'modal') e.target.style.display = 'none'; };
+
+        //LOAD SAMPLE DATA
+        // 1. Fetch data when the page loads
+document.addEventListener('DOMContentLoaded', loadAnimals);
+
+async function loadAnimals() {
+    try {
+        const response = await fetch('http://localhost:3000/api/animals');
+
+        if (!response.ok) {
+            throw new Error("Server responded with error");
+        }
+
+        const animals = await response.json();
+        renderGrid(animals);
+
+    } catch (err) {
+        console.error("Error loading animals:", err);
+        document.getElementById('mainGrid').innerHTML =
+            `<p style="color:red; grid-column:1/-1; text-align:center;">
+                Failed to load animals. Check server connection.
+            </p>`;
+    }
+}
+
+// 2. Render the Animal Cards
+function renderGrid(animals) {
+    const grid = document.getElementById('mainGrid');
+    grid.innerHTML = ''; // Clear loading spinner
+
+    animals.forEach(animal => {
+        // Handle medical history string (it comes as a string from GROUP_CONCAT)
+        const medicalHistory = animal.medical_history ? `[${animal.medical_history}]` : '[]';
+        
+        const card = document.createElement('div');
+        card.className = 'animal-card';
+        card.innerHTML = `
+            <span class="status-badge ${animal.status.toLowerCase()}">${animal.status}</span>
+            <img src="${animal.image_url || 'https://via.placeholder.com/300x200?text=No+Image'}" alt="${animal.name}">
+            <div class="card-content">
+                <h3>${animal.name}</h3>
+                <p class="card-meta">
+                    <span>${animal.breed}</span> 
+                    <span>•</span> 
+                    <span class="gender-${animal.gender.toLowerCase()}">
+                        <i class="fa-solid fa-${animal.gender.toLowerCase() === 'male' ? 'mars' : 'venus'}"></i> ${animal.gender}
+                    </span>
+                </p>
+                <div class="tags">
+                    ${(animal.traits || '').split(',').map(t => `<span class="tag">${t.trim()}</span>`).join('')}
+                </div>
+                <button class="view-btn" onclick='openViewModal(${JSON.stringify(animal).replace(/'/g, "\\'")})'>
+                    View Profile
+                </button>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// 3. Updated View Modal Logic
+function openViewModal(animal) {
+    currentData = animal; // Save for update/edit purposes
+
+    document.getElementById('v-name').innerText = animal.name;
+    document.getElementById('v-meta').innerText = `${animal.breed} · ${animal.gender} · ${animal.age || 'N/A'}`;
+    document.getElementById('v-img').src = animal.image_url || 'https://via.placeholder.com/300x200?text=No+Image';
+    document.getElementById('v-loc').innerText = animal.rescue_location || 'Not recorded';
+    document.getElementById('v-date').innerText = animal.rescue_date ? new Date(animal.rescue_date).toLocaleDateString() : 'N/A';
+    
+    // Fill Traits/Tags
+    const vTags = document.getElementById('v-tags');
+    vTags.innerHTML = '';
+    if (animal.traits) {
+        animal.traits.split(',').forEach(t => {
+            const span = document.createElement('span');
+            span.className = 'tag';
+            span.innerText = t.trim();
+            vTags.appendChild(span);
+        });
+    }
+
+    // Fill Medical History Table
+    const medicalTbody = document.getElementById('v-medical-history');
+    medicalTbody.innerHTML = '';
+    
+    // Parse the JSON string from GROUP_CONCAT
+    const history = JSON.parse(`[${animal.medical_history}]`).filter(h => h.treatment !== null);
+
+    if (history.length > 0) {
+        history.forEach(entry => {
+            const row = `<tr>
+                <td>${entry.treatment}</td>
+                <td>${new Date(entry.date).toLocaleDateString()}</td>
+                <td>${entry.by}</td>
+            </tr>`;
+            medicalTbody.innerHTML += row;
+        });
+    } else {
+        medicalTbody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No medical history found.</td></tr>';
+    }
+    
+    document.getElementById('viewModal').style.display = 'flex';
+}
     </script>
 </body>
 </html>

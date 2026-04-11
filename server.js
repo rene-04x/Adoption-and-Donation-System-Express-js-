@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const mysql = require('mysql2');
 
 // 1. IMPORT ROUTES
 const adminRoutes = require('./routes/adminRoutes');
@@ -21,6 +22,7 @@ app.use(session({
     cookie: { maxAge: 3600000 } // Mag-e-expire ang login after 1 hour
 }));
 
+
 // 3. SET UP MIDDLEWARES (Dapat mauna ang mga ito bago ang Routes)
 app.use(logger); // Custom Logger Middleware para sa "Excellent" rating
 app.use(express.json());
@@ -39,6 +41,107 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/landing_page/index.html'));
 });
 
+// DATABASE CONNECTION 
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'adoption_db'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('Database connection failed:', err);
+        return;
+    }
+    console.log('Connected to MySQL database');
+});
+
+// Route to get all animals with their medical history
+app.get('/api/animals', (req, res) => {
+    const query = `
+    SELECT 
+        a.animal_id,
+        a.name,
+        a.gender,
+        a.breed,
+        a.age_months AS age,
+        a.color_markings AS color,
+        a.behavior_traits AS traits,
+        a.current_status AS status,
+        a.rescue_area AS rescue_location,
+        a.rescue_date,
+        a.profile_photo AS image_url,
+        GROUP_CONCAT(
+            JSON_OBJECT(
+                'treatment', m.treatment_name, 
+                'date', m.date_administered, 
+                'by', m.administered_by
+            )
+        ) AS medical_history
+    FROM animals a
+    LEFT JOIN animal_medical_history m 
+    ON a.animal_id = m.animal_id
+    GROUP BY a.animal_id`;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database query failed" });
+        }
+        res.json(results);
+    });
+});
+app.put('/api/animals/:id', (req, res) => {
+    const id = req.params.id;
+
+    const {
+        name,
+        gender,
+        breed,
+        age,
+        color,
+        traits,
+        status,
+        rescue_location,
+        rescue_date
+    } = req.body;
+
+    const query = `
+        UPDATE animals SET
+            name = ?,
+            gender = ?,
+            breed = ?,
+            age_months = ?,
+            color_markings = ?,
+            behavior_traits = ?,
+            current_status = ?,
+            rescue_area = ?,
+            rescue_date = ?
+        WHERE animal_id = ?
+    `;
+
+    db.query(query, [
+        name,
+        gender,
+        breed,
+        age || null,
+        color,
+        traits,
+        status,
+        rescue_location,
+        rescue_date || null,
+        id
+    ], (err, result) => {
+        if (err) {
+            console.error("Update error:", err);
+            return res.status(500).json({ error: err.message });
+        }
+
+        res.json({ message: "Animal updated successfully" });
+    });
+});
+
 //  404 Handler - Catches any request that doesn't match a route
 app.use((req, res) => {
     console.warn(`[404] Resource not found: ${req.url}`);
@@ -51,7 +154,7 @@ app.use((req, res) => {
     `);
 });
 
-//  Global Error Handler - Catches code crashes or file read errors
+//  Global Error Handler - Catches code crashes or file read errors 
 app.use((err, req, res, next) => {
     console.error(`[Error] ${err.message}`);
     res.status(500).send(`
@@ -61,6 +164,7 @@ app.use((err, req, res, next) => {
         </div>
     `);
 });
+
 
 // 6. START SERVER
 const PORT = 3000;

@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const adminController = require('../controllers/adminController');
 
-router.get('/', adminController.getHome); 
+router.get('/admin_dashboard', adminController.getHome); 
 router.get('/animals', adminController.getAnimals);
 router.get('/adoptions', adminController.getAdoptions);
 router.get('/donations', adminController.getDonations);
