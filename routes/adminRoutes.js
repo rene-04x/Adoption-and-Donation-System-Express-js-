@@ -5,6 +5,7 @@ const adminController = require('../controllers/adminController');
 const upload = require('../middleware/uploads');
 
 router.post('/reject-donation', upload.single('proofMismatch'), adminController.rejectDonation);
+router.post('/verify-donation', adminController.verifyDonation);
 
 // Route para sa table ng donations
 router.get('/donations-data', adminController.getAllDonationsAPI);
