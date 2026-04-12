@@ -34,7 +34,7 @@ app.use(express.static('public')); // Para sa static assets gaya ng CSS at Image
 app.use('/admin', isAdmin, adminRoutes); 
 
 // Para mabasa ang images sa browser
-app.use('/uploads', express.static('public/uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 // User and Auth Routes
 app.use('/', userRoutes);
