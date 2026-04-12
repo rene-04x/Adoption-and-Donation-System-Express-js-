@@ -264,7 +264,7 @@
             <div class="controls-row">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" class="search-input" placeholder="Search by name, amount or date...">
+                    <input type="text" class="search-input" placeholder="Search by name...">
                 </div>
                 <button class="filter-btn">
                     <i class="fa-solid fa-filter"></i>
@@ -294,15 +294,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Feb 11, 2026</td>
-                            <td>Jhyzzeel</td>
-                            <td><strong>₱100.00</strong></td>
-                            <td>0947847463234</td>
-                            <td>GCash</td>
-                            <td><span style="color:var(--danger); font-weight:600;">Rejected</span></td>
-                            <td><span class="view-link" onclick="openReviewModal()">[View Receipt]</span></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -321,15 +312,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Feb 12, 2026</td>
-                            <td>Maria Clara</td>
-                            <td><strong>5kg Dog Food</strong></td>
-                            <td>irene@gmail.com</td>
-                            <td>09123456789</td>
-                            <td><span style="color:orange; font-weight:600;">Pending</span></td>
-                            <td><span class="view-link" onclick="openReviewModal()">[View Details]</span></td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -432,7 +414,6 @@
     });
 });
 
-
         // User Profile Toggle
         const userTrigger = document.getElementById('userTrigger');
         const profileModal = document.getElementById('profileModal');
@@ -526,68 +507,98 @@
             cashTableCard.style.display = 'none';
         });
 
+        let allDonations = []; // Dito itatago ang lahat ng data mula sa server
+
         async function loadOrgDonations() {
-    try {
-        // Ito dapat ang tawag para mag-match sa adminRoutes mo
-        const response = await fetch('/admin/donations-data'); 
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            const cashBody = document.querySelector('#cashTableCard tbody');
+            const inkindBody = document.querySelector('#inkindTableCard tbody');
+
+            cashBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+            inkindBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+
+            try {
+                const response = await fetch('/admin/donations-data');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                allDonations = await response.json(); // I-save sa global variable
+                renderTables(allDonations); // Tawagin ang function na magsusulat sa table
+
+            } catch (error) {
+                console.error("Error loading donations:", error);
+                cashBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error loading data.</td></tr>';
+            }
         }
 
-        const donations = await response.json();
-        console.log("Data received:", donations); // Para makita mo sa Console (F12) kung pumasok
+        // Hiwalay na function para sa pag-render ng rows (para magamit din ng search)
+        function renderTables(data) {
+            const cashBody = document.querySelector('#cashTableCard tbody');
+            const inkindBody = document.querySelector('#inkindTableCard tbody');
 
-        const cashBody = document.querySelector('#cashTableCard tbody');
-        const inkindBody = document.querySelector('#inkindTableCard tbody');
+            cashBody.innerHTML = '';
+            inkindBody.innerHTML = '';
 
-        cashBody.innerHTML = '';
-        inkindBody.innerHTML = '';
+            if (!data || data.length === 0) {
+                cashBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No results found.</td></tr>';
+                inkindBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No results found.</td></tr>';
+                return;
+            }
 
-            donations.forEach(d => {
+            data.forEach(d => {
                 const dateStr = new Date(d.date).toLocaleDateString('en-US', {
                     month: 'short', day: 'numeric', year: 'numeric'
                 });
 
                 if (d.type.toLowerCase() === 'cash') {
-                    // CASH TABLE ROW
-                    const row = `
+                    cashBody.innerHTML += `
                         <tr>
                             <td>${dateStr}</td>
                             <td>${d.donor_name}</td>
                             <td><strong>₱${parseFloat(d.amount).toLocaleString()}</strong></td>
                             <td><span class="ref-number">${d.ref_no}</span></td>
-                            <td>${d.item_name}</td> <td><span style="color:${getStatusColor(d.status)}; font-weight:600;">${d.status}</span></td>
-                            <td><span class="view-link" onclick="openReviewModal(${JSON.stringify(d).replace(/"/g, '&quot;')})">[View Receipt]</span></td>
-                        </tr>
-                    `;
-                    cashBody.innerHTML += row;
+                            <td>${d.item_name}</td> 
+                            <td><span style="color:${getStatusColor(d.status)}; font-weight:700;">${d.status}</span></td>
+                            <td><span class="view-link" onclick='openReviewModal(${JSON.stringify(d).replace(/'/g, "&apos;")})'>[View Receipt]</span></td>
+                        </tr>`;
                 } else {
-                    // IN-KIND TABLE ROW
-                    const row = `
+                    inkindBody.innerHTML += `
                         <tr>
                             <td>${dateStr}</td>
                             <td>${d.donor_name}</td>
                             <td><strong>${d.item_name}</strong></td>
                             <td>${d.email || 'N/A'}</td>
                             <td>${d.phone || 'N/A'}</td>
-                            <td><span style="color:${getStatusColor(d.status)}; font-weight:600;">${d.status}</span></td>
-                            <td><span class="view-link" onclick="openReviewModal(${JSON.stringify(d).replace(/"/g, '&quot;')})">[View Details]</span></td>
-                        </tr>
-                    `;
-                    inkindBody.innerHTML += row;
+                            <td><span style="color:${getStatusColor(d.status)}; font-weight:700;">${d.status}</span></td>
+                            <td><span class="view-link" onclick='openReviewModal(${JSON.stringify(d).replace(/'/g, "&apos;")})'>[View Details]</span></td>
+                        </tr>`;
                 }
             });
-        } catch (error) {
-            console.error("Error loading admin donations:", error);
         }
-    }
 
+        // Search Logic (Donor Name Only)
+        const searchInput = document.querySelector('.search-input');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+
+            // I-filter ang 'allDonations' base sa donor_name
+            const filteredResults = allDonations.filter(donation => 
+                donation.donor_name.toLowerCase().includes(searchTerm)
+            );
+
+            // I-render ulit ang table gamit ang filtered data
+            renderTables(filteredResults);
+        });
+    
     // Helper function para sa kulay ng status
     function getStatusColor(status) {
-        if (status === 'Pending') return 'orange';
-        if (status === 'Rejected') return 'var(--danger)';
-        return 'var(--success-green)';
+        // I-normalize ang text (gawing lowercase) para iwas error sa casing
+        const s = status ? status.toLowerCase() : '';
+        
+        if (s === 'pending') return '#f59e0b';      // Orange/Amber
+        if (s === 'rejected') return '#ef4444';     // Red
+        if (s === 'verified' || s === 'completed' || s === 'approved') return '#10b981'; // Green
+        
+        return '#64748b';
     }
 
     // Tawagin ang function pagka-load ng page
