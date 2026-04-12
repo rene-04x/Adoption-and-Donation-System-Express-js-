@@ -279,6 +279,7 @@ body.sidebar-closed #hubSection{
   font-weight:700;
   cursor:pointer;
   transition:0.2s;
+  margin-top:15px;
 }
 
 .view-btn:hover {
@@ -322,6 +323,219 @@ body.sidebar-closed #hubSection{
 }
 
 .show{display:block;}
+
+/* --- MODAL STYLES (MATCHING ANIMALS.HTML) --- */
+.modal {
+  display:none;
+  position:fixed;
+  z-index:9999;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.5);
+  align-items:center;
+  justify-content:center;
+}
+
+.modal-content {
+  background:#fff;
+  border-radius:24px;
+  overflow:hidden;
+  position:relative;
+  box-shadow:0 20px 60px rgba(0,0,0,0.2);
+  width:950px;
+  max-width:95%;
+  border-top:6px solid #02407D;
+}
+
+.close-btn {
+  position:absolute;
+  right:20px;
+  top:15px;
+  font-size:28px;
+  cursor:pointer;
+  color:#94a3b8;
+  z-index:10;
+  background:none;
+  border:none;
+}
+
+.close-btn:hover {
+  color:#02407D;
+}
+
+.view-grid {
+  display:grid;
+  grid-template-columns:340px 1fr;
+  min-height:580px;
+}
+
+.view-side-panel {
+  background:#f8fafc;
+  border-right:1px solid #e2e8f0;
+  padding:30px;
+}
+
+.image-container img {
+  width:100%;
+  height:250px;
+  object-fit:cover;
+  border-radius:16px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+  margin-bottom:25px;
+}
+
+.view-section-title {
+  color:#02407D;
+  font-size:13px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+  margin-bottom:15px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.rescue-item {
+  margin-bottom:10px;
+  font-size:13px;
+  display:flex;
+  flex-direction:column;
+}
+
+.rescue-item .label {
+  color:#64748b;
+  font-weight:500;
+}
+
+.rescue-item .value {
+  color:#1e293b;
+  font-weight:700;
+  text-align:justify;
+  display:block;
+  word-wrap:break-word;
+}
+
+.view-main-panel {
+  padding:40px;
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto;
+  max-height:85vh;
+}
+
+.view-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:30px;
+}
+
+.animal-name {
+  font-size:38px;
+  font-weight:800;
+  color:#02407D;
+  line-height:1;
+}
+
+.animal-meta {
+  color:#64748b;
+  font-weight:600;
+  font-size:16px;
+  margin-top:8px;
+}
+
+.status-pill {
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  border:1px solid transparent;
+}
+
+.status-pill.available {
+  background:#dcfce7;
+  color:#15803d;
+  border-color:#bbf7d0;
+}
+
+.status-pill.pending {
+  background:#ffedd5;
+  color:#b45309;
+  border-color:#fed7aa;
+}
+
+.status-pill.adopted {
+  background:#fee2e2;
+  color:#991b1b;
+  border-color:#fca5a5;
+}
+
+.trait-tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:25px;
+}
+
+.view-body .tag {
+  background:#02407D;
+  color:white;
+  padding:8px 18px;
+  border-radius:25px;
+  font-size:13px;
+  font-weight:600;
+  border:none;
+}
+
+.animal-description {
+  font-size:14px;
+  color:#475569;
+  line-height:1.6;
+  margin-bottom:30px;
+  padding:15px;
+  background:#f8fafc;
+  border-radius:12px;
+  font-style:italic;
+}
+
+.medical-table-wrapper {
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  overflow:hidden;
+  margin-top:10px;
+}
+
+.medical-history-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:13px;
+}
+
+.medical-history-table th {
+  background:#02407D;
+  color:white;
+  text-align:left;
+  padding:14px;
+  font-weight:600;
+}
+
+.medical-history-table td {
+  padding:12px 14px;
+  border-bottom:1px solid #f1f5f9;
+}
+
+.medical-history-table tr:nth-child(even) {
+  background:#fbfcfe;
+}
+
+.medical-history-table tr:hover {
+  background:#f1f5f9;
+}
 
 @keyframes fadeIn { 
   from { 
@@ -377,25 +591,76 @@ body.sidebar-closed #hubSection{
       <i class="fas fa-spinner fa-spin"></i> Loading available pets...
     </div>
 </div>
-  <div id="petModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
-  <div style="background:white; width:90%; max-width:800px; border-radius:24px; display:flex; overflow:hidden; position:relative;">
-    <button onclick="closeModal()" style="position:absolute; top:20px; right:20px; border:none; background:white; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
-    
-    <div style="width:40%; background:#eee;">
-      <img id="modalImg" src="" style="width:100%; height:100%; object-fit:cover;">
-    </div>
-    
-    <div style="width:60%; padding:40px; overflow-y:auto; max-height:80vh;">
-      <h2 id="modalName" style="color:#02407D; font-size:32px; margin-bottom:10px;"></h2>
-      <div id="modalDetails" style="font-size:14px; line-height:1.8; color:#333;">
+  <div id="petModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">&times;</button>
+      
+      <div class="view-grid">
+        <div class="view-side-panel">
+          <div class="image-container">
+            <img id="modalImg" src="" alt="Pet Image">
+          </div>
+          
+          <div class="rescue-details">
+            <h4 class="view-section-title">Rescue Journey</h4>
+            <div class="rescue-item">
+              <span class="label">Location:</span>
+              <span id="modalLocation" class="value">---</span>
+            </div>
+            <div class="rescue-item">
+              <span class="label">Date:</span>
+              <span id="modalRescueDate" class="value">---</span>
+            </div>
+            <div class="rescue-item">
+              <span class="label">Story:</span>
+              <span id="modalStory" class="value">---</span>
+            </div>
+          </div>
         </div>
-      <button id="adoptBtn" 
-        style="margin-top:20px; background:#02407D; color:white; border:none; padding:12px 25px; border-radius:50px; cursor:pointer; font-weight:600;">
-    Adopt Me
-</button>
+
+        <div class="view-main-panel">
+          <div class="view-header">
+            <div>
+              <h2 id="modalName" class="animal-name">---</h2>
+              <p id="modalMeta" class="animal-meta">---</p>
+            </div>
+            <span id="modalStatus" class="status-pill available">Available</span>
+          </div>
+
+          <div class="view-body">
+            <h4 class="view-section-title">Behavior & Traits</h4>
+            <div id="modalTags" class="trait-tags"></div>
+
+            <p class="animal-description">
+              This animal is looking for a forever home. They have been socialized with humans and are ready to be part of a loving family.
+            </p>
+
+            <h4 class="view-section-title">Medical History</h4>
+            <div class="medical-table-wrapper">
+              <table class="medical-history-table">
+                <thead>
+                  <tr>
+                    <th>Treatment / Vaccine</th>
+                    <th>Date</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody id="modalMedicalHistory">
+                  <tr>
+                    <td colspan="3" style="text-align:center; padding:20px; color:#94a3b8;">No medical records available</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <button id="adoptBtn" style="margin-top:30px; background:#02407D; color:white; border:none; padding:14px 30px; border-radius:10px; cursor:pointer; font-weight:700; width:100%; transition:0.3s;">
+              <i class="fa-solid fa-heart"></i> Adopt Me
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 </main>
 
 <script>
@@ -552,16 +817,69 @@ function openModal(animal) {
     currentPetData = { ...animal, imgSrc: imgUrl };
     const modal = document.getElementById('petModal');
 
-    document.getElementById('modalName').textContent = animal.name || 'Unknown';
+    // Add emoji based on species
+    const speciesEmoji = {
+        'dog': '🐶',
+        'cat': '🐱'
+    };
+    const emoji = speciesEmoji[(animal.species || '').toLowerCase()] || '';
+
+    // Populate modal fields
+    document.getElementById('modalName').textContent = `${emoji} ${animal.name || 'Unknown'}`.trim();
     document.getElementById('modalImg').src = imgUrl;
-    document.getElementById('modalDetails').innerHTML = `
-            <p><strong>Type:</strong> ${animal.species || 'Unknown'}</p>
-            <p><strong>Sex:</strong> ${animal.gender || 'Unknown'}</p>
-            <p><strong>Breed:</strong> ${animal.breed || 'Unknown'}</p>
-            <p><strong>Age:</strong> ${formatAgeText(animal.age)}</p>
-            <p><strong>Behavior:</strong> ${animal.traits || 'No behavior details available.'}</p>
-            <p><strong>Location:</strong> ${animal.rescue_location || 'Not recorded'}</p>
-        `;
+    document.getElementById('modalMeta').textContent = `${animal.species || 'Unknown'} • ${animal.breed || 'Unknown'} • ${formatAgeText(animal.age)}`;
+    
+    // Status pill
+    const statusEl = document.getElementById('modalStatus');
+    const status = (animal.status || 'Unknown').toLowerCase();
+    statusEl.className = `status-pill ${status}`;
+    statusEl.textContent = animal.status || 'Unknown';
+    
+    // Rescue journey section
+    document.getElementById('modalLocation').textContent = animal.rescue_location || '---';
+    document.getElementById('modalRescueDate').textContent = animal.rescue_date ? new Date(animal.rescue_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '---';
+    document.getElementById('modalStory').textContent = animal.rescue_story || 'No story available.';
+    
+    // Traits/behavior tags
+    const tagsContainer = document.getElementById('modalTags');
+    tagsContainer.innerHTML = '';
+    if (animal.traits) {
+        animal.traits.split(',').forEach(trait => {
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.textContent = trait.trim();
+            tagsContainer.appendChild(tag);
+        });
+    }
+    
+    // Medical history (if available)
+    const medicalTbody = document.getElementById('modalMedicalHistory');
+    if (animal.medical_history) {
+        try {
+            // Try to parse as JSON if it's a string
+            let medicalData = animal.medical_history;
+            if (typeof medicalData === 'string') {
+                medicalData = JSON.parse(medicalData);
+            }
+            
+            // Handle if it's an array or single object
+            const records = Array.isArray(medicalData) ? medicalData : [medicalData];
+            
+            medicalTbody.innerHTML = records.map(record => `
+                <tr>
+                    <td>${record.treatment || record.name || '---'}</td>
+                    <td>${record.date || '---'}</td>
+                    <td>${record.by || record.notes || '---'}</td>
+                </tr>
+            `).join('');
+        } catch (e) {
+            // If not JSON, display as plain text
+            medicalTbody.innerHTML = `<tr><td>${animal.medical_history}</td><td>---</td><td>---</td></tr>`;
+        }
+    } else {
+        medicalTbody.innerHTML = '<tr><td colspan="3" style="text-align:center; padding:20px; color:#94a3b8;">No medical records available</td></tr>';
+    }
+    
     modal.style.display = 'flex';
 }
 
