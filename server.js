@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const mysql = require('mysql2');
-
+const multer = require('multer'); // 👈 ADD HERE
+const upload = multer({ dest: 'public/uploads/' });
 // 1. IMPORT ROUTES
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -74,6 +75,7 @@ app.get('/api/animals', (req, res) => {
         a.current_status AS status,
         a.rescue_area AS rescue_location,
         a.rescue_date,
+        a.rescue_story,
         a.profile_photo AS image_url,
         GROUP_CONCAT(
             JSON_OBJECT(
@@ -95,54 +97,128 @@ app.get('/api/animals', (req, res) => {
         res.json(results);
     });
 });
-app.put('/api/animals/:id', (req, res) => {
+app.put('/api/animals/:id', upload.single('profile_photo'), async (req, res) => {
     const id = req.params.id;
 
     const {
         name,
+        species,
         gender,
         breed,
-        age,
-        color,
-        traits,
-        status,
-        rescue_location,
-        rescue_date
+        age_months,
+        color_markings,
+        behavior_traits,
+        current_status,
+        rescue_date,
+        rescue_area,
+        rescue_story,
+        medical_history
     } = req.body;
 
-    const query = `
-        UPDATE animals SET
-            name = ?,
-            gender = ?,
-            breed = ?,
-            age_months = ?,
-            color_markings = ?,
-            behavior_traits = ?,
-            current_status = ?,
-            rescue_area = ?,
-            rescue_date = ?
-        WHERE animal_id = ?
-    `;
+    const profile_photo = req.file ? req.file.filename : null;
 
-    db.query(query, [
-        name,
-        gender,
-        breed,
-        age || null,
-        color,
-        traits,
-        status,
-        rescue_location,
-        rescue_date || null,
-        id
-    ], (err, result) => {
-        if (err) {
-            console.error("Update error:", err);
-            return res.status(500).json({ error: err.message });
+    try {
+        // UPDATE ANIMAL
+        await db.promise().query(`
+            UPDATE animals SET
+                name=?,
+                species=?,
+                gender=?,
+                breed=?,
+                age_months=?,
+                color_markings=?,
+                behavior_traits=?,
+                current_status=?,
+                rescue_date=?,
+                rescue_area=?,
+                rescue_story=?,
+                profile_photo=COALESCE(?, profile_photo)
+            WHERE animal_id=?
+        `, [
+            name, species, gender, breed,
+            age_months, color_markings,
+            behavior_traits, current_status,
+            rescue_date, rescue_area,
+            rescue_story,
+            profile_photo,
+            id
+        ]);
+
+        // DELETE OLD MEDICAL
+        await db.promise().query(`DELETE FROM animal_medical_history WHERE animal_id=?`, [id]);
+
+        // INSERT NEW MEDICAL
+        const medList = JSON.parse(medical_history || '[]');
+
+        for (const m of medList) {
+            await db.promise().query(`
+                INSERT INTO animal_medical_history 
+                (animal_id, treatment_name, date_administered, administered_by)
+                VALUES (?, ?, ?, ?)
+            `, [id, m.treatment, m.date, m.by]);
         }
 
-        res.json({ message: "Animal updated successfully" });
-    });
+        res.json({ success: true });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err });
+    }
+});
+
+// POST /api/animals - Add new animal
+app.post('/api/animals', upload.single('profile_photo'), async (req, res) => {
+    const {
+        name,
+        species,
+        gender,
+        breed,
+        age_months,
+        color_markings,
+        behavior_traits,
+        current_status,
+        rescue_date,
+        rescue_area,
+        rescue_story,
+        medical_history
+    } = req.body;
+
+    const profile_photo = req.file ? req.file.filename : null;
+
+    try {
+        // INSERT ANIMAL
+        const [result] = await db.query(`
+            INSERT INTO animals 
+            (name, species, gender, breed, age_months, color_markings, behavior_traits, current_status, rescue_date, rescue_area, rescue_story, profile_photo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [
+            name, species, gender, breed,
+            age_months, color_markings,
+            behavior_traits, current_status,
+            rescue_date, rescue_area,
+            rescue_story,
+            profile_photo
+        ]);
+
+        const animalId = result.insertId;
+
+        // INSERT MEDICAL HISTORY
+        const medList = JSON.parse(medical_history || '[]');
+
+        for (const m of medList) {
+            await db.promise().query(`
+                INSERT INTO animal_medical_history 
+                (animal_id, treatment_name, date_administered, administered_by)
+                VALUES (?, ?, ?, ?)
+            `, [animalId, m.treatment, m.date, m.by]);
+        }
+
+        res.json({ success: true });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err });
+    }
 });
 
 //  404 Handler - Catches any request that doesn't match a route
