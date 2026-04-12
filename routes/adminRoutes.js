@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const adminController = require('../controllers/adminController');
+const upload = require('../middleware/uploads');
+
+router.post('/reject-donation', upload.single('proofMismatch'), adminController.rejectDonation);
 
 // Route para sa table ng donations
 router.get('/donations-data', adminController.getAllDonationsAPI);

@@ -36,7 +36,7 @@ router.post('/login', async (req, res) => {
                 }
 
                 // Determine redirect path: admin goes to '/', others to '/dashboard'
-                const redirectPath = user.username === 'admin' ? '/admin/admin_dashboard' : '/user_dashboard';
+                const redirectPath = user.username === 'admin' ? '/admin/admin_dashboard' : '/dashboard';
 
                 // 3. I-send ang Styled Message
                 return res.status(200).send(`
