@@ -194,23 +194,100 @@ body.sidebar-closed #hubSection{
   font-size:11px;
 }
 
-.pet-info{
-  padding:20px;
+.species-badge {
   position:absolute;
-  bottom:0;
+  top:15px;
+  left:15px;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  color:white;
+  z-index:2;
+}
+
+.species-badge.dog { background:#3b82f6; }
+.species-badge.cat { background:#eab308; color:#1f2937; }
+
+.status-badge{
+  position:absolute;
+  top:15px;
+  right:15px;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
+  color:#fff;
+}
+
+.status-badge.available { background:#16a34a; }
+.status-badge.pending { background:#f97316; }
+.status-badge.adopted { background:#dc2626; }
+
+.card-content {
+  padding:20px;
+}
+
+.card-content h3 {
+  font-size:20px;
+  margin-bottom:8px;
+  color:#0f172a;
+}
+
+.card-meta {
+  font-size:13px;
+  color:#475569;
+  margin-bottom:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+
+.card-meta span {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+
+.gender-male { color:#3b82f6; }
+.gender-female { color:#ec4899; }
+
+.tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.tag {
+  background:#f1f5f9;
+  color:#475569;
+  padding:6px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.view-btn {
   width:100%;
-  background:linear-gradient(transparent,rgba(0,0,0,0.8));
+  padding:12px 0;
+  border-radius:16px;
+  border:1px solid #e2e8f0;
+  background:#f8fafc;
+  color:#02407d;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.view-btn:hover {
+  background:#02407d;
   color:white;
 }
 
-.pet-info h3{
-  font-size:20px;
-  margin-bottom:4px;
-}
-
-.pet-info p{
-  font-size:13px;
-  opacity:0.9;
+.pet-info{
+  display:none;
 }
 
 /* DROPDOWN */
@@ -295,92 +372,11 @@ body.sidebar-closed #hubSection{
     </div>
 </div>
 
-<div class="adoption-grid">
-    <div class="pet-card" 
-       data-name="Adobo" data-breed="Aspin" data-type="Dog" data-age="2"
-       onclick="openModal('Adobo', '../images/dog1.png', 'Female', 'Aspin', '2 years old', 'Brown and White, extremely kind and loyal.')">
-    <div class="pet-image-wrap">
-      <span class="match-badge">98% Match</span>
-      <span class="status-badge">Available</span>
-      <img src="../images/dog1.png">
-      <div class="pet-info">
-        <h3>Adobo</h3>
-        <p>Aspin • 2 years old</p>
-      </div>
+<div class="adoption-grid" id="adoptionGrid">
+    <div class="loading-message" style="grid-column:1/-1; text-align:center; padding:40px; color:#64748b;">
+      <i class="fas fa-spinner fa-spin"></i> Loading available pets...
     </div>
-  </div>
-
-    <div class="pet-card" 
-       data-name="Luna" data-breed="Shih Tzu" data-type="Dog" data-age="1"
-       onclick="openModal('Luna', '../images/dog2.png', 'Female', 'Shih Tzu', '1 year old', 'Playful and energetic puppy looking for a home.')">
-    <div class="pet-image-wrap">
-      <span class="match-badge">95% Match</span>
-      <span class="status-badge">Available</span>
-      <img src="../images/dog2.png">
-      <div class="pet-info">
-        <h3>Luna</h3>
-        <p>Shih Tzu • 1 year old</p>
-      </div>
-    </div>
-  </div>
-    
-  <div class="pet-card" 
-       data-name="Cooper" data-breed="Golden Retriever Mix" data-type="Dog" data-age="3"
-       onclick="openModal('Cooper', '../images/dog3.png', 'Male', 'Golden Retriever Mix', '3 years old', 'Friendly Golden Retriever mix, loves long walks.')">
-      <div class="pet-image-wrap">
-        <span class="match-badge">92% Match</span>
-        <span class="status-badge">Available</span>
-        <img src="../images/dog3.png">
-        <div class="pet-info">
-          <h3>Cooper</h3>
-          <p>Friendly Golden Retriever mix, loves long walks.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="pet-card" 
-         data-name="Bella" data-breed="Labrador" data-type="Dog" data-age="4"
-         onclick="openModal('Bella', '../images/dog4.png', 'Female', 'Labrador', '4 years old', 'A gentle soul who loves belly rubs and quiet naps.')">
-      <div class="pet-image-wrap">
-        <span class="match-badge">89% Match</span>
-        <span class="status-badge">Available</span>
-        <img src="../images/dog4.png">
-        <div class="pet-info">
-          <h3>Bella</h3>
-          <p>Labrador • 4 years old</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="pet-card" 
-         data-name="Milo" data-breed="Beagle" data-type="Dog" data-age="2"
-          onclick="openModal('Milo', '../images/dog1.png', 'Male', 'Beagle', '2 years old', 'Active and smart, perfect for an adventurous owner.')">
-      <div class="pet-image-wrap">
-        <span class="match-badge">87% Match</span>
-        <span class="status-badge">Available</span>
-        <img src="../images/dog1.png">
-        <div class="pet-info">
-          <h3>Milo</h3>
-          <p>Beagle • 2 years old</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="pet-card" 
-         data-name="Daisy" data-breed="Poodle" data-type="Dog" data-age="1.5"
-         onclick="openModal('Daisy', '../images/dog2.png', 'Female', 'Poodle', '1.5 years old', 'Sweet-natured and very social with other pets.')">
-      <div class="pet-image-wrap">
-        <span class="match-badge">85% Match</span>
-        <span class="status-badge">Available</span>
-        <img src="../images/dog2.png">
-        <div class="pet-info">
-          <h3>Daisy</h3>
-          <p>Poodle • 1.5 years old</p>
-        </div>
-      </div>
-    </div>
-
-  </div>
+</div>
   <div id="petModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; justify-content:center; align-items:center;">
   <div style="background:white; width:90%; max-width:800px; border-radius:24px; display:flex; overflow:hidden; position:relative;">
     <button onclick="closeModal()" style="position:absolute; top:20px; right:20px; border:none; background:white; font-size:20px; cursor:pointer;"><i class="fa-solid fa-xmark"></i></button>
@@ -476,27 +472,112 @@ btn.onclick = () => {
 };
 });
 let currentPetData = {};
+let adoptionAnimals = [];
 
-function openModal(name, imgSrc, sex, breed, age, description) {
-    // I-save ang data sa global variable
-    currentPetData = { name, imgSrc, sex, breed, age, description };
+document.addEventListener('DOMContentLoaded', () => {
+    loadAdoptionAnimals();
+});
 
-    const modal = document.getElementById('petModal');
-    document.getElementById('modalName').textContent = name;
-    document.getElementById('modalImg').src = imgSrc;
+async function loadAdoptionAnimals() {
+    try {
+        const response = await fetch('/api/animals');
+        if (!response.ok) throw new Error('Failed to load animals');
 
-        document.getElementById('modalDetails').innerHTML = `
-            <p><strong>Type:</strong> Dog</p>
-            <p><strong>Sex:</strong> ${sex}</p>
-            <p><strong>Breed:</strong> ${breed}</p>
-            <p><strong>Age:</strong> ${age}</p>
-            <p><strong>Behavior:</strong> ${description}</p>
-            <p><strong>Location:</strong> Camarines Sur Polytechnic Colleges</p>
-        `;
-        
-        modal.style.display = 'flex';
+        adoptionAnimals = await response.json();
+        renderAdoptionGrid(adoptionAnimals);
+    } catch (error) {
+        const grid = document.getElementById('adoptionGrid');
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#ef4444;">Unable to load adoption pets at this time.</div>`;
+        console.error(error);
     }
-// Function para sa redirection
+}
+
+function renderAdoptionGrid(animals) {
+    const grid = document.getElementById('adoptionGrid');
+    grid.innerHTML = '';
+
+    if (!animals || animals.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#64748b;">No pets are currently available for adoption.</div>`;
+        return;
+    }
+
+    animals.forEach(animal => {
+        const ageText = formatAgeText(animal.age);
+        const imgUrl = animal.image_url ? `/uploads/${animal.image_url}` : '../images/dog1.png';
+        const statusText = animal.status || 'Unknown';
+        const speciesText = animal.species || 'Unknown';
+
+        const card = document.createElement('div');
+        card.className = 'pet-card';
+        card.dataset.name = animal.name || '';
+        card.dataset.breed = animal.breed || '';
+        card.dataset.type = speciesText;
+        card.dataset.age = animal.age || '';
+        card.dataset.sex = animal.gender || '';
+        card.dataset.status = statusText;
+        card.dataset.traits = animal.traits || '';
+
+        card.innerHTML = `
+            <div class="pet-image-wrap">
+                <span class="species-badge ${speciesText.toLowerCase()}">${speciesText}</span>
+                <span class="status-badge ${statusText.toLowerCase()}">${statusText}</span>
+                <img src="${imgUrl}" alt="${animal.name}">
+            </div>
+            <div class="card-content">
+                <h3>${animal.name || 'Unknown'}</h3>
+                <div class="card-meta">
+                    <span>${animal.breed || 'Unknown'}</span>
+                    <span>•</span>
+                    <span>${ageText}</span>
+                    <span>•</span>
+                    <span class="gender-${(animal.gender || '').toLowerCase()}">
+                        <i class="fa-solid fa-${(animal.gender || '').toLowerCase() === 'male' ? 'mars' : 'venus'}"></i>
+                        ${animal.gender || 'Unknown'}
+                    </span>
+                </div>
+                <div class="tags">
+                    ${(animal.traits || '').split(',').filter(t => t.trim()).map(t => `<span class="tag">${t.trim()}</span>`).join('')}
+                </div>
+                <button class="view-btn">View Profile</button>
+            </div>
+        `;
+
+        card.addEventListener('click', () => openModal(animal));
+        grid.appendChild(card);
+    });
+}
+
+function openModal(animal) {
+    const imgUrl = animal.image_url ? `/uploads/${animal.image_url}` : '../images/dog1.png';
+    currentPetData = { ...animal, imgSrc: imgUrl };
+    const modal = document.getElementById('petModal');
+
+    document.getElementById('modalName').textContent = animal.name || 'Unknown';
+    document.getElementById('modalImg').src = imgUrl;
+    document.getElementById('modalDetails').innerHTML = `
+            <p><strong>Type:</strong> ${animal.species || 'Unknown'}</p>
+            <p><strong>Sex:</strong> ${animal.gender || 'Unknown'}</p>
+            <p><strong>Breed:</strong> ${animal.breed || 'Unknown'}</p>
+            <p><strong>Age:</strong> ${formatAgeText(animal.age)}</p>
+            <p><strong>Behavior:</strong> ${animal.traits || 'No behavior details available.'}</p>
+            <p><strong>Location:</strong> ${animal.rescue_location || 'Not recorded'}</p>
+        `;
+    modal.style.display = 'flex';
+}
+
+function formatAgeText(ageMonths) {
+    if (ageMonths === undefined || ageMonths === null || ageMonths === '') return 'N/A';
+    const months = Number(ageMonths);
+    if (Number.isNaN(months) || months < 0) return String(ageMonths);
+    if (months === 0) return '0 months old';
+
+    const years = Math.floor(months / 12);
+    const remainingMonths = months % 12;
+    const yearText = years > 0 ? `${years} ${years === 1 ? 'year' : 'years'}` : '';
+    const monthText = remainingMonths > 0 ? `${remainingMonths} ${remainingMonths === 1 ? 'month' : 'months'}` : '';
+    return [yearText, monthText].filter(Boolean).join(' ').concat(' old');
+}
+
 function goToApplication() {
     const username = new URLSearchParams(window.location.search).get('username') || 'User';
     const dateApplied = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -505,7 +586,7 @@ function goToApplication() {
     const params = new URLSearchParams({
         username: username,
         pet: currentPetData.name,
-        img: currentPetData.imgSrc,
+        img: currentPetData.imgSrc || '',
         date: dateApplied
     });
     

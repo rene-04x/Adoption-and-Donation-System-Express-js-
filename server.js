@@ -67,6 +67,7 @@ app.get('/api/animals', (req, res) => {
     SELECT 
         a.animal_id,
         a.name,
+        a.species,
         a.gender,
         a.breed,
         a.age_months AS age,
@@ -187,7 +188,7 @@ app.post('/api/animals', upload.single('profile_photo'), async (req, res) => {
 
     try {
         // INSERT ANIMAL
-        const [result] = await db.query(`
+        const [result] = await db.promise().query(`
             INSERT INTO animals 
             (name, species, gender, breed, age_months, color_markings, behavior_traits, current_status, rescue_date, rescue_area, rescue_story, profile_photo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
