@@ -1036,7 +1036,7 @@ submitBtn?.addEventListener('click', () => {
         formData.append('amount', amountValue);
         formData.append('refNo', document.getElementById('referenceInput').value);
         formData.append('receipt', document.getElementById('receiptInput').files[0]);
-        formData.append('item_name', "Purpose: " + (purpose || "General"));
+        formData.append('item_name', (purpose || "General"));
     } else {
         formData.append('item_name', document.querySelector('.inkind-view .custom-input').value);
         formData.append('email', document.getElementById('donorEmail').value);

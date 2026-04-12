@@ -224,6 +224,9 @@
 
         /* Hide in-kind table by default */
         #inkindTableCard { display: none; }
+        .filter-option:hover {
+            background: #f8fafc;
+        }
     </style>
 </head>
 <body>
@@ -266,11 +269,19 @@
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" class="search-input" placeholder="Search by name...">
                 </div>
-                <button class="filter-btn">
-                    <i class="fa-solid fa-filter"></i>
-                    <span>All Status</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
+                <div style="position: relative;">
+                    <button class="filter-btn" id="filterBtn">
+                        <i class="fa-solid fa-filter"></i>
+                        <span id="currentStatusText">All Status</span>
+                    </button>
+                    
+                    <div id="filterDropdown" style="display: none; position: absolute; top: 110%; right: 0; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 160px; z-index: 2000; border: 1px solid #e2e8f0; overflow: hidden;">
+                        <div class="filter-option" style="padding: 12px 20px; cursor: pointer;" onclick="filterByStatus('All')">All Status</div>
+                        <div class="filter-option" style="padding: 12px 20px; cursor: pointer; border-top: 1px solid #f1f5f9;" onclick="filterByStatus('Pending')">Pending</div>
+                        <div class="filter-option" style="padding: 12px 20px; cursor: pointer; border-top: 1px solid #f1f5f9;" onclick="filterByStatus('Verified')">Verified</div>
+                        <div class="filter-option" style="padding: 12px 20px; cursor: pointer; border-top: 1px solid #f1f5f9;" onclick="filterByStatus('Rejected')">Rejected</div>
+                    </div>
+                </div>
             </div>
 
             <div class="tab-wrapper">
@@ -287,14 +298,13 @@
                             <th>Date</th>
                             <th>Donor Name</th>
                             <th>Amount</th>
-                            <th>Reference No.</th>
                             <th>Method</th>
                             <th>Status</th>
                             <th>Proof</th>
                         </tr>
                     </thead>
                     <tbody>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
 
@@ -393,7 +403,6 @@
     // ✅ CLICK NAVIGATION
     const routes = {
         dashboardBtn: "home.html",
-        organizationsBtn: "organizations.html",
         animalsBtn: "animals.html",
         adoptionBtn: "adoptions.html",
         donationBtn: "donation.html",
@@ -431,39 +440,45 @@
             const modalTitle = document.getElementById('modalTitle');
             const donorDetails = document.getElementById('donorDetails');
             const receiptImg = document.querySelector('.receipt-img');
-            const imageSide = document.querySelector('.image-side'); // Ang container ng image
-            const modalGrid = document.querySelector('.modal-grid'); // Ang main grid layout
+            const imageSide = document.querySelector('.image-side');
+            const modalGrid = document.querySelector('.modal-grid');
 
             modalTitle.innerText = isCash ? "Review Cash Donation" : "Review In-Kind Donation";
 
-            // 1. I-set ang Details
-            donorDetails.innerHTML = `
+            // Build the details HTML
+            let detailsHTML = `
                 <p style="margin-bottom: 12px; font-size: 16px;">Donor Name: <strong>${donation.donor_name}</strong></p>
-                ${isCash ? `
-                    <p style="margin-bottom: 12px; font-size: 16px;">Amount Declared: <strong>₱ ${parseFloat(donation.amount).toLocaleString()}</strong></p>
-                    <p style="margin-bottom: 12px; font-size: 16px;">Method: <strong>${donation.item_name}</strong></p>
-                    <p style="margin-bottom: 12px; font-size: 16px;">Reference No: <span class="ref-number">${donation.ref_no}</span></p>
-                ` : `
-                    <p style="margin-bottom: 12px; font-size: 16px;">Item: <strong>${donation.item_name}</strong></p>
-                    <p style="margin-bottom: 12px; font-size: 16px;">Email: <strong>${donation.email || 'N/A'}</strong></p>
-                    <p style="margin-bottom: 12px; font-size: 16px;">Contact: <strong>${donation.phone || 'N/A'}</strong></p>
-                `}
-                <p style="margin-bottom: 25px; font-size: 16px; margin-top: 10px;">Date Sent: <strong>${new Date(donation.date).toLocaleDateString()}</strong></p>
             `;
 
-            // 2. TANGGALIN O IPAKITA ANG IMAGE SIDE
-            if (isCash && donation.receipt_img) {
-                // Kapag Cash, ipakita ang picture
-                imageSide.style.display = "block";
-                modalGrid.style.gridTemplateColumns = "1.2fr 1fr"; // Ibalik sa split view
-                receiptImg.src = '/uploads/receipts/' + donation.receipt_img;
+            if (isCash) {
+                detailsHTML += `
+                    <p style="margin-bottom: 12px; font-size: 16px;">Amount: <strong>₱ ${parseFloat(donation.amount).toLocaleString()}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Reference No: <span class="ref-number">${donation.ref_no || 'N/A'}</span></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Purpose: <strong>${donation.item_name || 'General Donation'}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Method: <strong>${donation.payment_method || 'N/A'}</strong></p>
+                `;
             } else {
-                // Kapag In-Kind, ITAGO ANG IMAGE SIDE PARA WALANG BROKEN ICON
-                imageSide.style.display = "none";
-                modalGrid.style.gridTemplateColumns = "1fr"; // Gawing full width yung info
+                detailsHTML += `
+                    <p style="margin-bottom: 12px; font-size: 16px;">Item: <strong>${donation.item_name}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Email: <strong>${donation.email || 'N/A'}</strong></p>
+                `;
             }
 
-            // Reset view (para kung galing sa rejection state, bumalik sa normal)
+            detailsHTML += `<p style="margin-bottom: 25px; font-size: 16px; margin-top: 10px;">Date: <strong>${new Date(donation.date).toLocaleDateString()}</strong></p>`;
+            
+            donorDetails.innerHTML = detailsHTML;
+
+            // Handle Image Display
+            if (isCash && donation.receipt_img) {
+                imageSide.style.display = "block";
+                modalGrid.style.gridTemplateColumns = "1.2fr 1fr";
+                receiptImg.src = '/uploads/receipts/' + donation.receipt_img;
+            } else {
+                imageSide.style.display = "none";
+                modalGrid.style.gridTemplateColumns = "1fr";
+            }
+
+            // Reset view states
             document.getElementById('modalTitle').style.display = "block";
             document.getElementById('initialButtons').style.display = "flex";
             document.getElementById('rejectedView').style.display = "none";
@@ -471,7 +486,6 @@
 
             document.getElementById('reviewModal').style.display = "flex";
         }
-
         function showRejectedState() {
             document.getElementById('modalTitle').style.display = "none";
             document.getElementById('initialButtons').style.display = "none";
@@ -529,37 +543,84 @@
             }
         }
 
-        // Hiwalay na function para sa pag-render ng rows (para magamit din ng search)
+      // --- FILTERING LOGIC ---
+      let currentStatusFilter = 'All';
+        
+        // 1. Siguraduhin na define ang searchInput dito sa taas
+        const searchInput = document.querySelector('.search-input'); 
+        const filterBtn = document.getElementById('filterBtn');
+        const filterDropdown = document.getElementById('filterDropdown');
+
+        if(filterBtn) {
+            filterBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterDropdown.style.display = filterDropdown.style.display === 'block' ? 'none' : 'block';
+            });
+        }
+
+        document.addEventListener('click', () => {
+            if(filterDropdown) filterDropdown.style.display = 'none';
+        });
+
+        function filterByStatus(status) {
+            currentStatusFilter = status;
+            document.getElementById('currentStatusText').innerText = status === 'All' ? 'All Status' : status;
+            applyFilters(); 
+        }
+
+        // 2. Isang listener lang na tumatawag sa applyFilters
+        if(searchInput) {
+            searchInput.addEventListener('input', () => {
+                applyFilters();
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredResults = allDonations.filter(donation => {
+                const matchesSearch = donation.donor_name.toLowerCase().includes(searchTerm);
+                const matchesStatus = (currentStatusFilter === 'All') || 
+                                    (donation.status.toLowerCase() === currentStatusFilter.toLowerCase());
+                return matchesSearch && matchesStatus;
+            });
+            renderTables(filteredResults);
+        }
+
+        // I-update ang renderTables para handle ang empty states ng maayos
         function renderTables(data) {
-            const cashBody = document.querySelector('#cashTableCard tbody');
-            const inkindBody = document.querySelector('#inkindTableCard tbody');
+        const cashBody = document.querySelector('#cashTableCard tbody');
+        const inkindBody = document.querySelector('#inkindTableCard tbody');
 
-            cashBody.innerHTML = '';
-            inkindBody.innerHTML = '';
+        cashBody.innerHTML = '';
+        inkindBody.innerHTML = '';
 
-            if (!data || data.length === 0) {
-                cashBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No results found.</td></tr>';
-                inkindBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No results found.</td></tr>';
-                return;
-            }
+        // Filter data base sa type
+        const cashData = data.filter(d => d.type.toLowerCase() === 'cash');
+        const inkindData = data.filter(d => d.type.toLowerCase() !== 'cash');
 
-            data.forEach(d => {
-                const dateStr = new Date(d.date).toLocaleDateString('en-US', {
-                    month: 'short', day: 'numeric', year: 'numeric'
-                });
+        // Render Cash Table
+        if (cashData.length === 0) {
+            cashBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #64748b;">No cash donations found.</td></tr>';
+        } else {
+            cashData.forEach(d => {
+                const dateStr = new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const paymentMethod = d.payment_method || "N/A";
+                cashBody.innerHTML += `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${d.donor_name}</td>
+                        <td><strong>₱${parseFloat(d.amount).toLocaleString()}</strong></td>
+                        <td>${paymentMethod}</td> <td><span style="color:${getStatusColor(d.status)}; font-weight:700;">${d.status}</span></td>
+                        <td><span class="view-link" onclick='openReviewModal(${JSON.stringify(d).replace(/'/g, "&apos;")})'>[View Receipt]</span></td>
+                    </tr>`;
+            });
+        }
 
-                if (d.type.toLowerCase() === 'cash') {
-                    cashBody.innerHTML += `
-                        <tr>
-                            <td>${dateStr}</td>
-                            <td>${d.donor_name}</td>
-                            <td><strong>₱${parseFloat(d.amount).toLocaleString()}</strong></td>
-                            <td><span class="ref-number">${d.ref_no}</span></td>
-                            <td>${d.item_name}</td> 
-                            <td><span style="color:${getStatusColor(d.status)}; font-weight:700;">${d.status}</span></td>
-                            <td><span class="view-link" onclick='openReviewModal(${JSON.stringify(d).replace(/'/g, "&apos;")})'>[View Receipt]</span></td>
-                        </tr>`;
-                } else {
+            if (inkindData.length === 0) {
+                inkindBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px; color: #64748b;">No in-kind donations found.</td></tr>';
+            } else {
+                inkindData.forEach(d => {
+                    const dateStr = new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     inkindBody.innerHTML += `
                         <tr>
                             <td>${dateStr}</td>
@@ -570,24 +631,9 @@
                             <td><span style="color:${getStatusColor(d.status)}; font-weight:700;">${d.status}</span></td>
                             <td><span class="view-link" onclick='openReviewModal(${JSON.stringify(d).replace(/'/g, "&apos;")})'>[View Details]</span></td>
                         </tr>`;
-                }
-            });
+                });
+            }
         }
-
-        // Search Logic (Donor Name Only)
-        const searchInput = document.querySelector('.search-input');
-
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-
-            // I-filter ang 'allDonations' base sa donor_name
-            const filteredResults = allDonations.filter(donation => 
-                donation.donor_name.toLowerCase().includes(searchTerm)
-            );
-
-            // I-render ulit ang table gamit ang filtered data
-            renderTables(filteredResults);
-        });
     
     // Helper function para sa kulay ng status
     function getStatusColor(status) {
