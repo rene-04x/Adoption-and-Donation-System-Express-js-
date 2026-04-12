@@ -57,6 +57,27 @@ exports.rejectDonation = async (req, res) => {
     }
 };
 
+exports.verifyDonation = async (req, res) => {
+    const { donationId } = req.body;
+
+    try {
+        // I-update ang status sa Verified
+        const [result] = await db.execute(
+            'UPDATE donations SET status = "verified" WHERE id = ?', 
+            [donationId]
+        );
+
+        if (result.affectedRows > 0) {
+            res.json({ success: true, message: "Donation verified successfully" });
+        } else {
+            res.status(404).json({ error: "Donation not found" });
+        }
+    } catch (err) {
+        console.error("Verification error:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
 exports.getHome = (req, res) => sendAdminFile(req, res, 'home.html');
 exports.getAnimals = (req, res) => sendAdminFile(req, res, 'animals.html');
 exports.getAdoptions = (req, res) => sendAdminFile(req, res, 'adoptions.html');

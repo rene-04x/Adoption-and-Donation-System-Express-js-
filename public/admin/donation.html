@@ -6,6 +6,7 @@
     <title>PAWSsion - Donation Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --primary-blue: #02407D;
@@ -136,7 +137,7 @@
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            z-index: 3000; justify-content: center; align-items: center;
+            z-index: 1000; justify-content: center; align-items: center;
         }
 
         .review-card {
@@ -397,7 +398,7 @@
             </div>
     
             <div id="initialButtons" style="display: flex; gap: 12px; margin-top: 30px; justify-content: center;">
-                <button class="btn-confirm" style="max-width: 250px;">Confirm & Verify</button>
+                <button class="btn-confirm" onclick="submitVerification()" style="max-width: 250px;">Confirm & Verify</button>
                 <button class="btn-reject" onclick="showRejectedState()" style="max-width: 250px;">Reject</button>
             </div>
     
@@ -492,16 +493,32 @@
 
         // 2. I-update ang submitRejection (dating closemodal sa onclick ng Done)
         async function submitRejection() {
+            const reasonRadio = document.querySelector('input[name="reason"]:checked');
+            if (!reasonRadio) return; // Guard clause
+
+            const reason = reasonRadio.value;
+            
+            // Ipakita ang Confirmation sa FRONT
+            const result = await Swal.fire({
+                title: 'Confirm Rejection',
+                text: `You are about to reject this donation due to: ${reason}. This cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Yes, reject it!',
+                // Ito ang magsisiguro na nasa harap siya ng modal
+                backdrop: true,
+                allowOutsideClick: false 
+            });
+
+            if (!result.isConfirmed) return; 
+
             const doneBtn = document.getElementById('btnDoneReject');
-            const reason = document.querySelector('input[name="reason"]:checked').value;
             const notes = document.getElementById('rejectionNotes').value;
             const fileInput = document.getElementById('mismatchFile');
-            
-            // Kunin ang kasalukuyang donor ID (kailangang i-store ito pagbukas ng modal)
-            // Halimbawa, i-store natin sa global window object pag open ng modal
             const donationId = window.currentDonationId; 
 
-            // Gawing FormData para suportado ang file upload
             const formData = new FormData();
             formData.append('donationId', donationId);
             formData.append('reason', reason);
@@ -517,24 +534,33 @@
                 const response = await fetch('/admin/reject-donation', {
                     method: 'POST',
                     body: formData
-                    // Huwag mag-set ng Content-Type header kapag FormData ang gamit, 
-                    // kusa itong gagawin ng browser kasama ang boundary string.
                 });
 
                 if (response.ok) {
-                    alert("Donation rejected successfully.");
+                    // Success Message sa Front din
+                    await Swal.fire({
+                        title: 'Rejected!',
+                        text: 'The donation status has been updated.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
                     closeModal();
-                    loadOrgDonations(); // Refresh ang table
+                    loadOrgDonations(); 
                 } else {
-                    alert("Failed to save rejection. Please try again.");
+                    Swal.fire('Error', 'Failed to save rejection.', 'error');
                     doneBtn.innerText = "Done";
                     doneBtn.disabled = false;
                 }
             } catch (error) {
-                console.error("Error submitting rejection:", error);
-                alert("An error occurred.");
+                console.error("Error:", error);
+                Swal.fire('Error', 'An unexpected error occurred.', 'error');
+                doneBtn.innerText = "Done";
+                doneBtn.disabled = false;
             }
         }
+        
         // Donation Modal Functions
         function openReviewModal(donation) {
             window.currentDonationId = donation.id;
@@ -643,45 +669,45 @@
     }
     
     function showRejectionReason(donation) {
-    // 1. Buksan ang basic modal (sisiguraduhin nito na lalabas ang donor info)
-    openReviewModal(donation);
-    
-    // 2. Setup UI: Itago ang action buttons at ipakita ang reason container
-    const initialButtons = document.getElementById('initialButtons');
-    if (initialButtons) initialButtons.style.display = "none";
-
-    const reasonDiv = document.getElementById('reasonDisplay');
-    reasonDiv.style.display = "block";
-    
-    // 3. Prepare data
-    const rejDate = donation.rejection_date ? new Date(donation.rejection_date).toLocaleDateString('en-PH', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    }) : 'N/A';
-
-    const reasonTitle = donation.rejection_reason || "Reason not specified";
-    const reasonNotes = donation.rejection_notes ? `"${donation.rejection_notes}"` : "No additional notes provided.";
-    
-    // 4. I-update ang UI gamit ang isang bagsakan na innerHTML
-    reasonDiv.innerHTML = `
-        <div style="border-bottom: 1px solid #fca5a5; margin-bottom: 10px; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">
-            <h4 style="color: #991b1b; margin: 0; font-size: 14px;">Rejection Details</h4>
-            <span style="font-size: 11px; color: #7f1d1d; font-weight: bold;">Rejected on: ${rejDate}</span>
-        </div>
-        <p style="font-weight: 700; color: #b91c1c; margin-bottom: 5px;">${reasonTitle}</p>
-        <p style="font-size: 13px; color: #4b5563; font-style: italic;">${reasonNotes}</p>
+        // 1. Buksan ang basic modal (sisiguraduhin nito na lalabas ang donor info)
+        openReviewModal(donation);
         
-        ${donation.rejection_proof_img ? `
-            <div id="mismatchPhotoContainer" style="margin-top: 15px;">
-                <p style="font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #374151;">Admin Proof / Reference:</p>
-                <img src="/uploads/rejections/${donation.rejection_proof_img}" 
-                     alt="Proof of Rejection"
-                     style="width: 100%; border-radius: 8px; border: 2px solid #fee2e2; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+        // 2. Setup UI: Itago ang action buttons at ipakita ang reason container
+        const initialButtons = document.getElementById('initialButtons');
+        if (initialButtons) initialButtons.style.display = "none";
+
+        const reasonDiv = document.getElementById('reasonDisplay');
+        reasonDiv.style.display = "block";
+        
+        // 3. Prepare data
+        const rejDate = donation.rejection_date ? new Date(donation.rejection_date).toLocaleDateString('en-PH', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }) : 'N/A';
+
+        const reasonTitle = donation.rejection_reason || "Reason not specified";
+        const reasonNotes = donation.rejection_notes ? `"${donation.rejection_notes}"` : "No additional notes provided.";
+        
+        // 4. I-update ang UI gamit ang isang bagsakan na innerHTML
+        reasonDiv.innerHTML = `
+            <div style="border-bottom: 1px solid #fca5a5; margin-bottom: 10px; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="color: #991b1b; margin: 0; font-size: 14px;">Rejection Details</h4>
+                <span style="font-size: 11px; color: #7f1d1d; font-weight: bold;">Rejected on: ${rejDate}</span>
             </div>
-        ` : ''}
-    `;
-}
+            <p style="font-weight: 700; color: #b91c1c; margin-bottom: 5px;">${reasonTitle}</p>
+            <p style="font-size: 13px; color: #4b5563; font-style: italic;">${reasonNotes}</p>
+            
+            ${donation.rejection_proof_img ? `
+                <div id="mismatchPhotoContainer" style="margin-top: 15px;">
+                    <p style="font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #374151;">Admin Proof / Reference:</p>
+                    <img src="/uploads/rejections/${donation.rejection_proof_img}" 
+                        alt="Proof of Rejection"
+                        style="width: 100%; border-radius: 8px; border: 2px solid #fee2e2; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                </div>
+            ` : ''}
+        `;
+    }
 
     // Helper function para hindi paulit-ulit ang style changes
     function toggleDoneButton(enable) {
@@ -701,6 +727,71 @@
         document.querySelectorAll('input[name="reason"]').forEach(radio => {
             radio.addEventListener('change', validateRejection);
         });
+
+        async function submitVerification() {
+            const donationId = window.currentDonationId;
+            const confirmBtn = document.querySelector('.btn-confirm');
+
+            if (!confirmBtn || !donationId) return;
+
+            // Gamit ang SweetAlert2 imbes na confirm()
+            const result = await Swal.fire({
+                title: 'Verify Donation?',
+                text: "Are you sure that you already verify this donation?. This cannot be undone",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981', // Green
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Yes, verify it!',
+                cancelButtonText: 'Cancel',
+                backdrop: true,
+                allowOutsideClick: false
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                confirmBtn.innerText = "Verifying...";
+                confirmBtn.disabled = true;
+
+                const response = await fetch('/admin/verify-donation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ donationId: donationId })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Success Alert sa FRONT
+                    await Swal.fire({
+                        title: 'Verified!',
+                        text: 'Donation has been successfully verified.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Update local array status
+                    const index = allDonations.findIndex(d => d.id === donationId);
+                    if (index !== -1) {
+                        allDonations[index].status = 'verified';
+                    }
+
+                    closeModal();
+                    renderTables(allDonations); 
+                } else {
+                    Swal.fire('Error', data.error || "Failed to verify.", 'error');
+                    confirmBtn.innerText = "Confirm & Verify";
+                    confirmBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error("Error during verification:", error);
+                Swal.fire('Error', 'An unexpected error occurred.', 'error');
+                confirmBtn.innerText = "Confirm & Verify";
+                confirmBtn.disabled = false;
+            }
+        }
 
         // --- UPDATED CLOSE MODAL (WITH RESET) ---
         function closeModal() {
@@ -726,6 +817,15 @@
             document.getElementById('rejectedView').style.display = "none";
             document.getElementById('rejectedLowerSection').style.display = "none";
             document.getElementById('modalTitle').style.display = "block";
+
+            const verifyBtn = document.querySelector('.btn-confirm');
+            if (verifyBtn) {
+                verifyBtn.innerText = "Confirm & Verify";
+                verifyBtn.disabled = false;
+            }
+
+            document.getElementById('reviewModal').style.display = "none";
+            Swal.close();
         }
 
         window.onclick = function(event) {
