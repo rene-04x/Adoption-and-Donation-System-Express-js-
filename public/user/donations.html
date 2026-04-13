@@ -799,7 +799,7 @@
 
         <div class="form-group">
           <label class="label-title">Item Description</label>
-          <input type="text" class="custom-input" placeholder="What items are you donating?">
+          <input type="text" class="custom-input" id="inkindItemInput" placeholder="What items are you donating?">
         </div>
       </div>
 
@@ -928,17 +928,12 @@ fetch('/sidebar')
     const queryStr = `?username=${encodeURIComponent(username)}`;
     const currentPath = window.location.pathname;
 
-    // 2. Helper function para sa navigation
     const setupNav = (btnId, targetPath) => {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            // Highlight kung ito ang active page
-            if (currentPath === targetPath) {
-                btn.classList.add('active-item');
-            }
+        const buttonElement = document.getElementById(btnId); // Gamit tayo ng unique variable name
+        if (buttonElement) {
+            if (currentPath === targetPath) buttonElement.classList.add('active-item');
             
-            // Mag-redirect sa target path na may dala-dalang username
-            btn.onclick = () => {
+            buttonElement.onclick = () => {
                 if (currentPath !== targetPath) {
                     window.location.href = targetPath + queryStr;
                 }
@@ -952,23 +947,11 @@ fetch('/sidebar')
     setupNav('donationBtn', '/donations');
     setupNav('applicationBtn', '/application');
     setupNav('KamustahanBtn', '/kamustahan');
-    // Sa loob ng iyong fetch('/sidebar') logic:
-    const logoutBtn = document.getElementById('logoutBtn');
-if (logoutBtn) {
-    logoutBtn.onclick = () => {
-        window.location.href = '/login?msg=logged_out';
-    };
-}
 
-// At sa event listener:
-btn.onclick = () => {
-    if (btnId === 'logoutBtn') {
-        // Gamitin ang short route '/login'
-        window.location.href = '/login?msg=logged_out';
-    } else if (currentPath !== targetPath) {
-        window.location.href = targetPath + queryStr;
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.onclick = () => { window.location.href = '/login?msg=logged_out'; };
     }
-};
 });
 
 const submitBtn = document.getElementById('mainSubmitBtn');
@@ -1080,9 +1063,11 @@ if (isCashTab) {
 
     } else {
         // In-kind logic...
-        formData.append('item_name', document.querySelector('.inkind-view .custom-input').value);
-        formData.append('email', document.getElementById('donorEmail').value);
-        formData.append('phone', document.getElementById('donorPhone').value);
+        const itemValue = document.getElementById('inkindItemInput').value.trim();
+    formData.append('item_name', itemValue);
+    
+    formData.append('email', document.getElementById('donorEmail').value);
+    formData.append('phone', document.getElementById('donorPhone').value);
     }
     
     // 5. SEND DATA
@@ -1292,34 +1277,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function fillDonationForm(data) {
-    console.log("Data received for update:", data); // Para makita mo sa console kung ano ang laman
+    console.log("Data received for update:", data);
 
-    // Siguraduhin na lowercase ang comparison
-    const donationType = data.type ? data.type.toLowerCase() : '';
+    // 1. Clean the donation type string
+    let donationType = data.type ? data.type.toLowerCase().replace(/[^a-z]/g, '') : '';
+    if (donationType === '' && !data.amount && !data.ref_no) {
+        donationType = 'inkind';
+    }
+
+    const nameInput = document.getElementById('donorName');
+    if (nameInput) nameInput.value = data.donor_name || '';
+
+    const messageField = document.querySelector('textarea.custom-input');
+    if (messageField) messageField.value = data.message || '';
 
     if (donationType === 'cash') {
-        // I-click ang cash tab para lumabas ang QR at Reference field
         if (cashTab) cashTab.click(); 
         
-        // Fill Cash Details
         const amountInput = document.getElementById('customAmountInput');
         if (amountInput) {
-    amountInput.value = data.amount || '';
-    amountInput.dispatchEvent(new Event('input')); // I-trigger ang validation/formatting logic
-}
+            amountInput.value = data.amount || '';
+            amountInput.dispatchEvent(new Event('input'));
+        }
         
-        // I-check ang chips
         document.querySelectorAll('.form-group .amount-chips .chip').forEach(chip => {
             const chipValue = chip.innerText.replace(/[^\d.]/g, '');
             if (chipValue === String(data.amount)) {
-                chip.classList.add('active'); // Manual add active kung ayaw sa .click()
+                chip.classList.add('active');
             }
         });
 
         const refInput = document.getElementById('referenceInput');
-        if (refInput) refInput.value = data.ref_no || data.refNo || ''; // Check alternative keys
+        if (refInput) refInput.value = data.ref_no || data.refNo || '';
         
-        // Purpose chips
         document.querySelectorAll('.purpose-chip').forEach(chip => {
             if (chip.getAttribute('data-value') === data.item_name) {
                 chip.classList.add('active');
@@ -1328,35 +1318,29 @@ function fillDonationForm(data) {
             }
         });
 
-    } else if (donationType === 'inkind' || donationType === 'in-kind') {
+    } 
+    else {
+        // DEFAULT TO IN-KIND (Para kahit empty ang type, mapuno pa rin)
         if (inkindTab) inkindTab.click(); 
-        
-        // Fill In-Kind Details
-        const itemInput = document.querySelector('.inkind-view .custom-input');
-        if (itemInput) itemInput.value = data.item_name || '';
-        
-        const emailInput = document.getElementById('donorEmail');
-        if (emailInput) emailInput.value = data.email || '';
-        
-        const phoneInput = document.getElementById('donorPhone');
-        if (phoneInput) phoneInput.value = data.phone || '';
+        setTimeout(() => {
+            const inkindItem = document.getElementById('inkindItemInput');
+            if (inkindItem) inkindItem.value = data.item_name || '';
+            
+            const emailInput = document.getElementById('donorEmail');
+            if (emailInput) emailInput.value = data.email || '';
+            
+            const phoneInput = document.getElementById('donorPhone');
+            if (phoneInput) phoneInput.value = data.phone || '';
+        }, 150);
     }
-
-    // 2. Common Fields (Dapat nasa labas ng if/else)
-    const nameInput = document.getElementById('donorName');
-    if (nameInput) nameInput.value = data.donor_name || '';
-
-    const messageField = document.querySelector('textarea.custom-input');
-    if (messageField) messageField.value = data.message || '';
 
     // 3. UI Updates
     const submitBtn = document.getElementById('mainSubmitBtn');
     if (submitBtn) {
         submitBtn.innerHTML = "🔄 UPDATE DONATION INFO";
-        submitBtn.style.background = "#16a34a"; // Green for update
+        submitBtn.style.background = "#16a34a";
     }
     
-    // 4. Hidden ID
     let hiddenId = document.getElementById('updateDonationId');
     if (!hiddenId) {
         hiddenId = document.createElement('input');
@@ -1365,14 +1349,6 @@ function fillDonationForm(data) {
         document.getElementById('donationSection').appendChild(hiddenId);
     }
     hiddenId.value = data.id;
-
-    if (donationType === 'cash' && data.receipt_img) {
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
-        if (fileNameDisplay) {
-            fileNameDisplay.textContent = "Current: " + data.receipt_img;
-            fileNameDisplay.style.color = "#3b82f6"; // Blue color para malaman na may existing file
-        }
-    }
 }
 </script>
 
