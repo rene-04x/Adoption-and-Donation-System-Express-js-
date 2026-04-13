@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+
+// IMPORTANTE: Ito ang mag-parse ng incoming JSON requests
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
 // 1. IMPORT ROUTES
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -14,13 +18,16 @@ const { isAdmin } = require('./middleware/auth');
 //to use session
 const session = require('express-session');
 
+// Sa server.js, i-update ang session part:
 app.use(session({
-    secret: 'PAWSsion_Safe_Key_2026_@dm1n', // Kahit anong string na mahaba
-    resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 3600000 } // Mag-e-expire ang login after 1 hour
+    secret: 'PAWSsion_Safe_Key_2026_@dm1n',
+    resave: true, // Gawing true muna
+    saveUninitialized: true, // Gawing true muna
+    cookie: { 
+        secure: false, // Dahil naka-http (localhost) ka lang
+        maxAge: 3600000 
+    }
 }));
-
 // 3. SET UP MIDDLEWARES (Dapat mauna ang mga ito bago ang Routes)
 app.use(logger); // Custom Logger Middleware para sa "Excellent" rating
 app.use(express.json());
@@ -61,6 +68,8 @@ app.use((err, req, res, next) => {
         </div>
     `);
 });
+
+
 
 // 6. START SERVER
 const PORT = 3000;

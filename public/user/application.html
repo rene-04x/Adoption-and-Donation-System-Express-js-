@@ -10,424 +10,606 @@
 </head>
 <body>
 
-  <div id="sidebar-placeholder"></div>
-  <div class="overlay" id="overlay"></div>
-    <main id="dashboardSection" class="main-content-dashboard">
-    <div class="application-container">
-      
-      <div class="progress-wrapper">
+<div id="sidebar-placeholder"></div>
 
-    <div class="pet-profile">
-        <img src="https://placedog.net/300/300" alt="Pet Image" class="pet-image">
-        <h2 style="margin-top: 10px; font-size: 20px;">Chada</h2>
-        <p style="font-size: 12px; color: #64748b;">Date Applied: Feb 22, 2026</p>
-        <span id="statusPill" class="status-pill" style="background: #fef3c7; color: #92400e;">Pending</span>
+<main id="dashboardSection">
+  <!-- ===== ADOPTION APPLICATION TITLE ===== -->
+  <div class="page-title">
+    <h1><i class="fa-solid fa-paw"></i> Adoption Application</h1>
+    <p>Manage and track all adoption requests — view, edit, or cancel applications.</p>
+  </div>
+
+  <!-- FILTER + ADD BUTTON -->
+  <div class="application-container" id="managementHeader" style="margin-bottom: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+      <div class="filter-group">
+        <button class="btn-filter" data-filter="Active">Active</button>
+        <button class="btn-filter" data-filter="Success">Success</button>
+        <button class="btn-filter" data-filter="Cancelled">Cancelled</button>
+      </div>
+      <button id="addNewAppBtn" class="btn-navy" style="background: #2563eb;">
+        <i class="fa-solid fa-plus"></i> New Application
+      </button>
     </div>
+  </div>
 
-    <div class="steps-container">
+  <!-- APPLICATIONS LIST  -->
+  <div id="applicationsList"></div>
+
+  <!-- PROGRESS TRACKER (PET PROFILE + STEPS) -->
+  <div class="application-container" id="progressContainer">
+    <div class="progress-wrapper">
+      <div class="pet-profile">
+        <img src="https://placedog.net/300/300" alt="Pet Image" class="pet-image">
+        <h2 id="displayPetName" style="margin-top: 15px; font-size: 24px; color: #1e293b;">Pet Name</h2>
+        <p id="displayDate" style="font-size: 12px; color: #64748b;">Date Applied: --</p>
+        <span id="statusPill" class="status-pill">Not Submitted</span>
+      </div>
+
+      <div class="steps-container">
         <div class="progress-text">
-            <span>Application Progress</span>
-            <span id="stepCounter">0 of 4 steps</span>
+          <span>Application Progress</span>
+          <span id="stepCounter">0 of 4 steps</span>
         </div>
         <div class="progress-track">
-            <div id="progressFill" class="progress-fill" style="width: 0%; background: #cbd5e1;"></div>
+          <div id="progressFill" class="progress-fill"></div>
         </div>
-        
-        <div class="step-item"><i id="step1Icon" class="fa-regular fa-circle pending"></i> Form Submitted</div>
-        <div class="step-item"><i class="fa-regular fa-circle pending"></i> Meet-and-Greet / Interview</div>
-        <div class="step-item"><i class="fa-regular fa-circle pending"></i> Final Approval & Contract</div>
-        <div class="step-item" style="opacity: 0.6;"><i class="fa-regular fa-circle pending"></i> Welcome Home!</div>
+        <div id="stepList">
+          <div class="step-item"><i id="step1Icon" class="fa-regular fa-circle"></i> Form Submitted</div>
+          <div class="step-item" style="opacity: 0.5;"><i class="fa-regular fa-circle"></i> Meet-and-Greet</div>
+          <div class="step-item" style="opacity: 0.5;"><i class="fa-regular fa-circle"></i> Final Approval</div>
+          <div class="step-item" style="opacity: 0.5;"><i class="fa-regular fa-circle"></i> Welcome Home!</div>
+        </div>
+      </div>
     </div>
-    </div>
-    <div id="successAlert" style="display: none; background: #3b82f6; color: white; padding: 18px; border-radius: 10px; margin-bottom: 30px; font-size: 14px;">
-        <i class="fa-solid fa-party-horn" style="margin-right: 8px;"></i>
-        <strong>Congratulations!</strong> Your adoption application has been submitted successfully!
-    </div>
-    <div id="displaySummary" style="display:none; margin-top: 20px; padding: 20px; background: #f8fafc; border-radius: 10px; border: 1px solid #e2e8f0;">
-        <h3 style="color: #0d4b8c; font-size: 16px; margin-bottom: 10px;">Submitted Details:</h3>
-        <div id="summaryContent" style="font-size: 13px;"></div>
-        
-        <button type="button" id="editBtn" class="btn-navy" style="margin-top: 15px; background: #64748b;">
-            <i class="fa-solid fa-pen-to-square"></i> Edit Application
-        </button>
-    </div>
-        <div class="application-container" id="formContainer">
-        <h2 style="color: #0d4b8c; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">Adoption Application Form</h2>
+  </div>
 
+  <div id="successAlert">
+    <i class="fa-solid fa-check-circle"></i> Application saved successfully!
+  </div>
+
+  <!-- SUMMARY VIEW -->
+  <div id="displaySummary" style="display:none;" class="application-container">
+    <h3 class="info-section-title" style="margin-top: 0;">Submission Summary</h3>
+    <div id="summaryContent" style="font-size: 14px; line-height: 1.7; color: #2c3e50;"></div>
+    <div style="margin-top: 25px; display: flex; gap: 12px; flex-wrap: wrap;">
+      <button type="button" id="backToListBtn" class="btn-navy" style="background: #1e293b;"><i class="fa-solid fa-arrow-left"></i> Back to List</button>
+      <button type="button" id="editBtn" class="btn-navy" style="background: #64748b;"><i class="fa-solid fa-pen-to-square"></i> Edit Application</button>
+      <button type="button" id="cancelAppBtn" class="btn-navy" style="background: #ef4444;"><i class="fa-solid fa-xmark"></i> Cancel Application</button>
+    </div>
+  </div>
+
+  <!-- ADOPTION FORM -->
+  <div class="application-container" id="formContainer" style="display: none;">
+    <h2 style="color: #0d4b8c; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px;">Adoption Application Form</h2>
     <form id="adoptionForm">
-        <div class="info-section-title">Personal Information</div>
-        <div class="info-grid">
-            <div class="form-group">
-                <label class="info-label">Last Name*</label>
-                <input type="text" class="form-input" placeholder="Enter last name">
-            </div>
-            <div class="form-group">
-                <label class="info-label">Given Name*</label>
-                <input type="text" class="form-input" placeholder="Enter given name">
-            </div>
-            <div class="form-group">
-                <label class="info-label">Middle Name*</label>
-                <input type="text" class="form-input" placeholder="Enter middle name">
-            </div>
-            <div class="form-group">
-                <label class="info-label">Birthdate*</label>
-                <input type="date" class="form-input">
-            </div>
-            <div class="form-group">
-                <label class="info-label">Email*</label>
-                <input type="email" class="form-input" placeholder="example@email.com">
-            </div>
-            <div class="form-group">
-                <label class="info-label">Phone Number*</label>
-                <input type="tel" class="form-input" placeholder="09XXXXXXXXX">
-            </div>
-        </div>
-        
-        <div class="form-group" style="margin-top: 15px;">
-            <label class="info-label">Facebook Link And Full Name*</label>
-            <input type="text" class="form-input" style="width: 100%;" placeholder="https://facebook.com/yourprofile">
-        </div>
+      <div class="info-section-title">Personal Information</div>
+      <div class="info-grid">
+        <div class="form-group"><label class="info-label">Last Name*</label><input type="text" name="lName" class="form-input" required></div>
+        <div class="form-group"><label class="info-label">Given Name*</label><input type="text" name="gName" class="form-input" required></div>
+        <div class="form-group"><label class="info-label">Middle Name</label><input type="text" name="mName" class="form-input"></div>
+        <div class="form-group"><label class="info-label">Birthdate*</label><input type="date" name="bday" class="form-input" required></div>
+      </div>
+      <div class="info-grid">
+        <div class="form-group"><label class="info-label">Email*</label><input type="email" name="email" class="form-input" required></div>
+        <div class="form-group"><label class="info-label">Phone Number*</label><input type="tel" name="phone" class="form-input" required></div>
+      </div>
+      <div class="form-group"><label class="info-label">Facebook Profile Link*</label><input type="text" name="fb" class="form-input" placeholder="https://facebook.com/yourprofile" required></div>
 
-        <div class="admin-card" style="margin-top: 20px; padding: 20px;">
-            <label class="info-label" style="margin-bottom: 10px;">Best Way to Contact You:*</label>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px;">
-                <label><input type="radio" name="contact"> Email</label>
-                <label><input type="radio" name="contact"> Phone Number</label>
-                <label><input type="radio" name="contact"> Facebook</label>
-                <label><input type="radio" name="contact"> Messenger</label>
-                <label><input type="radio" name="contact"> Telegram</label>
-                <label><input type="radio" name="contact"> Others</label>
-            </div>
-        </div>
+      <div class="info-section-title">Background & Housing</div>
+      <div class="info-grid">
+        <div class="form-group"><label class="info-label">Employment Status</label><select name="jobStatus" class="form-input"><option value="Employed">Employed</option><option value="Self-Employed">Self-Employed</option><option value="Student">Student</option><option value="Unemployed">Unemployed</option></select></div>
+        <div class="form-group"><label class="info-label">Best Contact Method</label><div style="margin-top: 8px;"><input type="radio" name="contact" value="Email" checked> Email <span style="margin-left: 15px;"></span><input type="radio" name="contact" value="FB/Messenger"> Messenger</div></div>
+      </div>
+      <div class="form-group"><label class="info-label">Living Type*</label><div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 8px;"><label><input type="checkbox" name="livingType" value="House (Owned)"> House (Owned)</label><label><input type="checkbox" name="livingType" value="House (Rented)"> House (Rented)</label><label><input type="checkbox" name="livingType" value="Apartment"> Apartment</label></div></div>
+      <div class="info-grid">
+        <div class="form-group"><label class="info-label">Fenced Yard?</label><div><input type="radio" name="fence" value="Yes"> Yes <input type="radio" name="fence" value="No" checked style="margin-left: 15px;"> No</div></div>
+        <div class="form-group"><label class="info-label">Pets Allowed?</label><div><input type="radio" name="allowed" value="Yes" checked> Yes <input type="radio" name="allowed" value="No" style="margin-left: 15px;"> No</div></div>
+      </div>
+      <div class="form-group"><label class="info-label">Reason For Adoption</label><textarea name="reason" class="form-input" style="height: 100px;" required></textarea></div>
 
-        <div class="info-section-title">Background Information</div>
-        <div class="form-group">
-            <label class="info-label">Employment Status</label>
-            <select class="form-input" style="width: 100%; background: white;">
-                <option>Select Status</option>
-                <option>Employed</option>
-                <option>Self-Employed</option>
-                <option>Unemployed</option>
-                <option>Student</option>
-            </select>
-        </div>
-
-        <div class="info-section-title">Application Details</div>
-        <div style="font-size: 14px; margin-bottom: 15px;">
-            <p class="info-label">Has Pet Experience?</p>
-            <label style="margin-right: 20px;"><input type="radio" name="exp"> Yes</label>
-            <label><input type="radio" name="exp"> No</label>
-        </div>
-
-        <div class="form-group">
-            <label class="info-label">Living Type* (Required)</label>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 14px;">
-                <label><input type="checkbox"> House (Owned)</label>
-                <label><input type="checkbox"> House (Rented)</label>
-                <label><input type="checkbox"> Apartment</label>
-                <label><input type="checkbox"> Condominium</label>
-                <label><input type="checkbox"> Dormitory</label>
-            </div>
-        </div>
-
-        <div class="info-grid" style="margin-top: 15px;">
-            <div class="form-group">
-                <label class="info-label">Do you have a fenced yard?</label>
-                <label style="font-size: 14px;"><input type="radio" name="fence"> Yes</label>
-                <label style="font-size: 14px; margin-left: 10px;"><input type="radio" name="fence"> No</label>
-            </div>
-            <div class="form-group">
-                <label class="info-label">Are pets allowed in your residence?</label>
-                <label style="font-size: 14px;"><input type="radio" name="allowed"> Yes</label>
-                <label style="font-size: 14px; margin-left: 10px;"><input type="radio" name="allowed"> No</label>
-            </div>
-        </div>
-
-        <div class="form-group" style="margin-top: 15px;">
-            <label class="info-label">Reason For Adoption</label>
-            <textarea class="form-input" style="width: 100%; height: 80px; padding: 10px;" placeholder="Tell us why you want to adopt..."></textarea>
-        </div>
-
-      <div class="info-section-title">Upload the following Requirements (Proof)</div>
-        <div class="upload-grid" style="display: flex; flex-direction: column; gap: 15px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px; border-radius: 8px;">
-                <div>
-                    <span style="font-size: 14px; display: block;">Valid ID</span>
-                    <small id="fileName-id" style="color: #64748b; font-size: 11px;">No file chosen</small>
-                </div>
-                <input type="file" id="validID" hidden onchange="updateFileName(this, 'fileName-id')">
-                <label for="validID" class="btn-navy" style="font-size: 12px; padding: 8px 15px;">Upload Image</label>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; background: #f8fafc; padding: 10px; border-radius: 8px;">
-                <div>
-                    <span style="font-size: 14px; display: block;">Proof of Address</span>
-                    <small id="fileName-address" style="color: #64748b; font-size: 11px;">No file chosen</small>
-                </div>
-                <input type="file" id="proofAddress" hidden onchange="updateFileName(this, 'fileName-address')">
-                <label for="proofAddress" class="btn-navy" style="font-size: 12px; padding: 8px 15px;">Upload Image</label>
-            </div>
-        </div>
-
-        <div class="admin-btns" style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 20px;">
-    <button type="submit" class="btn-navy" style="background: #64748b;">Submit</button>
-   <button type="button" id="cancelBtn" class="btn-navy" style="background: #cbd5e1; color: #333; display: none;">Cancel</button>
-</div>
-    </form> 
-</div>
+      <div class="info-section-title">Required Documents</div>
+      <div class="info-grid">
+        <div class="form-group"><label class="info-label">Valid ID (Photo)*</label><input type="file" name="validId" class="form-input" accept="image/*" required></div>
+        <div class="form-group"><label class="info-label">Proof of Address (Utility Bill)*</label><input type="file" name="proofAddress" class="form-input" accept="image/*" required></div>
+      </div>
+      <div style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 25px; display: flex; gap: 15px;">
+        <button type="submit" class="btn-navy">Submit Application</button>
+        <button type="button" id="cancelBtn" class="btn-navy" style="background: #cbd5e1; color: #333; display: none;">Cancel</button>
+      </div>
+    </form>
+  </div>
+</main>
 <script>
-// LOAD SIDEBAR
-fetch('/sidebar')
-.then(res => res.text())
-.then(data => {
-    document.getElementById('sidebar-placeholder').innerHTML = data;
+    document.addEventListener('DOMContentLoaded', () => {
+    // === 1. DOM ELEMENTS ===
+    const applicationsList = document.getElementById('applicationsList');
+    const managementHeader = document.getElementById('managementHeader');
+    const formContainer = document.getElementById('formContainer');
+    const summaryDiv = document.getElementById('displaySummary');
+    const successAlert = document.getElementById('successAlert');
+    const adoptionForm = document.getElementById('adoptionForm');
+    const addNewAppBtn = document.getElementById('addNewAppBtn');
+    const filterBtns = document.querySelectorAll('.btn-filter');
+    
+    // Progress UI Elements
+    const progressWrapper = document.querySelector('.progress-wrapper');
+    const progressFill = document.getElementById('progressFill');
+    const stepCounter = document.getElementById('stepCounter');
+    const step1Icon = document.getElementById('step1Icon');
+    const statusPill = document.getElementById('statusPill');
 
-    // Sidebar Toggle
-    const menuToggle = document.getElementById('menuToggle');
-    const sidebar = document.getElementById('sidebar');
+    let currentApplicationId = null;
 
-    if (menuToggle && sidebar) {
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('closed');
-            document.body.classList.toggle('sidebar-closed');
-        });
-    }
+    // === 2. VIEW CONTROLLER LOGIC ===
 
-    // 1. Kunin ang username sa URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const username = urlParams.get('username') || 'User';
-    const queryStr = `?username=${encodeURIComponent(username)}`;
-    const currentPath = window.location.pathname;
+    const showListView = (defaultFilter = 'Active') => {
+        applicationsList.style.display = 'block';
+        managementHeader.style.display = 'block';
+        formContainer.style.display = 'none';
+        progressWrapper.style.display = 'none';
+        summaryDiv.style.display = 'none';
+        
+        // Alisin ang 'all' filter sa UI kung nandun pa
+        const allBtn = document.querySelector('[data-filter="all"]');
+        if (allBtn) allBtn.remove();
 
-    // 2. Helper function para sa navigation
-    const setupNav = (btnId, targetPath) => {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            // Highlight kung ito ang active page
-            if (currentPath === targetPath) {
-                btn.classList.add('active-item');
+        // I-trigger ang default filter (Active)
+        const activeFilterBtn = document.querySelector(`[data-filter="${defaultFilter}"]`);
+        if (activeFilterBtn) activeFilterBtn.click();
+    };// === 1. Inayos na Reset Logic para mawala ang 'ilaw' ===
+    const resetProgressUI = () => {
+        // I-reset ang progress bar sa zero
+        progressFill.style.width = "0%";
+        progressFill.style.background = "#cbd5e1"; // Gray background
+        
+        // I-reset ang text labels
+        stepCounter.textContent = "0 of 4 steps";
+        statusPill.textContent = "Not Submitted";
+        statusPill.style.background = "#f1f5f9";
+        statusPill.style.color = "#64748b";
+
+        // Alisin ang 'ilaw' (green color at solid icons) sa lahat ng steps
+        const steps = document.querySelectorAll('.step-item');
+        steps.forEach(step => {
+            step.style.opacity = "0.5"; // Gawing semi-transparent (dimmed)
+            const icon = step.querySelector('i');
+            if (icon) {
+                icon.className = "fa-regular fa-circle"; // Ibalik sa empty circle
+                icon.style.color = "#94a3b8"; // Ibalik sa gray color
             }
+        });
+    };
+
+    // === 2. Pagtawag sa reset sa loob ng showFormView ===
+    const showFormView = (isNew = true) => {
+        applicationsList.style.display = 'none';
+        managementHeader.style.display = 'none';
+        formContainer.style.display = 'block';
+        summaryDiv.style.display = 'none';
+        
+        // Panatilihing visible ang tracker pero 'patay' ang ilaw
+        progressWrapper.style.display = 'block'; 
+
+        if (isNew) {
+            adoptionForm.reset();
+            currentApplicationId = null;
             
-            // Mag-redirect sa target path na may dala-dalang username
-            btn.onclick = () => {
-                if (currentPath !== targetPath) {
+            // Dito tinatawag ang pag-reset ng icons at bar
+            resetProgressUI();
+
+            const submitBtn = adoptionForm.querySelector('button[type="submit"]');
+            if (submitBtn) submitBtn.textContent = "Submit Application";
+            
+            const cancelBtn = document.getElementById('cancelBtn');
+            if (cancelBtn) {
+                cancelBtn.style.display = 'inline-block';
+                cancelBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back to List';
+            }
+        } else {
+            // Kung Edit, hindi na kailangan i-reset dahil may status na ito
+            const cancelBtn = document.getElementById('cancelBtn');
+            if (cancelBtn) {
+                cancelBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back to List';
+            }
+        }
+    };
+
+   window.viewApplication = async (id) => {
+    try {
+        const response = await fetch(`/api/application-details/${id}`);
+        const app = await response.json();
+        
+        currentApplicationId = id;
+        
+        applicationsList.style.display = 'none';
+        managementHeader.style.display = 'none';
+        summaryDiv.style.display = 'block';
+        
+        document.getElementById('displayPetName').textContent = app.petName;
+        document.getElementById('displayDate').textContent = `Applied: ${new Date(app.created_at).toLocaleDateString()}`;
+        
+        updateProgressUI(app.status);
+
+        const editBtn = document.getElementById('editBtn');
+        const cancelAppBtn = document.getElementById('cancelAppBtn');
+        const status = app.status.toLowerCase();
+
+        if (status === 'success' || status === 'approved' || status === 'cancelled') {
+            editBtn.style.setProperty('display', 'none', 'important');
+            cancelAppBtn.style.setProperty('display', 'none', 'important');
+        } else {
+            editBtn.style.display = 'inline-block';
+            cancelAppBtn.style.display = 'inline-block';
+        }
+
+        const firstName = app.gName || app.given_name || 'N/A';
+        const lastName = app.lName || app.last_name || 'N/A';
+        const fullName = `${firstName} ${lastName}`;
+        const contactNum = app.phone || app.contact_number || 'N/A';
+
+        // --- FIXED INTERVIEW LOGIC ---
+        // Ipakita lang ang schedule kung may date AT kung ang status ay 'Interview' o 'Active'
+        // Itatago ito kapag Approved, Success, o Cancelled na.
+        let interviewHTML = '';
+        if (app.interview_date && status !== 'approved' && status !== 'success' && status !== 'cancelled') {
+            interviewHTML = `<p style="color: #f59e0b;"><strong>📅 Interview Schedule:</strong> ${new Date(app.interview_date).toLocaleString()}</p>`;
+        }
+
+        document.getElementById('summaryContent').innerHTML = `
+            <div style="background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                <h4 style="margin-bottom: 15px; color: #1e293b;">Application Details</h4>
+                <p><strong>Applicant:</strong> ${fullName}</p> 
+                <p><strong>Email:</strong> ${app.email || 'N/A'}</p>
+                <p><strong>Contact:</strong> ${contactNum}</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+                ${interviewHTML}
+                <p><strong>Status:</strong> <span class="status-pill status-${status}">${app.status}</span></p>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error("View Error:", error);
+        alert("Could not load application details.");
+    }
+};
+const updateProgressUI = (status) => {
+    progressWrapper.style.display = 'block';
+    const fill = document.getElementById('progressFill');
+    const counter = document.getElementById('stepCounter');
+    const pill = document.getElementById('statusPill');
+    const steps = document.querySelectorAll('.step-item');
+    
+    // 1. Reset state (Patayin muna lahat ng ilaw)
+    steps.forEach(step => {
+        step.style.opacity = "0.5";
+        const icon = step.querySelector('i');
+        icon.className = "fa-regular fa-circle";
+        icon.style.color = "#94a3b8";
+    });
+
+    const activateStep = (index) => {
+        if (!steps[index]) return; // Guard clause
+        steps[index].style.opacity = "1";
+        const icon = steps[index].querySelector('i');
+        icon.className = "fa-solid fa-check-circle";
+        icon.style.color = "#22c55e"; 
+    };
+
+    const statusClean = status.toLowerCase();
+    pill.className = `status-pill status-${statusClean}`;
+    pill.textContent = status;
+
+    // 2. Conditional Logic para sa Ilaw
+    if (statusClean === 'submitted' || statusClean === 'active') {
+        fill.style.width = "25%";
+        fill.style.background = "#22c55e";
+        counter.textContent = "1 of 4 steps";
+        activateStep(0);
+    } 
+    else if (statusClean === 'interview' || statusClean === 'interview scheduled') {
+        fill.style.width = "50%";
+        fill.style.background = "#f59e0b";
+        counter.textContent = "2 of 4 steps";
+        activateStep(0);
+        activateStep(1);
+    }
+    else if (statusClean === 'approved') {
+        // Kapag Approved, punuin ang bar at pailawin ang lahat (kung ito ang dulo ng progress mo)
+        // O kung may 'Success' pa, gawin itong 75% o 100% depende sa gusto mo.
+        fill.style.width = "100%"; // Ginawa nating 100% para umilaw lahat
+        fill.style.background = "#2563eb"; 
+        counter.textContent = "4 of 4 steps: Approved";
+        activateStep(0);
+        activateStep(1);
+        activateStep(2);
+        activateStep(3); // Ito ang nagpapailaw sa "Welcome Home!"
+    }
+    else if (statusClean === 'success') {
+        fill.style.width = "100%";
+        fill.style.background = "#22c55e";
+        counter.textContent = "4 of 4 steps: Completed";
+        activateStep(0);
+        activateStep(1);
+        activateStep(2);
+        activateStep(3);
+    }
+    else if (statusClean === 'cancelled') {
+        fill.style.width = "100%";
+        fill.style.background = "#ef4444";
+        counter.textContent = "Process Terminated";
+    }
+};
+    // === 3. API & DATA LOGIC (DATABASE FETCHING) ===
+const fetchApplications = async (filter) => {
+    try {
+        // Loading display
+        applicationsList.innerHTML = '<p style="text-align:center; padding:20px;">Fetching records...</p>';
+        
+        const response = await fetch(`/api/get-applications?status=${filter}`);
+        
+        // I-check kung nag-response ang server (200-299)
+        if (!response.ok) {
+            throw new Error(`Server responded with status ${response.status}`);
+        }
+
+        const apps = await response.json();
+        renderApplications(apps, filter); // Tawagin ang render function
+    } catch (error) {
+        console.error("Fetch error details:", error);
+        // Ito ang lumalabas sa UI mo ngayon
+        applicationsList.innerHTML = `
+            <div style="text-align:center; color:#ef4444; padding:20px;">
+                <i class="fa-solid fa-triangle-exclamation"></i> Error loading data.<br>
+                <small style="color:#64748b;">Check server connection or database.</small>
+            </div>`;
+    }
+};
+
+    const renderApplications = (apps, filterName) => {
+        applicationsList.innerHTML = '';
+
+        // EMPTY STATE: Kung walang mahanap na application sa status na iyon
+        if (!apps || apps.length === 0) {
+            applicationsList.innerHTML = `
+                <div class="application-container" style="text-align:center; padding: 60px 20px; background: #f8fafc; border: 2px dashed #e2e8f0; border-radius: 12px;">
+                    <i class="fa-solid fa-face-folder-open" style="font-size: 50px; color: #cbd5e1; margin-bottom: 15px;"></i>
+                    <h3 style="color: #64748b; margin-bottom: 5px;">No ${filterName} Applications</h3>
+                    <p style="color: #94a3b8; font-size: 14px;">Record is currently empty for this category.</p>
+                </div>`;
+            return;
+        }
+
+        apps.forEach(app => {
+            const card = document.createElement('div');
+            card.className = 'application-container';
+            card.style.marginBottom = '15px';
+            card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h4 style="margin: 0; color: #1e293b; font-weight: 700;">${app.petName}</h4>
+                        <small style="color: #64748b;"><i class="fa-regular fa-calendar"></i> Applied: ${new Date(app.created_at).toLocaleDateString()}</small>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <span class="status-pill status-${app.status.toLowerCase()}">${app.status}</span>
+                        <button onclick="viewApplication(${app.id})" class="btn-navy" style="padding: 8px 16px; font-size: 12px; cursor:pointer; border-radius: 6px;">
+                            <i class="fa-solid fa-eye"></i> View
+                        </button>
+                    </div>
+                </div>`;
+            applicationsList.appendChild(card);
+        });
+    };
+
+   // Submit Logic (walang summary at success alert)
+adoptionForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(adoptionForm);
+    const petTitle = document.getElementById('displayPetName').textContent;
+    formData.append('petName', petTitle);
+
+    try {
+        const response = await fetch('/api/submit-application', { method: 'POST', body: formData });
+        const result = await response.json();
+
+        if (result.success) {
+            // I-refresh ang listahan (Active) nang walang summary o success message
+            showListView('Active');
+        } else {
+            alert("Submission failed. Please try again.");
+        }
+    } catch (error) {
+        alert("Error: Failed to submit application.");
+    }
+});
+
+    // === 4. SIDEBAR & NAVIGATION ===
+  fetch('/sidebar')
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById('sidebar-placeholder').innerHTML = data;
+
+        // 1. Sidebar Toggle Setup
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        if (menuToggle && sidebar) {
+            menuToggle.onclick = () => {
+                sidebar.classList.toggle('closed');
+                document.body.classList.toggle('sidebar-closed');
+            };
+        }
+
+        // 2. Navigation & Username Persistence Logic
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username') || 'User';
+        const queryStr = `?username=${encodeURIComponent(username)}`;
+        const currentPath = window.location.pathname;
+
+        /**
+         * SetupNav Helper: 
+         * - Nagha-highlight ng active page
+         * - Nagdadala ng username sa URL
+         */
+        const setupNav = (btnId, targetPath) => {
+            const btn = document.getElementById(btnId);
+            if (!btn) return;
+
+            // Highlight kung ito ang kasalukuyang page
+            if (currentPath === targetPath) {
+                btn.classList.add('active-item'); 
+            }
+
+            btn.onclick = (e) => {
+                e.preventDefault(); // Iwasan ang default anchor behavior
+                
+                // Kung Logout, huwag nang isama ang username
+                if (btnId === 'logoutBtn') {
+                    window.location.href = targetPath;
+                } else {
                     window.location.href = targetPath + queryStr;
                 }
             };
-        }
-    };
+        };
 
-    // I-setup lahat ng buttons
-    setupNav('dashboardBtn', '/dashboard');
-    setupNav('adoptionBtn', '/adoption_hub');
-    setupNav('donationBtn', '/donations');
-    setupNav('applicationBtn', '/application');
-    setupNav('profileBtn', '/profile');
-     setupNav('KamustahanBtn', '/kamustahan');
-    // Sa loob ng iyong fetch('/sidebar') logic:
-setupNav('logoutBtn', '/login'); // Gamitin ang route na '/login'
+        // 3. I-map ang mga Button IDs sa kanilang Routes
+        const navConfig = [
+            { id: 'dashboardBtn',   path: '/dashboard' },
+            { id: 'adoptionBtn',    path: '/adoption_hub' },
+            { id: 'donationBtn',    path: '/donations' },
+            { id: 'applicationBtn', path: '/application' },
+            { id: 'KamustahanBtn',  path: '/kamustahan' },
+            { id: 'logoutBtn',      path: '/login' }
+        ];
 
-// At sa event listener:
-btn.onclick = () => {
-    if (btnId === 'logoutBtn') {
-        // Gamitin ang short route '/login'
-        window.location.href = '/login?msg=logged_out';
-    } else if (currentPath !== targetPath) {
-        window.location.href = targetPath + queryStr;
-    }
-};
-});
+        navConfig.forEach(nav => setupNav(nav.id, nav.path));
+    })
+    .catch(err => console.error("Error loading sidebar:", err));
+    // === 5. EVENT LISTENERS ===
 
-    const showMessage = (text, type) => {
-      const msgEl = document.getElementById('formMessage');
-      if (!msgEl) return;
-      msgEl.textContent = text;
-      msgEl.className = 'form-message ' + type;
-    };
+    addNewAppBtn.addEventListener('click', () => showFormView(true));
 
-    const validateForm = (form) => {
-      const requiredFields = [...form.querySelectorAll('[required]')];
-      for (const field of requiredFields) {
-        if (!field.value.trim()) {
-          field.focus();
-          return false;
-        }
-      }
-      return true;
-    };
-    document.addEventListener('DOMContentLoaded', function() {
-  
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const filterValue = e.target.dataset.filter;
+            // Huwag ituloy kung 'all' ang pinindot (dahil inalis na natin ito)
+            if (filterValue === 'all') return;
 
-    const adoptionForm = document.getElementById('adoptionForm');
-    const formContainer = document.getElementById('formContainer'); 
-    const summaryDiv = document.getElementById('displaySummary');
-    const successAlert = document.getElementById('successAlert');
-
-    if (adoptionForm) {
-        adoptionForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    // 1. Kunin ang impormasyon ng pet na naka-display sa page
-    const petData = {
-        petName: document.querySelector('h2').textContent,
-        petImg: document.querySelector('.pet-image').src,
-        status: "Pending Review",
-        // ... iba pang data
-    };
-
-    // 2. I-save sa localStorage
-    localStorage.setItem('userApplication', JSON.stringify(petData));
-
-    // 3. Ipakita ang success message at summary (yung existing code mo)
-    successAlert.style.display = 'block';
-
-       
-    if (successAlert) {
-        successAlert.style.display = 'block';
-    
-        setTimeout(() => {
-            successAlert.style.display = 'none';
-        }, 5000); 
-    
-    }
-
-            const step1Icon = document.getElementById('step1Icon');
-            if (step1Icon) {
-                step1Icon.className = "fa-solid fa-circle-check completed";
-                step1Icon.style.color = "#22c55e";
-            }
-
-            
-            const progressFill = document.getElementById('progressFill');
-            if (progressFill) {
-                progressFill.style.width = "25%";
-                progressFill.style.background = "#22c55e";
-            }
-            document.getElementById('stepCounter').textContent = "1 of 4 steps";
-
-        
-            const statusPill = document.getElementById('statusPill');
-            if (statusPill) {
-                statusPill.textContent = "Pending";
-                statusPill.style.background = "#fef3c7"; 
-                statusPill.style.color = "#92400e";
-            }
-
-            const summaryContent = document.getElementById('summaryContent');
-
-            const lName = document.querySelector('input[placeholder="Enter last name"]').value;
-            const gName = document.querySelector('input[placeholder="Enter given name"]').value;
-            const mName = document.querySelector('input[placeholder="Enter middle name"]').value;
-            const bday = document.querySelector('input[type="date"]').value;
-            const email = document.querySelector('input[type="email"]').value;
-            const phone = document.querySelector('input[type="tel"]').value;
-            const fb = document.querySelector('input[placeholder="https://facebook.com/yourprofile"]').value;
-            const status = document.querySelector('select').value;
-            const reason = document.querySelector('textarea').value;
-
-            if (summaryContent) {
-                summaryContent.innerHTML = `
-                    <div style="display: flex; flex-direction: column; gap: 12px; color: #334155;">
-                        <div style="border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 5px;">
-                            <h3 style="color: #0d4b8c; font-size: 18px;">Application Summary</h3>
-                        </div>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                            <p><strong>Full Name:</strong><br>${gName} ${mName} ${lName}</p>
-                            <p><strong>Birthdate:</strong><br>${bday}</p>
-                            <p><strong>Email:</strong><br>${email}</p>
-                            <p><strong>Phone:</strong><br>${phone}</p>
-                        </div>
-                        
-                        <p><strong>Facebook Profile:</strong><br><a href="${fb}" target="_blank" style="color: #0d4b8c;">${fb}</a></p>
-                        
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                            <p><strong>Employment Status:</strong><br>${status}</p>
-                            <p><strong>Application Status:</strong><br><span style="color: #92400e; font-weight: bold; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">Pending Review</span></p>
-                        </div>
-                        
-                        <p><strong>Reason for Adoption:</strong><br><span style="font-style: italic; color: #64748b;">"${reason}"</span></p>
-                    </div>
-                `;
-
-                summaryDiv.style.display = 'block';
-                if (formContainer) formContainer.style.display = 'none'; 
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            filterBtns.forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            fetchApplications(filterValue);
         });
-    }
+    });
+    const backToListBtn = document.getElementById('backToListBtn');
+if (backToListBtn) {
+    backToListBtn.addEventListener('click', () => {
+        showListView('Active'); // Babalik sa listahan at default na Active ang filter
+    });
+}
+    // === 6. EDIT & CANCEL ACTION LOGIC ===
 
-        
-        document.getElementById('editBtn')?.addEventListener('click', function() {
-            formContainer.style.display = 'block';
-            summaryDiv.style.display = 'none';
-            successAlert.style.display = 'none';
+    // Handle the "Edit Application" button in the Summary View
+    const editBtn = document.getElementById('editBtn');
+    editBtn.addEventListener('click', async () => {
+        if (!currentApplicationId) return;
 
-            const cancelBtn = document.getElementById('cancelBtn');
-            if (cancelBtn) cancelBtn.style.display = 'inline-block'; 
+        try {
+            const response = await fetch(`/api/application-details/${currentApplicationId}`);
+            const app = await response.json();
+
+            // 1. Show the form view
+            showFormView(false); 
+
+            // 2. Populate basic text/date inputs
+            const form = adoptionForm;
+            form.elements['lName'].value = app.lName || app.last_name;
+            form.elements['gName'].value = app.gName || app.given_name;
+            form.elements['mName'].value = app.mName || app.middle_name || '';
+            form.elements['email'].value = app.email;
+            form.elements['phone'].value = app.phone;
+            form.elements['fb'].value = app.fb_link || app.fb;
+            form.elements['reason'].value = app.reason_adoption || app.reason;
             
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+            // Format date for the input (YYYY-MM-DD)
+            if (app.birthdate) {
+                form.elements['bday'].value = new Date(app.birthdate).toISOString().split('T')[0];
+            }
 
+            // 3. Handle Radio Buttons
+            if (form.elements['contact']) form.elements['contact'].value = app.contact_method;
+            if (form.elements['jobStatus']) form.elements['jobStatus'].value = app.employment_status;
+            if (form.elements['fence']) form.elements['fence'].value = app.fenced_yard;
+            if (form.elements['allowed']) form.elements['allowed'].value = app.pets_allowed;
 
-        const cancelBtn = document.getElementById('cancelBtn');
-        if (cancelBtn) {
-            cancelBtn.addEventListener('click', function() {
-                summaryDiv.style.display = 'block';
-                formContainer.style.display = 'none';
-                
-            
-                cancelBtn.style.display = 'none';
-                
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
+            // 4. Handle Checkboxes (Living Type)
+            const livingTypes = app.living_type ? app.living_type.split(', ') : [];
+            form.querySelectorAll('input[name="livingType"]').forEach(cb => {
+                cb.checked = livingTypes.includes(cb.value);
             });
 
-        function updateFileName(input, targetId) {
-            const fileName = input.files[0] ? input.files[0].name : "No file chosen";
-            const target = document.getElementById(targetId);
-            if (target) {
-                target.textContent = fileName;
-                target.style.color = "#0d4b8c";
-                target.style.fontWeight = "bold";
-            }
+            // 5. Change Submit Behavior to UPDATE
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.textContent = "Update Application";
+            
+            // Update the form submission logic for this specific instance
+            form.onsubmit = async (e) => {
+                e.preventDefault();
+                const updatedData = new FormData(form);
+                
+                try {
+                    const updateRes = await fetch(`/api/update-application/${currentApplicationId}`, {
+                        method: 'PUT',
+                        body: updatedData
+                    });
+                    const result = await updateRes.json();
+                    if (result.success) {
+                        successAlert.innerHTML = '<i class="fa-solid fa-check-circle"></i> Application updated successfully!';
+                        successAlert.style.display = 'block';
+                        setTimeout(() => {
+                            successAlert.style.display = 'none';
+                            showListView('Active');
+                            form.onsubmit = null; // Reset submit logic
+                        }, 2000);
+                    }
+                } catch (err) {
+                    alert("Update failed: " + err.message);
+                }
+            };
+
+            // Show cancel button in form
+            document.getElementById('cancelBtn').style.display = 'inline-block';
+
+        } catch (error) {
+            console.error("Edit Error:", error);
+            alert("Error fetching application details for editing.");
         }
-document.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    const petName = urlParams.get('pet');
-    const petImg = urlParams.get('img');
-    const date = urlParams.get('date');
+    });
 
-    if (petName) {
-        document.querySelector('.pet-image').src = petImg;
-        document.querySelector('h2').textContent = petName;
-        document.querySelector('p').textContent = `Date Applied: ${date}`;
-        
-        // I-set ang status pill base sa requirement
-        const statusPill = document.getElementById('statusPill');
-        statusPill.textContent = "Pending";
-    }
+    // Handle "Cancel Application" (Status change to Cancelled)
+    const cancelAppBtn = document.getElementById('cancelAppBtn');
+    cancelAppBtn.addEventListener('click', async () => {
+        if (!confirm("Are you sure you want to cancel this application?")) return;
+
+        try {
+            const response = await fetch(`/api/cancel-application/${currentApplicationId}`, {
+                method: 'DELETE'
+            });
+            const result = await response.json();
+
+            if (result.success) {
+                alert("Application has been cancelled.");
+                showListView('Cancelled');
+            }
+        } catch (error) {
+            alert("Error cancelling application.");
+        }
+    });
+
+    // Handle "Cancel" button inside the Form (just returns to list)
+    document.getElementById('cancelBtn').addEventListener('click', () => {
+        showListView('Active');
+    });
+showListView('Active');
 });
-// Sa application.html (Submit Function)
-const petData = {
-    petName: document.querySelector('h2').textContent, // Pangalan ng Pet
-    petImg: document.querySelector('.pet-image').src, // URL ng image
-    status: "Form Submitted"
-};
-localStorage.setItem('userApplication', JSON.stringify(petData));
-
-// I-save sa localStorage
-localStorage.setItem('currentApplication', JSON.stringify(applicationData));
-
-// Sa application.html (Submit Function)
-const formData = {
-    petName: document.querySelector('h2').textContent, // Tiyakin na ito ay Chada o Chade
-    petImg: document.querySelector('.pet-image').src,
-    // ... iba pang fields
-};
-localStorage.setItem('userApplication', JSON.stringify(formData));
 </script>
 </body>
 </html>

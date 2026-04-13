@@ -507,110 +507,84 @@
     cursor: pointer;
 }
 
+/* Epekto kapag pinindot ang button */
+#confirmBtn:active {
+    transform: scale(0.95);
+    background-color: #0a3d70; /* Mas madilim na kulay konti */
+    transition: 0.1s;
+}
+
+/* Style kapag naka-disable (habang nagse-save) */
+#confirmBtn:disabled {
+    filter: grayscale(0.5);
+    pointer-events: none;
+}
+
  </style>
  <body>
 
-    <div id="sidebar-placeholder"></div>
+<div id="sidebar-placeholder"></div>
 
-    <header class="top-navbar">
-        <div class="header-title-section">
-            <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
-            <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
+<header class="top-navbar">
+    <div class="header-title-section">
+        <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
+        <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
+    </div>
+    <div class="user-profile-section">
+        <div class="notification-bell">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notification-badge">30</span>
         </div>
-        <div class="user-profile-section">
-            <div class="notification-bell">
-                <i class="fa-solid fa-bell"></i>
-                <span class="notification-badge">30</span>
-            </div>
-            <div class="user-info">
-                <img src="../images/dog2.png" alt="Irene" class="user-avatar">
-                <span class="user-name">Irene</span>
-            </div>
+        <div class="user-info">
+            <img src="../images/dog2.png" alt="Irene" class="user-avatar">
+            <span class="user-name">Irene</span>
         </div>
-    </header>
-     <section id="adoptionSection">
-        <div class="page-header">
-            <h1 class="page-title">Adoption Application</h1>
-        </div>
+    </div>
+</header>
 
-        <div class="adoption-tabs">
-            <div class="tab-item active">Active Applications (6)</div>
-            <div class="tab-item">Successful Adoptions (1)</div>
-            <div class="tab-item">Declined Withdrawn (1)</div>
-        </div>
+<section id="adoptionSection">
+    <div class="page-header">
+        <h1 class="page-title">Adoption Application</h1>
+    </div>
+<div class="adoption-tabs">
+    <div class="tab-item active" onclick="switchTab(this, 'Active')">Active Applications</div>
+    <div class="tab-item" onclick="switchTab(this, 'Approved')">Successful Adoptions</div>
+    <div class="tab-item" onclick="switchTab(this, 'Cancelled')">Declined Withdrawn</div>
+</div>
 
-        <div class="main-container">
-            <div class="table-toolbar">
-                <div class="toolbar-top">
-                    <div class="search-wrapper">
-                        <i class="fa fa-search"></i>
-                        <input type="text" placeholder="Search Application or Pet Name...">
-                    </div>
-                    <div class="filter-dropdown">
-                        <i class="fa fa-filter"></i>
-                        <span>Filter Status</span>
-                        <i class="fa fa-chevron-down"></i>
-                    </div>
-                </div>
-                
-                <div class="table-toolbar-headers">
-                    <div>Applicant</div>
-                    <div>Target Pet</div>
-                    <div>Match Score</div>
-                    <div>Status</div>
-                    <div>Date</div>
-                    <div style="text-align: right; padding-right: 20px;">Action</div>
+    <div class="main-container">
+        <div class="table-toolbar">
+            <div class="toolbar-top">
+                <div class="search-wrapper">
+                    <i class="fa fa-search"></i>
+                    <input type="text" id="tableSearch" placeholder="Search Application or Pet Name...">
                 </div>
             </div>
-
-            <div class="table-content">
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Juan Luna</td>
-                            <td>Name ng Aso</td>
-                            <td>80%</td>
-                            <td><span style="color: #02407D; font-weight: 600;">New</span></td>
-                            <td>Feb 25, 2026</td>
-                            <td class="action-cell">
-                                <div class="dropdown-container">
-                                    <div class="dropdown-btn"><i class="fa fa-ellipsis-v"></i></div>
-                                    <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item"><i class="fa fa-pen"></i> Edit</a>
-                                        <a href="#" class="dropdown-item"><i class="fa fa-cog"></i> Manage</a>
-                                        <a href="#" class="dropdown-item"><i class="fa fa-eye"></i> View</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jhyzzeel</td>
-                            <td>Chade</td>
-                            <td>79%</td>
-                            <td><span style="color: #64748b; font-weight: 600;">Under Review</span></td>
-                            <td>Feb 11, 2026</td>
-                            <td class="action-cell">
-                                <div class="dropdown-container">
-                                    <div class="dropdown-btn"><i class="fa fa-ellipsis-v"></i></div>
-                                    <div class="dropdown-menu">
-                                        <a href="#" class="dropdown-item"><i class="fa fa-pen"></i> Edit</a>
-                                        <a href="#" class="dropdown-item"><i class="fa fa-cog"></i> Manage</a>
-                                        <a href="#" class="dropdown-item"><i class="fa fa-eye"></i> View</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            
+            <div class="table-toolbar-headers">
+                <div>Applicant</div>
+                <div>Email Address</div> <div>Target Pet</div>
+                <div>Status</div>
+                <div>Date</div>
+                <div style="text-align: right; padding-right: 20px;">Action</div>
             </div>
         </div>
-        
-    <div id="verificationModal" class="modal-overlay">
+
+        <div class="table-content">
+            <table>
+                <tbody id="adoptionTableBody">
+                    <tr><td colspan="6" style="text-align:center; padding: 20px;">Loading applications...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+   <div id="verificationModal" class="modal-overlay">
     <div class="verification-modal">
         <div class="modal-header-lite">
             <div class="header-left-info">
-                <span class="status-tag-orange">Under Review</span>
-                <span class="submit-date">Submitted on Feb 11, 2026 • 10:24 AM</span>
+                <span class="status-tag-orange" id="modalStatus">Under Review</span>
+                <span class="submit-date" id="modalSubmitDate">Submitted on...</span>
             </div>
             <button class="close-modal-x" onclick="closeManageModal()">&times;</button>
         </div>
@@ -618,251 +592,432 @@
         <div class="modal-body-grid">
             <div class="left-col">
                 <div class="profile-section">
-                    <div class="avatar-box">JD</div>
+                    <div class="avatar-box" id="modalAvatar">JD</div>
                     <div class="name-loc">
-                        <h2>Jhyzzeel Dianela</h2>
-                        <p><i class="fa fa-map-marker-alt"></i> Pili, Camarines Sur</p>
+                        <h2 id="modalApplicantName" style="margin:0; font-size: 20px;">---</h2>
+                        <p id="modalBday" style="font-size: 13px; color: #64748b; margin: 5px 0;"><i class="fa fa-calendar"></i> ---</p>
                     </div>
                 </div>
 
                 <div class="info-grid">
-                    <div class="info-item">
-                        <label>Contact Details</label>
-                        <p>08347732622</p>
-                        <p>jhy@gmail.com</p>
-                    </div>
-                    <div class="info-item">
-                        <label>Employment Status</label>
-                        <p>Student</p>
-                        <span style="font-size: 12px; background:#E0F2FE; color:#0369A1; padding:2px 8px; border-radius:5px;">Single</span>
-                    </div>
-                    <div class="info-item">
-                        <label>Home Environment</label>
-                        <div class="environment-box">Pet exp. <br><strong>1 pet</strong></div>
-                    </div>
-                    <div class="info-item">
-                        <label>Living Space</label>
-                        <div class="environment-box">Living Space <br><strong>Residential Space</strong></div>
-                    </div>
+    <div class="info-item">
+        <label>Contact Details</label>
+        <p id="modalPhone">---</p>
+        <p id="modalEmail">---</p>
+        <p style="font-size:12px;">Method: <span id="modalMethod" style="font-weight:600;">---</span></p>
+        <p id="modalFB">---</p>
+    </div>
+    <div class="info-item">
+        <label>Employment Status</label>
+        <p id="modalEmployment">---</p>
+        <p style="font-size:12px;">Has Experience: <span id="modalExp" style="font-weight:600;">---</span></p>
+    </div>
+    <div class="info-item">
+        <label>Home Environment</label>
+        <div class="environment-box" id="modalLivingType">---</div>
+        <p style="font-size:11px; margin-top:5px;">Pets Allowed: <span id="modalAllowed" style="font-weight:600;">---</span></p>
+    </div>
+    <div class="info-item">
+        <label>Property Details</label>
+        <div class="environment-box" id="modalFence">---</div>
+    </div>
+</div>
+
+                <div class="reason-box" style="margin-top: 15px; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                    <label style="color:#94A3B8; font-size:11px; font-weight:700; text-transform: uppercase;">Reason for Adoption</label>
+                    <p id="modalReason" style="font-size: 14px; line-height: 1.5; color: #334155; margin-top: 5px;">---</p>
                 </div>
 
-                <div class="reason-box">
-                    <label style="color:#94A3B8; font-size:12px; font-weight:600;">Reason for Adoptions</label>
-                    <p>"I want to give a loving home. I believe that pets are family and deserve a safe space to grow and feel loved."</p>
-                </div>
-
-                <div class="pet-target-card">
-                    <img src="../images/dog-chade.png" alt="Chade"> <div>
-                        <h3 style="font-size:18px; color:#1E293B;">Chade</h3>
-                        <p style="color:#64748B; font-size:13px;">Date Applied: Feb 22, 2026</p>
+                <div class="pet-target-card" style="margin-top: 15px; display: flex; align-items: center; gap: 12px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <img src="../images/dog-chade.png" id="modalPetImg" alt="Pet" style="width: 50px; height: 50px; border-radius: 6px; object-fit: cover;">
+                    <div>
+                        <h3 style="font-size:15px; color:#1E293B; margin:0;" id="modalPetName">---</h3>
+                        <p style="color:#64748B; font-size:12px; margin:0;">Target Pet</p>
                     </div>
                 </div>
             </div>
 
             <div class="right-col">
-                <h3 class="section-title">Verification Details</h3>
-                <div class="files-grid">
-                    <div class="file-item"><i class="fa-regular fa-id-card"></i>ID_PROOF.PNG</div>
-                    <div class="file-item"><i class="fa-solid fa-map-location-dot"></i>ADDRESS.PNG</div>
-                    <div class="file-item"><i class="fa-solid fa-house-chimney"></i>HOUS_VIEW.PNG</div>
+                <h3 class="section-title" style="font-size: 14px; margin-bottom: 10px;">Verification Details</h3>
+                <div class="files-grid" style="display: grid; gap: 8px; margin-bottom: 20px;">
+                    <div class="file-item" style="padding: 10px; background: #f1f5f9; border-radius: 6px; font-size: 12px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-regular fa-id-card"></i> ID_PROOF.PNG
+                    </div>
+                    <div class="file-item" style="padding: 10px; background: #f1f5f9; border-radius: 6px; font-size: 12px; display: flex; align-items: center; gap: 10px;">
+                        <i class="fa-solid fa-map-location-dot"></i> ADDRESS_PROOF.PNG
+                    </div>
                 </div>
-
+                
                 <div class="admin-notes-area">
-                    <h3 class="section-title">Internal Admin Messages</h3>
-                    <textarea placeholder="Add a private Note or feedback to the applicant..."></textarea>
+                    <h3 class="section-title" style="font-size: 14px; margin-bottom: 10px;">Internal Admin Messages</h3>
+                    <textarea placeholder="Add a private note..." style="width: 100%; height: 100px; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; resize: none; font-size: 13px;"></textarea>
                 </div>
             </div>
         </div>
 
-        <div class="modal-footer">
-            <button class="btn-decline">Decline Application</button>
-            <div class="footer-right-btns">
-                <button class="btn-schedule"><i class="fa-regular fa-calendar"></i> Schedule Interview</button>
-                <button class="btn-approve">Approve & Finalize</button>
-            </div>
-        </div>
+     <div class="modal-footer" id="modalFooter" ...>
+    <button class="btn-decline" onclick="handleDecline()" style="...">Decline</button>
+    
+    <div class="footer-right-btns" style="display: flex; gap: 10px;">
+        <button class="btn-schedule" onclick="openInterviewModal()" style="...">
+            <i class="fa-regular fa-calendar"></i> Schedule
+        </button>
+        <button class="btn-approve" onclick="handleApprove()" style="...">Approve</button>
     </div>
 </div>
-<div id="interviewModal" class="modal-overlay">
-    <div class="interview-card">
-        <div class="interview-header">
-            <h2>Interview Setup</h2>
-            <button class="close-modal-x" onclick="closeInterviewModal()">&times;</button>
-        </div>
+    </div>
+</div>
+<div id="interviewModal" class="modal-overlay" style="display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;">
+    <div class="interview-card" style="background: white; width: 400px; padding: 30px; border-radius: 40px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+        <button onclick="closeInterviewModal()" style="position: absolute; right: 25px; top: 20px; border: none; background: none; font-size: 20px; cursor: pointer; color: #94a3b8;">&times;</button>
         
-        <div class="interview-body">
-            <div class="input-group">
-                <label>Set Date</label>
-                <input type="date" class="full-input">
-            </div>
+        <h2 style="text-align: center; color: #0d4b8c; font-size: 24px; margin-bottom: 25px; font-weight: 700;">Interview Setup</h2>
 
-            <div class="input-group">
-                <label>Select Slot</label>
-                <select class="full-input">
-                    <option>9:00 A.M - 10:00 A.M</option>
-                    <option>10:30 A.M - 11:30 A.M</option>
-                    <option>1:00 P.M - 2:00 P.M</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Interview Method</label>
-                <div class="method-grid">
-                    <div class="method-option active">
-                        <i class="fa-solid fa-building-user"></i>
-                        <span>On-site</span>
-                    </div>
-                    <div class="method-option">
-                        <i class="fa-solid fa-video"></i>
-                        <span>Virtual</span>
-                    </div>
-                </div>
-            </div>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 12px; color: #94a3b8; font-weight: 600; margin-bottom: 8px;">Set Date</label>
+            <input type="date" id="interviewDate" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-family: inherit;">
         </div>
 
-        <div class="interview-footer">
-            <button class="btn-cancel" onclick="closeInterviewModal()">Cancel</button>
-            <button class="btn-confirm">Confirm Schedule</button>
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; font-size: 12px; color: #94a3b8; font-weight: 600; margin-bottom: 8px;">Select Slot</label>
+            <select id="interviewSlot" style="width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; background: white;">
+                <option>9:00 A.M - 10:00 A.M</option>
+                <option>10:00 A.M - 11:00 A.M</option>
+                <option>1:00 P.M - 2:00 P.M</option>
+                <option>2:00 P.M - 3:00 P.M</option>
+            </select>
         </div>
-    </div>
+
+        <div style="margin-bottom: 30px;">
+            <label style="display: block; font-size: 12px; color: #94a3b8; font-weight: 600; margin-bottom: 8px;">Interview Method</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+    <button type="button" class="method-btn" id="btnOnSite" onclick="setMethod('On-site', this)" 
+        style="padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; background: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: all 0.2s;">
+        <i class="fa-solid fa-building" style="font-size: 18px; color: #cbd5e1;"></i>
+        <span style="font-size: 12px; font-weight: 600; color: #64748b;">On-site</span>
+    </button>
+    
+    <button type="button" class="method-btn" id="btnVirtual" onclick="setMethod('Virtual', this)" 
+        style="padding: 15px; border: 1px solid #e2e8f0; border-radius: 12px; background: white; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 5px; transition: all 0.2s;">
+        <i class="fa-solid fa-video" style="font-size: 18px; color: #cbd5e1;"></i>
+        <span style="font-size: 12px; font-weight: 600; color: #64748b;">Virtual</span>
+    </button>
 </div>
-    </section>
 
-    <script>
-       fetch('sidebar.html')
-.then(res => res.text())
-.then(data => {
-    document.getElementById('sidebar-placeholder').innerHTML = data;
+        <div style="display: flex; gap: 10px;">
+    <button onclick="closeInterviewModal()" style="flex: 1; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; background: white; font-weight: 600; cursor: pointer;">Cancel</button>
+    <button id="confirmBtn" onclick="confirmSchedule()" style="flex: 1; padding: 12px; border: none; border-radius: 10px; background: #0d4b8c; color: white; font-weight: 600; cursor: pointer;">Confirm Schedule</button>
+</div>
+</section>
+<script>
+// ==========================================
+// 1. GLOBAL VARIABLES & INITIALIZATION
+// ==========================================
+let currentAppId = null; 
+let currentTab = 'Active';
+let selectedMethod = "Virtual"; 
 
-    // ✅ ACTIVE PAGE (blue highlight)
-    const currentPage = window.location.pathname.split("/").pop();
-
-    const navMap = {
-        "home.html": "dashboardBtn",
-        "organizations.html": "organizationsBtn",
-        "animals.html": "animalsBtn",
-        "adoptions.html": "adoptionBtn",
-        "donation.html": "donationBtn",
-        "announcement.html": "announcementsBtn",
-        "monitoring.html": "monitoringBtn",
-        "analytics.html": "analyticsBtn",
-        "settings.html": "settingsBtn",
-        "support.html": "supportBtn"
-    };
-
-    if(navMap[currentPage]) {
-        document.getElementById(navMap[currentPage])?.classList.add("active-item");
-    }
-
-    // ✅ CLICK NAVIGATION
-    const routes = {
-        dashboardBtn: "home.html",
-        organizationsBtn: "organizations.html",
-        animalsBtn: "animals.html",
-        adoptionBtn: "adoptions.html",
-        donationBtn: "donation.html",
-        announcementsBtn: "announcement.html",
-        monitoringBtn: "monitoring.html",
-        analyticsBtn: "analytics.html",
-        settingsBtn: "settings.html",
-        supportBtn: "support.html"
-    };
-
-    Object.keys(routes).forEach(id => {
-        const el = document.getElementById(id);
-        if(el){
-            el.addEventListener("click", () => {
-                window.location.href = routes[id];
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    // Sidebar Loader & Navigation
+    fetch('sidebar.html')
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById('sidebar-placeholder').innerHTML = data;
+        const currentPage = window.location.pathname.split("/").pop();
+        
+        const navMap = { 
+            "home.html": "dashboardBtn",
+            "organizations.html": "organizationsBtn",
+            "animals.html": "animalsBtn",
+            "adoptions.html": "adoptionBtn",
+            "donation.html": "donationBtn",
+            "announcement.html": "announcementsBtn",
+            "monitoring.html": "monitoringBtn",
+            "analytics.html": "analyticsBtn",
+            "settings.html": "settingsBtn",
+            "support.html": "supportBtn"
+        };
+        
+        if(navMap[currentPage]) {
+            document.getElementById(navMap[currentPage])?.classList.add("active-item");
         }
+        
+        const routes = {
+            dashboardBtn: "home.html",
+            organizationsBtn: "organizations.html",
+            animalsBtn: "animals.html",
+            adoptionBtn: "adoptions.html",
+            donationBtn: "donation.html",
+            announcementsBtn: "announcement.html",
+            monitoringBtn: "monitoring.html",
+            analyticsBtn: "analytics.html",
+            settingsBtn: "settings.html",
+            supportBtn: "support.html"
+        };
+
+        Object.keys(routes).forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.addEventListener("click", () => window.location.href = routes[id]);
+        });
+    });
+
+    // Load Initial Data
+    loadAdoptions();
+
+    // Search Filter
+    document.getElementById('tableSearch')?.addEventListener('keyup', function() {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#adoptionTableBody tr');
+        rows.forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(filter) ? '' : 'none';
+        });
     });
 });
-document.addEventListener('DOMContentLoaded', function() {
-        // Kunin lahat ng dropdown buttons
-        const dropdownBtns = document.querySelectorAll('.dropdown-btn');
 
-        dropdownBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // Pigilan ang propagation para hindi agad magsara
-                e.stopPropagation();
+// ==========================================
+// 2. TABLE & TAB LOGIC
+// ==========================================
+async function loadAdoptions(statusFilter = 'Active') {
+    try {
+        const tbody = document.getElementById('adoptionTableBody');
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Loading applications...</td></tr>';
 
-                // Isara muna ang ibang nakabukas na menus (kung meron)
-                closeAllDropdowns();
+        const response = await fetch('/admin/api/adoptions'); 
+        const allData = await response.json();
 
-                // Hanapin ang menu na katabi ng clinick na button at ipakita
-                const menu = this.nextElementSibling;
-                menu.classList.toggle('show');
-            });
-        });
-
-        // Isara ang menu kapag clinick sa labas nito
-        window.addEventListener('click', function() {
-            closeAllDropdowns();
-        });
-
-        function closeAllDropdowns() {
-            const openMenus = document.querySelectorAll('.dropdown-menu.show');
-            openMenus.forEach(menu => {
-                menu.classList.remove('show');
-            });
+        let filteredData = [];
+        if (statusFilter === 'Active') {
+            filteredData = allData.filter(app => !['Approved', 'Cancelled', 'Withdrawn', 'Declined'].includes(app.status));
+        } else if (statusFilter === 'Approved') {
+            filteredData = allData.filter(app => app.status === 'Approved');
+        } else if (statusFilter === 'Cancelled') {
+            filteredData = allData.filter(app => ['Cancelled', 'Declined', 'Withdrawn'].includes(app.status));
         }
+
+        tbody.innerHTML = '';
+        if (filteredData.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 50px; color: #94a3b8;"><i class="fa-regular fa-folder-open" style="font-size: 40px; display: block; margin-bottom: 10px;"></i><p style="font-weight: 600;">No records found for ${statusFilter} applications.</p></td></tr>`;
+            return;
+        }
+
+        filteredData.forEach(app => {
+            const dateStr = new Date(app.date_applied).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            let actionHtml = statusFilter === 'Active' 
+                ? `<a href="#" class="dropdown-item" onclick="openManageModal(${app.id}, false)"><i class="fa fa-cog"></i> Manage</a>`
+                : `<a href="#" class="dropdown-item" onclick="openManageModal(${app.id}, true)"><i class="fa fa-eye"></i> View</a>`;
+
+            const row = `
+                <tr>
+                    <td><strong>${app.applicant_name}</strong></td>
+                    <td style="color: #64748b;">${app.email}</td>
+                    <td>${app.pet_name}</td>
+                    <td><span style="color: ${getStatusColor(app.status)}; font-weight: 600;">${app.status}</span></td>
+                    <td>${dateStr}</td>
+                    <td class="action-cell">
+                        <div class="dropdown-container">
+                            <div class="dropdown-btn" onclick="toggleDropdown(event)"><i class="fa fa-ellipsis-v"></i></div>
+                            <div class="dropdown-menu">${actionHtml}</div>
+                        </div>
+                    </td>
+                </tr>`;
+            tbody.insertAdjacentHTML('beforeend', row);
+        });
+    } catch (err) {
+        console.error("Error loading table:", err);
+        document.getElementById('adoptionTableBody').innerHTML = '<tr><td colspan="6" style="text-align:center; color:red;">Failed to load data.</td></tr>';
+    }
+}
+
+function switchTab(element, status) {
+    document.querySelectorAll('.tab-item').forEach(tab => tab.classList.remove('active'));
+    element.classList.add('active');
+    currentTab = status;
+    loadAdoptions(status);
+}
+
+// ==========================================
+// 3. MODAL & INTERVIEW LOGIC
+// ==========================================
+async function openManageModal(id, readOnly = false) {
+    currentAppId = id;
+    try {
+        const res = await fetch(`/admin/api/adoptions/${id}`);
+        if (!res.ok) throw new Error("Database connection error");
+        const app = await res.json();
+
+        // Populate Basic Info
+        const given = app.given_name || "";
+        const last = app.last_name || "";
+        const middle = app.middle_name ? ` ${app.middle_name.charAt(0)}.` : "";
+        document.getElementById('modalApplicantName').textContent = `${given}${middle} ${last}`.trim();
+        document.getElementById('modalAvatar').textContent = (given[0] || "") + (last[0] || "");
+        document.getElementById('modalPetName').textContent = app.pet_name || "No Pet Selected";
+
+        // Details
+        document.getElementById('modalBday').innerHTML = app.birthdate 
+            ? `<i class="fa fa-calendar"></i> ${new Date(app.birthdate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` 
+            : "---";
+        document.getElementById('modalPhone').textContent = app.phone || "---";
+        document.getElementById('modalEmail').textContent = app.email || "---";
+        document.getElementById('modalMethod').textContent = app.contact_method || "---";
+        
+        // FB Link
+        const fbEl = document.getElementById('modalFB');
+        if (app.fb_link && app.fb_link !== "---") {
+            const link = app.fb_link.startsWith('http') ? app.fb_link : 'https://' + app.fb_link;
+            fbEl.innerHTML = `<a href="${link}" target="_blank" style="color:#0d4b8c; text-decoration:none; font-weight:600;"><i class="fa-brands fa-facebook"></i> View Profile</a>`;
+        } else { fbEl.textContent = "No Link Provided"; }
+
+        // Employment & Home
+        document.getElementById('modalEmployment').textContent = app.employment_status || "---";
+        document.getElementById('modalExp').textContent = app.pet_experience || "---";
+        document.getElementById('modalLivingType').textContent = app.living_type || "---";
+        document.getElementById('modalAllowed').textContent = app.pets_allowed || "---";
+        document.getElementById('modalFence').textContent = `Fenced Yard: ${app.fenced_yard || "---"}`;
+        document.getElementById('modalReason').textContent = app.reason_adoption || "No reason provided.";
+
+        // Status
+        document.getElementById('modalStatus').textContent = app.status || "Pending";
+        document.getElementById('modalSubmitDate').textContent = app.date_applied 
+            ? `Submitted on ${new Date(app.date_applied).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
+            : "Date unknown";
+
+        // Verification Files
+        const filesContainer = document.querySelector('.files-grid');
+        filesContainer.innerHTML = `
+            <a href="${app.valid_id_path}" target="_blank" class="file-item" style="text-decoration:none; color:inherit; display: block;">
+                <div style="padding: 10px; background: #f1f5f9; border-radius: 6px; font-size: 12px; display: flex; align-items: center; gap: 10px;"><i class="fa-regular fa-id-card"></i> VALID ID</div>
+            </a>
+            <a href="${app.proof_address_path}" target="_blank" class="file-item" style="text-decoration:none; color:inherit; display: block;">
+                <div style="padding: 10px; background: #f1f5f9; border-radius: 6px; font-size: 12px; display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-map-location-dot"></i> ADDRESS PROOF</div>
+            </a>`;
+
+        // UI Read-only Check
+        const footer = document.getElementById('modalFooter');
+        const adminNotes = document.querySelector('.admin-notes-area');
+        footer.style.display = readOnly ? 'none' : 'flex';
+        if (adminNotes) adminNotes.style.display = readOnly ? 'none' : 'block';
+
+        document.getElementById('verificationModal').style.display = 'flex';
+    } catch (err) { 
+        console.error("Fetch Error:", err);
+        alert("Failed to load applicant data.");
+    }
+}
+
+function openInterviewModal() {
+    document.getElementById('verificationModal').style.display = 'none';
+    document.getElementById('interviewModal').style.display = 'flex';
+    const virtualBtn = document.getElementById('btnVirtual');
+    if(virtualBtn) setMethod('Virtual', virtualBtn);
+}
+
+function setMethod(method, btn) {
+    selectedMethod = method;
+    document.querySelectorAll('.method-btn').forEach(b => {
+        b.style.border = "1px solid #e2e8f0"; b.style.background = "white";
+        const icon = b.querySelector('i'); const span = b.querySelector('span');
+        if(icon) icon.style.color = "#cbd5e1"; if(span) span.style.color = "#64748b";
     });
-        document.addEventListener('click', function(e) {
-    // 1. Dropdown toggle (Existing logic)
-    const btn = e.target.closest('.dropdown-btn');
-    if (btn) {
-        const menu = btn.nextElementSibling;
-        const isOpen = menu.classList.contains('show');
-        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
-        if (!isOpen) menu.classList.add('show');
+    btn.style.border = "2px solid #1e40af"; btn.style.background = "#eff6ff";
+    const activeIcon = btn.querySelector('i'); const activeSpan = btn.querySelector('span');
+    if(activeIcon) activeIcon.style.color = "#1e40af"; if(activeSpan) activeSpan.style.color = "#1e40af";
+}
+async function confirmSchedule() {
+    const dateInput = document.getElementById('interviewDate');
+    const slotInput = document.getElementById('interviewSlot');
+    const confirmBtn = document.getElementById('confirmBtn');
+
+    if (!dateInput.value) {
+        alert("⚠️ Please select a date.");
         return;
     }
 
-    // 2. Manage Button Click
-    const manageBtn = e.target.closest('.dropdown-item');
-    if (manageBtn && manageBtn.textContent.includes('Manage')) {
-        e.preventDefault();
-        document.getElementById('verificationModal').style.display = 'flex';
-        manageBtn.closest('.dropdown-menu').classList.remove('show'); // Isara ang dropdown
-    }
+    try {
+        confirmBtn.disabled = true;
 
-    // 3. Close Modal Click
-    if (e.target.classList.contains('close-modal-btn') || e.target.classList.contains('modal-overlay')) {
-        document.getElementById('verificationModal').style.display = 'none';
-    }
+        const response = await fetch(`/admin/api/adoptions/${currentAppId}/schedule`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                interview_date: dateInput.value,
+                interview_time: slotInput.value,
+                interview_method: selectedMethod
+            })
+        });
 
-    // Isara ang dropdown kung click sa labas
-    if (!e.target.closest('.dropdown-container')) {
-        document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+        // I-check kung ang HTTP status ay 200-299
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Server responded with an error");
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            alert("✨ " + data.message); // DAPAT LUMABAS NA ITO
+            closeInterviewModal();
+            loadAdoptions(currentTab);
+        }
+
+    } catch (err) {
+        console.error("Fetch Error:", err);
+        alert("❌ Error: " + err.message);
+    } finally {
+        confirmBtn.disabled = false;
     }
-});
-// Function para sa Interview Modal
-function openInterviewModal() {
-    // Itago muna ang Verification Modal (Optional, depende kung gusto mo overlay sila)
-    document.getElementById('verificationModal').style.display = 'none';
-    // Ipakita ang Interview Modal
-    document.getElementById('interviewModal').style.display = 'flex';
+}
+// ==========================================
+// 4. ACTION HANDLERS (Approve/Decline)
+// ==========================================
+async function updateApplicationStatus(newStatus) {
+    if (!currentAppId) return;
+    const notes = document.querySelector('.admin-notes-area textarea').value;
+    try {
+        const response = await fetch(`/admin/api/adoptions/${currentAppId}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status: newStatus, admin_notes: notes })
+        });
+        const data = await response.json();
+        if (response.ok && data.success) {
+            alert(data.message);
+            closeManageModal();
+            loadAdoptions(currentTab);
+        } else { alert(data.message || "Failed to update status."); }
+    } catch (err) { alert("Server error occurred."); }
 }
 
-function closeInterviewModal() {
-    document.getElementById('interviewModal').style.display = 'none';
+function handleDecline() {
+    if (confirm("Are you sure you want to decline?")) updateApplicationStatus('Cancelled');
 }
 
-// Event Listeners
-document.addEventListener('click', function(e) {
-    // Pag click sa "Schedule Interview" button sa loob ng Manage Modal
-    if (e.target.closest('.btn-schedule')) {
-        openInterviewModal();
-    }
+function handleApprove() {
+    if (confirm("Mark this application as Approved?")) updateApplicationStatus('Approved');
+}
 
-    // Logic para sa pagpili ng Interview Method (Toggle active class)
-    const methodOpt = e.target.closest('.method-option');
-    if (methodOpt) {
-        document.querySelectorAll('.method-option').forEach(opt => opt.classList.remove('active'));
-        methodOpt.classList.add('active');
-    }
-});
+// ==========================================
+// 5. UI HELPERS
+// ==========================================
+function closeManageModal() { document.getElementById('verificationModal').style.display = 'none'; }
+function closeInterviewModal() { document.getElementById('interviewModal').style.display = 'none'; }
+function getStatusColor(status) {
+    const s = status ? status.toLowerCase() : '';
+    if(s === 'approved') return '#10b981'; // Green
+    if(s.includes('scheduled')) return '#8b5cf6'; // Violet/Purple
+    if(s === 'cancelled' || s === 'declined') return '#ef4444'; // Red
+    if(s.includes('review')) return '#f59e0b'; // Orange
+    return '#64748b'; // Gray default
+}
+function toggleDropdown(e) {
+    e.stopPropagation();
+    closeAllDropdowns();
+    e.currentTarget.nextElementSibling.classList.toggle('show');
+}
+function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-menu.show').forEach(m => m.classList.remove('show'));
+}
+window.addEventListener('click', () => closeAllDropdowns());
 </script>
-    </body>
+</body>
 </html>
-    

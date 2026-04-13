@@ -24,6 +24,7 @@ router.post('/login', async (req, res) => {
 
         if (isMatch) {
             // 1. I-set ang Session data
+            
             req.session.userId = user.id;
             req.session.username = user.username;
             
