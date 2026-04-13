@@ -51,6 +51,27 @@ const response = await fetch('http://localhost:3000/api/animals');
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
+        .sidebar-brand-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo {
+            height: 35px;
+        }
+
+        .sidebar-brand-text {
+            line-height: 1;
+        }
+
+        .sidebar-subtitle {
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
         /* --- CONTROLS --- */
         .animals-controls { display: flex; align-items: center; gap: 15px; margin-bottom: 35px; flex-wrap: wrap; }
         .search-box { flex: 1; min-width: 200px; position: relative; }
@@ -105,7 +126,7 @@ const response = await fetch('http://localhost:3000/api/animals');
             display: grid; 
             grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); 
             gap: 25px;
-            border: solid 2px red;
+            /* border: solid 2px red; */
         }
 
         .animal-card { 
@@ -456,7 +477,30 @@ const response = await fetch('http://localhost:3000/api/animals');
 .view-footer {
     margin-top: auto;
     padding-top: 30px;
-    text-align: right;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    align-items: center;
+}
+
+.delete-record-btn {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.update-record-btn {
+    margin-left: auto;
+}
+.delete-record-btn:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
 }
 
 .update-record-btn {
@@ -524,7 +568,7 @@ const response = await fetch('http://localhost:3000/api/animals');
                     <option value="Female">Female</option>
                 </select>
             </div>
-            <button class="add-btn-main" onclick="openFormModal('add')"><i class="fa fa-plus"></i> Add New Animal</button>
+            <button class="add-btn-main" onclick="openFormModal('add')"><i class="fa fa-plus"></i> Add New Record</button>
         </div>
 
         <div class="animals-grid" id="mainGrid">
@@ -606,6 +650,7 @@ const response = await fetch('http://localhost:3000/api/animals');
                 </div>
 
                 <div class="view-footer">
+                    <button class="delete-record-btn" onclick="deleteRecord()">Delete Record</button>
                     <button class="update-record-btn" onclick="openFormModal('update')">Update Record</button>
                 </div>
             </div>
@@ -1129,7 +1174,14 @@ function formatDateText(rawDate) {
 function openViewModal(animal) {
     currentData = animal; // Save for update/edit purposes
 
-    document.getElementById('v-name').innerText = animal.name;
+    // Add emoji based on species
+    const speciesEmoji = {
+        'dog': '🐶',
+        'cat': '🐱'
+    };
+    const emoji = speciesEmoji[(animal.species || '').toLowerCase()] || '';
+
+    document.getElementById('v-name').innerText = `${emoji} ${animal.name}`.trim();
     document.getElementById('v-meta').innerText = `${animal.breed} · ${animal.gender} · ${formatAgeText(animal.age)}`;
     document.getElementById('v-img').src = "/uploads/" + (animal.image_url || 'https://via.placeholder.com/300x200?text=No+Image');
     document.getElementById('v-loc').innerText = animal.rescue_location || 'Not recorded';
@@ -1175,6 +1227,33 @@ function openViewModal(animal) {
     }
     
     document.getElementById('viewModal').style.display = 'flex';
+}
+
+async function deleteRecord() {
+    if (!currentData || !currentData.animal_id) {
+        alert('Unable to delete: no animal selected.');
+        return;
+    }
+
+    const confirmed = confirm(`Delete ${currentData.name || 'this animal'} permanently?`);
+    if (!confirmed) return;
+
+    try {
+        const response = await fetch(`http://localhost:3000/api/animals/${currentData.animal_id}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            throw new Error('Delete request failed');
+        }
+
+        closeModal('viewModal');
+        alert('Record deleted successfully.');
+        loadAnimals();
+    } catch (error) {
+        console.error(error);
+        alert('Could not delete the record. Check console for details.');
+    }
 }
 
 // ✅ ADD TRAIT

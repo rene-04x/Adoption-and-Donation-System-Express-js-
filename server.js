@@ -167,6 +167,25 @@ app.put('/api/animals/:id', upload.single('profile_photo'), async (req, res) => 
     }
 });
 
+// DELETE /api/animals/:id - Delete animal and related medical history
+app.delete('/api/animals/:id', async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        await db.promise().query(`DELETE FROM animal_medical_history WHERE animal_id = ?`, [id]);
+        const [result] = await db.promise().query(`DELETE FROM animals WHERE animal_id = ?`, [id]);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Animal record not found' });
+        }
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to delete animal record' });
+    }
+});
+
 // POST /api/animals - Add new animal
 app.post('/api/animals', upload.single('profile_photo'), async (req, res) => {
     const {
@@ -222,7 +241,6 @@ app.post('/api/animals', upload.single('profile_photo'), async (req, res) => {
     }
 });
 
-//  404 Handler - Catches any request that doesn't match a route
 app.use((req, res) => {
     console.warn(`[404] Resource not found: ${req.url}`);
     res.status(404).send(`
