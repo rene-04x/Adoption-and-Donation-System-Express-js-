@@ -245,6 +245,122 @@
       font-size: 0.85rem;
       color: var(--text-gray);
     }
+
+    /* Status Badge Styles */
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+        background-color: #fef3c7;
+        color: #d97706; /* Warning Orange */
+    }
+
+    .status-verified {
+        background-color: #d1fae5;
+        color: #059669; /* Success Green */
+    }
+
+    .status-rejected {
+        background-color: #fee2e2;
+        color: #dc2626; /* Error Red */
+    }
+
+    /* Container para sa listahan */
+    #transactionList {
+        max-height: 400px; /* Limitahan ang taas */
+        overflow-y: auto;  /* Magkaroon ng scrollbar kung lalampas sa 400px */
+        padding-right: 10px; /* Space para sa scrollbar */
+        margin-bottom: 1rem;
+    }
+
+    /* Custom Scrollbar para magmukhang modern */
+    #transactionList::-webkit-scrollbar {
+        width: 6px;
+    }
+    #transactionList::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+        border-radius: 10px;
+    }
+
+    /* View All Button Style */
+    .view-all-btn {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        text-align: center;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        color: var(--accent-blue);
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .view-all-btn:hover {
+        background: var(--light-blue);
+        border-color: var(--accent-blue);
+        transform: translateY(-2px);
+    }
+
+    /* Modal Styles */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(15, 23, 42, 0.6); /* Backdrop color */
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 24px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-heavy);
+    position: relative;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-modal {
+    position: sticky;
+    top: 0;
+    float: right;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-gray);
+    transition: 0.3s;
+}
+
+.close-modal:hover {
+    color: var(--error-red);
+}
+
+.modal-header {
+    margin-bottom: 1.5rem;
+}
   </style>
 </head>
 <body>
@@ -285,10 +401,24 @@
             <p>You've Donated. Thank you for making a difference.</p>
           </div>
           
-          <div id="transactionList">
-            </div>
+          <div id="transactionList"></div>
+          <button class="view-all-btn" onclick="openFullHistory()">
+            View All Transactions <i class="fa-solid fa-arrow-up-right-from-square" style="margin-left: 8px;"></i>
+        </button>
         </section>
       </div>
+
+      <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-header">
+                <h2 style="font-weight: 800; color: var(--primary-blue);">Full Transaction History</h2>
+                <p style="color: var(--text-gray); font-size: 0.9rem;">Review all your contributions to PAWSsion.</p>
+            </div>
+            <div id="fullTransactionList">
+                </div>
+        </div>
+    </div>
 
       <!-- Calendar Widget -->
       <div class="calendar-widget">
@@ -422,21 +552,29 @@ fetch('/sidebar')
 
   /* Transaction History - Placeholder for dynamic data fetching*/
   async function loadTransactions() {
-    try {
-      const response = await fetch('/api/user-donations'); // Palitan mo ng tamang route mo
-      const donations = await response.json();
+  try {
+    const response = await fetch('/api/user-donations');
+    const donations = await response.json();
 
-      const section = document.getElementById('transactionSection');
-      const list = document.getElementById('transactionList');
+    const section = document.getElementById('transactionSection');
+    const list = document.getElementById('transactionList');
 
-      // CHECK: Kung may lamang array ang donations
-      if (donations && donations.length > 0) {
-        section.style.display = 'block'; // Ipakita ang section
-        
-       list.innerHTML = donations.map(d => {
-        // 1. Tukuyin kung ano ang ipapakitang label (Ref No o Email)
+    if (donations && donations.length > 0) {
+      section.style.display = 'block';
+      
+      list.innerHTML = donations.map(d => {
         const isCash = d.type.toLowerCase() === 'cash';
         const subDetailLabel = isCash ? `Ref No: ${d.ref_no}` : `Email: ${d.email}`;
+        
+        // DYNAMIC STATUS COLOR LOGIC
+        const rawStatus = d.status ? d.status.toLowerCase() : 'pending';
+        let statusClass = 'status-pending';
+        
+        if (rawStatus === 'verified' || rawStatus === 'approved' || rawStatus === 'completed') {
+            statusClass = 'status-verified';
+        } else if (rawStatus === 'rejected') {
+            statusClass = 'status-rejected';
+        }
 
         return `
           <div class="transaction-card">
@@ -445,9 +583,8 @@ fetch('/sidebar')
                 <i class="fa-solid ${isCash ? 'fa-wallet' : 'fa-box-open'}" style="color: #3b82f6;"></i>
               </div>
               <div class="details">
-                <h3>${isCash ? '₱' + d.amount : d.item_name}</h3>
+                <h3>${isCash ? '₱' + Number(d.amount).toLocaleString(undefined, {minimumFractionDigits: 2}) : d.item_name}</h3>
                 <p>${isCash ? (d.payment_method || 'GCash') : 'In-Kind Donation'}</p>
-                
                 <p style="font-size: 0.75rem; margin-top: 5px; color: var(--text-gray);">
                   ${subDetailLabel}
                 </p>
@@ -461,18 +598,18 @@ fetch('/sidebar')
                         <i class="fa-regular fa-file-lines"></i> Digital Receipt
                     </button>
                 ` : ''}
-                <span style="color: #10b981; font-weight: 600; font-size: 0.75rem;">${d.status}</span>
+                <span class="status-badge ${statusClass}">${d.status}</span>
             </div>
           </div>
         `;
       }).join('');
-      } else {
-        section.style.display = 'none'; // Itago kung walang record
-      }
-    } catch (error) {
-      console.error("Error loading transactions:", error);
+    } else {
+      section.style.display = 'none';
     }
+  } catch (error) {
+    console.error("Error loading transactions:", error);
   }
+}
 
   loadTransactions();
 
@@ -485,6 +622,35 @@ fetch('/sidebar')
     // Ang path kung saan naka-store ang images mo (halimbawa: /uploads/receipts/)
     const receiptPath = '/uploads/receipts/' + imgName;
     window.open(receiptPath, '_blank');
+}
+
+// Function para buksan ang modal
+function openFullHistory() {
+    const mainList = document.getElementById('transactionList').innerHTML;
+    const modalList = document.getElementById('fullTransactionList');
+    const modal = document.getElementById('historyModal');
+
+    // Kopyahin ang content mula sa dashboard list papunta sa modal
+    modalList.innerHTML = mainList;
+    
+    // Ipakita ang modal
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden'; // I-disable ang scroll ng main page
+}
+
+// Function para isara ang modal
+function closeModal() {
+    const modal = document.getElementById('historyModal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto'; // I-enable ulit ang scroll
+}
+
+// Isara ang modal kapag clinick sa labas ng box
+window.onclick = function(event) {
+    const modal = document.getElementById('historyModal');
+    if (event.target == modal) {
+        closeModal();
+    }
 }
 </script>
 </body>
