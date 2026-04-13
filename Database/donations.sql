@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2026 at 08:32 PM
+-- Generation Time: Apr 13, 2026 at 12:45 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,7 +40,7 @@ CREATE TABLE `donations` (
   `ref_no` varchar(100) DEFAULT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp(),
   `receipt_img` varchar(255) DEFAULT NULL,
-  `status` enum('pending','received','rejected') DEFAULT 'pending'
+  `status` enum('pending','verified','rejected') DEFAULT 'pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -48,14 +48,20 @@ CREATE TABLE `donations` (
 --
 
 INSERT INTO `donations` (`id`, `user_id`, `donor_name`, `type`, `amount`, `item_name`, `email`, `phone`, `payment_method`, `ref_no`, `date`, `receipt_img`, `status`) VALUES
-(6, 10, 'Irene Espeleta', 'Cash', 20.00, NULL, NULL, NULL, 'GCash', '1234567898765', '2026-04-10 17:06:45', 'receipt-1775840805591.png', 'pending'),
-(9, 10, 'Irene Espeleta', 'Cash', 50.00, NULL, NULL, NULL, 'GCash', '2345433333333', '2026-04-10 17:23:11', 'receipt-1775841791289.png', 'pending'),
-(11, 10, 'Irene Espeleta', 'Cash', 700.00, 'Purpose: needed_most', NULL, NULL, 'GCash', '5555555555555', '2026-04-10 17:44:30', 'receipt-1775843070350.png', 'pending'),
-(12, 10, 'Irene Espeleta', 'Cash', 577.00, 'Purpose: needed_most', NULL, NULL, 'GCash', '5555555555555', '2026-04-10 17:45:11', 'receipt-1775843111504.png', 'pending'),
-(13, 10, 'Irene Espeleta', '', NULL, 'dog food', 'irespeleta@my.cspc.edu.ph', '09767567555', NULL, NULL, '2026-04-10 17:49:39', NULL, 'pending'),
-(14, 10, 'Irene Espeleta', 'Cash', 5.00, 'Purpose: General', NULL, NULL, 'GCash', '5555555555555', '2026-04-10 17:54:46', 'receipt-1775843685847.png', 'pending'),
-(15, 10, 'Irene Espeleta', 'Cash', 56.00, 'Purpose: medical', NULL, NULL, 'GCash', '5555555555555', '2026-04-10 17:56:07', 'receipt-1775843767017.png', 'pending'),
-(16, 10, 'Irene Espeleta', '', NULL, 'cat food', 'irespeleta@my.cspc.edu.ph', '09434444444', NULL, NULL, '2026-04-10 17:56:56', NULL, 'pending');
+(11, 10, 'Irene Espeleta', 'Cash', 700.00, 'food', NULL, NULL, 'GCash', '5555555555555', '2026-04-10 17:44:30', 'receipt-1775843070350.png', 'pending'),
+(12, 10, 'Irene Espeleta', 'Cash', 57.00, 'needed_most', NULL, NULL, 'GCash', '5555555555555', '2026-04-10 17:45:11', 'receipt-1775843111504.png', 'verified'),
+(13, 10, 'Irene Espeleta', '', NULL, 'dog food', 'irespeleta@my.cspc.edu.ph', '09767567555', NULL, NULL, '2026-04-10 17:49:39', NULL, 'verified'),
+(14, 10, 'Irene Espeleta', 'Cash', 5.00, 'General', NULL, NULL, 'GCash', '5555555555555', '2026-04-10 17:54:46', 'receipt-1775843685847.png', 'verified'),
+(15, 10, 'Irene Espeleta', 'Cash', 56.00, 'medical', NULL, NULL, 'GCash', '5555555555555', '2026-04-10 17:56:07', 'receipt-1776074766405-128835324.png', 'pending'),
+(16, 10, 'Irene Espeleta', '', NULL, 'cat food', 'irespeleta@my.cspc.edu.ph', '09434444444', NULL, NULL, '2026-04-10 17:56:56', NULL, 'rejected'),
+(27, 10, 'Irene Espeleta', '', NULL, 'dog food', 'irespeleta@my.cspc.edu.ph', '90666666666', NULL, NULL, '2026-04-12 11:33:58', NULL, 'verified'),
+(28, 10, 'Irene Espeleta', 'Cash', 500.00, 'General', NULL, NULL, 'GCash', '5555555555555', '2026-04-12 11:39:25', 'receipt-1775993965644.png', 'verified'),
+(29, 10, 'Irene Espeleta', '', NULL, 'si miguela', 'irespeleta@my.cspc.edu.ph', '09444444444', NULL, NULL, '2026-04-12 11:41:43', NULL, 'verified'),
+(30, 10, 'Miguela Baluca', 'Cash', 30.00, 'medical', NULL, NULL, 'GCash', '4546466464664', '2026-04-12 12:55:32', 'receipt-1775998532749.png', 'verified'),
+(31, 10, 'Carla', 'Cash', 30.00, 'medical', NULL, NULL, 'GCash', '1111111111111', '2026-04-12 14:03:28', 'receipt-1776074073939-977223910.png', 'verified'),
+(32, 10, 'Shanice Magbanua', 'Cash', 600.00, 'food', NULL, NULL, 'GCash', '1111111111111', '2026-04-13 08:13:26', 'receipt-1776068006188.png', 'pending'),
+(33, 10, 'Jhyzzeel Dionela', '', NULL, 'poop', 'Jhyzzeel@gmail.com', '09455555555', NULL, NULL, '2026-04-13 10:20:54', NULL, 'pending'),
+(34, 10, 'Jhyzeell', '', NULL, 'fhcf', 'irespeleta@my.cspc.edu.ph', '09678676767', NULL, NULL, '2026-04-13 10:29:17', NULL, 'pending');
 
 --
 -- Indexes for dumped tables
@@ -76,7 +82,7 @@ ALTER TABLE `donations`
 -- AUTO_INCREMENT for table `donations`
 --
 ALTER TABLE `donations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- Constraints for dumped tables
