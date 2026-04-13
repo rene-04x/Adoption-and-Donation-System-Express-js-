@@ -311,55 +311,110 @@
     }
 
     /* Modal Styles */
-.modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1000; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    background-color: rgba(15, 23, 42, 0.6); /* Backdrop color */
-    backdrop-filter: blur(4px);
-    align-items: center;
-    justify-content: center;
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1000; 
+        left: 0;
+        top: 0;
+        width: 100%; 
+        height: 100%; 
+        background-color: rgba(15, 23, 42, 0.6); /* Backdrop color */
+        backdrop-filter: blur(4px);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 24px;
+        width: 90%;
+        max-width: 700px;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: var(--shadow-heavy);
+        position: relative;
+        animation: slideIn 0.3s ease-out;
+    }
+
+    @keyframes slideIn {
+        from { transform: translateY(20px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    .close-modal {
+        position: sticky;
+        top: 0;
+        float: right;
+        font-size: 1.5rem;
+        font-weight: bold;
+        cursor: pointer;
+        color: var(--text-gray);
+        transition: 0.3s;
+    }
+
+    .close-modal:hover {
+        color: var(--error-red);
+    }
+
+    .modal-header {
+        margin-bottom: 1.5rem;
+    }
+
+    /* Receipt Modal Specific Styles */
+.receipt-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
-.modal-content {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 24px;
-    width: 90%;
-    max-width: 700px;
-    max-height: 80vh;
-    overflow-y: auto;
-    box-shadow: var(--shadow-heavy);
-    position: relative;
-    animation: slideIn 0.3s ease-out;
+.receipt-img-container {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--light-blue);
 }
 
-@keyframes slideIn {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+.receipt-img-container img {
+    width: 100%;
+    display: block;
 }
 
-.close-modal {
-    position: sticky;
-    top: 0;
-    float: right;
-    font-size: 1.5rem;
-    font-weight: bold;
-    cursor: pointer;
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.info-label {
     color: var(--text-gray);
-    transition: 0.3s;
+    font-size: 0.9rem;
 }
 
-.close-modal:hover {
-    color: var(--error-red);
+.info-value {
+    font-weight: 600;
+    color: var(--primary-blue);
 }
 
-.modal-header {
-    margin-bottom: 1.5rem;
+.reason-box {
+    background: #fff1f2;
+    border: 1px solid #fda4af;
+    padding: 1rem;
+    border-radius: 12px;
+    color: #9f1239;
+}
+
+.edit-btn {
+    background: var(--gradient-accent);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
 }
   </style>
 </head>
@@ -415,7 +470,17 @@
                 <h2 style="font-weight: 800; color: var(--primary-blue);">Full Transaction History</h2>
                 <p style="color: var(--text-gray); font-size: 0.9rem;">Review all your contributions to PAWSsion.</p>
             </div>
-            <div id="fullTransactionList">
+            <div id="fullTransactionList"></div>
+        </div>
+      </div>
+
+      <div id="receiptModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-modal" onclick="closeReceiptModal()">&times;</span>
+            <div class="modal-header">
+                <h2 id="receiptTitle" style="font-weight: 800;">Donation Details</h2>
+            </div>
+            <div id="receiptModalBody" class="receipt-modal-body">
                 </div>
         </div>
     </div>
@@ -558,51 +623,20 @@ fetch('/sidebar')
 
     const section = document.getElementById('transactionSection');
     const list = document.getElementById('transactionList');
+    const modalList = document.getElementById('fullTransactionList');
 
     if (donations && donations.length > 0) {
       section.style.display = 'block';
-      
-      list.innerHTML = donations.map(d => {
-        const isCash = d.type.toLowerCase() === 'cash';
-        const subDetailLabel = isCash ? `Ref No: ${d.ref_no}` : `Email: ${d.email}`;
-        
-        // DYNAMIC STATUS COLOR LOGIC
-        const rawStatus = d.status ? d.status.toLowerCase() : 'pending';
-        let statusClass = 'status-pending';
-        
-        if (rawStatus === 'verified' || rawStatus === 'approved' || rawStatus === 'completed') {
-            statusClass = 'status-verified';
-        } else if (rawStatus === 'rejected') {
-            statusClass = 'status-rejected';
-        }
 
-        return `
-          <div class="transaction-card">
-            <div class="transaction-info">
-              <div class="transaction-icon" style="background: #eef2ff;">
-                <i class="fa-solid ${isCash ? 'fa-wallet' : 'fa-box-open'}" style="color: #3b82f6;"></i>
-              </div>
-              <div class="details">
-                <h3>${isCash ? '₱' + Number(d.amount).toLocaleString(undefined, {minimumFractionDigits: 2}) : d.item_name}</h3>
-                <p>${isCash ? (d.payment_method || 'GCash') : 'In-Kind Donation'}</p>
-                <p style="font-size: 0.75rem; margin-top: 5px; color: var(--text-gray);">
-                  ${subDetailLabel}
-                </p>
-              </div>
-            </div>
-            
-            <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
-                ${isCash ? `
-                    <button onclick="openReceipt('${d.receipt_img}')" 
-                            style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; color: #475569;">
-                        <i class="fa-regular fa-file-lines"></i> Digital Receipt
-                    </button>
-                ` : ''}
-                <span class="status-badge ${statusClass}">${d.status}</span>
-            </div>
-          </div>
-        `;
-      }).join('');
+      // 1. I-render ang Full History sa Modal agad (Lahat ng transactions)
+      const fullHtml = donations.map(d => generateTransactionHTML(d)).join('');
+      modalList.innerHTML = fullHtml;
+
+      // 2. I-render ang Recent History sa Dashboard (Top 3 lang)
+      const recentDonations = donations.slice(0, 3);
+      const recentHtml = recentDonations.map(d => generateTransactionHTML(d)).join('');
+      list.innerHTML = recentHtml;
+
     } else {
       section.style.display = 'none';
     }
@@ -611,31 +645,50 @@ fetch('/sidebar')
   }
 }
 
-  loadTransactions();
-
-  function openReceipt(imgName) {
-    if (!imgName || imgName === 'null') {
-        alert("No digital receipt uploaded for this transaction.");
-        return;
-    }
+// 3. Helper Function para hindi paulit-ulit ang code ng HTML
+function generateTransactionHTML(d) {
+    const isCash = d.type.toLowerCase() === 'cash';
+    const subDetailLabel = isCash ? `Ref No: ${d.ref_no}` : `Email: ${d.email}`;
     
-    // Ang path kung saan naka-store ang images mo (halimbawa: /uploads/receipts/)
-    const receiptPath = '/uploads/receipts/' + imgName;
-    window.open(receiptPath, '_blank');
+    const rawStatus = d.status ? d.status.toLowerCase() : 'pending';
+    let statusClass = 'status-pending';
+    if (rawStatus === 'verified') statusClass = 'status-verified';
+    else if (rawStatus === 'rejected') statusClass = 'status-rejected';
+
+    return `
+      <div class="transaction-card">
+        <div class="transaction-info">
+          <div class="transaction-icon" style="background: #eef2ff;">
+            <i class="fa-solid ${isCash ? 'fa-wallet' : 'fa-box-open'}" style="color: #3b82f6;"></i>
+          </div>
+          <div class="details">
+            <h3>${isCash ? '₱' + Number(d.amount).toLocaleString(undefined, {minimumFractionDigits: 2}) : d.item_name}</h3>
+            <p>${isCash ? (d.payment_method || 'GCash') : 'In-Kind Donation'}</p>
+            <p style="font-size: 0.75rem; margin-top: 5px; color: var(--text-gray);">${subDetailLabel}</p>
+          </div>
+        </div>
+        <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
+            ${isCash ? `
+               <button onclick='openReceipt(${JSON.stringify(d)})' 
+                  style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; color: #475569;">
+                  <i class="fa-regular fa-file-lines"></i> View Details
+              </button>
+            ` : ''}
+            <span class="status-badge ${statusClass}">${d.status}</span>
+        </div>
+      </div>
+    `;
 }
+
+  loadTransactions();
 
 // Function para buksan ang modal
 function openFullHistory() {
     const mainList = document.getElementById('transactionList').innerHTML;
     const modalList = document.getElementById('fullTransactionList');
     const modal = document.getElementById('historyModal');
-
-    // Kopyahin ang content mula sa dashboard list papunta sa modal
-    modalList.innerHTML = mainList;
-    
-    // Ipakita ang modal
     modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // I-disable ang scroll ng main page
+    document.body.style.overflow = 'hidden';
 }
 
 // Function para isara ang modal
@@ -651,6 +704,75 @@ window.onclick = function(event) {
     if (event.target == modal) {
         closeModal();
     }
+}
+
+function openReceipt(data) {
+    console.log("Donation Data from Controller:", data); 
+    
+    const modal = document.getElementById('receiptModal');
+    const body = document.getElementById('receiptModalBody');
+    
+    if (!data) return;
+
+    // Ang status sa DB mo ay "Rejected" (Capital R base sa controller)
+    const status = data.status ? data.status.toLowerCase() : 'pending';
+    
+    // Safety check para sa date format
+    const formattedDate = (data.date && data.date !== '0000-00-00') 
+    ? new Date(data.date).toLocaleDateString() 
+    : 'Pending Review';
+
+    let content = `
+        <div class="receipt-img-container">
+            <img src="/uploads/receipts/${data.receipt_img}" onerror="this.src='https://via.placeholder.com/300x400?text=No+Image'">
+        </div>
+        <div class="info-grid">
+            <div class="info-row"><span class="info-label">Type:</span> <span class="info-value">${data.type ? data.type.toUpperCase() : 'N/A'}</span></div>
+            <div class="info-row"><span class="info-label">Amount/Item:</span> <span class="info-value">${data.type === 'cash' ? '₱' + Number(data.amount).toLocaleString() : data.item_name}</span></div>
+            <div class="info-row"><span class="info-label">Date Submitted:</span> <span class="info-value">${formattedDate}</span></div>
+            <div class="info-row"><span class="info-label">Status:</span> <span class="status-badge status-${status === 'verified' ? 'verified' : (status === 'rejected' ? 'rejected' : 'pending')}">${data.status}</span></div>
+        </div>
+    `;
+
+    // Sinusunod ang aliases mula sa exports.getAllDonationsAPI
+    if (status === 'rejected') {
+        const reason = data.rejection_reason || 'No specific reason provided.';
+        const proof = data.rejection_proof_img;
+        const notes = data.rejection_notes;
+
+        content += `
+            <div class="reason-box" style="margin-top: 15px; background: #fff1f2; border: 1px solid #fda4af; padding: 1rem; border-radius: 12px;">
+                <p style="font-weight: 700; margin-bottom: 5px; color: #9f1239;">
+                    <i class="fa-solid fa-circle-exclamation"></i> Rejection Details:
+                </p>
+                <p style="color: #9f1239; margin-bottom: 5px;"><strong>Reason:</strong> ${reason}</p>
+                ${notes ? `<p style="color: #9f1239; font-size: 0.85rem; margin-bottom: 10px;"><strong>Notes:</strong> ${notes}</p>` : ''}
+                
+                ${proof ? `
+                    <p style="font-size: 0.8rem; font-weight: 600; margin-bottom: 5px; color: #9f1239;">Admin Proof of Discrepancy:</p>
+                    <img src="/uploads/rejections/${proof}" style="width:100%; border-radius:8px; border: 1px solid #fda4af;">
+                ` : ''}
+            </div>
+        `;
+    } else if (status === 'pending') {
+        content += `
+            <button class="edit-btn" onclick="editDonation('${data.id}')" style="margin-top: 15px;">
+                <i class="fa-regular fa-pen-to-square"></i> Update Donation Info
+            </button>
+        `;
+    }
+
+    body.innerHTML = content;
+    modal.style.display = 'flex';
+}
+
+function closeReceiptModal() {
+    document.getElementById('receiptModal').style.display = 'none';
+}
+
+function editDonation(id) {
+    // I-redirect sa donation page mo na may ID para ma-load ang current data sa form
+    window.location.href = `/donations?edit=${id}`;
 }
 </script>
 </body>

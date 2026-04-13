@@ -21,15 +21,24 @@ const renderUserPage = (req, res, fileName, errorMsg) => {
 // Sa controllers/userController.js
 exports.getDonationsAPI = async (req, res) => {
     try {
-        const userId = req.session.userId; // Kunin ang ID ng naka-login
+        const userId = req.session.userId; 
         
-        // Query para kunin ang donations ng specific user lang
-        const [rows] = await db.query(
-            "SELECT * FROM donations WHERE user_id = ? ORDER BY date DESC", 
-            [userId]
-        );
+        // QUERY UPDATE: Gagamit ng LEFT JOIN para makuha ang rejection details
+        const query = `
+            SELECT 
+                d.*, 
+                r.reason AS rejection_reason, 
+                r.proof_path AS rejection_proof_img, 
+                r.notes AS rejection_notes,
+                r.rejected_at AS rejection_date
+            FROM donations d
+            LEFT JOIN rejection_logs r ON d.id = r.donation_id
+            WHERE d.user_id = ? 
+            ORDER BY d.date DESC
+        `;
+        
+        const [rows] = await db.query(query, [userId]);
 
-        // I-se-send sa frontend ang array (pwedeng may laman, pwedeng empty [])
         res.json(rows); 
     } catch (err) {
         console.error("Database error:", err);
