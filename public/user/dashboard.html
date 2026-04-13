@@ -655,6 +655,9 @@ function generateTransactionHTML(d) {
     if (rawStatus === 'verified') statusClass = 'status-verified';
     else if (rawStatus === 'rejected') statusClass = 'status-rejected';
 
+    // Stringify safely for the onclick attribute
+    const dataAttr = btoa(JSON.stringify(d)); 
+
     return `
       <div class="transaction-card">
         <div class="transaction-info">
@@ -668,18 +671,21 @@ function generateTransactionHTML(d) {
           </div>
         </div>
         <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;">
-            ${isCash ? `
-               <button onclick='openReceipt(${JSON.stringify(d)})' 
+            <button onclick='openReceiptFromBase64("${dataAttr}")' 
                   style="padding: 6px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 0.75rem; display: flex; align-items: center; gap: 5px; color: #475569;">
                   <i class="fa-regular fa-file-lines"></i> View Details
-              </button>
-            ` : ''}
+            </button>
             <span class="status-badge ${statusClass}">${d.status}</span>
         </div>
       </div>
     `;
 }
 
+// Add this helper function
+function openReceiptFromBase64(base64Data) {
+    const data = JSON.parse(atob(base64Data));
+    openReceipt(data);
+}
   loadTransactions();
 
 // Function para buksan ang modal
@@ -714,10 +720,9 @@ function openReceipt(data) {
     
     if (!data) return;
 
-    // Ang status sa DB mo ay "Rejected" (Capital R base sa controller)
+    // Ang status sa DB mo ay "Rejected" (Ginagawang lowercase para sa consistency)
     const status = data.status ? data.status.toLowerCase() : 'pending';
     
-    // Safety check para sa date format
     const formattedDate = (data.date && data.date !== '0000-00-00') 
     ? new Date(data.date).toLocaleDateString() 
     : 'Pending Review';
@@ -734,18 +739,18 @@ function openReceipt(data) {
         </div>
     `;
 
-    // Sinusunod ang aliases mula sa exports.getAllDonationsAPI
+    // --- DITO MO ILALAGAY YUNG REJECTION DETAILS ---
     if (status === 'rejected') {
         const reason = data.rejection_reason || 'No specific reason provided.';
         const proof = data.rejection_proof_img;
         const notes = data.rejection_notes;
 
         content += `
-            <div class="reason-box" style="margin-top: 15px; background: #fff1f2; border: 1px solid #fda4af; padding: 1rem; border-radius: 12px;">
+            <div class="reason-box" style="margin-top: 15px; background: #fff1f2; border: 1px solid #fda4af; padding: 1rem; border-radius: 12px; text-align: left;">
                 <p style="font-weight: 700; margin-bottom: 5px; color: #9f1239;">
                     <i class="fa-solid fa-circle-exclamation"></i> Rejection Details:
                 </p>
-                <p style="color: #9f1239; margin-bottom: 5px;"><strong>Reason:</strong> ${reason}</p>
+                <p style="color: #9f1239; margin-bottom: 5px; font-size: 0.9rem;"><strong>Reason:</strong> ${reason}</p>
                 ${notes ? `<p style="color: #9f1239; font-size: 0.85rem; margin-bottom: 10px;"><strong>Notes:</strong> ${notes}</p>` : ''}
                 
                 ${proof ? `
@@ -754,10 +759,16 @@ function openReceipt(data) {
                 ` : ''}
             </div>
         `;
-    } else if (status === 'pending') {
+    }
+
+    // --- BUTTON LOGIC ---
+    if (status === 'pending' || status === 'rejected') {
         content += `
-            <button class="edit-btn" onclick="editDonation('${data.id}')" style="margin-top: 15px;">
-                <i class="fa-regular fa-pen-to-square"></i> Update Donation Info
+            <button class="edit-btn" onclick="editDonation('${data.id}')" 
+                style="margin-top: 15px; width: 100%; border: none; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; color: white;
+                ${status === 'rejected' ? 'background: #f59e0b;' : 'background: var(--gradient-accent);'}">
+                <i class="fa-regular fa-pen-to-square"></i> 
+                ${status === 'rejected' ? 'Fix & Resubmit' : 'Update Info'}
             </button>
         `;
     }
@@ -771,8 +782,16 @@ function closeReceiptModal() {
 }
 
 function editDonation(id) {
-    // I-redirect sa donation page mo na may ID para ma-load ang current data sa form
-    window.location.href = `/donations?edit=${id}`;
+    // Kunin ang kasalukuyang username mula sa URL kung mayroon
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    
+    let targetURL = `/donations?edit=${id}`;
+    if (username) {
+        targetURL += `&username=${encodeURIComponent(username)}`;
+    }
+    
+    window.location.href = targetURL;
 }
 </script>
 </body>

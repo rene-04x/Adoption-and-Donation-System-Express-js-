@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const mysql = require('mysql2');
 const multer = require('multer'); // 👈 ADD HERE
-const upload = multer({ dest: 'public/uploads/' });
+const upload = require('./middleware/uploads');
 // 1. IMPORT ROUTES
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -59,6 +59,60 @@ db.connect((err) => {
         return;
     }
     console.log('Connected to MySQL database');
+});
+
+// GET /api/get-donation/:id - Kunin ang data ng isang donation para sa update
+app.get('/api/get-donation/:id', (req, res) => {
+    const id = req.params.id;
+    const query = 'SELECT * FROM donations WHERE id = ?';
+
+    db.query(query, [id], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database query failed" });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: "Donation not found" });
+        }
+        res.json(results[0]); // Ibalik ang unang result bilang JSON object
+    });
+});
+
+// POST /update-donation/:id - I-update ang donation record
+app.post('/update-donation/:id', upload.single('receipt'), (req, res) => {
+    const donationId = req.params.id;
+    const { donorName, amount, refNo, item_name } = req.body;
+    
+    const receiptImg = req.file ? req.file.filename : null;
+
+    // TANGGALIN ang rejection_notes dito dahil nasa ibang table ito
+    const sql = `
+        UPDATE donations SET 
+            donor_name = ?, 
+            amount = ?, 
+            ref_no = ?, 
+            item_name = ?, 
+            status = 'Pending',
+            receipt_img = COALESCE(?, receipt_img)
+        WHERE id = ?
+    `;
+
+    // Siguraduhin na ang amount ay hindi empty string para hindi maging 0 sa DB
+    const finalAmount = (amount === '' || amount === null) ? null : amount;
+
+    const params = [donorName, finalAmount, refNo, item_name, receiptImg, donationId];
+
+    db.query(sql, params, (err, result) => {
+        if (err) {
+            console.error("Database Error:", err);
+            return res.status(500).json({ success: false, message: "Failed to update database." });
+        }
+        
+        // OPTIONAL: Kung gusto mong burahin ang rejection log kapag nag-resubmit
+        // db.query('DELETE FROM rejection_logs WHERE donation_id = ?', [donationId]);
+
+        res.json({ success: true, message: "Resubmitted successfully!" });
+    });
 });
 
 // Route to get all animals with their medical history
