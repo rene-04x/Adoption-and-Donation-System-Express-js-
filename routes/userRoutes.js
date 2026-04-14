@@ -5,14 +5,10 @@ const path = require('path');
 const fs = require('fs');
 const { isAuthenticated } = require('../middleware/auth');
 const userController = require('../controllers/userController');
-<<<<<<< HEAD
-const db = require('../Database/db');
-const multer = require('multer');
-=======
 const bcrypt = require('bcrypt');
 const db = require('../Database/db'); // I-import ang connection natin
 const upload = require('../middleware/uploads');
->>>>>>> 75c6da04e6b1286dfdcae09efbb70554840ec537
+const multer = require('multer'); // Idagdag mo ito sa Line 1
 
 // --- AUTHENTICATION & DASHBOARD ROUTES ---
 router.get('/api/user', (req, res) => {
@@ -36,21 +32,27 @@ router.get('/sidebar', (req, res) => res.sendFile(path.join(__dirname, '../publi
 
 // --- ADOPTION APPLICATION ROUTES ---
 // Configure Multer Storage
+// --- ADOPTION APPLICATION ROUTES ---
+// 1. I-define muna ang storage configuration
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadDir = 'public/uploads/applications/';
-        if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+        }
         cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname);
     }
 });
-const upload = multer({ storage: storage });
+
+// 2. Ngayon, pwede mo nang gamitin ang 'storage' variable dito
+const uploadApp = multer({ storage: storage });
 
 // --- POST ROUTE (CREATE) ---
 // --- POST ROUTE (CREATE) ---
-router.post('/api/submit-application', upload.fields([
+router.post('/api/submit-application', uploadApp.fields([
     { name: 'validId', maxCount: 1 }, 
     { name: 'proofAddress', maxCount: 1 }
 ]), async (req, res) => {
@@ -112,7 +114,7 @@ router.post('/api/submit-application', upload.fields([
 // 2. UPDATE (PUT) - Idagdag ang upload middleware dito!
 
 
-    router.put('/api/update-application/:id', upload.fields([
+    router.put('/api/update-application/:id', uploadApp.fields([
     { name: 'validId', maxCount: 1 }, 
     { name: 'proofAddress', maxCount: 1 }
 ]), async (req, res) => {

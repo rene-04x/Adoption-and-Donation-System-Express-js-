@@ -4,11 +4,6 @@ const path = require('path');
 const adminController = require('../controllers/adminController');
 const upload = require('../middleware/uploads');
 
-<<<<<<< HEAD
-
-// Page Routes
-router.get('/', adminController.getHome); 
-=======
 router.post('/reject-donation', upload.single('proofMismatch'), adminController.rejectDonation);
 router.post('/verify-donation', adminController.verifyDonation);
 
@@ -19,7 +14,6 @@ router.get('/donations-data', adminController.getAllDonationsAPI);
 router.get('/donations-data', adminController.getAllDonationsAPI);
 
 router.get('/admin_dashboard', adminController.getHome); 
->>>>>>> 75c6da04e6b1286dfdcae09efbb70554840ec537
 router.get('/animals', adminController.getAnimals);
 router.get('/adoptions', adminController.getAdoptions); // Render the HTML page
 router.get('/donations', adminController.getDonations);

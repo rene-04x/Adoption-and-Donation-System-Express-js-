@@ -6,9 +6,6 @@ const sendAdminFile = (req, res, fileName) => {
     res.sendFile(path.join(__dirname, '../public/admin', fileName));
 };
 
-<<<<<<< HEAD
-// --- PAGE RENDERERS ---
-=======
 // Kunin lahat ng donations kasama ang rejection details (kung meron)
 exports.getAllDonationsAPI = async (req, res) => {
     try {
@@ -80,7 +77,6 @@ exports.verifyDonation = async (req, res) => {
     }
 };
 
->>>>>>> 75c6da04e6b1286dfdcae09efbb70554840ec537
 exports.getHome = (req, res) => sendAdminFile(req, res, 'home.html');
 exports.getAnimals = (req, res) => sendAdminFile(req, res, 'animals.html');
 exports.getAdoptions = (req, res) => sendAdminFile(req, res, 'adoptions.html'); 
