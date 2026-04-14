@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-
+const mysql = require('mysql2');
+const multer = require('multer'); // 👈 ADD HERE
+const upload = multer({ dest: 'public/uploads/' });
 // 1. IMPORT ROUTES
 const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
@@ -14,16 +16,14 @@ const { isAdmin } = require('./middleware/auth');
 //to use session
 const session = require('express-session');
 
-// Sa server.js, i-update ang session part:
 app.use(session({
-    secret: 'PAWSsion_Safe_Key_2026_@dm1n',
-    resave: true, // Gawing true muna
-    saveUninitialized: true, // Gawing true muna
-    cookie: { 
-        secure: false, // Dahil naka-http (localhost) ka lang
-        maxAge: 3600000 
-    }
+    secret: 'PAWSsion_Safe_Key_2026_@dm1n', // Kahit anong string na mahaba
+    resave: false,
+    saveUninitialized: false,
+    cookie: { maxAge: 3600000 } // Mag-e-expire ang login after 1 hour
 }));
+
+
 // 3. SET UP MIDDLEWARES (Dapat mauna ang mga ito bago ang Routes)
 app.use(logger); // Custom Logger Middleware para sa "Excellent" rating
 app.use(express.json());
@@ -33,6 +33,9 @@ app.use(express.static('public')); // Para sa static assets gaya ng CSS at Image
 // Protected Admin Routes - dadaan muna sa isAdmin auth check
 app.use('/admin', isAdmin, adminRoutes); 
 
+// Para mabasa ang images sa browser
+app.use('/uploads', express.static('public/uploads'));
+
 // User and Auth Routes
 app.use('/', userRoutes);
 app.use('/', authRoutes);
@@ -40,6 +43,182 @@ app.use('/', authRoutes);
 // 5. LANDING PAGE (Main Route)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/landing_page/index.html'));
+});
+
+// DATABASE CONNECTION 
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'adoption_db'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('Database connection failed:', err);
+        return;
+    }
+    console.log('Connected to MySQL database');
+});
+
+// Route to get all animals with their medical history
+app.get('/api/animals', (req, res) => {
+    const query = `
+    SELECT 
+        a.animal_id,
+        a.name,
+        a.gender,
+        a.breed,
+        a.age_months AS age,
+        a.color_markings AS color,
+        a.behavior_traits AS traits,
+        a.current_status AS status,
+        a.rescue_area AS rescue_location,
+        a.rescue_date,
+        a.rescue_story,
+        a.profile_photo AS image_url,
+        GROUP_CONCAT(
+            JSON_OBJECT(
+                'treatment', m.treatment_name, 
+                'date', m.date_administered, 
+                'by', m.administered_by
+            )
+        ) AS medical_history
+    FROM animals a
+    LEFT JOIN animal_medical_history m 
+    ON a.animal_id = m.animal_id
+    GROUP BY a.animal_id`;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: "Database query failed" });
+        }
+        res.json(results);
+    });
+});
+app.put('/api/animals/:id', upload.single('profile_photo'), async (req, res) => {
+    const id = req.params.id;
+
+    const {
+        name,
+        species,
+        gender,
+        breed,
+        age_months,
+        color_markings,
+        behavior_traits,
+        current_status,
+        rescue_date,
+        rescue_area,
+        rescue_story,
+        medical_history
+    } = req.body;
+
+    const profile_photo = req.file ? req.file.filename : null;
+
+    try {
+        // UPDATE ANIMAL
+        await db.promise().query(`
+            UPDATE animals SET
+                name=?,
+                species=?,
+                gender=?,
+                breed=?,
+                age_months=?,
+                color_markings=?,
+                behavior_traits=?,
+                current_status=?,
+                rescue_date=?,
+                rescue_area=?,
+                rescue_story=?,
+                profile_photo=COALESCE(?, profile_photo)
+            WHERE animal_id=?
+        `, [
+            name, species, gender, breed,
+            age_months, color_markings,
+            behavior_traits, current_status,
+            rescue_date, rescue_area,
+            rescue_story,
+            profile_photo,
+            id
+        ]);
+
+        // DELETE OLD MEDICAL
+        await db.promise().query(`DELETE FROM animal_medical_history WHERE animal_id=?`, [id]);
+
+        // INSERT NEW MEDICAL
+        const medList = JSON.parse(medical_history || '[]');
+
+        for (const m of medList) {
+            await db.promise().query(`
+                INSERT INTO animal_medical_history 
+                (animal_id, treatment_name, date_administered, administered_by)
+                VALUES (?, ?, ?, ?)
+            `, [id, m.treatment, m.date, m.by]);
+        }
+
+        res.json({ success: true });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err });
+    }
+});
+
+// POST /api/animals - Add new animal
+app.post('/api/animals', upload.single('profile_photo'), async (req, res) => {
+    const {
+        name,
+        species,
+        gender,
+        breed,
+        age_months,
+        color_markings,
+        behavior_traits,
+        current_status,
+        rescue_date,
+        rescue_area,
+        rescue_story,
+        medical_history
+    } = req.body;
+
+    const profile_photo = req.file ? req.file.filename : null;
+
+    try {
+        // INSERT ANIMAL
+        const [result] = await db.query(`
+            INSERT INTO animals 
+            (name, species, gender, breed, age_months, color_markings, behavior_traits, current_status, rescue_date, rescue_area, rescue_story, profile_photo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `, [
+            name, species, gender, breed,
+            age_months, color_markings,
+            behavior_traits, current_status,
+            rescue_date, rescue_area,
+            rescue_story,
+            profile_photo
+        ]);
+
+        const animalId = result.insertId;
+
+        // INSERT MEDICAL HISTORY
+        const medList = JSON.parse(medical_history || '[]');
+
+        for (const m of medList) {
+            await db.promise().query(`
+                INSERT INTO animal_medical_history 
+                (animal_id, treatment_name, date_administered, administered_by)
+                VALUES (?, ?, ?, ?)
+            `, [animalId, m.treatment, m.date, m.by]);
+        }
+
+        res.json({ success: true });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: err });
+    }
 });
 
 //  404 Handler - Catches any request that doesn't match a route
@@ -54,7 +233,7 @@ app.use((req, res) => {
     `);
 });
 
-//  Global Error Handler - Catches code crashes or file read errors
+//  Global Error Handler - Catches code crashes or file read errors 
 app.use((err, req, res, next) => {
     console.error(`[Error] ${err.message}`);
     res.status(500).send(`
@@ -64,6 +243,7 @@ app.use((err, req, res, next) => {
         </div>
     `);
 });
+
 
 // 6. START SERVER
 const PORT = 3000;
