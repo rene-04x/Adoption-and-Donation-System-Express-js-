@@ -138,8 +138,30 @@
     const stepCounter = document.getElementById('stepCounter');
     const step1Icon = document.getElementById('step1Icon');
     const statusPill = document.getElementById('statusPill');
+// === NEW: URL PARAMETER CAPTURE FOR "ADOPT ME" LOGIC ===
+    const urlParams = new URLSearchParams(window.location.search);
+    const petNameParam = urlParams.get('pet');
+    const petImgParam = urlParams.get('img');
 
+    if (petNameParam) {
+        // I-set ang Pet Name sa display header
+        const displayPetName = document.getElementById('displayPetName');
+        if (displayPetName) displayPetName.textContent = petNameParam;
+
+        // I-set ang Pet Image kung may dinalang URL
+        const petImage = document.querySelector('.pet-image');
+        if (petImgParam && petImage) {
+            petImage.src = petImgParam;
+        }
+
+        // AUTO-OPEN FORM: Dahil galing ito sa "Adopt Me" click
+        // Gagamitin ang timeout para masiguradong tapos na ang initial load
+        setTimeout(() => {
+            showFormView(true);
+        }, 100);
+    }
     let currentApplicationId = null;
+    
 
     // === 2. VIEW CONTROLLER LOGIC ===
 
