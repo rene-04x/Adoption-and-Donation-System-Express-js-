@@ -12,11 +12,15 @@ To DB credentials:
 To use sessions in Express:
   run: npm install express-session
 
+To install multer for handling file uploads:
+  run: npm install multer
+
 User Account:
 
 username: irene
 passwords: irespeleta@my.cspc.edu.ph
 
+<<<<<<< HEAD
 
 sql query to create the adoptions_applications table:
 CREATE TABLE adoption_applications (
@@ -54,3 +58,12 @@ CREATE TABLE adoption_applications (
     -- Foreign Key (Optional but recommended)
     -- FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+=======
+Admin Account:
+username: admin
+password: admin
+
+
+
+
+>>>>>>> 75c6da04e6b1286dfdcae09efbb70554840ec537

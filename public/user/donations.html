@@ -799,7 +799,7 @@
 
         <div class="form-group">
           <label class="label-title">Item Description</label>
-          <input type="text" class="custom-input" placeholder="What items are you donating?">
+          <input type="text" class="custom-input" id="inkindItemInput" placeholder="What items are you donating?">
         </div>
       </div>
 
@@ -928,17 +928,12 @@ fetch('/sidebar')
     const queryStr = `?username=${encodeURIComponent(username)}`;
     const currentPath = window.location.pathname;
 
-    // 2. Helper function para sa navigation
     const setupNav = (btnId, targetPath) => {
-        const btn = document.getElementById(btnId);
-        if (btn) {
-            // Highlight kung ito ang active page
-            if (currentPath === targetPath) {
-                btn.classList.add('active-item');
-            }
+        const buttonElement = document.getElementById(btnId); // Gamit tayo ng unique variable name
+        if (buttonElement) {
+            if (currentPath === targetPath) buttonElement.classList.add('active-item');
             
-            // Mag-redirect sa target path na may dala-dalang username
-            btn.onclick = () => {
+            buttonElement.onclick = () => {
                 if (currentPath !== targetPath) {
                     window.location.href = targetPath + queryStr;
                 }
@@ -952,85 +947,155 @@ fetch('/sidebar')
     setupNav('donationBtn', '/donations');
     setupNav('applicationBtn', '/application');
     setupNav('KamustahanBtn', '/kamustahan');
-    // Sa loob ng iyong fetch('/sidebar') logic:
-setupNav('logoutBtn', '/login'); // Gamitin ang route na '/login'
 
-// At sa event listener:
-btn.onclick = () => {
-    if (btnId === 'logoutBtn') {
-        // Gamitin ang short route '/login'
-        window.location.href = '/login?msg=logged_out';
-    } else if (currentPath !== targetPath) {
-        window.location.href = targetPath + queryStr;
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.onclick = () => { window.location.href = '/login?msg=logged_out'; };
     }
-};
 });
+
 const submitBtn = document.getElementById('mainSubmitBtn');
 const successAlert = document.getElementById('successAlert');
 
 submitBtn?.addEventListener('click', () => {
-    const isCashTab = cashTab.classList.contains('active');
+    const isCashTab = document.getElementById('cashTab').classList.contains('active');
+    const fullName = document.getElementById('donorName').value.trim();
+    const errorAlert = document.getElementById('errorAlert');
+    const errorMessage = document.getElementById('errorMessage');
+    
     let errors = [];
 
-    // 1. Common Validation (Pangalan lang ang laging required sa dalawa)
-    const fullName = document.getElementById('donorName').value;
-    if (!fullName.trim()) errors.push("Full Name is required.");
+    // 1. GLOBAL VALIDATION
+    if (!fullName) errors.push("Full Name is required.");
 
-    // 2. Cash Specific Validation
-    if (isCashTab) {
-        const refNum = document.getElementById('referenceInput').value;
-        const receiptFile = document.getElementById('receiptInput').files[0];
-        const selectedAmountChip = document.querySelector('.form-group .amount-chips .chip.active');
-        const customAmountValue = document.getElementById('customAmountInput').value;
-        const selectedPurpose = document.getElementById('selectedPurpose').value;
+    // 2. TAB-SPECIFIC VALIDATION
+   // SA LOOB NG submitBtn.addEventListener('click', () => { ...
 
-        if (!selectedAmountChip && !customAmountValue) errors.push("Please select or enter an amount.");
-        if (!selectedPurpose) errors.push("Please select a purpose.");
-        if (!receiptFile) errors.push("Please upload the GCash receipt.");
-        if (refNum.length !== 13) errors.push("Reference number must be exactly 13 digits.");
-    } 
-    // 3. In-Kind Specific Validation
-    else {
-        const email = document.getElementById('donorEmail').value;
-        const phone = document.getElementById('donorPhone').value;
-        const itemDesc = document.querySelector('.inkind-view .custom-input').value;
+// 2. TAB-SPECIFIC VALIDATION
+if (isCashTab) {
+    const customAmount = document.getElementById('customAmountInput').value;
+    const selectedChip = document.querySelector('.form-group .amount-chips .chip.active');
+    const refNo = document.getElementById('referenceInput').value;
+    const receiptFile = document.getElementById('receiptInput').files[0];
+    
+    // TIGNAN KUNG UPDATE O NEW
+    const isUpdate = !!document.getElementById('updateDonationId')?.value;
 
-        if (!itemDesc.trim()) errors.push("Please provide a description of the items.");
-        if (!email.trim() || !email.includes('@')) errors.push("Valid Email is required for In-Kind donations.");
-        if (phone.length < 11) errors.push("Valid 11-digit Phone Number is required.");
+    if (!selectedChip && !customAmount) errors.push("Please select or enter an amount.");
+    if (!refNo || refNo.length < 13) errors.push("A valid 13-digit Reference Number is required.");
+    
+    // BAGUHIN ITO: Required lang ang receipt kung HINDI update
+    if (!isUpdate && !receiptFile) {
+        errors.push("Please upload your GCash receipt.");
+    }
+  } else {
+        const itemDesc = document.querySelector('.inkind-view .custom-input').value.trim();
+        const email = document.getElementById('donorEmail').value.trim();
+        const phone = document.getElementById('donorPhone').value.trim();
+
+        if (!itemDesc) errors.push("Item description is required.");
+        if (!email) errors.push("Email address is required.");
+        if (!phone) {
+            errors.push("Phone Number is required.");
+        } else if (phone.length !== 11) {
+            errors.push("Phone Number must be exactly 11 digits.");
+        } else if (!phone.startsWith("09")) {
+            errors.push("Phone Number must start with '09'.");
+        }
     }
 
+    // 3. ERROR HANDLING
     if (errors.length > 0) {
-    const errorAlert = document.getElementById('errorAlert');
+        errorMessage.innerText = errors[0]; 
+        errorAlert.style.display = 'block';
+        successAlert.style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return; 
+    }
+
+    // 4. PREPARE DATA
+    errorAlert.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Processing...";
+
+    const formData = new FormData();
+    formData.append('type', isCashTab ? 'cash' : 'inkind');
+    formData.append('donorName', fullName);
     
-    // Binago natin ang HTML structure sa loob ng alert
-    errorAlert.innerHTML = `
-        <div class="error-title">
-            <i class="fa-solid fa-triangle-exclamation"></i> Incomplete Information
-        </div>
-        <ul class="error-list">
-            ${errors.map(err => `<li>${err}</li>`).join('')}
-        </ul>
-    `;
+    const messageField = document.querySelector('textarea.custom-input');
+    formData.append('message', messageField ? messageField.value : "");
+
+    const updateId = document.getElementById('updateDonationId')?.value;
+    const targetURL = updateId ? `/update-donation/${updateId}` : '/submit-donation';
+
+    if (updateId) {
+        formData.append('id', updateId);
+    }
+
+    if (isCashTab) {
+        const customInput = document.getElementById('customAmountInput');
+        const activeChip = document.querySelector('.form-group .amount-chips .chip.active');
+        
+        let amountToSend = "";
+
+        // FIX: Tignan muna ang manual input. 
+        // Kung may tinype ang user (o autofill ng update), 'yun ang gamitin.
+        if (customInput && customInput.value.trim() !== "") {
+            amountToSend = customInput.value.trim();
+        } 
+        // Kung walang tinype, tignan kung may piniling preset chip
+        else if (activeChip) {
+            amountToSend = activeChip.innerText.replace(/[^\d.]/g, '');
+        }
+
+        // Siguraduhin na hindi 0 o empty ang ipapadala lalo na sa update
+        formData.append('amount', amountToSend || "0"); 
+        
+        formData.append('refNo', document.getElementById('referenceInput').value);
+        
+        const receiptFileInput = document.getElementById('receiptInput');
+        if (receiptFileInput.files.length > 0) {
+            formData.append('receipt', receiptFileInput.files[0]);
+        }
+        
+        const purpose = document.getElementById('selectedPurpose').value;
+        formData.append('item_name', (purpose || "General"));
+
+    } else {
+        // In-kind logic...
+        const itemValue = document.getElementById('inkindItemInput').value.trim();
+    formData.append('item_name', itemValue);
     
-    errorAlert.style.display = 'flex';
-    successAlert.style.display = 'none';
-
-    // Auto-hide pagkatapos ng 6 seconds
-    setTimeout(() => {
-        errorAlert.style.opacity = '0';
-        setTimeout(() => { errorAlert.style.display = 'none'; errorAlert.style.opacity = '1'; }, 500);
-    }, 6000);
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    return;
-}
-
-    document.getElementById('errorAlert').style.display = 'none';
-    successAlert.style.display = 'block';
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    resetDonationForm();
-    setTimeout(() => { successAlert.style.display = 'none'; }, 5000);
+    formData.append('email', document.getElementById('donorEmail').value);
+    formData.append('phone', document.getElementById('donorPhone').value);
+    }
+    
+    // 5. SEND DATA
+    fetch(targetURL, {
+    method: 'POST', // O gamitin ang PUT kung RESTful ang backend mo
+    body: formData
+})
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            errorAlert.style.display = 'none';
+            successAlert.style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            resetDonationForm();
+            setTimeout(() => { successAlert.style.display = 'none'; }, 5000);
+        } else {
+            errorMessage.innerText = data.message || "Something went wrong.";
+            errorAlert.style.display = 'block';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Server Error. Please try again later.");
+    })
+    .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "🚀 SUBMIT DONATION";
+    });
 });
 
 // Helper function para i-reset ang form pagkatapos mag-submit
@@ -1050,7 +1115,25 @@ function resetDonationForm() {
     document.getElementById('fileNameDisplay').style.color = "";
     document.getElementById('receiptInput').value = "";
     document.getElementById('selectedPurpose').value = "";
+
+    const fileNameDisplay = document.getElementById('fileNameDisplay');
+    if (fileNameDisplay) {
+        fileNameDisplay.textContent = "Upload Receipt";
+        fileNameDisplay.style.color = "";
+    }
+    
+    // TANGGALIN DIN ANG UPDATE ID KUNG MERON
+    const updateId = document.getElementById('updateDonationId');
+    if (updateId) updateId.remove();
+    
+    // IBALIK ANG TEXT NG BUTTON
+    const submitBtn = document.getElementById('mainSubmitBtn');
+    if (submitBtn) {
+        submitBtn.innerHTML = "🚀 SUBMIT DONATION";
+        submitBtn.style.background = ""; // Ibalik sa original color
+    }
 }
+
 // PAG-HANDLE SA UPLOAD RECEIPT
 const uploadTrigger = document.getElementById('uploadTrigger');
 const receiptInput = document.getElementById('receiptInput');
@@ -1172,6 +1255,100 @@ if (referenceInput) {
         
         e.target.value = value;
     });
+}
+
+// --- AUTO-FILL FOR UPDATE LOGIC ---
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const donationId = urlParams.get('edit');
+
+    if (donationId) {
+        // 1. Tawagin ang API para makuha ang data ng specific donation
+        // Siguraduhin na may route ka sa backend para dito (e.g., /api/donation/ID)
+        fetch(`/api/get-donation/${donationId}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data) {
+                    fillDonationForm(data);
+                }
+            })
+            .catch(err => console.error("Error fetching donation for update:", err));
+    }
+});
+
+function fillDonationForm(data) {
+    console.log("Data received for update:", data);
+
+    // 1. Clean the donation type string
+    let donationType = data.type ? data.type.toLowerCase().replace(/[^a-z]/g, '') : '';
+    if (donationType === '' && !data.amount && !data.ref_no) {
+        donationType = 'inkind';
+    }
+
+    const nameInput = document.getElementById('donorName');
+    if (nameInput) nameInput.value = data.donor_name || '';
+
+    const messageField = document.querySelector('textarea.custom-input');
+    if (messageField) messageField.value = data.message || '';
+
+    if (donationType === 'cash') {
+        if (cashTab) cashTab.click(); 
+        
+        const amountInput = document.getElementById('customAmountInput');
+        if (amountInput) {
+            amountInput.value = data.amount || '';
+            amountInput.dispatchEvent(new Event('input'));
+        }
+        
+        document.querySelectorAll('.form-group .amount-chips .chip').forEach(chip => {
+            const chipValue = chip.innerText.replace(/[^\d.]/g, '');
+            if (chipValue === String(data.amount)) {
+                chip.classList.add('active');
+            }
+        });
+
+        const refInput = document.getElementById('referenceInput');
+        if (refInput) refInput.value = data.ref_no || data.refNo || '';
+        
+        document.querySelectorAll('.purpose-chip').forEach(chip => {
+            if (chip.getAttribute('data-value') === data.item_name) {
+                chip.classList.add('active');
+                const selectedPurposeInput = document.getElementById('selectedPurpose');
+                if (selectedPurposeInput) selectedPurposeInput.value = data.item_name;
+            }
+        });
+
+    } 
+    else {
+        // DEFAULT TO IN-KIND (Para kahit empty ang type, mapuno pa rin)
+        if (inkindTab) inkindTab.click(); 
+        setTimeout(() => {
+            const inkindItem = document.getElementById('inkindItemInput');
+            if (inkindItem) inkindItem.value = data.item_name || '';
+            
+            const emailInput = document.getElementById('donorEmail');
+            if (emailInput) emailInput.value = data.email || '';
+            
+            const phoneInput = document.getElementById('donorPhone');
+            if (phoneInput) phoneInput.value = data.phone || '';
+        }, 150);
+    }
+
+    // 3. UI Updates
+    const submitBtn = document.getElementById('mainSubmitBtn');
+    if (submitBtn) {
+        submitBtn.innerHTML = "🔄 UPDATE DONATION INFO";
+        submitBtn.style.background = "#16a34a";
+    }
+    
+    let hiddenId = document.getElementById('updateDonationId');
+    if (!hiddenId) {
+        hiddenId = document.createElement('input');
+        hiddenId.type = 'hidden';
+        hiddenId.id = 'updateDonationId';
+        document.getElementById('donationSection').appendChild(hiddenId);
+    }
+    hiddenId.value = data.id;
 }
 </script>
 

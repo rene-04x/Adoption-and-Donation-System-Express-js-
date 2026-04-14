@@ -5,8 +5,14 @@ const path = require('path');
 const fs = require('fs');
 const { isAuthenticated } = require('../middleware/auth');
 const userController = require('../controllers/userController');
+<<<<<<< HEAD
 const db = require('../Database/db');
 const multer = require('multer');
+=======
+const bcrypt = require('bcrypt');
+const db = require('../Database/db'); // I-import ang connection natin
+const upload = require('../middleware/uploads');
+>>>>>>> 75c6da04e6b1286dfdcae09efbb70554840ec537
 
 // --- AUTHENTICATION & DASHBOARD ROUTES ---
 router.get('/api/user', (req, res) => {
@@ -220,5 +226,8 @@ router.get('/policy', (req, res) => res.sendFile(path.join(__dirname, '../public
 router.get('/terms', (req, res) => res.sendFile(path.join(__dirname, '../public/legal/terms.html')));
 router.get('/contact', (req, res) => res.sendFile(path.join(__dirname, '../public/legal/contact.html')));
 router.get('/faqs', (req, res) => res.sendFile(path.join(__dirname, '../public/legal/faqs.html')));
+
+// Ang route para sa donation
+router.post('/submit-donation', upload.single('receipt'), userController.submitDonation);
 
 module.exports = router;

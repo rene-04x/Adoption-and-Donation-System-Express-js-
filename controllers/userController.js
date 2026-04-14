@@ -21,19 +21,67 @@ const renderUserPage = (req, res, fileName, errorMsg) => {
 // Sa controllers/userController.js
 exports.getDonationsAPI = async (req, res) => {
     try {
-        const userId = req.session.userId; // Kunin ang ID ng naka-login
+        const userId = req.session.userId; 
         
-        // Query para kunin ang donations ng specific user lang
-        const [rows] = await db.query(
-            "SELECT * FROM donations WHERE user_id = ? ORDER BY date DESC", 
-            [userId]
-        );
+        // QUERY UPDATE: Gagamit ng LEFT JOIN para makuha ang rejection details
+        const query = `
+            SELECT 
+                d.*, 
+                r.reason AS rejection_reason, 
+                r.proof_path AS rejection_proof_img, 
+                r.notes AS rejection_notes,
+                r.rejected_at AS rejection_date
+            FROM donations d
+            LEFT JOIN rejection_logs r ON d.id = r.donation_id
+            WHERE d.user_id = ? 
+            ORDER BY d.date DESC
+        `;
+        
+        const [rows] = await db.query(query, [userId]);
 
-        // I-se-send sa frontend ang array (pwedeng may laman, pwedeng empty [])
         res.json(rows); 
     } catch (err) {
         console.error("Database error:", err);
         res.status(500).json({ error: "Failed to fetch donations" });
+    }
+};
+
+// user's donation submission handler
+exports.submitDonation = async (req, res) => {
+    try {
+        const userId = req.session.userId || null; 
+        const { type, donorName, amount, item_name, email, phone, refNo } = req.body;
+
+        const receiptImg = req.file ? req.file.filename : null;
+        const paymentMethod = (type === 'cash') ? 'GCash' : null;
+
+        const sql = `INSERT INTO donations 
+            (user_id, donor_name, type, amount, item_name, email, phone, payment_method, ref_no, date, receipt_img, status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, 'Pending')`;
+
+        // DITO ANG FIX:
+        // Siguraduhin na ang 'amount' ay Number o NULL (hindi string na "null")
+        const validatedAmount = (amount && amount !== "null" && amount !== "") ? parseFloat(amount) : null;
+
+        const values = [
+            userId, 
+            donorName, 
+            type, 
+            validatedAmount, // Gamitin ang validated version
+            item_name || null, 
+            email || null, 
+            phone || null, 
+            paymentMethod, 
+            refNo || null, 
+            receiptImg
+        ];
+
+        await db.query(sql, values);
+        return res.status(200).json({ success: true, message: "Donation recorded successfully!" });
+
+    } catch (err) {
+        console.error("Database Error:", err);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 };
 

@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcrypt');
 const db = require('../Database/db'); 
+
 // --- LOGIN ROUTES ---
 router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/login/user-login.html'));
@@ -35,7 +36,10 @@ router.post('/login', async (req, res) => {
                     return res.status(500).send("Login failed due to session error.");
                 }
 
-                // 3. I-send ang Styled Message (Dito lang dapat mag-send pag safe na ang session)
+                // Determine redirect path: admin goes to '/', others to '/dashboard'
+                const redirectPath = user.username === 'admin' ? '/admin/admin_dashboard' : '/dashboard';
+
+                // 3. I-send ang Styled Message
                 return res.status(200).send(`
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                     <script>
@@ -45,10 +49,10 @@ router.post('/login', async (req, res) => {
                                 text: 'Welcome back, ${user.username}!',
                                 icon: 'success',
                                 confirmButtonColor: '#ff8c00',
-                                confirmButtonText: 'Proceed to Dashboard'
+                                confirmButtonText: 'Proceed'
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    window.location.href = '/dashboard';
+                                    window.location.href = '${redirectPath}';
                                 }
                             });
                         };
@@ -89,7 +93,6 @@ router.post('/register', async (req, res) => {
         res.status(500).send("Error saving user.");
     }
 });
-
 
 // --- OTHER AUTH FORMS ---
 router.get('/org-register', (req, res) => res.sendFile(path.join(__dirname, '../public/login/org-register.html')));

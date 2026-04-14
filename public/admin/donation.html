@@ -6,6 +6,7 @@
     <title>PAWSsion - Donation Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         :root {
             --primary-blue: #02407D;
@@ -136,7 +137,7 @@
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            z-index: 3000; justify-content: center; align-items: center;
+            z-index: 1000; justify-content: center; align-items: center;
         }
 
         .review-card {
@@ -149,7 +150,7 @@
         .modal-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; margin-top: 10px; }
 
         .btn-confirm { background: var(--primary-blue); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; flex: 1; }
-        .btn-reject { background: #fee2e2; color: var(--danger); border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; flex: 1; }
+        .btn-reject { background: #E65C5C; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; flex: 1; }
         .btn-done { background: #F37070; color: white; border: none; padding: 14px 80px; border-radius: 35px; font-weight: 800; display: block; margin: 30px auto 0; cursor: pointer; }
 
         .receipt-img { width: 100%; border-radius: 20px; border: 1px solid #e2e8f0; max-height: 400px; object-fit: contain; background: #f8fafc; }
@@ -184,6 +185,73 @@
             background: #fff; width: 280px; padding: 25px; border-radius: 15px;
             text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
+
+        /* --- TAB SYSTEM --- */
+        .tab-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .tab-container {
+            display: flex;
+            background: rgba(226, 232, 240, 0.6);
+            padding: 6px;
+            border-radius: 50px;
+            gap: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            border-radius: 40px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            background: transparent;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-blue);
+            color: white;
+            box-shadow: 0 4px 15px rgba(2, 64, 125, 0.2);
+        }
+
+        /* Hide in-kind table by default */
+        #inkindTableCard { display: none; }
+        .filter-option:hover {
+            background: #f8fafc;
+        }
+
+        .btn-view-reason {
+    background-color: #fee2e2;
+    color: #ef4444;
+    border: 1px solid #fecaca;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-view-reason:hover {
+    background-color: #ef4444;
+    color: white;
+}
+
+.view-link {
+    color: #3b82f6;
+    cursor: pointer;
+    font-size: 13px;
+    text-decoration: underline;
+}
     </style>
 </head>
 <body>
@@ -221,29 +289,35 @@
 
     <main id="donationSection">
         <div class="content-wrapper">
-            
             <div class="controls-row">
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" class="search-input" placeholder="Search by name, amount or date...">
+                    <input type="text" class="search-input" placeholder="Search by name...">
                 </div>
-                <button class="filter-btn">
-                    <i class="fa-solid fa-filter"></i>
-                    <span>All Status</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
+                <div style="position: relative;">
+                    <button class="filter-btn" id="filterBtn">
+                        <i class="fa-solid fa-filter"></i>
+                        <span id="currentStatusText">All Status</span>
+                    </button>
+                    
+                    <div id="filterDropdown" style="display: none; position: absolute; top: 110%; right: 0; background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 160px; z-index: 2000; border: 1px solid #e2e8f0; overflow: hidden;">
+                        <div class="filter-option" style="padding: 12px 20px; cursor: pointer;" onclick="filterByStatus('All')">All Status</div>
+                        <div class="filter-option" style="padding: 12px 20px; cursor: pointer; border-top: 1px solid #f1f5f9;" onclick="filterByStatus('Pending')">Pending</div>
+                        <div class="filter-option" style="padding: 12px 20px; cursor: pointer; border-top: 1px solid #f1f5f9;" onclick="filterByStatus('Verified')">Verified</div>
+                        <div class="filter-option" style="padding: 12px 20px; cursor: pointer; border-top: 1px solid #f1f5f9;" onclick="filterByStatus('Rejected')">Rejected</div>
+                    </div>
+                </div>
             </div>
 
-            <div class="table-card">
+            <div class="tab-wrapper">
+                <div class="tab-container">
+                    <button class="tab-btn active" id="cashTab">💰 Cash Donation</button>
+                    <button class="tab-btn" id="inkindTab">📦 In-Kind Donation</button>
+                </div>
+            </div>
+
+            <div class="table-card" id="cashTableCard">
                 <table>
-                    <colgroup>
-                        <col style="width: 15%;">
-                        <col style="width: 25%;">
-                        <col style="width: 15%;">
-                        <col style="width: 15%;">
-                        <col style="width: 15%;">
-                        <col style="width: 15%;">
-                    </colgroup>
                     <thead>
                         <tr>
                             <th>Date</th>
@@ -255,14 +329,24 @@
                         </tr>
                     </thead>
                     <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div class="table-card" id="inkindTableCard">
+                <table>
+                    <thead>
                         <tr>
-                            <td>Feb 11, 2026</td>
-                            <td>Jhyzzeel</td>
-                            <td><strong>₱100.00</strong></td>
-                            <td>GCash</td>
-                            <td><span style="color:var(--danger); font-weight:600;">Rejected</span></td>
-                            <td><span class="view-link" onclick="openReviewModal()">[View Receipt]</span></td>
+                            <th>Date</th>
+                            <th>Donor Name</th>
+                            <th>Item</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Status</th>
+                            <th>Action</th>
                         </tr>
+                    </thead>
+                    <tbody>
                     </tbody>
                 </table>
             </div>
@@ -273,43 +357,62 @@
         <div class="review-card">
             <span class="close-modal" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle" style="color: var(--primary-blue); font-weight: 800; margin-bottom: 20px;">Review Donation</h2>
-
+    
             <div class="modal-grid">
                 <div class="info-side">
                     <div id="donorDetails">
-                        <p style="margin-bottom: 12px; font-size: 16px;">Donor Name: <strong>Jhyzzeel</strong></p>
-                        <p style="margin-bottom: 12px; font-size: 16px;">Amount Declared: <strong>₱ 100.00</strong></p>
-                        <p style="margin-bottom: 12px; font-size: 16px;">Reference No: <span class="ref-number">9012 345 678901</span></p>
-                        <p style="margin-bottom: 25px; font-size: 16px; margin-top: 10px;">Date Sent: <strong>Feb 11, 2026</strong></p>
-                    </div>
-
-                    <div id="initialButtons" style="display: flex; gap: 12px;">
-                        <button class="btn-confirm">Confirm & Verify</button>
-                        <button class="btn-reject" onclick="showRejectedState()">Reject</button>
-                    </div>
-
+                        </div>
+                        <div id="reasonDisplay" style="display: none; margin-top: 20px; padding: 15px; background: #fef2f2; border-left: 4px solid #ef4444; border-radius: 8px;">
+                            <h4 style="color: #991b1b; margin-bottom: 5px; font-size: 14px;">Rejection Details:</h4>
+                            <p id="displayReasonType" style="font-weight: 700; color: #b91c1c; margin-bottom: 5px;"></p>
+                            <p id="displayNotes" style="font-size: 13px; color: #4b5563; font-style: italic;"></p>
+                            
+                            <div id="mismatchPhotoContainer" style="margin-top: 10px; display: none;">
+                                <p style="font-size: 12px; font-weight: 600; margin-bottom: 5px;">Admin Proof of Mismatch:</p>
+                                <img id="displayMismatchImg" src="" style="width: 100%; border-radius: 5px; border: 1px solid #fecaca;">
+                            </div>
+                        </div>
+    
                     <div id="rejectedView">
                         <h4 style="margin-bottom: 15px; color: var(--primary-blue);">Reason for Rejection</h4>
                         <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
-                            <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="reason"> Blurry Screenshot</label>
-                            <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="reason"> Invalid Reference No.</label>
-                            <label style="display:flex; align-items:center; gap:8px;"><input type="radio" name="reason" checked> Amount Mismatch</label>
+                            <label style="display:flex; align-items:center; gap:8px;">
+                                <input type="radio" name="reason" value="Blurry Screenshot"> Blurry Screenshot
+                            </label>
+                            <label style="display:flex; align-items:center; gap:8px;">
+                                <input type="radio" name="reason" value="Invalid Reference No."> Invalid Reference No.
+                            </label>
+                            <label style="display:flex; align-items:center; gap:8px;">
+                                <input type="radio" name="reason" value="Amount Mismatch"> Amount Mismatch
+                            </label>
+                            <label style="display:flex; align-items:center; gap:8px;">
+                                <input type="radio" name="reason" value="False Proof (Incorrect Image)"> False Proof (Incorrect Image)
+                            </label>
                         </div>
                     </div>
                 </div>
-
+    
                 <div class="image-side">
                     <img src="https://via.placeholder.com/300x450?text=GCash+Receipt" class="receipt-img">
                 </div>
             </div>
-
+    
+            <div id="initialButtons" style="display: flex; gap: 12px; margin-top: 30px; justify-content: center;">
+                <button class="btn-confirm" onclick="submitVerification()" style="max-width: 250px;">Confirm & Verify</button>
+                <button class="btn-reject" onclick="showRejectedState()" style="max-width: 250px;">Reject</button>
+            </div>
+    
             <div id="rejectedLowerSection">
-                <div class="upload-box">
+                <div class="upload-box" onclick="document.getElementById('mismatchFile').click()">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
-                    <p>Upload proof of mismatch (Optional)</p>
+                    <p id="uploadPlaceholder">Upload proof of mismatch (Optional)</p>
+                    <p id="fileNameDisplay" style="font-size: 12px; color: var(--accent-blue); margin-top: 5px; font-weight: 600;"></p>
                 </div>
-                <textarea class="notes-area" placeholder="Add rejection notes..."></textarea>
-                <button class="btn-done" onclick="closeModal()">Done</button>
+                
+                <input type="file" id="mismatchFile" hidden accept="image/*" onchange="handleFileSelect(this)">
+            
+                <textarea class="notes-area" id="rejectionNotes" placeholder="Add rejection notes..."></textarea>
+                <button id="btnDoneReject" class="btn-done" onclick="submitRejection()" disabled style="opacity: 0.5; cursor: not-allowed;">Done</button>
             </div>
         </div>
     </div>
@@ -344,7 +447,6 @@
     // ✅ CLICK NAVIGATION
     const routes = {
         dashboardBtn: "home.html",
-        organizationsBtn: "organizations.html",
         animalsBtn: "animals.html",
         adoptionBtn: "adoptions.html",
         donationBtn: "donation.html",
@@ -365,7 +467,6 @@
     });
 });
 
-
         // User Profile Toggle
         const userTrigger = document.getElementById('userTrigger');
         const profileModal = document.getElementById('profileModal');
@@ -377,15 +478,154 @@
 
         document.addEventListener('click', () => { profileModal.style.display = 'none'; });
 
-        // Donation Modal Functions
-        function openReviewModal() {
-            document.getElementById('modalTitle').style.display = "block";
-            document.getElementById('initialButtons').style.display = "flex";
-            document.getElementById('rejectedView').style.display = "none";
-            document.getElementById('rejectedLowerSection').style.display = "none";
-            document.getElementById('reviewModal').style.display = "flex";
+        // 1. Function para i-handle ang pagpili ng file
+        function handleFileSelect(input) {
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+    
+            if (input.files && input.files[0]) {
+                fileNameDisplay.innerText = "Selected: " + input.files[0].name;
+            } else {
+                fileNameDisplay.innerText = "";
+            }
+
+            validateRejection(); // <--- Eto ang mag-ti-trigger ng validation
         }
 
+        // 2. I-update ang submitRejection (dating closemodal sa onclick ng Done)
+        async function submitRejection() {
+            const reasonRadio = document.querySelector('input[name="reason"]:checked');
+            if (!reasonRadio) return; // Guard clause
+
+            const reason = reasonRadio.value;
+            
+            // Ipakita ang Confirmation sa FRONT
+            const result = await Swal.fire({
+                title: 'Confirm Rejection',
+                text: `You are about to reject this donation due to: ${reason}. This cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Yes, reject it!',
+                // Ito ang magsisiguro na nasa harap siya ng modal
+                backdrop: true,
+                allowOutsideClick: false 
+            });
+
+            if (!result.isConfirmed) return; 
+
+            const doneBtn = document.getElementById('btnDoneReject');
+            const notes = document.getElementById('rejectionNotes').value;
+            const fileInput = document.getElementById('mismatchFile');
+            const donationId = window.currentDonationId; 
+
+            const formData = new FormData();
+            formData.append('donationId', donationId);
+            formData.append('reason', reason);
+            formData.append('notes', notes);
+            if (fileInput.files[0]) {
+                formData.append('proofMismatch', fileInput.files[0]);
+            }
+
+            try {
+                doneBtn.innerText = "Saving...";
+                doneBtn.disabled = true;
+
+                const response = await fetch('/admin/reject-donation', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // Success Message sa Front din
+                    await Swal.fire({
+                        title: 'Rejected!',
+                        text: 'The donation status has been updated.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    closeModal();
+                    loadOrgDonations(); 
+                } else {
+                    Swal.fire('Error', 'Failed to save rejection.', 'error');
+                    doneBtn.innerText = "Done";
+                    doneBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                Swal.fire('Error', 'An unexpected error occurred.', 'error');
+                doneBtn.innerText = "Done";
+                doneBtn.disabled = false;
+            }
+        }
+        
+        // Donation Modal Functions
+        function openReviewModal(donation) {
+            window.currentDonationId = donation.id;
+
+            const isCash = donation.type.toLowerCase() === 'cash';
+            const status = donation.status ? donation.status.toLowerCase() : '';
+            const modalTitle = document.getElementById('modalTitle');
+            const donorDetails = document.getElementById('donorDetails');
+            const receiptImg = document.querySelector('.receipt-img');
+            const imageSide = document.querySelector('.image-side');
+            const modalGrid = document.querySelector('.modal-grid');
+
+            modalTitle.innerText = isCash ? "Review Cash Donation" : "Review In-Kind Donation";
+
+            const initialButtons = document.getElementById('initialButtons');
+
+            // Kung Rejected o Verified na, itago ang buttons. Kung Pending, ipakita.
+            if (status === 'rejected' || status === 'verified' || status === 'completed') {
+                initialButtons.style.display = "none";
+                // Opsyonal: Palitan ang title para malaman na View-only na lang ito
+                modalTitle.innerText = isCash ? "View Cash Donation" : "View In-Kind Donation";
+            } else {
+                initialButtons.style.display = "flex";
+            }
+
+            // Build the details HTML
+            let detailsHTML = `
+                <p style="margin-bottom: 12px; font-size: 16px;">Donor Name: <strong>${donation.donor_name}</strong></p>
+            `;
+
+            if (isCash) {
+                detailsHTML += `
+                    <p style="margin-bottom: 12px; font-size: 16px;">Amount: <strong>₱ ${parseFloat(donation.amount).toLocaleString()}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Reference No: <span class="ref-number">${donation.ref_no || 'N/A'}</span></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Purpose: <strong>${donation.item_name || 'General Donation'}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Method: <strong>${donation.payment_method || 'N/A'}</strong></p>
+                `;
+            } else {
+                detailsHTML += `
+                    <p style="margin-bottom: 12px; font-size: 16px;">Item: <strong>${donation.item_name}</strong></p>
+                    <p style="margin-bottom: 12px; font-size: 16px;">Email: <strong>${donation.email || 'N/A'}</strong></p>
+                `;
+            }
+
+            detailsHTML += `<p style="margin-bottom: 25px; font-size: 16px; margin-top: 10px;">Date: <strong>${new Date(donation.date).toLocaleDateString()}</strong></p>`;
+            
+            donorDetails.innerHTML = detailsHTML;
+
+            // Handle Image Display
+            if (isCash && donation.receipt_img) {
+                imageSide.style.display = "block";
+                modalGrid.style.gridTemplateColumns = "1.2fr 1fr";
+                receiptImg.src = '/uploads/receipts/' + donation.receipt_img;
+            } else {
+                imageSide.style.display = "none";
+                modalGrid.style.gridTemplateColumns = "1fr";
+            }
+
+            // Reset view states
+            document.getElementById('modalTitle').style.display = "block";
+            document.getElementById('rejectedView').style.display = "none";
+            document.getElementById('rejectedLowerSection').style.display = "none";
+
+            document.getElementById('reviewModal').style.display = "flex";
+        }
         function showRejectedState() {
             document.getElementById('modalTitle').style.display = "none";
             document.getElementById('initialButtons').style.display = "none";
@@ -393,13 +633,364 @@
             document.getElementById('rejectedLowerSection').style.display = "block";
         }
 
+        // Function para i-check kung may napiling dahilan
+        function validateRejection() {
+        const radios = document.getElementsByName('reason');
+        const fileInput = document.getElementById('mismatchFile');
+        const doneBtn = document.getElementById('btnDoneReject');
+        const placeholder = document.getElementById('uploadPlaceholder');
+        
+        let selectedReason = null;
+        radios.forEach(radio => {
+            if (radio.checked) selectedReason = radio.parentElement.innerText.trim();
+        });
+
+        // Check kung may file
+        const isFileUploaded = fileInput.files && fileInput.files.length > 0;
+
+        // CONDITIONAL LOGIC:
+        // Required ang file kung ang reason ay Mismatch o False Proof
+        const isStrictReason = (selectedReason === "Amount Mismatch" || selectedReason === "False Proof (Incorrect Image)");
+
+        if (selectedReason) {
+            if (isStrictReason) {
+                // STRICT MODE: Kailangan ng file
+                placeholder.innerText = isFileUploaded ? "Change proof file" : "Upload proof of mismatch (REQUIRED)";
+                toggleDoneButton(isFileUploaded);
+            } else {
+                // RELAXED MODE: Kahit walang file, okay lang
+                placeholder.innerText = isFileUploaded ? "Change proof file" : "Upload proof of mismatch (Optional)";
+                toggleDoneButton(true); 
+            }
+        } else {
+            // Kapag wala pang napipiling reason
+            toggleDoneButton(false);
+        }
+    }
+    
+    function showRejectionReason(donation) {
+        // 1. Buksan ang basic modal (sisiguraduhin nito na lalabas ang donor info)
+        openReviewModal(donation);
+        
+        // 2. Setup UI: Itago ang action buttons at ipakita ang reason container
+        const initialButtons = document.getElementById('initialButtons');
+        if (initialButtons) initialButtons.style.display = "none";
+
+        const reasonDiv = document.getElementById('reasonDisplay');
+        reasonDiv.style.display = "block";
+        
+        // 3. Prepare data
+        const rejDate = donation.rejection_date ? new Date(donation.rejection_date).toLocaleDateString('en-PH', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        }) : 'N/A';
+
+        const reasonTitle = donation.rejection_reason || "Reason not specified";
+        const reasonNotes = donation.rejection_notes ? `"${donation.rejection_notes}"` : "No additional notes provided.";
+        
+        // 4. I-update ang UI gamit ang isang bagsakan na innerHTML
+        reasonDiv.innerHTML = `
+            <div style="border-bottom: 1px solid #fca5a5; margin-bottom: 10px; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center;">
+                <h4 style="color: #991b1b; margin: 0; font-size: 14px;">Rejection Details</h4>
+                <span style="font-size: 11px; color: #7f1d1d; font-weight: bold;">Rejected on: ${rejDate}</span>
+            </div>
+            <p style="font-weight: 700; color: #b91c1c; margin-bottom: 5px;">${reasonTitle}</p>
+            <p style="font-size: 13px; color: #4b5563; font-style: italic;">${reasonNotes}</p>
+            
+            ${donation.rejection_proof_img ? `
+                <div id="mismatchPhotoContainer" style="margin-top: 15px;">
+                    <p style="font-size: 12px; font-weight: 600; margin-bottom: 5px; color: #374151;">Admin Proof / Reference:</p>
+                    <img src="/uploads/rejections/${donation.rejection_proof_img}" 
+                        alt="Proof of Rejection"
+                        style="width: 100%; border-radius: 8px; border: 2px solid #fee2e2; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
+                </div>
+            ` : ''}
+        `;
+    }
+
+    // Helper function para hindi paulit-ulit ang style changes
+    function toggleDoneButton(enable) {
+        const doneBtn = document.getElementById('btnDoneReject');
+        if (enable) {
+            doneBtn.disabled = false;
+            doneBtn.style.opacity = "1";
+            doneBtn.style.cursor = "pointer";
+        } else {
+            doneBtn.disabled = true;
+            doneBtn.style.opacity = "0.5";
+            doneBtn.style.cursor = "not-allowed";
+        }
+    }
+
+        // Mag-attach ng listener sa lahat ng radio buttons
+        document.querySelectorAll('input[name="reason"]').forEach(radio => {
+            radio.addEventListener('change', validateRejection);
+        });
+
+        async function submitVerification() {
+            const donationId = window.currentDonationId;
+            const confirmBtn = document.querySelector('.btn-confirm');
+
+            if (!confirmBtn || !donationId) return;
+
+            // Gamit ang SweetAlert2 imbes na confirm()
+            const result = await Swal.fire({
+                title: 'Verify Donation?',
+                text: "Are you sure that you already verify this donation?. This cannot be undone",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981', // Green
+                cancelButtonColor: '#64748b',
+                confirmButtonText: 'Yes, verify it!',
+                cancelButtonText: 'Cancel',
+                backdrop: true,
+                allowOutsideClick: false
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                confirmBtn.innerText = "Verifying...";
+                confirmBtn.disabled = true;
+
+                const response = await fetch('/admin/verify-donation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ donationId: donationId })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Success Alert sa FRONT
+                    await Swal.fire({
+                        title: 'Verified!',
+                        text: 'Donation has been successfully verified.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Update local array status
+                    const index = allDonations.findIndex(d => d.id === donationId);
+                    if (index !== -1) {
+                        allDonations[index].status = 'verified';
+                    }
+
+                    closeModal();
+                    renderTables(allDonations); 
+                } else {
+                    Swal.fire('Error', data.error || "Failed to verify.", 'error');
+                    confirmBtn.innerText = "Confirm & Verify";
+                    confirmBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error("Error during verification:", error);
+                Swal.fire('Error', 'An unexpected error occurred.', 'error');
+                confirmBtn.innerText = "Confirm & Verify";
+                confirmBtn.disabled = false;
+            }
+        }
+
+        // --- UPDATED CLOSE MODAL (WITH RESET) ---
         function closeModal() {
+           document.getElementById('reviewModal').style.display = "none";
+    
+            // Reset inputs
+            const radios = document.getElementsByName('reason');
+            radios.forEach(r => r.checked = false);
+            document.getElementById('rejectionNotes').value = "";
+            document.getElementById('reasonDisplay').style.display = "none";
+            document.getElementById('mismatchFile').value = ""; // Clear file
+            document.getElementById('fileNameDisplay').innerText = "";
+            document.getElementById('uploadPlaceholder').innerText = "Upload proof of mismatch (Optional)";
+
+            // Reset buttons
+            const doneBtn = document.getElementById('btnDoneReject');
+            doneBtn.disabled = true;
+            doneBtn.style.opacity = "0.5";
+            doneBtn.style.cursor = "not-allowed";
+            doneBtn.innerText = "Done";
+
+            document.getElementById('initialButtons').style.display = "flex";
+            document.getElementById('rejectedView').style.display = "none";
+            document.getElementById('rejectedLowerSection').style.display = "none";
+            document.getElementById('modalTitle').style.display = "block";
+
+            const verifyBtn = document.querySelector('.btn-confirm');
+            if (verifyBtn) {
+                verifyBtn.innerText = "Confirm & Verify";
+                verifyBtn.disabled = false;
+            }
+
             document.getElementById('reviewModal').style.display = "none";
+            Swal.close();
         }
 
         window.onclick = function(event) {
             if (event.target == document.getElementById('reviewModal')) closeModal();
         }
+
+        //paglipat ng tabs
+        const cashTab = document.getElementById('cashTab');
+        const inkindTab = document.getElementById('inkindTab');
+        const cashTableCard = document.getElementById('cashTableCard');
+        const inkindTableCard = document.getElementById('inkindTableCard');
+
+        cashTab.addEventListener('click', () => {
+            cashTab.classList.add('active');
+            inkindTab.classList.remove('active');
+            cashTableCard.style.display = 'block';
+            inkindTableCard.style.display = 'none';
+        });
+
+        inkindTab.addEventListener('click', () => {
+            inkindTab.classList.add('active');
+            cashTab.classList.remove('active');
+            inkindTableCard.style.display = 'block';
+            cashTableCard.style.display = 'none';
+        });
+
+        let allDonations = []; // Dito itatago ang lahat ng data mula sa server
+
+        async function loadOrgDonations() {
+            const cashBody = document.querySelector('#cashTableCard tbody');
+            const inkindBody = document.querySelector('#inkindTableCard tbody');
+
+            cashBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+            inkindBody.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+
+            try {
+                const response = await fetch('/admin/donations-data');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                allDonations = await response.json(); // I-save sa global variable
+                renderTables(allDonations); // Tawagin ang function na magsusulat sa table
+
+            } catch (error) {
+                console.error("Error loading donations:", error);
+                cashBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">Error loading data.</td></tr>';
+            }
+        }
+
+      // --- FILTERING LOGIC ---
+      let currentStatusFilter = 'All';
+        
+        // 1. Siguraduhin na define ang searchInput dito sa taas
+        const searchInput = document.querySelector('.search-input'); 
+        const filterBtn = document.getElementById('filterBtn');
+        const filterDropdown = document.getElementById('filterDropdown');
+
+        if(filterBtn) {
+            filterBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterDropdown.style.display = filterDropdown.style.display === 'block' ? 'none' : 'block';
+            });
+        }
+
+        document.addEventListener('click', () => {
+            if(filterDropdown) filterDropdown.style.display = 'none';
+        });
+
+        function filterByStatus(status) {
+            currentStatusFilter = status;
+            document.getElementById('currentStatusText').innerText = status === 'All' ? 'All Status' : status;
+            applyFilters(); 
+        }
+
+        // 2. Isang listener lang na tumatawag sa applyFilters
+        if(searchInput) {
+            searchInput.addEventListener('input', () => {
+                applyFilters();
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredResults = allDonations.filter(donation => {
+                const matchesSearch = donation.donor_name.toLowerCase().includes(searchTerm);
+                const matchesStatus = (currentStatusFilter === 'All') || 
+                                    (donation.status.toLowerCase() === currentStatusFilter.toLowerCase());
+                return matchesSearch && matchesStatus;
+            });
+            renderTables(filteredResults);
+        }
+
+        // I-update ang renderTables para handle ang empty states ng maayos
+        function renderTables(data) {
+        const cashBody = document.querySelector('#cashTableCard tbody');
+        const inkindBody = document.querySelector('#inkindTableCard tbody');
+
+        cashBody.innerHTML = '';
+        inkindBody.innerHTML = '';
+
+        const cashData = data.filter(d => d.type.toLowerCase() === 'cash');
+        const inkindData = data.filter(d => d.type.toLowerCase() !== 'cash');
+
+        // Render Cash Table
+        if (cashData.length === 0) {
+            cashBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: #64748b;">No cash donations found.</td></tr>';
+        } else {
+            cashData.forEach(d => {
+                const dateStr = new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                // Logic for Action Column
+                const actionContent = d.status.toLowerCase() === 'rejected' 
+                    ? `<button class="btn-view-reason" onclick='showRejectionReason(${JSON.stringify(d).replace(/'/g, "&apos;")})'>View Reason</button>`
+                    : `<span class="view-link" onclick='openReviewModal(${JSON.stringify(d).replace(/'/g, "&apos;")})'>[View Receipt]</span>`;
+
+                cashBody.innerHTML += `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${d.donor_name}</td>
+                        <td><strong>₱${parseFloat(d.amount).toLocaleString()}</strong></td>
+                        <td>${d.payment_method || "N/A"}</td>
+                        <td><span style="color:${getStatusColor(d.status)}; font-weight:700;">${d.status}</span></td>
+                        <td>${actionContent}</td>
+                    </tr>`;
+            });
+        }
+
+        // Render In-Kind Table
+        if (inkindData.length === 0) {
+            inkindBody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding: 40px; color: #64748b;">No in-kind donations found.</td></tr>';
+        } else {
+            inkindData.forEach(d => {
+                const dateStr = new Date(d.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                const actionContent = d.status.toLowerCase() === 'rejected'
+                    ? `<button class="btn-view-reason" onclick='showRejectionReason(${JSON.stringify(d).replace(/'/g, "&apos;")})'>View Reason</button>`
+                    : `<span class="view-link" onclick='openReviewModal(${JSON.stringify(d).replace(/'/g, "&apos;")})'>[View Details]</span>`;
+
+                inkindBody.innerHTML += `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${d.donor_name}</td>
+                        <td><strong>${d.item_name}</strong></td>
+                        <td>${d.email || 'N/A'}</td>
+                        <td>${d.phone || 'N/A'}</td>
+                        <td><span style="color:${getStatusColor(d.status)}; font-weight:700;">${d.status}</span></td>
+                        <td>${actionContent}</td>
+                    </tr>`;
+            });
+        }
+    }
+    
+    // Helper function para sa kulay ng status
+    function getStatusColor(status) {
+        // I-normalize ang text (gawing lowercase) para iwas error sa casing
+        const s = status ? status.toLowerCase() : '';
+        
+        if (s === 'pending') return '#f59e0b';      // Orange/Amber
+        if (s === 'rejected') return '#ef4444';     // Red
+        if (s === 'verified' || s === 'completed' || s === 'approved') return '#10b981'; // Green
+        
+        return '#64748b';
+    }
+
+    // Tawagin ang function pagka-load ng page
+    loadOrgDonations();
     </script>
 </body>
 </html>

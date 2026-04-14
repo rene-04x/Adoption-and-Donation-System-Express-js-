@@ -6,7 +6,81 @@ const sendAdminFile = (req, res, fileName) => {
     res.sendFile(path.join(__dirname, '../public/admin', fileName));
 };
 
+<<<<<<< HEAD
 // --- PAGE RENDERERS ---
+=======
+// Kunin lahat ng donations kasama ang rejection details (kung meron)
+exports.getAllDonationsAPI = async (req, res) => {
+    try {
+        // Gagamit ng LEFT JOIN para isama ang data mula sa rejection_logs
+        const query = `
+            SELECT 
+                d.*, 
+                r.reason AS rejection_reason, 
+                r.proof_path AS rejection_proof_img, 
+                r.notes AS rejection_notes,
+                r.rejected_at AS rejection_date
+            FROM donations d
+            LEFT JOIN rejection_logs r ON d.id = r.donation_id
+            ORDER BY d.date DESC
+        `;
+        
+        const [rows] = await db.query(query);
+        res.json(rows);
+    } catch (err) {
+        console.error("Database error:", err);
+        res.status(500).json({ error: "Failed to fetch all donations" });
+    }
+};
+
+exports.rejectDonation = async (req, res) => {
+    const { donationId, reason, notes } = req.body;
+    const proofFilename = req.file ? req.file.filename : null;
+
+    try {
+        await db.query('BEGIN');
+
+        // Update status sa main donations table
+        await db.execute('UPDATE donations SET status = "Rejected" WHERE id = ?', [donationId]);
+
+        // Insert details sa rejection_logs table
+        await db.execute(
+            `INSERT INTO rejection_logs (donation_id, reason, proof_path, notes) 
+             VALUES (?, ?, ?, ?)`,
+            [donationId, reason, proofFilename, notes]
+        );
+
+        await db.query('COMMIT');
+        res.json({ success: true, message: "Donation rejected successfully" });
+    } catch (err) {
+        await db.query('ROLLBACK');
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+exports.verifyDonation = async (req, res) => {
+    const { donationId } = req.body;
+
+    try {
+        // I-update ang status sa Verified
+        const [result] = await db.execute(
+            'UPDATE donations SET status = "verified" WHERE id = ?', 
+            [donationId]
+        );
+
+        if (result.affectedRows > 0) {
+            res.json({ success: true, message: "Donation verified successfully" });
+        } else {
+            res.status(404).json({ error: "Donation not found" });
+        }
+    } catch (err) {
+        console.error("Verification error:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+>>>>>>> 75c6da04e6b1286dfdcae09efbb70554840ec537
 exports.getHome = (req, res) => sendAdminFile(req, res, 'home.html');
 exports.getAnimals = (req, res) => sendAdminFile(req, res, 'animals.html');
 exports.getAdoptions = (req, res) => sendAdminFile(req, res, 'adoptions.html'); 
