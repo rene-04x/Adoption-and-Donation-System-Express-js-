@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2026 at 03:14 PM
+-- Generation Time: Apr 15, 2026 at 05:45 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `adoption_db`
 --
-CREATE DATABASE IF NOT EXISTS `adoption_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `adoption_db`;
 
 -- --------------------------------------------------------
 
@@ -86,11 +84,34 @@ CREATE TABLE `animals` (
 --
 
 INSERT INTO `animals` (`animal_id`, `name`, `species`, `gender`, `breed`, `age_months`, `color_markings`, `behavior_traits`, `current_status`, `rescue_date`, `rescue_area`, `rescue_story`, `profile_photo`, `created_at`) VALUES
-(1, 'Adobro', '', 'Male', 'Aspin', 22, 'brown and white on extremities & end of tail', 'Kind,Friendly', 'Available', '2024-02-18', 'CSPC', 'idkkkk', '4bf6aa144ae48a780bff19319be59e77', '2026-04-10 16:22:59'),
-(2, 'Moew', '', 'Female', 'IKD', 11, 'Blue', 'Soft,Kind', 'Adopted', '2026-02-22', 'Iiga', 'TC', 'd792781ffea69daf86794ac8f338c7d3', '2026-04-12 07:16:23'),
-(3, 'Patata', 'Dog', 'Male', 'Shi Tzu', 24, 'White', 'Cute,Kind,Fierce', 'Available', '2026-02-03', 'Sto.Nino, Iriga City', 'He was found in a litter box, so smol and scared and I cannot help but took pity on himm!! please adopt this bb wahhhhhh...di juk binili ni ate mwejejeje!! miss u tata my beybiii <3', '17921da9ced394247ff539f886cc588e', '2026-04-12 13:47:00'),
-(4, 'Carla', 'Cat', 'Female', 'Hooman', 240, 'White', 'Crzy,Cute,Pretty,Haw+t', 'Pending', '2005-04-14', 'Bato', 'inire ni mama nya mwajajaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'b86a500e918c19507860293bd6fd6877', '2026-04-12 13:56:20'),
-(6, '', '', '', '', 0, '', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-12 18:40:31');
+(1, 'Adobaby', 'Dog', 'Female', 'Aspin', 24, 'brown and white on extremities & end of tail', 'Kind,Friendly', 'Available', '2024-02-10', 'CSPC', 'idkkkk', '4bf6aa144ae48a780bff19319be59e77', '2026-04-10 16:22:59'),
+(7, 'SADBOI', 'Dog', 'Male', '', 0, 'combination of black and white on the body and extremities', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:07:25'),
+(8, 'NOUGAT', '', '', '', 0, 'Light-brown; dirty-white color on face', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:10:29'),
+(9, 'LEBRON', 'Dog', 'Male', '', 0, 'brown/tan color overall, white markings on chest and paws (front & back), and erect ears', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:10:53'),
+(10, 'CHONK', 'Dog', 'Male', '', 0, 'Brown is the dominant color, while a white color is seen in some parts (legs, tip of tail, chest, and belly); black shade around the eyes and nose', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:11:48'),
+(11, 'ROTI', 'Dog', 'Male', '', 0, 'black dog with tiny brown markings above both eyes, brown patches on four legs, and white markings on the sides of the mouth', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:12:20'),
+(12, 'MONDY', 'Dog', 'Male', '', 0, 'a combination of brown (upper body) and white (lower body: chest & belly)', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:12:43'),
+(13, 'TACO', '', 'Male', '', 0, 'white coated dog with black nose. Has a skin infection near the left eye.', 'kind,gentle', 'Available', '1899-11-29', '', '', NULL, '2026-04-14 15:13:05'),
+(14, 'DUKE', 'Dog', 'Male', '', 0, 'black dog with spots of ash gray fur', 'kind,gentle,sleepy', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:14:51'),
+(15, 'ZEUS', 'Dog', 'Male', '', 0, 'old brown dog', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:16:01'),
+(16, 'GEWE', 'Cat', 'Female', '', 0, '', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-14 15:16:18'),
+(17, 'ALBIE', 'Cat', '', '', 0, ' light orange (back, tail, ears, forehead); white underbody, legs, and face', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 03:59:00'),
+(18, 'FLERKEN', 'Cat', '', '', 0, 'orange (ginger) with light orange stripes', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:04:31'),
+(19, 'BLOOP', 'Cat', '', '', 0, 'white all over the body; dark orange on the left ear, above the eyes, and on the tail', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:04:57'),
+(20, 'GATO', 'Cat', '', '', 0, 'black upper body, face, ears, and legs; white chest, belly, and legs', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:05:18'),
+(21, 'TIGER', 'Cat', '', '', 0, 'black and gray-ish color with tiger-like skin features; light brown on face and legs', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:05:53'),
+(22, 'CHIMI', 'Cat', '', '', 0, 'yellow-ish/light orange patches on the body, ears, and tail; white chest, belly, and legs', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:06:12'),
+(23, 'CHANGA', 'Cat', '', '', 0, 'a combination of orange and white colors all around the body', '', 'Available', '1899-11-29', '', '', NULL, '2026-04-15 04:06:36'),
+(24, 'RED', 'Cat', '', '', 0, 'a combination of orange and white color, with a red collar', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:07:02'),
+(25, 'OREO', 'Cat', '', '', 0, 'black upper body, face (including the eyes), and tail; white lower body (chest, belly, legs)', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:07:20'),
+(26, 'MILO', 'Cat', '', '', 0, 'have black patches on the back, on the back of the head, and tail; white is dominant on the rest of the body', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:07:37'),
+(27, 'CHEETO', 'Cat', '', '', 0, 'multi-colored domestic cat', '', 'Available', '1899-11-29', '', '', NULL, '2026-04-15 04:07:55'),
+(28, 'YOGURT', 'Cat', '', '', 0, 'black and white face and body', '', 'Available', '1899-11-29', '', '', NULL, '2026-04-15 04:08:11'),
+(29, 'DAVID', 'Cat', '', '', 0, '', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:09:04'),
+(30, 'CHARLIE', '', 'Female', '', 0, 'grey with black stripes and green eyes', '', 'Available', '1899-11-29', '', '', NULL, '2026-04-15 04:09:36'),
+(31, 'TOBI', '', 'Male', '', 0, ' orange (head & back) and white (neck, chest, legs); pink paws and nose', '', 'Available', '1899-11-29', '', '', NULL, '2026-04-15 04:09:51'),
+(32, 'YURI', 'Cat', 'Male', '', 0, ' gray stripes (back), white (neck, chest, extremities)', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:10:47'),
+(33, 'CLARITA ', 'Cat', '', '', 0, '', '', 'Available', '0000-00-00', '', '', NULL, '2026-04-15 04:11:21');
 
 -- --------------------------------------------------------
 
@@ -111,9 +132,43 @@ CREATE TABLE `animal_medical_history` (
 --
 
 INSERT INTO `animal_medical_history` (`med_id`, `animal_id`, `treatment_name`, `date_administered`, `administered_by`) VALUES
-(25, 3, 'Deworm', '2026-03-06', 'Dr. Mayen'),
-(28, 4, 'Anti-Crzyness', '2026-02-26', 'Dr.Irene'),
-(30, 1, 'Deworm', '2026-03-06', 'Dr. Irene');
+(38, 1, 'Deworm', '2026-03-06', 'Dr. Irene');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `announcements`
+--
+
+CREATE TABLE `announcements` (
+  `id` int(11) NOT NULL,
+  `event_title` varchar(255) NOT NULL,
+  `venue_place` varchar(255) DEFAULT NULL,
+  `event_date` date DEFAULT NULL,
+  `event_time` time DEFAULT NULL,
+  `category` varchar(100) DEFAULT NULL,
+  `target_audience` varchar(50) DEFAULT NULL,
+  `is_urgent` tinyint(1) DEFAULT 0,
+  `pin_to_dashboard` tinyint(1) DEFAULT 0,
+  `send_push_notification` tinyint(1) DEFAULT 0,
+  `message_content` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `announcements`
+--
+
+INSERT INTO `announcements` (`id`, `event_title`, `venue_place`, `event_date`, `event_time`, `category`, `target_audience`, `is_urgent`, `pin_to_dashboard`, `send_push_notification`, `message_content`, `created_at`) VALUES
+(1, 'ff', 'ffff', '2026-04-02', '14:37:00', 'Event', 'All Users', 0, 1, 1, 'ffffff', '2026-04-15 04:37:30'),
+(2, 'fff', 'ffff', '2026-04-02', '12:49:00', 'Update', 'Donors', 0, 1, 1, 'fffff', '2026-04-15 04:47:49'),
+(3, 'fsdfdsfs', 'dfsfsdff', NULL, '13:06:00', 'General', 'All Users', 0, 1, 1, 'dsfdssf', '2026-04-15 05:04:27'),
+(4, 'grttetyt', 'yytryrytrytrytr', '0000-00-00', '00:00:00', 'General', 'All Users', 0, 1, 1, 'ytrrtyrtyy', '2026-04-15 05:31:43'),
+(5, 'mayen', 'ddd', '2026-04-03', '13:47:00', 'Urgent', 'All Users', 1, 1, 1, 'ddasasassas', '2026-04-15 05:45:06'),
+(6, 'im tired', 'ssss', '2026-04-01', '13:58:00', 'Update', 'Adopters', 0, 1, 1, 'asssass', '2026-04-15 05:56:16'),
+(7, 'so we good', 'JAJAJA', '2026-04-01', '15:58:00', 'General', 'Adopters', 0, 1, 1, 'JAJAJA', '2026-04-15 05:58:29'),
+(8, 'PARTEHH', 'admin', '2026-03-31', '14:59:00', 'Urgent', 'All Users', 1, 1, 1, 'admin', '2026-04-15 05:59:05'),
+(9, 'I MISS YOUUUUUU', 'CSPC', '0000-00-00', '00:00:00', 'General', 'All Users', 0, 1, 1, 'dddddddddddddd', '2026-04-15 12:44:33');
 
 -- --------------------------------------------------------
 
@@ -231,6 +286,12 @@ ALTER TABLE `animal_medical_history`
   ADD KEY `animal_id` (`animal_id`);
 
 --
+-- Indexes for table `announcements`
+--
+ALTER TABLE `announcements`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `donations`
 --
 ALTER TABLE `donations`
@@ -266,13 +327,19 @@ ALTER TABLE `adoption_applications`
 -- AUTO_INCREMENT for table `animals`
 --
 ALTER TABLE `animals`
-  MODIFY `animal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `animal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `animal_medical_history`
 --
 ALTER TABLE `animal_medical_history`
-  MODIFY `med_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `med_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+
+--
+-- AUTO_INCREMENT for table `announcements`
+--
+ALTER TABLE `announcements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `donations`
