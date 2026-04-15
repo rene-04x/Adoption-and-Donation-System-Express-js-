@@ -91,6 +91,12 @@ router.get('/announcements', isAuthenticated, (req, res) => {
 router.get('/adoption_hub', (req, res) => res.sendFile(path.join(__dirname, '../public/user/adoption_hub.html')));
 router.get('/sidebar', (req, res) => res.sendFile(path.join(__dirname, '../public/user/sidebar.html')));
 
+// --- HTML EXTENSION ROUTE FIXES ---
+// Redirect .html URLs to correct routes for compatibility, but require authentication first
+router.get('/donations.html', isAuthenticated, (req, res) => res.redirect('/donations'));
+router.get('/application.html', isAuthenticated, (req, res) => res.redirect('/application'));
+router.get('/adoption_hub.html', isAuthenticated, (req, res) => res.redirect('/adoption_hub'));
+
 
 // --- ADOPTION APPLICATION ROUTES ---
 // 1. I-define muna ang storage configuration

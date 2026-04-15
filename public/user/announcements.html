@@ -94,11 +94,29 @@
     </div>
   </section>
   <script>
-    // Load sidebar
+    // Load sidebar and enable nav highlight/click (match sidebar.js logic)
     fetch('/sidebar')
       .then(res => res.text())
       .then(data => {
         document.getElementById('sidebar-placeholder').innerHTML = data;
+
+        // Highlight active nav item based on current path
+        document.querySelectorAll('.nav-item').forEach(item => {
+          const link = item.dataset.link;
+          if (!link) return;
+          if (window.location.pathname === link && item.id !== 'logoutBtn') {
+            item.classList.add('active-item');
+          }
+        });
+
+        // Enable nav click using data-link attributes
+        document.querySelectorAll('.nav-item').forEach(item => {
+          const link = item.dataset.link;
+          if (!link) return;
+          item.addEventListener('click', () => {
+            window.location.href = link;
+          });
+        });
       });
 
     // Fetch and display announcements (admin-style)
