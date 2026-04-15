@@ -468,6 +468,10 @@
     <i class="fa-solid fa-heart"></i> Kamustahan
   </div>
 
+  <div class="nav-item" id="announcementsBtn" data-link="/announcements">
+    <i class="fa-solid fa-bullhorn"></i> Announcements
+  </div>
+
   <div class="logout-section" style="margin-top: auto; padding-top: 20px;">
     <div class="nav-item" id="logoutBtn" data-link="/login">
       <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
@@ -530,6 +534,8 @@
       if (donationBtn) donationBtn.addEventListener('click', () => window.location.href = `/donations${userQuery}`);
       if (applicationBtn) applicationBtn.addEventListener('click', () => window.location.href = `/application${userQuery}`);
       if (KamustahanBtn) KamustahanBtn.addEventListener('click', () => window.location.href = `/kamustahan${userQuery}`);
+      const announcementsBtn = document.getElementById('announcementsBtn');
+      if (announcementsBtn) announcementsBtn.addEventListener('click', () => window.location.href = `/announcements${userQuery}`);
       if (logoutBtn) logoutBtn.addEventListener('click', () => window.location.href = `/login?msg=logged_out`);
 
       // -------------------- Profile Button --------------------

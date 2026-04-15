@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+app.use(express.json());
 const path = require('path');
 const mysql = require('mysql2');
 const multer = require('multer'); // 👈 ADD HERE
@@ -240,7 +241,92 @@ app.post('/api/animals', upload.single('profile_photo'), async (req, res) => {
         res.status(500).json({ error: err });
     }
 });
+// POST ANNOUNCEMENT
+app.post("/api/announcements", (req, res) => {
+    const {
+        event_title,
+        venue_place,
+        event_date,
+        event_time,
+        category,
+        target_audience,
+        is_urgent,
+        pin_to_dashboard,
+        send_push_notification,
+        message_content
+    } = req.body;
 
+    const sql = `
+        INSERT INTO announcements 
+        (event_title, venue_place, event_date, event_time, category, target_audience, is_urgent, pin_to_dashboard, send_push_notification, message_content)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(sql, [
+        event_title,
+        venue_place,
+        event_date,
+        event_time,
+        category,
+        target_audience,
+        is_urgent,
+        pin_to_dashboard,
+        send_push_notification,
+        message_content
+    ], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json({ message: "Announcement saved!" });
+    });
+});
+
+// GET ALL ANNOUNCEMENTS
+app.get("/api/announcements", (req, res) => {
+    const sql = "SELECT * FROM announcements ORDER BY id DESC";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json(results);
+    });
+});
+// UPDATE ANNOUNCEMENT
+app.put("/api/announcements/:id", (req, res) => {
+    const id = req.params.id;
+    const {
+        event_title,
+        venue_place,
+        event_date,
+        event_time,
+        category,
+        target_audience,
+        message_content
+    } = req.body;
+    const sql = `UPDATE announcements SET event_title=?, venue_place=?, event_date=?, event_time=?, category=?, target_audience=?, message_content=? WHERE id=?`;
+    db.query(sql, [event_title, venue_place, event_date, event_time, category, target_audience, message_content, id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json({ message: "Announcement updated!" });
+    });
+});
+
+// DELETE ANNOUNCEMENT
+app.delete("/api/announcements/:id", (req, res) => {
+    const id = req.params.id;
+    const sql = `DELETE FROM announcements WHERE id=?`;
+    db.query(sql, [id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json({ message: "Announcement deleted!" });
+    });
+});
 app.use((req, res) => {
     console.warn(`[404] Resource not found: ${req.url}`);
     res.status(404).send(`

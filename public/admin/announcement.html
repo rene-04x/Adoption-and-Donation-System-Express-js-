@@ -33,6 +33,8 @@
             padding: 100px 30px 40px 30px;
             margin-left: var(--sidebar-width); 
             transition: all 0.4s ease;
+            /* border: 2px solid red; */
+            width: 100%;
         }
 
         /* --- TOPBAR --- */
@@ -175,6 +177,18 @@
             background: white; cursor: pointer; display: flex; align-items: center;
             gap: 8px; font-size: 14px; font-weight: 600; color: #334155;
         }
+        .filter-select {
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1.5px solid #e2e8f0;
+            background: white;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+            margin-right: 8px;
+            outline: none;
+            cursor: pointer;
+        }
         .post-btn { margin-left: auto; background: var(--primary-blue); color: white; border: none; }
 
         /* --- ANNOUNCEMENT GRID & CARDS --- */
@@ -205,10 +219,83 @@
         .card-footer { border-top: 1px solid #f1f5f9; padding-top: 12px; font-size: 11px; color: #64748b; }
 
         /* --- MODAL STYLES --- */
-        #postModal .profile-card { width: 750px; text-align: left; max-width: 90vw; }
-        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .form-group { margin-bottom: 15px; }
-        .input-styled { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; }
+        #postModal .profile-card,
+        #editModal .profile-card,
+        #postModal .profile-card,
+        #editModal .profile-card {
+            width: 700px;
+            max-width: 98vw;
+            text-align: left;
+            max-height: 92vh;
+            overflow-y: auto;
+            background: #fafdff;
+            box-shadow: 0 8px 32px 0 rgba(2,64,125,0.13), 0 1.5px 8px 0 rgba(44, 157, 255, 0.08);
+            padding: 48px 44px 36px 44px;
+            border-radius: 20px;
+            border: 1.5px solid #e3eaf5;
+            position: relative;
+            transition: box-shadow 0.2s;
+        }
+        .modal-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 38px;
+            margin-bottom: 18px;
+            align-items: start;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #1e293b;
+            margin-bottom: 6px;
+            display: block;
+        }
+        .input-styled {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1.5px solid #dbeafe;
+            border-radius: 9px;
+            outline: none;
+            font-size: 15px;
+            background: #f7fbff;
+            color: #1e293b;
+            transition: border 0.2s, box-shadow 0.2s;
+            margin-top: 2px;
+        }
+
+        textarea.input-styled {
+            resize: vertical;
+            min-height: 90px;
+            max-height: 220px;
+            height: 120px;
+            box-sizing: border-box;
+        }
+        .input-styled:focus {
+            border: 1.5px solid #3b82f6;
+            box-shadow: 0 0 0 2px #dbeafe;
+        }
+        .audience-group {
+            background: #f7fbff;
+            border: 1.5px solid #dbeafe;
+            border-radius: 9px;
+            padding: 13px 15px 7px 15px;
+            margin-top: 2px;
+            margin-bottom: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 12px;
+        }
+        .audience-group label {
+            font-size: 14px;
+            color: #334155;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
         .switch { position: relative; display: inline-block; width: 34px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 20px; transition: .4s; }
@@ -217,7 +304,56 @@
         input:checked + .slider:before { transform: translateX(14px); }
 
         .close-btn { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #64748b; }
+        #editModal h2, #postModal h2 {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #02407D;
+            margin-bottom: 2px;
+            letter-spacing: -0.5px;
+        }
+        #editModal .modal-grid, #postModal .modal-grid {
+            margin-bottom: 18px;
+        }
+        #editModal .form-group label, #postModal .form-group label {
+            color: #1e293b;
+        }
+        #editModal .post-btn, #editModal .archive-btn, #postModal .post-btn, #postModal .archive-btn {
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 11px 22px;
+            box-shadow: 0 2px 8px rgba(2,64,125,0.07);
+            border: none;
+            transition: background 0.18s, color 0.18s;
+        }
+        #editModal .post-btn, #postModal .post-btn {
+            background: linear-gradient(90deg, #02407D 0%, #3b82f6 100%);
+            color: #fff;
+        }
+        #editModal .archive-btn, #postModal .archive-btn {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+        #editModal .post-btn:hover, #postModal .post-btn:hover {
+            background: linear-gradient(90deg, #3b82f6 0%, #02407D 100%);
+        }
+        #editModal .archive-btn:hover, #postModal .archive-btn:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
 
+        @media (max-width: 900px) {
+            #postModal .profile-card,
+            #editModal .profile-card {
+                width: 99vw;
+                min-width: unset;
+                padding: 18px 2vw 18px 2vw;
+            }
+            .modal-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        }
         @media (max-width: 1400px) { .announcement-grid { grid-template-columns: repeat(3, 1fr); } }
     </style>
 </head>
@@ -274,7 +410,13 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Search Announcement by Title, type or date...">
             </div>
-            <button class="filter-btn"><i class="fa-solid fa-filter"></i> All Status <i class="fa-solid fa-chevron-down"></i></button>
+            <select class="filter-select" id="statusFilter">
+                <option value="All">All Status</option>
+                <option value="General">General</option>
+                <option value="Urgent">Urgent</option>
+                <option value="Event">Event</option>
+                <option value="Update">Update</option>
+            </select>
             <button class="archive-btn"><i class="fa-solid fa-box-archive"></i> Archive Announcement</button>
             <button class="post-btn" id="openPostBtn"><i class="fa-solid fa-plus"></i> Post Announcement</button>
         </div>
@@ -289,7 +431,6 @@
                     <h2 style="color: #02407D;">Post New Announcement</h2>
                     <p style="color: #64748b; font-size: 14px;">Fill out the details below to notify your audience.</p>
                 </div>
-
                 <div class="modal-grid">
                     <div class="col-left">
                         <div class="form-group">
@@ -309,7 +450,6 @@
                             <textarea class="input-styled" id="descInp" rows="4" placeholder="Detailed announcement..."></textarea>
                         </div>
                     </div>
-
                     <div class="col-right">
                         <div class="form-group">
                             <label>Category (tag)</label>
@@ -322,7 +462,7 @@
                         </div>
                         <div class="form-group">
                             <label>Target Audience</label>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; font-size: 12px;">
+                            <div class="audience-group">
                                 <label><input type="radio" name="target" value="Donors"> Donors</label>
                                 <label><input type="radio" name="target" value="Adopters"> Adopters</label>
                                 <label><input type="radio" name="target" value="Volunteers"> Volunteers</label>
@@ -341,16 +481,142 @@
                         </div>
                     </div>
                 </div>
-
                 <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                    <button class="archive-btn" id="draftBtn">DRAFT</button>
                     <button class="post-btn" id="addPostBtn" style="margin-left: 0;">Publish Announcement</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Announcement Modal -->
+        <div id="editModal" class="profile-modal" style="top: 15%; left: 50%; transform: translateX(-50%); display: none;">
+            <div class="profile-card">
+                <span class="close-btn" id="closeEdit">&times;</span>
+                <div style="margin-bottom: 20px;">
+                    <h2 style="color: #02407D;">Edit Announcement</h2>
+                </div>
+                <div class="modal-grid">
+                    <div class="col-left">
+                        <div class="form-group">
+                            <label>Event Title</label>
+                            <input type="text" class="input-styled" id="editTitle">
+                        </div>
+                        <div class="form-group">
+                            <label>Venue Place</label>
+                            <input type="text" class="input-styled" id="editVenue">
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <div class="form-group" style="flex: 1;"><label>Date</label><input type="date" class="input-styled" id="editDate"></div>
+                            <div class="form-group" style="flex: 1;"><label>Time</label><input type="time" class="input-styled" id="editTime"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Message Content</label>
+                            <textarea class="input-styled" id="editDesc" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-right">
+                        <div class="form-group">
+                            <label>Category (tag)</label>
+                            <select class="input-styled" id="editTag">
+                                <option>General</option>
+                                <option>Urgent</option>
+                                <option>Event</option>
+                                <option>Update</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Target Audience</label>
+                            <div class="audience-group">
+                                <label><input type="radio" name="editTarget" value="Donors"> Donors</label>
+                                <label><input type="radio" name="editTarget" value="Adopters"> Adopters</label>
+                                <label><input type="radio" name="editTarget" value="Volunteers"> Volunteers</label>
+                                <label><input type="radio" name="editTarget" value="All Users" checked> All Users</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button class="archive-btn" id="deleteAnnouncementBtn">Delete</button>
+                    <button class="post-btn" id="updateAnnouncementBtn" style="margin-left: 0;">Update</button>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
+        // --- ACTION BAR LOGIC ---
+        let allAnnouncements = [];
+        let currentStatusFilter = 'All';
+
+        // Search/filter/archive logic
+        function renderAnnouncements(data) {
+            const grid = document.getElementById("announcementGrid");
+            grid.innerHTML = "";
+            data.forEach(a => {
+                const formattedDate = a.event_date
+                    ? new Date(a.event_date).toLocaleDateString('en-US', {
+                        weekday: 'short', month: 'long', day: 'numeric', year: 'numeric'
+                    }) : "Recently";
+                const card = document.createElement("div");
+                card.className = "announcement-card";
+                card.style.cursor = "pointer";
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="tag ${a.category}">${a.category}</span>
+                    </div>
+                    <h3 class="card-title">${a.event_title}</h3>
+                    <div class="card-meta">
+                        <i class="fa-regular fa-calendar"></i> ${formattedDate} |
+                        <i class="fa-regular fa-clock"></i> ${a.event_time || "TBA"}<br>
+                        <i class="fa-solid fa-location-dot"></i> ${a.venue_place || "CSPC Campus"}
+                    </div>
+                    <p class="card-body">${a.message_content}</p>
+                    <div class="card-footer">
+                        <i class="fa-solid fa-users"></i> Target: <strong>${a.target_audience}</strong>
+                    </div>
+                `;
+                card.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openEditModal(a);
+                });
+                grid.appendChild(card);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('.search-container input');
+            const statusSelect = document.getElementById('statusFilter');
+            searchInput.addEventListener('input', function() {
+                filterAndRender();
+            });
+            statusSelect.addEventListener('change', function() {
+                currentStatusFilter = this.value;
+                filterAndRender();
+            });
+            // Archive button (placeholder)
+            document.querySelector('.archive-btn').addEventListener('click', function() {
+                alert('Archive feature coming soon!');
+            });
+        });
+
+        function filterAndRender() {
+            const searchInput = document.querySelector('.search-container input');
+            const val = searchInput.value.toLowerCase();
+            let filtered = allAnnouncements;
+            if (currentStatusFilter !== 'All') {
+                filtered = filtered.filter(a => a.category === currentStatusFilter);
+            }
+            if (val) {
+                filtered = filtered.filter(a =>
+                    (a.event_title && a.event_title.toLowerCase().includes(val)) ||
+                    (a.category && a.category.toLowerCase().includes(val)) ||
+                    (a.event_date && new Date(a.event_date).toLocaleDateString('en-US').toLowerCase().includes(val))
+                );
+            }
+            renderAnnouncements(filtered);
+        }
+
+        // --- END ACTION BAR LOGIC ---
+
         fetch('sidebar.html')
 .then(res => res.text())
 .then(data => {
@@ -458,7 +724,8 @@ const modal = document.getElementById("profileModal");
 
 
         // --- 5. PUBLISH LOGIC ---
-        document.getElementById("addPostBtn").onclick = function() {
+
+        document.getElementById("addPostBtn").onclick = async function() {
             const title = document.getElementById("titleInp").value;
             const venue = document.getElementById("venueInp").value;
             const date = document.getElementById("dateInp").value;
@@ -466,38 +733,137 @@ const modal = document.getElementById("profileModal");
             const desc = document.getElementById("descInp").value;
             const tag = document.getElementById("tagInp").value;
             const target = document.querySelector('input[name="target"]:checked').value;
+            // If you want to use the toggles, add their logic here
+            const pin = true; // or document.getElementById("pinInp")?.checked
+            const push = true; // or document.getElementById("pushInp")?.checked
 
-            // Date Formatting
-            const formattedDate = date ? new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'long', day: 'numeric', year: 'numeric' }) : "Recently";
+            try {
+                const response = await fetch("http://localhost:3000/api/announcements", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        event_title: title,
+                        venue_place: venue,
+                        event_date: date,
+                        event_time: time,
+                        category: tag,
+                        target_audience: target,
+                        is_urgent: tag === "Urgent",
+                        pin_to_dashboard: pin,
+                        send_push_notification: push,
+                        message_content: desc
+                    })
+                });
 
-            const card = document.createElement("div");
-            card.className = "announcement-card";
-            card.innerHTML = `
-                <div class="card-header">
-                    <span class="tag ${tag}">${tag}</span>
-                    <i class="fa-solid fa-ellipsis-vertical" style="color: #94a3b8; cursor: pointer;"></i>
-                </div>
-                <h3 class="card-title">${title || "New Announcement"}</h3>
-                <div class="card-meta">
-                    <i class="fa-regular fa-calendar"></i> ${formattedDate} | <i class="fa-regular fa-clock"></i> ${time || "TBA"}<br>
-                    <i class="fa-solid fa-location-dot"></i> ${venue || "CSPC Campus"}
-                </div>
-                <p class="card-body">${desc || "No description provided."}</p>
-                <div class="card-footer">
-                    <i class="fa-solid fa-users-viewfinder"></i> Target: <strong>${target}</strong>
-                </div>
-            `;
-
-            document.getElementById("announcementGrid").prepend(card);
-            
-            // Clear and Close
-            postModal.style.display = "none";
-            document.getElementById("titleInp").value = "";
-            document.getElementById("venueInp").value = "";
-            document.getElementById("dateInp").value = "";
-            document.getElementById("timeInp").value = "";
-            document.getElementById("descInp").value = "";
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || "Failed to save announcement");
+                }
+                alert("✅ Announcement saved!");
+                // Close the modal after successful publish
+                document.getElementById("postModal").style.display = "none";
+                loadAnnouncements();
+            } catch (err) {
+                console.error(err);
+                alert("❌ Failed to save announcement");
+            }
         };
+
+        async function loadAnnouncements() {
+            try {
+                const res = await fetch("http://localhost:3000/api/announcements");
+                if (!res.ok) {
+                    throw new Error("Failed to load announcements");
+                }
+                const data = await res.json();
+                allAnnouncements = data;
+                // Apply current filter/search
+                const searchInput = document.querySelector('.search-container input');
+                let filtered = allAnnouncements;
+                if (currentStatusFilter !== 'All') {
+                    filtered = filtered.filter(a => a.category === currentStatusFilter);
+                }
+                const val = searchInput.value.toLowerCase();
+                if (val) {
+                    filtered = filtered.filter(a =>
+                        (a.event_title && a.event_title.toLowerCase().includes(val)) ||
+                        (a.category && a.category.toLowerCase().includes(val)) ||
+                        (a.event_date && new Date(a.event_date).toLocaleDateString('en-US').toLowerCase().includes(val))
+                    );
+                }
+                renderAnnouncements(filtered);
+                // --- 6. EDIT/UPDATE/DELETE LOGIC ---
+                const editModal = document.getElementById("editModal");
+                const closeEditBtn = document.getElementById("closeEdit");
+                let currentEditId = null;
+
+                window.openEditModal = function(a) {
+                    currentEditId = a.id;
+                    document.getElementById("editTitle").value = a.event_title || "";
+                    document.getElementById("editVenue").value = a.venue_place || "";
+                    document.getElementById("editDate").value = a.event_date ? a.event_date.split('T')[0] : "";
+                    document.getElementById("editTime").value = a.event_time || "";
+                    document.getElementById("editDesc").value = a.message_content || "";
+                    document.getElementById("editTag").value = a.category || "General";
+                    // Set radio
+                    const radios = document.getElementsByName("editTarget");
+                    radios.forEach(r => { r.checked = (r.value === a.target_audience); });
+                    editModal.style.display = "block";
+                }
+
+                closeEditBtn.onclick = function() {
+                    editModal.style.display = "none";
+                };
+
+                document.getElementById("updateAnnouncementBtn").onclick = async function() {
+                    if (!currentEditId) return;
+                    const updated = {
+                        event_title: document.getElementById("editTitle").value,
+                        venue_place: document.getElementById("editVenue").value,
+                        event_date: document.getElementById("editDate").value,
+                        event_time: document.getElementById("editTime").value,
+                        category: document.getElementById("editTag").value,
+                        target_audience: Array.from(document.getElementsByName("editTarget")).find(r => r.checked)?.value || "All Users",
+                        message_content: document.getElementById("editDesc").value
+                    };
+                    try {
+                        const res = await fetch(`http://localhost:3000/api/announcements/${currentEditId}`, {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify(updated)
+                        });
+                        if (!res.ok) throw new Error("Failed to update");
+                        alert("Announcement updated!");
+                        editModal.style.display = "none";
+                        loadAnnouncements();
+                    } catch (err) {
+                        alert("❌ Failed to update announcement");
+                    }
+                };
+
+                document.getElementById("deleteAnnouncementBtn").onclick = async function() {
+                    if (!currentEditId) return;
+                    if (!confirm("Are you sure you want to delete this announcement?")) return;
+                    try {
+                        const res = await fetch(`http://localhost:3000/api/announcements/${currentEditId}`, {
+                            method: "DELETE"
+                        });
+                        if (!res.ok) throw new Error("Failed to delete");
+                        alert("Announcement deleted!");
+                        editModal.style.display = "none";
+                        loadAnnouncements();
+                    } catch (err) {
+                        alert("❌ Failed to delete announcement");
+                    }
+                };
+            } catch (err) {
+                console.error("LOAD ERROR:", err);
+            }
+        }
+        // Load announcements on page load
+        loadAnnouncements();
 
        
     </script>

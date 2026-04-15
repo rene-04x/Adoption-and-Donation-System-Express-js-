@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Announcements | PAWSsion</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    :root {
+      --primary-blue: #02407D;
+      --accent-blue: #3b82f6;
+      --bg-light: #f4f9ff;
+      --white: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+    }
+    html, body {
+      height: auto;
+      min-height: 100%;
+      overflow-y: auto;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #FFFFFF 0%, #A5CFFF 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      color: var(--text-main);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .announcements-section {
+      margin-left: 300px;
+      margin-top: 100px;
+      margin-right: 0;
+      margin-bottom: 40px;
+      padding-left: 30px;
+      transition: margin 0.3s, padding 0.3s;
+      /* border: 2px solid red; */
+      width: 79%;
+      min-height: 100vh;
+    }
+    .announcements-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #02407D;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+      text-align: left;
+    }
+    .announcement-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      padding-bottom: 30px;
+    }
+    .announcement-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      border: 1px solid #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s;
+    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .tag { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+    .tag.Urgent { background: #fee2e2; color: #ef4444; }
+    .tag.Event { background: #fef3c7; color: #f59e0b; }
+    .tag.General { background: #dcfce7; color: #22c55e; }
+    .tag.Update { background: #dbeafe; color: #3b82f6; }
+    .card-title { font-size: 15px; font-weight: 800; margin: 10px 0 5px 0; color: #1e293b; }
+    .card-meta { font-size: 11px; color: #94a3b8; margin-bottom: 12px; line-height: 1.6; }
+    .card-body { font-size: 12.5px; color: #475569; line-height: 1.5; flex-grow: 1; margin-bottom: 15px; }
+    .card-footer { border-top: 1px solid #f1f5f9; padding-top: 12px; font-size: 11px; color: #64748b; }
+    @media (max-width: 1100px) { .announcement-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 700px) { .announcement-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 900px) {
+      .announcements-section {
+        margin-left: 0;
+        margin-top: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar-placeholder"></div>
+  <section class="announcements-section">
+    <div class="announcements-title">Announcements</div>
+    <div class="announcement-grid" id="announcementGrid">
+      <!-- Announcements will be loaded here -->
+    </div>
+  </section>
+  <script>
+    // Load sidebar
+    fetch('/sidebar')
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById('sidebar-placeholder').innerHTML = data;
+      });
+
+    // Fetch and display announcements (admin-style)
+    function renderAnnouncements(list) {
+      const grid = document.getElementById('announcementGrid');
+      if (!list.length) {
+        grid.innerHTML = '<div style="color:#888; text-align:center; padding:30px 0; width:100%;grid-column:1/-1;">No announcements at this time.</div>';
+        return;
+      }
+      grid.innerHTML = list.map(a => {
+        const formattedDate = a.event_date
+          ? new Date(a.event_date).toLocaleDateString('en-US', {
+              weekday: 'short', month: 'long', day: 'numeric', year: 'numeric'
+            }) : "Recently";
+        return `
+          <div class="announcement-card">
+            <div class="card-header">
+              <span class="tag ${a.category}">${a.category || ''}</span>
+            </div>
+            <h3 class="card-title">${a.event_title || ''}</h3>
+            <div class="card-meta">
+              <i class="fa-regular fa-calendar"></i> ${formattedDate} |
+              <i class="fa-regular fa-clock"></i> ${a.event_time || "TBA"}<br>
+              <i class="fa-solid fa-location-dot"></i> ${a.venue_place || "CSPC Campus"}
+            </div>
+            <p class="card-body">${a.message_content || ''}</p>
+            <div class="card-footer">
+              <i class="fa-solid fa-users"></i> Target: <strong>${a.target_audience || ''}</strong>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    fetch('/api/announcements')
+      .then(res => res.json())
+      .then(data => renderAnnouncements(data))
+      .catch(() => {
+        document.getElementById('announcementGrid').innerHTML = '<div style="color:#e11d48; text-align:center; padding:30px 0; width:100%;grid-column:1/-1;">Failed to load announcements.</div>';
+      });
+  </script>
+</body>
+</html>

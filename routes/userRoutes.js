@@ -27,6 +27,13 @@ router.get('/application', isAuthenticated, userController.getApplication);
 router.get('/kamustahan', userController.getKamustahan);
 
 // User-specific Hubs
+
+// Announcements page route
+router.get('/announcements', isAuthenticated, (req, res) => {
+    console.log('HIT /announcements route');
+    res.sendFile(path.join(__dirname, '../public/user/announcements.html'));
+});
+
 router.get('/adoption_hub', (req, res) => res.sendFile(path.join(__dirname, '../public/user/adoption_hub.html')));
 router.get('/sidebar', (req, res) => res.sendFile(path.join(__dirname, '../public/user/sidebar.html')));
 
@@ -231,5 +238,12 @@ router.get('/faqs', (req, res) => res.sendFile(path.join(__dirname, '../public/l
 
 // Ang route para sa donation
 router.post('/submit-donation', upload.single('receipt'), userController.submitDonation);
+
+
+// Catch-all for userRoutes (for debugging)
+router.use((req, res, next) => {
+    console.warn(`[userRoutes 404] Resource not found: ${req.originalUrl}`);
+    next();
+});
 
 module.exports = router;
