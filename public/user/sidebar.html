@@ -523,15 +523,26 @@
           overlay.classList.remove('active');
         });
       }
-
-      // -------------------- Navigation --------------------
+// -------------------- Navigation --------------------
       if (dashBtn) dashBtn.addEventListener('click', () => window.location.href = `/dashboard${userQuery}`);
       if (adoptionBtn) adoptionBtn.addEventListener('click', () => window.location.href = `/adoption_hub${userQuery}`);
       if (donationBtn) donationBtn.addEventListener('click', () => window.location.href = `/donations${userQuery}`);
       if (applicationBtn) applicationBtn.addEventListener('click', () => window.location.href = `/application${userQuery}`);
-      if (KamustahanBtn) KamustahanBtn.addEventListener('click', () => window.location.href = `/kamustahan${userQuery}`);
-      if (logoutBtn) logoutBtn.addEventListener('click', () => window.location.href = `/login?msg=logged_out`);
-
+      if (typeof KamustahanBtn !== 'undefined') { // Check if defined to avoid crash
+          KamustahanBtn.addEventListener('click', () => window.location.href = `/kamustahan${userQuery}`);
+      }
+      if (logoutBtn) {
+          logoutBtn.addEventListener('click', (e) => {
+             
+              if (window.location.pathname === '/profile') {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return; 
+              }
+              // KUNG NASA IBANG PAGE: Mag-redirect sa login/logout route
+              window.location.href = `/login?msg=logged_out`;
+          });
+      }
       // -------------------- Profile Button --------------------
       if (profileBtn) {
         profileBtn.addEventListener('click', () => {

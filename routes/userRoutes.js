@@ -6,9 +6,9 @@ const fs = require('fs');
 const { isAuthenticated } = require('../middleware/auth');
 const userController = require('../controllers/userController');
 const bcrypt = require('bcrypt');
-const db = require('../Database/db'); // I-import ang connection natin
+const db = require('../Database/db'); 
 const upload = require('../middleware/uploads');
-const multer = require('multer'); // Idagdag mo ito sa Line 1
+const multer = require('multer'); 
 
 // --- AUTHENTICATION & DASHBOARD ROUTES ---
 router.get('/api/user', (req, res) => {
@@ -19,9 +19,64 @@ router.get('/api/user', (req, res) => {
     }
 });
 
+// 1. Configure storage para sa profile pictures
+const profileStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const dir = 'public/uploads/profile_pics/';
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, 'profile-' + req.session.userId + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const uploadProfile = multer({ storage: profileStorage });
+
+// 2. Route para i-save ang image path sa DB
+router.post('/api/update-profile-pic', isAuthenticated, uploadProfile.single('profile_pic'), async (req, res) => {
+    try {
+        if (!req.file) return res.status(400).json({ success: false, message: "No file uploaded" });
+
+        const imagePath = `/uploads/profile_pics/${req.file.filename}`;
+        const userId = req.session.userId;
+
+        
+        await db.execute("UPDATE users SET profile_pic = ? WHERE id = ?", [imagePath, userId]);
+
+        res.json({ success: true, imagePath: imagePath });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+
 router.get('/api/user-donations', isAuthenticated, userController.getDonationsAPI);
 router.get('/dashboard', isAuthenticated, userController.getDashboard);
 router.get('/profile', isAuthenticated, userController.getProfile);
+// Kunin ang profile details ng naka-login na user
+// Sa iyong routes file
+router.get('/api/user-profile-details', isAuthenticated, async (req, res) => {
+    try {
+        const userId = req.session.userId;
+        // DAPAT KASAMA ANG profile_pic DITO
+        const [rows] = await db.execute("SELECT username, email, profile_pic FROM users WHERE id = ?", [userId]);
+
+        if (rows.length > 0) {
+            res.json({ 
+                success: true, 
+                username: rows[0].username, 
+                email: rows[0].email,
+                profilePic: rows[0].profile_pic, 
+                accountType: 'User'
+            });
+        } else {
+            res.status(404).json({ success: false });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false });
+    }
+});
 router.get('/donations', isAuthenticated, userController.getDonations);
 router.get('/application', isAuthenticated, userController.getApplication);
 router.get('/kamustahan', userController.getKamustahan);
@@ -30,8 +85,7 @@ router.get('/kamustahan', userController.getKamustahan);
 router.get('/adoption_hub', (req, res) => res.sendFile(path.join(__dirname, '../public/user/adoption_hub.html')));
 router.get('/sidebar', (req, res) => res.sendFile(path.join(__dirname, '../public/user/sidebar.html')));
 
-// --- ADOPTION APPLICATION ROUTES ---
-// Configure Multer Storage
+
 // --- ADOPTION APPLICATION ROUTES ---
 // 1. I-define muna ang storage configuration
 const storage = multer.diskStorage({
@@ -47,10 +101,9 @@ const storage = multer.diskStorage({
     }
 });
 
-// 2. Ngayon, pwede mo nang gamitin ang 'storage' variable dito
+
 const uploadApp = multer({ storage: storage });
 
-// --- POST ROUTE (CREATE) ---
 // --- POST ROUTE (CREATE) ---
 router.post('/api/submit-application', uploadApp.fields([
     { name: 'validId', maxCount: 1 }, 
@@ -60,8 +113,7 @@ router.post('/api/submit-application', uploadApp.fields([
         const data = req.body;
         const files = req.files || {};
         
-        // 1. Kuhanin ang userId mula sa session
-        // Tandaan: Dapat 'userId' ang tawag mo rito kung yun ang nilagay mo nung login
+        /
         const loggedInUserId = req.session.userId; 
 
         if (!loggedInUserId) {
@@ -75,14 +127,14 @@ router.post('/api/submit-application', uploadApp.fields([
             ? data.livingType.join(', ') 
             : (data.livingType || '');
 
-        // 2. Isama ang user_id sa SQL command
+     
         const sql = `INSERT INTO adoption_applications 
             (user_id, pet_name, last_name, given_name, middle_name, birthdate, email, phone, fb_link, contact_method, employment_status, pet_experience, living_type, fenced_yard, pets_allowed, reason_adoption, valid_id_path, proof_address_path) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
-        // 3. Siguraduhing tumutugma ang order ng values
+      
         const values = [
-            loggedInUserId, // Ang uupo sa user_id column
+            loggedInUserId, 
             data.petName, 
             data.lName, 
             data.gName, 
@@ -113,7 +165,6 @@ router.post('/api/submit-application', uploadApp.fields([
 
 // 2. UPDATE (PUT) - Idagdag ang upload middleware dito!
 
-
     router.put('/api/update-application/:id', uploadApp.fields([
     { name: 'validId', maxCount: 1 }, 
     { name: 'proofAddress', maxCount: 1 }
@@ -121,14 +172,14 @@ router.post('/api/submit-application', uploadApp.fields([
     try {
         const applicationId = req.params.id;
         
-        // Ngayong may upload.fields na tayo, ang req.body ay hindi na magiging undefined
+       
         const { 
             lName, gName, mName, bday, email, 
             phone, fb, contact, jobStatus, exp, 
             livingType, fence, allowed, reason 
         } = req.body;
 
-        // I-handle ang livingType array (mula sa checkboxes)
+        
         const livingTypeString = Array.isArray(livingType) ? livingType.join(', ') : (livingType || '');
 
         const sql = `UPDATE adoption_applications SET 
@@ -159,11 +210,11 @@ router.post('/api/submit-application', uploadApp.fields([
 });
 
 
-// This is your existing route - ensure the table has a 'status' column
+
 router.delete('/api/cancel-application/:id', async (req, res) => {
     try {
         const applicationId = req.params.id;
-        // This updates the row instead of deleting it
+       
         const sql = "UPDATE adoption_applications SET status = 'Cancelled' WHERE id = ?";
         const [result] = await db.execute(sql, [applicationId]);
 
@@ -178,9 +229,9 @@ router.delete('/api/cancel-application/:id', async (req, res) => {
 });router.get('/api/get-applications', isAuthenticated, async (req, res) => {
     try {
         const { status } = req.query;
-        const loggedInUserId = req.session.userId; // Kunin ang ID ng user
+        const loggedInUserId = req.session.userId; 
 
-        // Idagdag ang WHERE user_id = ? para sariling applications lang ang makita
+        
         let sql = "SELECT id, pet_name AS petName, status, date_applied FROM adoption_applications WHERE user_id = ?";
         let params = [loggedInUserId];
 
@@ -211,7 +262,7 @@ router.delete('/api/cancel-application/:id', async (req, res) => {
 router.get('/api/application-details/:id', isAuthenticated, async (req, res) => {
     try {
         const [rows] = await db.execute(
-            // Dagdagan ng AND user_id = ? para sigurado
+           
             "SELECT *, pet_name AS petName, date_applied AS created_at FROM adoption_applications WHERE id = ? AND user_id = ?", 
             [req.params.id, req.session.userId]
         );

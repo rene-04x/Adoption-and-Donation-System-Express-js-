@@ -260,12 +260,20 @@ body.sidebar-closed .profile-container {
         <br>
         <h2>Hi, {{username}}</h2>
 
-        <div class="info-box">
-            <div class="info-row"><span class="label">Name</span><span class="value">Jhyzeel Dianela</span></div>
-            <div class="info-row"><span class="label">Email</span><span class="value">jhydianela@gmail.com</span></div>
-            <div class="info-row"><span class="label">Account type</span><span class="value">Adopter</span></div>
-        </div>
+      <div class="info-box">
+    <div class="info-row">
+        <span class="label">Name</span>
+        <span class="value" id="display-name">Loading...</span>
     </div>
+    <div class="info-row">
+        <span class="label">Email</span>
+        <span class="value" id="display-email">Loading...</span>
+    </div>
+    <div class="info-row">
+        <span class="label">Account type</span>
+        <span class="value" id="display-type">Loading...</span>
+    </div>
+</div>
 </main>
 
 <div id="feedbackModal" class="modal">
@@ -314,7 +322,7 @@ body.sidebar-closed .profile-container {
         document.body.classList.toggle('sidebar-closed');
     };
 
-    // 2. Help Menu Toggle
+  
     const helpToggle = document.getElementById('helpToggle');
     const helpMenu = document.getElementById('helpMenu');
     helpToggle.onclick = (e) => {
@@ -325,7 +333,7 @@ body.sidebar-closed .profile-container {
     // 3. Feedback Modal Functions
     function openFeedbackModal() {
         document.getElementById('feedbackModal').style.display = 'flex';
-        helpMenu.style.display = 'none'; // Close help menu when modal opens
+        helpMenu.style.display = 'none'; 
     }
 
     function closeFeedbackModal() {
@@ -345,7 +353,7 @@ body.sidebar-closed .profile-container {
         document.getElementById('feedbackSuccess').style.display = 'block';
     };
 
-    // Close modal when clicking outside content
+    
     window.onclick = (e) => {
         const modal = document.getElementById('feedbackModal');
         if (e.target == modal) closeFeedbackModal();
@@ -354,20 +362,50 @@ body.sidebar-closed .profile-container {
         }
     };
 
-    // 4. Profile Pic Logic (Same as yours)
+    
     const imageUpload = document.getElementById("imageUpload");
     const profileImage = document.getElementById("profileImage");
-    imageUpload.onchange = function() {
+
+    imageUpload.onchange = async function() {
         const file = this.files[0];
-        if(file) {
+        
+        if (file) {
+            
             const reader = new FileReader();
             reader.onload = (e) => {
                 profileImage.src = e.target.result;
-                const toast = document.getElementById("successToast");
-                toast.classList.add("show");
-                setTimeout(() => toast.classList.remove("show"), 3000);
             };
             reader.readAsDataURL(file);
+
+            // B. Prepare Data para sa Upload
+            const formData = new FormData();
+            formData.append('profile_pic', file); 
+
+            try {
+                // C. I-send ang file sa Server API
+                const response = await fetch('/api/update-profile-pic', {
+                    method: 'POST',
+                    body: formData 
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                
+                    const toast = document.getElementById("successToast");
+                    toast.classList.add("show");
+                    setTimeout(() => toast.classList.remove("show"), 3000);
+                    
+                    
+                    profileImage.src = result.imagePath;
+                } else {
+                    console.error("Upload failed:", result.message);
+                    alert("Failed to save image: " + result.message);
+                }
+            } catch (error) {
+                console.error("Network Error:", error);
+                alert("An error occurred while uploading the image. Please check your connection.");
+            }
         }
     };
 
@@ -388,15 +426,62 @@ body.sidebar-closed .profile-container {
         window.location.href = '/kamustahan';
     };
     
-    const urlParams = new URLSearchParams(window.location.search);
-let username = urlParams.get('username');
+    /// --- 6. Fetch Profile Data from Database (UPDATED) ---
+    async function loadUserProfile() {
+        try {
+            const response = await fetch('/api/user-profile-details');
+            const data = await response.json();
 
-if (!username) {
-    username = localStorage.getItem('username') || 'User';
-}
+            if (data.success) {
+                // I-update ang mga Text sa Info Box
+                document.getElementById('display-name').textContent = data.username;
+                document.getElementById('display-email').textContent = data.email;
+                document.getElementById('display-type').textContent = data.accountType;
+                
+                // --- DITO ANG FIX: I-update ang Image Src ---
+                const profileImgElement = document.getElementById('profileImage');
+                if (data.profilePic) {
+                    // Kung may laman ang profile_pic sa DB, ito ang gamitin
+                    profileImgElement.src = data.profilePic;
+                } else {
+                    // Kung wala, manatili sa default image
+                    profileImgElement.src = "../images/dog1.png";
+                }
+                
+                // I-update ang Greeting Header
+                const greeting = document.querySelector('.profile-card h2');
+                if (greeting) {
+                    greeting.textContent = `Hi, ${data.username}`;
+                }
+            } else {
+                console.warn("User data not found in session.");
+                window.location.href = '/login';
+            }
+        } catch (error) {
+            console.error("Database Connection Error:", error);
+            document.getElementById('display-name').textContent = "Error loading name";
+        }
+    }
 
-// Now you can use `username` to display greeting
-document.querySelector('h2').textContent = `Hi, ${username}`;
+    // Tawagin ang function pagka-load na pagka-load ng page
+    window.onload = loadUserProfile;
+
+    // --- 7. Logout Logic ---
+    document.getElementById('logoutBtn').onclick = () => {
+        Swal.fire({
+            title: 'Logout?',
+            text: "Are you sure you want to exit?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#02407D',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, logout!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/logout';
+            }
+        });
+    };
 </script>
 
 </body>
