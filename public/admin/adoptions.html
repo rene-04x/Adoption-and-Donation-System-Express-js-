@@ -955,7 +955,7 @@ async function confirmSchedule() {
         const data = await response.json();
 
         if (data.success) {
-            alert("✨ " + data.message); // DAPAT LUMABAS NA ITO
+            alert("✨ " + data.message); 
             closeInterviewModal();
             loadAdoptions(currentTab);
         }

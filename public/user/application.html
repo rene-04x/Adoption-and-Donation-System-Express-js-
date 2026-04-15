@@ -138,8 +138,30 @@
     const stepCounter = document.getElementById('stepCounter');
     const step1Icon = document.getElementById('step1Icon');
     const statusPill = document.getElementById('statusPill');
+// === NEW: URL PARAMETER CAPTURE FOR "ADOPT ME" LOGIC ===
+    const urlParams = new URLSearchParams(window.location.search);
+    const petNameParam = urlParams.get('pet');
+    const petImgParam = urlParams.get('img');
 
+    if (petNameParam) {
+        // I-set ang Pet Name sa display header
+        const displayPetName = document.getElementById('displayPetName');
+        if (displayPetName) displayPetName.textContent = petNameParam;
+
+        // I-set ang Pet Image kung may dinalang URL
+        const petImage = document.querySelector('.pet-image');
+        if (petImgParam && petImage) {
+            petImage.src = petImgParam;
+        }
+
+        // AUTO-OPEN FORM: Dahil galing ito sa "Adopt Me" click
+        // Gagamitin ang timeout para masiguradong tapos na ang initial load
+        setTimeout(() => {
+            showFormView(true);
+        }, 100);
+    }
     let currentApplicationId = null;
+    
 
     // === 2. VIEW CONTROLLER LOGIC ===
 
@@ -215,7 +237,7 @@
         }
     };
 
-   window.viewApplication = async (id) => {
+  window.viewApplication = async (id) => {
     try {
         const response = await fetch(`/api/application-details/${id}`);
         const app = await response.json();
@@ -235,6 +257,7 @@
         const cancelAppBtn = document.getElementById('cancelAppBtn');
         const status = app.status.toLowerCase();
 
+        // Control button visibility
         if (status === 'success' || status === 'approved' || status === 'cancelled') {
             editBtn.style.setProperty('display', 'none', 'important');
             cancelAppBtn.style.setProperty('display', 'none', 'important');
@@ -246,13 +269,42 @@
         const firstName = app.gName || app.given_name || 'N/A';
         const lastName = app.lName || app.last_name || 'N/A';
         const fullName = `${firstName} ${lastName}`;
-        const contactNum = app.phone || app.contact_number || 'N/A';
 
-        // --- FIXED INTERVIEW LOGIC ---
-        // Ipakita lang ang schedule kung may date AT kung ang status ay 'Interview' o 'Active'
-        // Itatago ito kapag Approved, Success, o Cancelled na.
+        // --- DYNAMIC REMARKS SECTION ---
+        let remarksHTML = '';
+        
+        if (status === 'cancelled') {
+            remarksHTML = `
+                <div style="margin-top: 15px; padding: 15px; background: #fef2f2; border-left: 4px solid #ef4444; border-radius: 4px;">
+                    <h5 style="color: #991b1b; margin: 0 0 5px 0;"><i class="fa-solid fa-circle-xmark"></i> Cancellation Reason</h5>
+                    <p style="color: #b91c1c; margin: 0; font-style: italic;">"${app.admin_notes || 'The application was cancelled by the administrator or the applicant.'}"</p>
+                </div>`;
+        } 
+        else if (status === 'approved') {
+            remarksHTML = `
+                <div style="margin-top: 15px; padding: 15px; background: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 4px;">
+                    <h5 style="color: #166534; margin: 0 0 5px 0;"><i class="fa-solid fa-crown"></i> Congratulations!</h5>
+                    <p style="color: #15803d; margin: 0;">${app.admin_notes || 'Your application is approved. Please wait for our staff to contact you for the final turnover schedule.'}</p>
+                </div>`;
+        }
+        else if (status === 'success') {
+            remarksHTML = `
+                <div style="margin-top: 15px; padding: 15px; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
+                    <h5 style="color: #1e40af; margin: 0 0 5px 0;"><i class="fa-solid fa-heart"></i> Adoption Completed</h5>
+                    <p style="color: #1d4ed8; margin: 0;">${app.admin_notes || 'Welcome home to your new furry friend! Thank you for choosing to adopt and save a life.'}</p>
+                </div>`;
+        }
+        else if (status === 'active' || status === 'submitted' || status === 'Interview Scheduled') {
+            remarksHTML = `
+                <div style="margin-top: 15px; padding: 15px; background: #fffbeb; border-left: 4px solid #f59e0b; border-radius: 4px;">
+                    <h5 style="color: #92400e; margin: 0 0 5px 0;"><i class="fa-solid fa-clock"></i> Admin Update</h5>
+                    <p style="color: #b45309; margin: 0;">${app.admin_notes || 'Our team is currently reviewing your application. Please keep your lines open for possible interviews.'}</p>
+                </div>`;
+        }
+
+        // Interview Schedule Logic (para sa Active/Interview statuses)
         let interviewHTML = '';
-        if (app.interview_date && status !== 'approved' && status !== 'success' && status !== 'cancelled') {
+        if (app.interview_date && !['approved', 'success', 'cancelled'].includes(status)) {
             interviewHTML = `<p style="color: #f59e0b;"><strong>📅 Interview Schedule:</strong> ${new Date(app.interview_date).toLocaleString()}</p>`;
         }
 
@@ -261,10 +313,11 @@
                 <h4 style="margin-bottom: 15px; color: #1e293b;">Application Details</h4>
                 <p><strong>Applicant:</strong> ${fullName}</p> 
                 <p><strong>Email:</strong> ${app.email || 'N/A'}</p>
-                <p><strong>Contact:</strong> ${contactNum}</p>
+                <p><strong>Contact:</strong> ${app.phone || 'N/A'}</p>
                 <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 15px 0;">
                 ${interviewHTML}
-                <p><strong>Status:</strong> <span class="status-pill status-${status}">${app.status}</span></p>
+                <p><strong>Current Status:</strong> <span class="status-pill status-${status}">${app.status}</span></p>
+                ${remarksHTML}
             </div>
         `;
 

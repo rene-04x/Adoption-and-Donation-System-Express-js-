@@ -99,11 +99,9 @@ router.get('/org-register', (req, res) => res.sendFile(path.join(__dirname, '../
 router.get('/form2', (req, res) => res.sendFile(path.join(__dirname, '../public/login/form2.html')));
 router.get('/form3', (req, res) => res.sendFile(path.join(__dirname, '../public/login/form3.html')));
 
-// LOGOUT ROUTE
 router.get('/logout', (req, res) => {
     req.session.destroy((err) => {
-        if (err) return res.send("Error logging out");
-        res.clearCookie('connect.sid'); // Linisin ang session cookie sa browser
+        if (err) console.log(err);
         res.redirect('/login?msg=logged_out');
     });
 });
