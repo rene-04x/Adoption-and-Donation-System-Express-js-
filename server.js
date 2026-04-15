@@ -327,6 +327,17 @@ app.delete("/api/announcements/:id", (req, res) => {
         res.json({ message: "Announcement deleted!" });
     });
 });
+// API: Get total verified donations for admin dashboard
+app.get('/api/admin/total-verified-donations', (req, res) => {
+    const sql = "SELECT SUM(amount) AS total FROM donations WHERE status = 'Verified'";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Database error" });
+        }
+        res.json({ total: results[0].total || 0 });
+    });
+});
 app.use((req, res) => {
     console.warn(`[404] Resource not found: ${req.url}`);
     res.status(404).send(`
