@@ -4,9 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Announcements | PAWSsion</title>
+
   <link rel="stylesheet" href="../css/style.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
   <style>
     :root {
       --primary-blue: #02407D;
@@ -16,147 +18,359 @@
       --text-main: #1e293b;
       --text-muted: #64748b;
     }
+
+    /* ✅ FIX SCROLL */
     html, body {
-      height: auto;
+      margin: 0;
+      padding: 0;
       min-height: 100%;
+      height: auto;
+      overflow-x: hidden;
       overflow-y: auto;
-    }
-    body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(180deg, #FFFFFF 0%, #A5CFFF 100%);
       background-attachment: fixed;
-      min-height: 100vh;
-      color: var(--text-main);
-      overflow-x: hidden;
-      overflow-y: auto;
     }
+
+    /* ✅ MAIN LAYOUT */
     .announcements-section {
       margin-left: 300px;
+      margin-right: 20px;
       margin-top: 100px;
-      margin-right: 0;
-      margin-bottom: 40px;
       padding-left: 30px;
-      transition: margin 0.3s, padding 0.3s;
-      /* border: 2px solid red; */
-      width: 79%;
+      padding-right: 10px;
+      width: auto;
       min-height: 100vh;
     }
+
     .announcements-title {
       font-size: 2rem;
       font-weight: 800;
       color: #02407D;
       margin-bottom: 18px;
-      letter-spacing: -1px;
-      text-align: left;
     }
+
     .announcement-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
-      padding-bottom: 30px;
+      padding-bottom: 40px;
     }
+
     .announcement-card {
       background: white;
       border-radius: 20px;
       padding: 20px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05);
       border: 1px solid #f1f5f9;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.2s;
+      cursor: pointer;
+      transition: 0.2s;
     }
-    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .tag { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+
+    .announcement-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .tag {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
     .tag.Urgent { background: #fee2e2; color: #ef4444; }
     .tag.Event { background: #fef3c7; color: #f59e0b; }
     .tag.General { background: #dcfce7; color: #22c55e; }
     .tag.Update { background: #dbeafe; color: #3b82f6; }
-    .card-title { font-size: 15px; font-weight: 800; margin: 10px 0 5px 0; color: #1e293b; }
-    .card-meta { font-size: 11px; color: #94a3b8; margin-bottom: 12px; line-height: 1.6; }
-    .card-body { font-size: 12.5px; color: #475569; line-height: 1.5; flex-grow: 1; margin-bottom: 15px; }
-    .card-footer { border-top: 1px solid #f1f5f9; padding-top: 12px; font-size: 11px; color: #64748b; }
-    @media (max-width: 1100px) { .announcement-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 700px) { .announcement-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 900px) {
-      .announcements-section {
-        margin-left: 0;
-        margin-top: 80px;
-      }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin: 10px 0 5px;
+    }
+
+    .card-meta {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .card-body {
+      font-size: 12.5px;
+      color: #475569;
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      margin-top: 10px;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 12px;
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    /* ===== MODAL ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      overflow-y: auto; /* ✅ FIX MODAL SCROLL */
+    }
+
+    .modal-content {
+      width: 520px;
+      max-width: 92%;
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      animation: pop 0.2s ease;
+      margin: 40px 0;
+    }
+
+    @keyframes pop {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-header {
+      background: #02407D;
+      color: white;
+      padding: 14px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      color: white;
+      font-size: 22px;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.05);
+    }
+
+    .modal-body {
+      padding: 18px;
+      font-size: 13px;
+      color: #334155;
+    }
+
+    .modal-row {
+      margin-bottom: 8px;
+    }
+
+    .modal-message {
+      margin-top: 12px;
+      padding: 12px;
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+      line-height: 1.6;
+    }
+
+    .modal-footer {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    hr {
+      border: none;
+      border-top: 1px solid #e2e8f0;
+      margin: 12px 0;
+    }
+
+    @media (max-width: 1100px) {
+      .announcement-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 700px) {
+      .announcement-grid { grid-template-columns: 1fr; }
+      .announcements-section { margin-left: 0; }
     }
   </style>
 </head>
+
 <body>
-  <div id="sidebar-placeholder"></div>
-  <section class="announcements-section">
-    <div class="announcements-title">Announcements</div>
-    <div class="announcement-grid" id="announcementGrid">
-      <!-- Announcements will be loaded here -->
+
+<div id="sidebar-placeholder"></div>
+
+<section class="announcements-section">
+  <div class="announcements-title">Announcements</div>
+  <div class="announcement-grid" id="announcementGrid"></div>
+</section>
+
+<!-- MODAL -->
+<div id="announcementModal" class="modal">
+  <div class="modal-content">
+
+    <div class="modal-header">
+      <h2 id="modalTitle">Announcement Details</h2>
+
+      <button class="modal-close" onclick="closeModal()">&times;</button>
     </div>
-  </section>
-  <script>
-    // Load sidebar and enable nav highlight/click (match sidebar.js logic)
-    fetch('/sidebar')
-      .then(res => res.text())
-      .then(data => {
-        document.getElementById('sidebar-placeholder').innerHTML = data;
 
-        // Highlight active nav item based on current path
-        document.querySelectorAll('.nav-item').forEach(item => {
-          const link = item.dataset.link;
-          if (!link) return;
-          if (window.location.pathname === link && item.id !== 'logoutBtn') {
-            item.classList.add('active-item');
-          }
-        });
+    <div class="modal-body">
+      <div class="modal-row"><strong>Category:</strong> <span id="mCategory"></span></div>
+      <div class="modal-row"><strong>Date:</strong> <span id="mDate"></span></div>
+      <div class="modal-row"><strong>Time:</strong> <span id="mTime"></span></div>
+      <div class="modal-row"><strong>Venue:</strong> <span id="mVenue"></span></div>
 
-        // Enable nav click using data-link attributes
-        document.querySelectorAll('.nav-item').forEach(item => {
-          const link = item.dataset.link;
-          if (!link) return;
-          item.addEventListener('click', () => {
-            window.location.href = link;
-          });
-        });
-      });
+      <hr />
 
-    // Fetch and display announcements (admin-style)
-    function renderAnnouncements(list) {
-      const grid = document.getElementById('announcementGrid');
-      if (!list.length) {
-        grid.innerHTML = '<div style="color:#888; text-align:center; padding:30px 0; width:100%;grid-column:1/-1;">No announcements at this time.</div>';
-        return;
+      <div class="modal-message" id="mMessage"></div>
+
+      <div class="modal-footer">
+        <strong>Target Audience:</strong> <span id="mTarget"></span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let announcementsData = [];
+
+/* SIDEBAR */
+fetch('/sidebar')
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById('sidebar-placeholder').innerHTML = data;
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      const link = item.dataset.link;
+      if (!link) return;
+
+      if (window.location.pathname === link && item.id !== 'logoutBtn') {
+        item.classList.add('active-item');
       }
-      grid.innerHTML = list.map(a => {
-        const formattedDate = a.event_date
-          ? new Date(a.event_date).toLocaleDateString('en-US', {
-              weekday: 'short', month: 'long', day: 'numeric', year: 'numeric'
-            }) : "Recently";
-        return `
-          <div class="announcement-card">
-            <div class="card-header">
-              <span class="tag ${a.category}">${a.category || ''}</span>
-            </div>
-            <h3 class="card-title">${a.event_title || ''}</h3>
-            <div class="card-meta">
-              <i class="fa-regular fa-calendar"></i> ${formattedDate} |
-              <i class="fa-regular fa-clock"></i> ${a.event_time || "TBA"}<br>
-              <i class="fa-solid fa-location-dot"></i> ${a.venue_place || "CSPC Campus"}
-            </div>
-            <p class="card-body">${a.message_content || ''}</p>
-            <div class="card-footer">
-              <i class="fa-solid fa-users"></i> Target: <strong>${a.target_audience || ''}</strong>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
 
-    fetch('/api/announcements')
-      .then(res => res.json())
-      .then(data => renderAnnouncements(data))
-      .catch(() => {
-        document.getElementById('announcementGrid').innerHTML = '<div style="color:#e11d48; text-align:center; padding:30px 0; width:100%;grid-column:1/-1;">Failed to load announcements.</div>';
+      item.addEventListener('click', () => {
+        window.location.href = link;
       });
-  </script>
+    });
+  });
+
+/* OPEN MODAL */
+function openModal(index) {
+  const a = announcementsData[index];
+
+  const formattedDate = a.event_date
+    ? new Date(a.event_date).toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      })
+    : "Recently";
+
+  document.getElementById("modalTitle").innerText = a.event_title || "Announcement Details";
+  document.getElementById("mCategory").innerText = a.category || '';
+  document.getElementById("mDate").innerText = formattedDate;
+  document.getElementById("mTime").innerText = a.event_time || 'TBA';
+  document.getElementById("mVenue").innerText = a.venue_place || 'CSPC Campus';
+  document.getElementById("mMessage").innerText = a.message_content || '';
+  document.getElementById("mTarget").innerText = a.target_audience || '';
+
+  document.body.style.overflow = "hidden"; // ✅ lock scroll
+  document.getElementById("announcementModal").style.display = "flex";
+}
+
+/* CLOSE MODAL */
+function closeModal() {
+  document.body.style.overflow = "auto"; // ✅ restore scroll
+  document.getElementById("announcementModal").style.display = "none";
+}
+
+/* OUTSIDE CLICK CLOSE */
+window.onclick = function(e) {
+  const modal = document.getElementById("announcementModal");
+  if (e.target === modal) {
+    closeModal();
+  }
+};
+
+/* RENDER */
+function renderAnnouncements(list) {
+  announcementsData = list;
+  const grid = document.getElementById('announcementGrid');
+
+  if (!list.length) {
+    grid.innerHTML = `<div style="text-align:center;padding:30px;grid-column:1/-1;">No announcements</div>`;
+    return;
+  }
+
+  grid.innerHTML = list.map((a, i) => {
+    const formattedDate = a.event_date
+      ? new Date(a.event_date).toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        })
+      : "Recently";
+
+    return `
+      <div class="announcement-card" onclick="openModal(${i})">
+
+        <div class="card-header">
+          <span class="tag ${a.category}">${a.category || ''}</span>
+        </div>
+
+        <h3 class="card-title">${a.event_title || ''}</h3>
+
+        <div class="card-meta">
+          <i class="fa-regular fa-calendar"></i> ${formattedDate} |
+          <i class="fa-regular fa-clock"></i> ${a.event_time || "TBA"}<br>
+          <i class="fa-solid fa-location-dot"></i> ${a.venue_place || "CSPC Campus"}
+        </div>
+
+        <p class="card-body">${a.message_content || ''}</p>
+
+        <div class="card-footer">
+          <i class="fa-solid fa-users"></i>
+          Target: <strong>${a.target_audience || ''}</strong>
+        </div>
+
+      </div>
+    `;
+  }).join('');
+}
+
+/* FETCH */
+fetch('/api/announcements')
+  .then(res => res.json())
+  .then(data => renderAnnouncements(data))
+  .catch(() => {
+    document.getElementById('announcementGrid').innerHTML =
+      `<div style="color:red;text-align:center;grid-column:1/-1;">Failed to load announcements</div>`;
+  });
+</script>
+
 </body>
 </html>
