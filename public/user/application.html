@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/application.css">
 </head>
+
 <body>
 
 <div id="sidebar-placeholder"></div>
@@ -33,8 +34,8 @@
     </div>
   </div>
 
-  <!-- APPLICATIONS LIST  -->
-  <div id="applicationsList"></div>
+ 
+  <div id="applicationsList" class="main-content-column"></div>
 
   <!-- PROGRESS TRACKER (PET PROFILE + STEPS) -->
   <div class="application-container" id="progressContainer">
@@ -165,21 +166,24 @@
 
     // === 2. VIEW CONTROLLER LOGIC ===
 
-    const showListView = (defaultFilter = 'Active') => {
-        applicationsList.style.display = 'block';
-        managementHeader.style.display = 'block';
-        formContainer.style.display = 'none';
-        progressWrapper.style.display = 'none';
-        summaryDiv.style.display = 'none';
-        
-        // Alisin ang 'all' filter sa UI kung nandun pa
-        const allBtn = document.querySelector('[data-filter="all"]');
-        if (allBtn) allBtn.remove();
+const showListView = (defaultFilter = 'Active') => {
+    applicationsList.style.display = 'block';
+    managementHeader.style.display = 'block';
+    formContainer.style.display = 'none';
+    summaryDiv.style.display = 'none';
 
-        // I-trigger ang default filter (Active)
-        const activeFilterBtn = document.querySelector(`[data-filter="${defaultFilter}"]`);
-        if (activeFilterBtn) activeFilterBtn.click();
-    };// === 1. Inayos na Reset Logic para mawala ang 'ilaw' ===
+    // ❌ HIDE PROGRESS ALWAYS IN LIST VIEW
+    const progressContainer = document.getElementById('progressContainer');
+    progressContainer.classList.remove('show');
+
+    const allBtn = document.querySelector('[data-filter="all"]');
+    if (allBtn) allBtn.remove();
+
+    const activeFilterBtn = document.querySelector(`[data-filter="${defaultFilter}"]`);
+    if (activeFilterBtn) activeFilterBtn.click();
+};
+
+    // === 1. Inayos na Reset Logic para mawala ang 'ilaw' ===
     const resetProgressUI = () => {
         // I-reset ang progress bar sa zero
         progressFill.style.width = "0%";
@@ -204,38 +208,23 @@
     };
 
     // === 2. Pagtawag sa reset sa loob ng showFormView ===
-    const showFormView = (isNew = true) => {
-        applicationsList.style.display = 'none';
-        managementHeader.style.display = 'none';
-        formContainer.style.display = 'block';
-        summaryDiv.style.display = 'none';
-        
-        // Panatilihing visible ang tracker pero 'patay' ang ilaw
-        progressWrapper.style.display = 'block'; 
+   const showFormView = (isNew = true) => {
+    applicationsList.style.display = 'none';
+    managementHeader.style.display = 'none';
+    formContainer.style.display = 'block';
+    summaryDiv.style.display = 'none';
 
-        if (isNew) {
-            adoptionForm.reset();
-            currentApplicationId = null;
-            
-            // Dito tinatawag ang pag-reset ng icons at bar
-            resetProgressUI();
+    const progressContainer = document.getElementById('progressContainer');
 
-            const submitBtn = adoptionForm.querySelector('button[type="submit"]');
-            if (submitBtn) submitBtn.textContent = "Submit Application";
-            
-            const cancelBtn = document.getElementById('cancelBtn');
-            if (cancelBtn) {
-                cancelBtn.style.display = 'inline-block';
-                cancelBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back to List';
-            }
-        } else {
-            // Kung Edit, hindi na kailangan i-reset dahil may status na ito
-            const cancelBtn = document.getElementById('cancelBtn');
-            if (cancelBtn) {
-                cancelBtn.innerHTML = '<i class="fa-solid fa-arrow-left"></i> Back to List';
-            }
-        }
-    };
+    // ✅ SHOW ONLY WHEN FORM OPEN
+    progressContainer.classList.add('show');
+
+    if (isNew) {
+        adoptionForm.reset();
+        currentApplicationId = null;
+        resetProgressUI();
+    }
+};
 
   window.viewApplication = async (id) => {
     try {
@@ -250,7 +239,7 @@
         
         document.getElementById('displayPetName').textContent = app.petName;
         document.getElementById('displayDate').textContent = `Applied: ${new Date(app.created_at).toLocaleDateString()}`;
-        
+        document.getElementById('progressContainer').classList.add('show');
         updateProgressUI(app.status);
 
         const editBtn = document.getElementById('editBtn');
