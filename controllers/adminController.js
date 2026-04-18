@@ -183,3 +183,82 @@ exports.scheduleInterview = async (req, res) => {
         res.status(500).json({ success: false, message: "Database error occurred." });
     }
 };
+exports.getAdoptionStats = async (req, res) => {
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                COUNT(CASE WHEN status = 'Interview Scheduled' OR status = 'Active' THEN 1 END) AS pendingCount,
+                COUNT(CASE WHEN status = 'Approved' THEN 1 END) AS successCount
+            FROM adoption_applications
+        `);
+        
+        // Siguraduhin na laging may number na ibabalik
+        res.json({
+            pendingCount: rows[0].pendingCount || 0,
+            successCount: rows[0].successCount || 0
+        });
+    } catch (error) {
+        console.error("Error fetching adoption stats:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+exports.getRecentDonations = async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                DATE_FORMAT(date, '%m-%d-%Y') as formatted_date,
+                donor_name,
+                type,
+                amount,
+                item_name
+            FROM donations 
+            WHERE status = 'verified'
+            ORDER BY date DESC 
+            LIMIT 5
+        `;
+        const [rows] = await db.query(query);
+        res.json(rows);
+    } catch (error) {
+        console.error("Error fetching recent donations:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+// adminController.js
+exports.getMonthlyAdoptionStats = async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                DATE_FORMAT(date_applied, '%b') as month, 
+                COUNT(*) as count 
+            FROM adoption_applications 
+            WHERE LOWER(status) = 'approved' 
+              AND YEAR(date_applied) = YEAR(CURDATE())
+            GROUP BY MONTH(date_applied), month
+            ORDER BY MONTH(date_applied) ASC
+        `;
+        const [rows] = await db.query(query);
+        res.json(rows);
+    } catch (error) {
+        console.error("Error fetching monthly adoptions:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+exports.getMonthlyDonationStats = async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                DATE_FORMAT(date, '%b') as month,
+                SUM(CASE WHEN type = 'Cash' THEN amount ELSE 0 END) as cash_total,
+                COUNT(CASE WHEN type != 'Cash' THEN 1 END) as inkind_count
+            FROM donations
+            WHERE status = 'verified' 
+              AND YEAR(date) = YEAR(CURDATE())
+            GROUP BY MONTH(date), month
+            ORDER BY MONTH(date) ASC
+        `;
+        const [rows] = await db.query(query);
+        res.json(rows); 
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

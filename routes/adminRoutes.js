@@ -15,19 +15,25 @@ router.get('/donations-data', adminController.getAllDonationsAPI);
 
 router.get('/admin_dashboard', adminController.getHome); 
 router.get('/animals', adminController.getAnimals);
-router.get('/adoptions', adminController.getAdoptions); // Render the HTML page
 router.get('/donations', adminController.getDonations);
 router.get('/analytics', adminController.getAnalytics);
 router.get('/monitoring', adminController.getMonitoring);
 router.get('/organizations', adminController.getOrganizations);
 router.get('/announcements', adminController.getAnnouncements);
 
-// API Endpoints (Para sa AJAX/Fetch)
-router.get('/api/adoptions', adminController.getAllAdoptions); // Kuhain lahat ng applications
-router.get('/api/adoptions/:id', adminController.getAdoptionDetails); // Specific application details
-// Idagdag ito sa API Endpoints section
+
+router.get('/api/adoptions', adminController.getAllAdoptions); 
+router.get('/api/adoptions/:id', adminController.getAdoptionDetails); 
+
 router.put('/api/adoptions/:id/status', adminController.updateAdoptionStatus);
 router.put('/api/adoptions/:id/schedule', adminController.scheduleInterview);
+router.get('/adoption-stats', adminController.getAdoptionStats);
+
+router.get('/recent-donations', adminController.getRecentDonations);
+router.get('/monthly-adoptions', adminController.getMonthlyAdoptionStats);
+
+router.get('/monthly-donations', adminController.getMonthlyDonationStats);
+// adminRoutes.js
 
 module.exports = router;
 
