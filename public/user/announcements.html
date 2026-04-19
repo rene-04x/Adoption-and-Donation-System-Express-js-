@@ -255,8 +255,6 @@
 
 <script>
 let announcementsData = [];
-
-/* SIDEBAR */
 fetch('/sidebar')
   .then(res => res.text())
   .then(data => {
@@ -265,6 +263,13 @@ fetch('/sidebar')
     document.querySelectorAll('.nav-item').forEach(item => {
       const link = item.dataset.link;
       if (!link) return;
+
+      if (item.id === 'logoutBtn') {
+        item.addEventListener('click', () => {
+          window.location.href = '/logout?status=success';
+        });
+        return;
+      }
 
       if (window.location.pathname === link && item.id !== 'logoutBtn') {
         item.classList.add('active-item');
@@ -275,7 +280,6 @@ fetch('/sidebar')
       });
     });
   });
-
 /* OPEN MODAL */
 function openModal(index) {
   const a = announcementsData[index];

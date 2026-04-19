@@ -724,14 +724,13 @@ fetch('/sidebar')
     setupNav('applicationBtn', '/application');
     setupNav('KamustahanBtn', '/kamustahan');
     setupNav('announcementsBtn', '/announcements');
-    // Sa loob ng iyong fetch('/sidebar') logic:
-setupNav('logoutBtn', '/login'); // Gamitin ang route na '/login'
+   setupNav('logoutBtn', '/logout');
+
 
 // At sa event listener:
 btn.onclick = () => {
     if (btnId === 'logoutBtn') {
-        // Gamitin ang short route '/login'
-        window.location.href = '/login?msg=logged_out';
+        window.location.href = '/logout?status=success';
     } else if (currentPath !== targetPath) {
         window.location.href = targetPath + queryStr;
     }

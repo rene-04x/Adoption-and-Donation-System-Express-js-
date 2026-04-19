@@ -502,15 +502,14 @@ adoptionForm.addEventListener('submit', async (e) => {
             }
 
             btn.onclick = (e) => {
-                e.preventDefault(); // Iwasan ang default anchor behavior
-                
-                // Kung Logout, huwag nang isama ang username
-                if (btnId === 'logoutBtn') {
-                    window.location.href = targetPath;
-                } else {
-                    window.location.href = targetPath + queryStr;
-                }
-            };
+            e.preventDefault();
+
+            if (btnId === 'logoutBtn') {
+                window.location.href = '/logout?status=success';
+            } else {
+                window.location.href = targetPath + queryStr;
+            }
+        };
         };
 
         // 3. I-map ang mga Button IDs sa kanilang Routes
@@ -521,7 +520,7 @@ adoptionForm.addEventListener('submit', async (e) => {
             { id: 'applicationBtn', path: '/application' },
             { id: 'announcementBtn', path: '/announcements' },
             { id: 'KamustahanBtn',  path: '/kamustahan' },
-            { id: 'logoutBtn',      path: '/login' }
+            { id: 'logoutBtn', path: '/logout' }
         ];
 
         navConfig.forEach(nav => setupNav(nav.id, nav.path));

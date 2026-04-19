@@ -161,10 +161,7 @@
     <div class="sidebar-footer">
         <div class="nav-item" id="settingsBtn"><i class="fa-solid fa-gear" style="color: #60a5fa;"></i> Settings</div>
         <div class="nav-item" id="supportBtn"><i class="fa-solid fa-circle-question" style="color: #60a5fa;"></i> Support</div>
-        <div id="logoutBtn" class="nav-item logout">
-    <i class="fa-solid fa-right-from-bracket"></i>
-    <span>Logout</span>
-</div>
+        <div class="nav-item" id="logoutBtn"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #60a5fa;"></i> Log out</div>
     </div>
 </div>
 <script>
@@ -211,33 +208,12 @@ navItems.forEach(item => {
                 window.location.href = "support.html";
                 break;
             case "logoutBtn":
-    // Magpakita ng confirmation (Optional pero recommended)
-    if (confirm("Are you sure you want to log out?")) {
-        // I-clear ang session/localStorage kung meron man
-        localStorage.clear(); 
-        sessionStorage.clear();
-
-        // Redirect sa login page na may kasamang logout parameter
-        window.location.href = "../login/user-login.html?status=success";
-    }
-    break;
+                window.location.href = "";
+                break;
             }
     });
 });
 
-       // LOGOUT FUNCTION
-document.addEventListener("click", function(e) {
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    if (logoutBtn && e.target.closest("#logoutBtn")) {
-        // OPTIONAL: clear session/local storage
-        localStorage.clear();
-        sessionStorage.clear();
-
-        // Redirect to login page with success message
-        window.location.href = "/login/user-login.html?status=success";
-    }
-});
 </script>
 </body>
 </html>

@@ -102,7 +102,7 @@ router.get('/form3', (req, res) => res.sendFile(path.join(__dirname, '../public/
 router.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         if (err) console.log(err);
-        res.redirect('/login?msg=logged_out');
+        res.redirect('/login?status=success');
     });
 });
 
