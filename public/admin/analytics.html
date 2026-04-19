@@ -472,6 +472,19 @@
 });
 
 
+       // LOGOUT FUNCTION
+document.addEventListener("click", function(e) {
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn && e.target.closest("#logoutBtn")) {
+        // OPTIONAL: clear session/local storage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Redirect to login page with success message
+        window.location.href = "/login/user-login.html?status=success";
+    }
+});
 
 // Common Chart Defaults
         Chart.defaults.font.family = "'Inter', sans-serif";

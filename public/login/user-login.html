@@ -38,6 +38,11 @@
             
             <hr class="divider">
 
+                    <div id="logout-alert" class="logout-alert">
+            <i class="fas fa-check-circle"></i>
+            <span>Successfully logged out</span>
+        </div>
+
             <div class="signin-card">
                 <form method="post" action="/login">
                     <div class="input-group">
@@ -78,6 +83,23 @@
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
+
+    // Check para sa Logout Success
+    if (urlParams.get('status') === 'success') {
+        const logoutMsg = document.getElementById('logout-alert');
+        if (logoutMsg) {
+            logoutMsg.style.display = 'block'; // Ipakita ang message
+            
+            // Optional: Mawawala ang message pagkatapos ng 5 seconds
+                    setTimeout(() => {
+            logoutMsg.style.opacity = '0';
+            logoutMsg.style.transform = 'translateY(-5px)';
+            logoutMsg.style.transition = 'all 0.4s ease';
+
+            setTimeout(() => logoutMsg.style.display = 'none', 400);
+        }, 4000);
+        }
+    }
     if (urlParams.get('status') === 'registered') {
         Swal.fire({
             title: 'Account Created!',

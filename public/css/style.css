@@ -291,3 +291,43 @@ body {
 .policy-links a:hover {
     color: #2d50c8;
 }
+.logout-alert {
+    display: none;
+    width: fit-content; /* auto haba */
+    margin: 0 auto 15px auto; /* center */
+
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 20px;
+
+    padding: 6px 14px; /* mas nipis */
+    
+    font-size: 11px;
+    color: #166534;
+
+    display: flex;
+    align-items: center;
+    justify-content: center; /* center content */
+    gap: 6px;
+
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+
+    animation: fadeSlide 0.3s ease;
+}
+
+.logout-alert i {
+    font-size: 12px;
+    color: #16a34a;
+}
+
+/* animation */
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -731,28 +731,39 @@ options: {
     });
 });
 
-       
+       // LOGOUT FUNCTION
+document.addEventListener("click", function(e) {
+    const logoutBtn = document.getElementById("logoutBtn");
 
-    // OPEN
-    document.querySelector(".user-info").addEventListener("click", (e) => {
-        e.stopPropagation();
-        modal.style.display = "block";
-    });
+    if (logoutBtn && e.target.closest("#logoutBtn")) {
+        // OPTIONAL: clear session/local storage
+        localStorage.clear();
+        sessionStorage.clear();
 
-    // CLOSE BUTTON (X)
-    document.querySelector(".close-btn").addEventListener("click", () => {
-        modal.style.display = "none";
-    });
+        // Redirect to login page with success message
+        window.location.href = "/login/user-login.html?status=success";
+    }
+});
 
-    // CLOSE kapag click outside
-    document.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
+   // OPEN MODAL
+document.querySelector(".user-info").addEventListener("click", (e) => {
+    e.stopPropagation();
+    const modal = document.getElementById("profileModal");
+    if(modal) modal.style.display = "block";
+});
 
-    // prevent close kapag click inside card
-    document.querySelector(".profile-card").addEventListener("click", (e) => {
-        e.stopPropagation();
-    });
+// CLOSE BUTTON (X)
+document.querySelector(".close-btn").addEventListener("click", () => {
+    document.getElementById("profileModal").style.display = "none";
+});
+
+// CLOSE pag click sa labas
+document.addEventListener("click", () => {
+    const modal = document.getElementById("profileModal");
+    if(modal) modal.style.display = "none";
+});
+
+
     </script>
 </body>
 </html>

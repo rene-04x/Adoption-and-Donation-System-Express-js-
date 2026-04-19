@@ -34,6 +34,12 @@ router.get('/monthly-adoptions', adminController.getMonthlyAdoptionStats);
 
 router.get('/monthly-donations', adminController.getMonthlyDonationStats);
 // adminRoutes.js
+// route
+router.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/user-login.html?status=success');
+    });
+});
 
 module.exports = router;
 
