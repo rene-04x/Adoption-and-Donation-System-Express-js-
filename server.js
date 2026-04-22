@@ -338,6 +338,45 @@ app.get('/api/admin/total-verified-donations', (req, res) => {
         res.json({ total: results[0].total || 0 });
     });
 });
+
+//for notification
+app.get('/api/notifications', (req, res) => {
+    if (!req.session.userId) return res.json({ success: false });
+
+    // Kunin ang notifications na para sa kanya (NULL sa user_id means pang-lahat/announcement)
+    const sql = `
+        SELECT * FROM notifications 
+        WHERE user_id = ? OR user_id IS NULL 
+        ORDER BY created_at DESC LIMIT 10`;
+        
+    db.query(sql, [req.session.userId], (err, results) => {
+        if (err) return res.status(500).json({ success: false });
+        res.json({ success: true, notifications: results });
+    });
+});
+
+// Route para i-mark as read ang notifications
+app.post('/api/notifications/mark-read', (req, res) => {
+    if (!req.session.userId) return res.json({ success: false });
+
+    // UPDATE: Gawing status = 'Read' lahat ng notifications ng user na ito
+    // Note: Siguraduhin na may 'status' column ang table mo o kaya ay i-delete na lang sila
+    const sql = "UPDATE notifications SET is_read = 1 WHERE user_id = ? OR user_id IS NULL";
+    
+    db.query(sql, [req.session.userId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ success: false });
+        }
+        res.json({ success: true });
+    });
+});
+
+app.get('/notifications-ui', (req, res) => {
+    // Siguraduhin na tama ang path papunta sa notifications.html mo
+    res.sendFile(path.join(__dirname, 'public/user/notifications.html'));
+});
+
 app.use((req, res) => {
     console.warn(`[404] Resource not found: ${req.url}`);
     res.status(404).send(`

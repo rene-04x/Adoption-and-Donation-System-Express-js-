@@ -178,13 +178,15 @@
         }
 
         /* Profile Modal Small Style */
-        .profile-modal {
+          /* Profile Modal Small Style */
+          .profile-modal {
             position: absolute; top: 70px; right: 30px; display: none; z-index: 2000;
         }
         .profile-card {
             background: #fff; width: 280px; padding: 25px; border-radius: 15px;
             text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.1);
         }
+
 
         /* --- TAB SYSTEM --- */
         .tab-wrapper {
@@ -257,7 +259,26 @@
 <body>
 
     <div id="sidebar-placeholder"></div>
-<div id="navbar-placeholder"></div>
+   
+    <header class="top-navbar">
+        <div class="header-title-section">
+            <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
+            <p style="color: #64748b; font-size: 11px; font-weight: 600;">Animal Adoption & Donation Management System</p>
+        </div>
+
+        <div class="user-profile-section">
+            <div class="notification-bell">
+                <i class="fa-solid fa-bell"></i>
+                <span class="notification-badge">30</span>
+            </div>
+            
+            <div class="user-info" id="userTrigger">
+                <img src="../images/dog2.png" alt="User" class="user-avatar">
+                <span class="user-name">Irene</span>
+            </div>
+        </div>
+    </header>
+    <div id="navbar-placeholder"></div>
 
     <main id="donationSection">
         <div class="content-wrapper">
@@ -390,8 +411,8 @@
     </div>
 
     <script>
-        
-    fetch('navbar.html')
+      
+      fetch('navbar.html')
 .then(res => res.text())
 .then(data => {
     document.getElementById('navbar-placeholder').innerHTML = data;
@@ -402,22 +423,22 @@
 
 
 function initNavbar() {
-
     const userInfo = document.getElementById("userInfo");
     const modal = document.getElementById("profileModal");
     const closeBtn = document.getElementById("closeModal");
 
-    // safety check
     if (!userInfo || !modal) return;
 
-    // OPEN / CLOSE MODAL
+    // Reset modal state
+    modal.style.display = "none";
+
+    // Toggle modal on click
     userInfo.addEventListener("click", (e) => {
         e.stopPropagation();
-        modal.style.display =
-            modal.style.display === "block" ? "none" : "block";
+        modal.style.display = modal.style.display === "block" ? "none" : "block";
     });
 
-    // CLOSE BUTTON
+    // Close modal on close button click
     if (closeBtn) {
         closeBtn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -425,69 +446,31 @@ function initNavbar() {
         });
     }
 
-    // OUTSIDE CLICK
+    // Close modal on outside click
     document.addEventListener("click", (e) => {
         if (!userInfo.contains(e.target)) {
             modal.style.display = "none";
         }
     });
 
-    // LOAD PROFILE
-    loadNavbarProfile();
-
-    // IMAGE UPLOAD
-    const upload = document.getElementById("imageUpload");
-    if (upload) {
-        upload.addEventListener("change", uploadProfileImage);
-    }
+    // Load profile data
+    loadProfile();
 }
-async function loadNavbarProfile() {
+
+async function loadProfile() {
     try {
         const res = await fetch('/admin/profile-data');
         const data = await res.json();
 
-        const navName = document.getElementById("navUserName");
-        const modalName = document.getElementById("modalGreetingName");
-        const email = document.getElementById("display-email");
-
-        if (navName) navName.textContent = data.username || "Admin";
-        if (modalName) modalName.textContent = data.username || "Admin";
-        if (email) email.textContent = data.email || "email@gmail.com";
+        document.getElementById("navUserName").textContent = data.username || "Admin";
+        document.getElementById("modalGreetingName").textContent = data.username || "Admin";
+        document.getElementById("display-email").textContent = data.email || "email@gmail.com";
 
         const img = data.profile_pic || "../images/dog2.png";
-
-        const avatar = document.getElementById("navAvatar");
-        const modalImg = document.getElementById("profileImage");
-
-        if (avatar) avatar.src = img;
-        if (modalImg) modalImg.src = img;
-
+        document.getElementById("navAvatar").src = img;
+        document.getElementById("profileImage").src = img;
     } catch (err) {
-        console.error("Profile error:", err);
-    }
-}
-async function uploadProfileImage(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append("profilePic", file);
-
-    try {
-        const res = await fetch("/admin/update-profile-pic", {
-            method: "POST",
-            body: formData
-        });
-
-        const result = await res.json();
-
-        if (result.success) {
-            document.getElementById("navAvatar").src = result.path;
-            document.getElementById("profileImage").src = result.path;
-        }
-
-    } catch (err) {
-        console.error(err);
+        console.error("Profile load error:", err);
     }
 }
         // Sidebar Loader
