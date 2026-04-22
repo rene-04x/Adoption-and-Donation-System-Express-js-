@@ -332,52 +332,7 @@
 <body>
 
     <div id="sidebar-placeholder"></div>
-
-    <header class="top-navbar">
-        <div class="header-title-section">
-            <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
-            <p style="color: #64748b; font-size: 11px; font-weight: 600; margin-top: 2px;">Animal Adoption & Donation Management System</p>
-        </div>
-        <div class="user-profile-section">
-            <div class="notification-bell">
-                <i class="fa-solid fa-bell"></i>
-                <span class="notification-badge">30</span>
-            </div>
-            
-            <!-- PROFILE MODAL -->
-        <div id="profileModal" class="profile-modal">
-            <div class="profile-card">
-                <!-- Close button -->
-                <span class="close-btn">&times;</span>
-
-                <img src="../images/dog2.png" class="profile-img">
-                <h2>Irene Espeleta</h2>
-                <p class="email">irespeleta@gmail.com</p>
-
-                <div class="role">
-                    <span>President</span>
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>address</span>
-                </div>
-
-                <button class="edit-btn">
-                    <i class="fa-solid fa-pen"></i> Edit Profile
-                </button>
-
-                <div class="change-pass">
-                    <i class="fa-solid fa-lock"></i>
-                    <span>Change Password</span>
-                    <i class="fa-solid fa-chevron-right"></i>
-                </div>
-            </div>
-        </div>
-
-            <div class="user-info">
-                <img src="../images/dog2.png" alt="Irene" class="user-avatar">
-                <span class="user-name">Irene</span>
-            </div>
-        </div>
-    </header>
+<div id="navbar-placeholder"></div>
 
     <div id="dashboardSection">
 <div class="dashboard-header">
@@ -459,6 +414,14 @@
     </div>
 </div>
     <script>
+     fetch('navbar.html')
+.then(res => res.text())
+.then(data => {
+    document.getElementById('navbar-placeholder').innerHTML = data;
+
+    // ✅ IMPORTANT: init navbar AFTER insert
+    initNavbar();
+});
                 // Fetch and display total verified donations
                 async function loadTotalDonations() {
                     try {
@@ -671,6 +634,96 @@ options: {
         });
     } catch (err) { console.error('Donation Chart Error:', err); }
 }
+
+function initNavbar() {
+
+    const userInfo = document.getElementById("userInfo");
+    const modal = document.getElementById("profileModal");
+    const closeBtn = document.getElementById("closeModal");
+
+    // safety check
+    if (!userInfo || !modal) return;
+
+    // OPEN / CLOSE MODAL
+    userInfo.addEventListener("click", (e) => {
+        e.stopPropagation();
+        modal.style.display =
+            modal.style.display === "block" ? "none" : "block";
+    });
+
+    // CLOSE BUTTON
+    if (closeBtn) {
+        closeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            modal.style.display = "none";
+        });
+    }
+
+    // OUTSIDE CLICK
+    document.addEventListener("click", (e) => {
+        if (!userInfo.contains(e.target)) {
+            modal.style.display = "none";
+        }
+    });
+
+    // LOAD PROFILE
+    loadNavbarProfile();
+
+    // IMAGE UPLOAD
+    const upload = document.getElementById("imageUpload");
+    if (upload) {
+        upload.addEventListener("change", uploadProfileImage);
+    }
+}
+async function loadNavbarProfile() {
+    try {
+        const res = await fetch('/admin/profile-data');
+        const data = await res.json();
+
+        const navName = document.getElementById("navUserName");
+        const modalName = document.getElementById("modalGreetingName");
+        const email = document.getElementById("display-email");
+
+        if (navName) navName.textContent = data.username || "Admin";
+        if (modalName) modalName.textContent = data.username || "Admin";
+        if (email) email.textContent = data.email || "email@gmail.com";
+
+        const img = data.profile_pic || "../images/dog2.png";
+
+        const avatar = document.getElementById("navAvatar");
+        const modalImg = document.getElementById("profileImage");
+
+        if (avatar) avatar.src = img;
+        if (modalImg) modalImg.src = img;
+
+    } catch (err) {
+        console.error("Profile error:", err);
+    }
+}
+async function uploadProfileImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("profilePic", file);
+
+    try {
+        const res = await fetch("/admin/update-profile-pic", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+            document.getElementById("navAvatar").src = result.path;
+            document.getElementById("profileImage").src = result.path;
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+}
    // Initialize dashboard
         document.addEventListener('DOMContentLoaded', () => {
             updateWelcome();
@@ -745,24 +798,7 @@ document.addEventListener("click", function(e) {
     }
 });
 
-   // OPEN MODAL
-document.querySelector(".user-info").addEventListener("click", (e) => {
-    e.stopPropagation();
-    const modal = document.getElementById("profileModal");
-    if(modal) modal.style.display = "block";
-});
-
-// CLOSE BUTTON (X)
-document.querySelector(".close-btn").addEventListener("click", () => {
-    document.getElementById("profileModal").style.display = "none";
-});
-
-// CLOSE pag click sa labas
-document.addEventListener("click", () => {
-    const modal = document.getElementById("profileModal");
-    if(modal) modal.style.display = "none";
-});
-
+ 
 
     </script>
 </body>

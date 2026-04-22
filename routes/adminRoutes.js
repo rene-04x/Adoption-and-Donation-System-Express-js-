@@ -31,9 +31,12 @@ router.get('/adoption-stats', adminController.getAdoptionStats);
 
 router.get('/recent-donations', adminController.getRecentDonations);
 router.get('/monthly-adoptions', adminController.getMonthlyAdoptionStats);
-
+// Idagdag ito para sa profile picture update
+router.post('/update-profile-pic', upload.single('profilePic'), adminController.updateProfilePic);
 router.get('/monthly-donations', adminController.getMonthlyDonationStats);
 // adminRoutes.js
+// adminRoutes.js
+router.get('/profile-data', adminController.getAdminProfile);
 // route
 router.get('/logout', (req, res) => {
     req.session.destroy(() => {

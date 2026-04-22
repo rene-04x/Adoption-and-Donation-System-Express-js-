@@ -593,23 +593,8 @@ const response = await fetch('http://localhost:3000/api/animals');
 
     
     <div id="sidebar-placeholder"></div>
-
-    <header class="top-navbar">
-        <div class="header-title-section">
-            <h1 class="pawssion-brand">CSPC PAWSsion <span>Benevolence Circle</span></h1>
-            <p style="color: #64748b; font-size: 11px; font-weight: 600;">Animal Adoption & Donation Management System</p>
-        </div>
-        <div class="user-profile-section">
-            <div class="notification-bell" style="cursor:pointer; color: var(--primary-blue); position: relative;">
-                <i class="fa-solid fa-bell"></i>
-                <span style="position:absolute; top:-5px; right:-5px; background:red; color:white; font-size:9px; padding:2px 5px; border-radius:50%;">30</span>
-            </div>
-            <div class="user-info" id="userTrigger">
-                <img src="../images/dog2.png" alt="User" class="user-avatar">
-                <span class="user-name">Irene</span>
-            </div>
-        </div>
-    </header>
+    <div id="navbar-placeholder"></div>
+   
     <section id="animalsSection">
         <div class="animals-controls">
             <div class="search-box">
@@ -863,6 +848,105 @@ const response = await fetch('http://localhost:3000/api/animals');
     </div>
 
     <script>
+           fetch('navbar.html')
+.then(res => res.text())
+.then(data => {
+    document.getElementById('navbar-placeholder').innerHTML = data;
+
+    // ✅ IMPORTANT: init navbar AFTER insert
+    initNavbar();
+});
+
+
+function initNavbar() {
+
+    const userInfo = document.getElementById("userInfo");
+    const modal = document.getElementById("profileModal");
+    const closeBtn = document.getElementById("closeModal");
+
+    // safety check
+    if (!userInfo || !modal) return;
+
+    // OPEN / CLOSE MODAL
+    userInfo.addEventListener("click", (e) => {
+        e.stopPropagation();
+        modal.style.display =
+            modal.style.display === "block" ? "none" : "block";
+    });
+
+    // CLOSE BUTTON
+    if (closeBtn) {
+        closeBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            modal.style.display = "none";
+        });
+    }
+
+    // OUTSIDE CLICK
+    document.addEventListener("click", (e) => {
+        if (!userInfo.contains(e.target)) {
+            modal.style.display = "none";
+        }
+    });
+
+    // LOAD PROFILE
+    loadNavbarProfile();
+
+    // IMAGE UPLOAD
+    const upload = document.getElementById("imageUpload");
+    if (upload) {
+        upload.addEventListener("change", uploadProfileImage);
+    }
+}
+async function loadNavbarProfile() {
+    try {
+        const res = await fetch('/admin/profile-data');
+        const data = await res.json();
+
+        const navName = document.getElementById("navUserName");
+        const modalName = document.getElementById("modalGreetingName");
+        const email = document.getElementById("display-email");
+
+        if (navName) navName.textContent = data.username || "Admin";
+        if (modalName) modalName.textContent = data.username || "Admin";
+        if (email) email.textContent = data.email || "email@gmail.com";
+
+        const img = data.profile_pic || "../images/dog2.png";
+
+        const avatar = document.getElementById("navAvatar");
+        const modalImg = document.getElementById("profileImage");
+
+        if (avatar) avatar.src = img;
+        if (modalImg) modalImg.src = img;
+
+    } catch (err) {
+        console.error("Profile error:", err);
+    }
+}
+async function uploadProfileImage(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("profilePic", file);
+
+    try {
+        const res = await fetch("/admin/update-profile-pic", {
+            method: "POST",
+            body: formData
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+            document.getElementById("navAvatar").src = result.path;
+            document.getElementById("profileImage").src = result.path;
+        }
+
+    } catch (err) {
+        console.error(err);
+    }
+}
  fetch('sidebar.html')
 .then(res => res.text())
 .then(data => {
@@ -931,11 +1015,7 @@ document.addEventListener("click", function(e) {
         const profileModal = document.getElementById("profileModal");
         const postModal = document.getElementById("postModal");
 
-        // Toggle Profile Dropdown
-        document.getElementById("userTrigger").addEventListener("click", (e) => {
-            e.stopPropagation();
-            profileModal.style.display = profileModal.style.display === "block" ? "none" : "block";
-        });
+    
 
         // Monitoring Modal Functions
         function openPostModal() { postModal.style.display = 'flex'; }

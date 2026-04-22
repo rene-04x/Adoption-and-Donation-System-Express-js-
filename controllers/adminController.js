@@ -262,3 +262,44 @@ exports.getMonthlyDonationStats = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+// adminController.js
+
+// ... existing controllers ...
+// --- SA PAGKUHA NG DATA ---
+exports.getAdminProfile = async (req, res) => {
+    try {
+        // Ginawang ID 11 base sa database mo
+        const [rows] = await db.query("SELECT username, email, profile_pic FROM users WHERE id = 11");
+        
+        if (rows.length > 0) {
+            res.json(rows[0]);
+        } else {
+            res.status(404).json({ error: "Admin account not found." });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// --- SA PAG-UPDATE NG PROFILE PIC ---
+exports.updateProfilePic = async (req, res) => {
+    if (!req.file) return res.status(400).json({ success: false, message: 'No file uploaded.' });
+
+    try {
+        const imagePath = `/uploads/profile_pics/${req.file.filename}`;
+        
+        // Siguraduhing ID 11 ang ia-update
+        const sql = "UPDATE users SET profile_pic = ? WHERE id = 11"; 
+
+        const [result] = await db.execute(sql, [imagePath]);
+
+        if (result.affectedRows > 0) {
+            res.json({ success: true, path: imagePath });
+        } else {
+            res.status(404).json({ success: false, message: "Admin ID 11 not found." });
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Database Error" });
+    }
+};
